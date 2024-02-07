@@ -1,0 +1,41 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Poppins";
+}
+
+.header {
+  height: 15vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.header .logo {
+  font-size: 2rem;
+  cursor: pointer;
+}
+.header .navbar .burger-menu .burger-bar {
+  height: 2.5px;
+  background-color: black;
+  width: 35px;
+  margin: 6.5px 0;
+}
+.header .navbar .nav-link {
+  position: absolute;
+  left: -100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.header .navbar .nav-link li {
+  font-size: 1.8rem;
+}/*# sourceMappingURL=style.css.map */

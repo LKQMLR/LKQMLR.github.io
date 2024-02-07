@@ -1,0 +1,50 @@
+// CONFIG
+*,::before,::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 62.5%;
+}
+body {
+    font-family: 'Poppins';
+}
+
+// HEADER
+.header {
+    height: 15vh;
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .logo {
+        font-size: 2rem;
+        cursor: pointer;
+    }
+    .navbar {
+        .burger-menu {
+            
+            .burger-bar {
+                height: 2.5px;
+                background-color: black;
+                width: 35px;
+                margin: 6.5px 0;
+            }
+        }
+        .nav-link {
+            position: absolute;
+            left: -100%;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+
+            li {
+                font-size: 1.8rem;
+            }
+        }
+    }
+} 

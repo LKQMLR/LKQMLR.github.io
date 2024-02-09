@@ -23,19 +23,31 @@ body {
   font-size: 2rem;
   cursor: pointer;
 }
-.header .navbar .burger-menu .burger-bar {
+.header #navbar .burger-menu {
+  position: relative;
+}
+.header #navbar .burger-menu .burger-bar {
   height: 2.5px;
   background-color: black;
   width: 35px;
   margin: 6.5px 0;
 }
-.header .navbar .nav-link {
+.header #navbar .nav-link {
   position: absolute;
-  left: -100%;
+  top: -100%;
   list-style: none;
   display: flex;
   flex-direction: column;
+  padding: 5px 5px;
+  text-align: center;
+  margin-left: -35px;
+  width: 105px;
+  transition: 0.3s ease;
 }
-.header .navbar .nav-link li {
+.header #navbar .nav-link li, .header #navbar .nav-link a {
   font-size: 1.8rem;
+  text-decoration: none;
+}
+.header #navbar.active > .nav-link {
+  top: 10%;
 }/*# sourceMappingURL=style.css.map */

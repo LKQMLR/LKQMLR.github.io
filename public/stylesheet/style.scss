@@ -8,6 +8,7 @@
 html {
     scroll-behavior: smooth;
     font-size: 62.5%;
+    height: 150vh;
 }
 body {
     font-family: 'Poppins';
@@ -16,7 +17,6 @@ body {
 // HEADER
 .header {
     height: 15vh;
-    
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -38,14 +38,15 @@ body {
         .nav-link {
             position: absolute;
             top: -100%;
+            background-color: white;
             list-style: none;
             display: flex;
             flex-direction: column;
-            // border: 1px solid black;
+
             padding: 5px 5px;
             text-align: center;
-            margin-left: -35px;
-            width: 105px;
+            margin-left: -40px;
+
             transition: 0.2s ease;
             li,a {
                 font-size: 1.8rem;
@@ -66,4 +67,26 @@ body {
     100% {
         opacity: 1;
     }
+}
+
+
+
+
+// MEDIA QUERY DESKTOP
+@media screen and (min-width: 700px) {
+    body {
+        background-color: red;
+    }
+    .header {
+        #navbar {
+            .burger-menu {
+                display: none;
+            }
+            .nav-link {
+                position: relative;
+                flex-direction: row;
+            }
+        }
+    }
+    
 }

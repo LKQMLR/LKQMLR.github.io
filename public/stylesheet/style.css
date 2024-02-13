@@ -54,6 +54,50 @@ body {
   animation: opacity-navbar 0.8s ease-in-out;
 }
 
+.section__apropos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+}
+.section__apropos .img__container img {
+  height: 150px;
+  border-radius: 50%;
+}
+.section__apropos .content__container p {
+  font-size: 1.6rem;
+  text-align: center;
+}
+.section__apropos .content__container h1 {
+  font-size: 3rem;
+  line-height: 1;
+  text-align: center;
+}
+.section__apropos .content__container .personal-link__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.section__apropos .content__container .personal-link__container a {
+  font-size: 1.4rem;
+  text-align: center;
+  margin: 5px 0;
+  text-decoration: none;
+  border: 1px solid black;
+  padding: 5px 0;
+  width: 120px;
+  border-radius: 19px;
+}
+.section__apropos .content__container .socialmedia__container {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0;
+}
+.section__apropos .content__container .socialmedia__container img {
+  height: 35px;
+}
+
 @keyframes opacity-navbar {
   0% {
     opacity: 0;
@@ -63,14 +107,36 @@ body {
   }
 }
 @media screen and (min-width: 700px) {
-  body {
-    background-color: red;
-  }
   .header #navbar .burger-menu {
     display: none;
   }
   .header #navbar .nav-link {
     position: relative;
     flex-direction: row;
+  }
+  .header #navbar .nav-link a {
+    margin: 0 50px;
+  }
+  .section__apropos {
+    flex-direction: row;
+    padding: 50px 0;
+  }
+  .section__apropos .img__container img {
+    height: 350px;
+    border-radius: 50%;
+    margin: 0 25px;
+  }
+  .section__apropos .content__container {
+    margin: 0 25px;
+  }
+  .section__apropos .content__container .personal-link__container {
+    flex-direction: row;
+  }
+  .section__apropos .content__container .personal-link__container a {
+    margin: 0 5px;
+  }
+  .section__apropos .content__container .socialmedia__container {
+    display: flex;
+    justify-content: space-around;
   }
 }/*# sourceMappingURL=style.css.map */

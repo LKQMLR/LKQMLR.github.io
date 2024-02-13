@@ -60,6 +60,62 @@ body {
     }
 } 
 
+// SECTION A PROPOS
+.section__apropos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+    
+    .img__container {
+        img {
+            height: 150px;
+            border-radius: 50%;
+        }
+    }
+
+    .content__container {
+        p {
+            font-size: 1.6rem;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .personal-link__container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            a {
+                font-size: 1.4rem;
+                text-align: center;
+                margin: 5px 0;
+                text-decoration: none;
+                border: 1px solid black;
+                padding: 5px 0;
+                width: 120px;
+                border-radius: 19px;
+            }
+        }
+
+        .socialmedia__container {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 10px 0;
+
+            img {
+                height: 35px;
+            }
+        }
+    }
+}
+
+
 @keyframes opacity-navbar {
     0% {
         opacity: 0;
@@ -74,9 +130,8 @@ body {
 
 // MEDIA QUERY DESKTOP
 @media screen and (min-width: 700px) {
-    body {
-        background-color: red;
-    }
+
+// HEADER
     .header {
         #navbar {
             .burger-menu {
@@ -85,8 +140,44 @@ body {
             .nav-link {
                 position: relative;
                 flex-direction: row;
+                
+                a{
+                    margin: 0 50px;
+                }
             }
         }
     }
-    
+
+// SECTION A PROPOS
+
+    .section__apropos {
+        flex-direction: row;
+        padding: 50px 0;
+        
+        .img__container {
+            img {
+                height: 350px;
+                border-radius: 50%;
+                margin: 0 25px;
+            }
+        }
+
+        .content__container {
+            margin: 0 25px;
+
+            .personal-link__container {
+                flex-direction: row;
+
+                a {
+                    margin: 0 5px;
+                }
+            }
+
+            .socialmedia__container {
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+    }
+
 }

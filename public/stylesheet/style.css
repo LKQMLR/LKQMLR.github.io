@@ -21,7 +21,8 @@ body {
   align-items: center;
 }
 .header .logo {
-  font-size: 2rem;
+  font-size: 3rem;
+  font-weight: bold;
   cursor: pointer;
 }
 .header #navbar .burger-menu {
@@ -46,7 +47,9 @@ body {
   transition: 0.2s ease;
 }
 .header #navbar .nav-link li, .header #navbar .nav-link a {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #333;
   text-decoration: none;
 }
 .header #navbar.active > .nav-link {
@@ -54,47 +57,55 @@ body {
   animation: opacity-navbar 0.8s ease-in-out;
 }
 
-.section__apropos {
+.hero__section {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 50px 0;
 }
-.section__apropos .img__container img {
+.hero__section .img__container img {
   height: 150px;
   border-radius: 50%;
 }
-.section__apropos .content__container p {
-  font-size: 1.6rem;
+.hero__section .content__container p:first-child {
+  font-size: 1.4rem;
   text-align: center;
+  font-weight: 600;
+  color: #999999;
 }
-.section__apropos .content__container h1 {
-  font-size: 3rem;
-  line-height: 1;
+.hero__section .content__container p {
   text-align: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #999999;
 }
-.section__apropos .content__container .personal-link__container {
+.hero__section .content__container h1 {
+  font-size: 4rem;
+  line-height: 1.3;
+  text-align: center;
+  color: #333;
+}
+.hero__section .content__container .personal-link__container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.section__apropos .content__container .personal-link__container a {
+.hero__section .content__container .personal-link__container a {
   font-size: 1.4rem;
   text-align: center;
-  margin: 5px 0;
   text-decoration: none;
   border: 1px solid black;
-  padding: 5px 0;
-  width: 120px;
-  border-radius: 19px;
+  padding: 10px 0;
+  width: 135px;
+  border-radius: 30px;
 }
-.section__apropos .content__container .socialmedia__container {
+.hero__section .content__container .socialmedia__container {
   display: flex;
   justify-content: space-evenly;
   margin: 10px 0;
 }
-.section__apropos .content__container .socialmedia__container img {
+.hero__section .content__container .socialmedia__container img {
   height: 35px;
 }
 
@@ -115,27 +126,31 @@ body {
     flex-direction: row;
   }
   .header #navbar .nav-link a {
-    margin: 0 50px;
+    margin: 0 25px;
   }
-  .section__apropos {
+  .hero__section {
     flex-direction: row;
     padding: 50px 0;
   }
-  .section__apropos .img__container img {
+  .hero__section .img__container img {
     height: 350px;
     border-radius: 50%;
     margin: 0 25px;
   }
-  .section__apropos .content__container {
+  .hero__section .content__container {
     margin: 0 25px;
+    margin-right: 150px;
   }
-  .section__apropos .content__container .personal-link__container {
+  .hero__section .content__container .personal-link__container {
     flex-direction: row;
   }
-  .section__apropos .content__container .personal-link__container a {
+  .hero__section .content__container .personal-link__container a {
     margin: 0 5px;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #333;
   }
-  .section__apropos .content__container .socialmedia__container {
+  .hero__section .content__container .socialmedia__container {
     display: flex;
     justify-content: space-around;
   }

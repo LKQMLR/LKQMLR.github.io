@@ -22,7 +22,8 @@ body {
     align-items: center;
 
     .logo {
-        font-size: 2rem;
+        font-size: 3rem;
+        font-weight: bold;
         cursor: pointer;
     }
     #navbar {
@@ -49,7 +50,9 @@ body {
 
             transition: 0.2s ease;
             li,a {
-                font-size: 1.8rem;
+                font-size: 2.5rem;
+                font-weight: 400;
+                color: #333;
                 text-decoration: none;
             }
         }
@@ -61,7 +64,7 @@ body {
 } 
 
 // SECTION A PROPOS
-.section__apropos {
+.hero__section {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -76,14 +79,25 @@ body {
     }
 
     .content__container {
-        p {
-            font-size: 1.6rem;
+        p:first-child {
+            font-size: 1.4rem;
             text-align: center;
+            font-weight: 600;
+            color: #999999  ;
         }
-        h1 {
-            font-size: 3rem;
-            line-height: 1;
+        p {
             text-align: center;
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #999999 ;
+
+        }
+
+        h1 {
+            font-size: 4rem;
+            line-height: 1.3;
+            text-align: center;
+            color: #333;
         }
 
         .personal-link__container {
@@ -94,12 +108,11 @@ body {
             a {
                 font-size: 1.4rem;
                 text-align: center;
-                margin: 5px 0;
                 text-decoration: none;
                 border: 1px solid black;
-                padding: 5px 0;
-                width: 120px;
-                border-radius: 19px;
+                padding: 10px 0;
+                width: 135px;
+                border-radius: 30px;
             }
         }
 
@@ -142,7 +155,7 @@ body {
                 flex-direction: row;
                 
                 a{
-                    margin: 0 50px;
+                    margin: 0 25px;
                 }
             }
         }
@@ -150,7 +163,7 @@ body {
 
 // SECTION A PROPOS
 
-    .section__apropos {
+    .hero__section {
         flex-direction: row;
         padding: 50px 0;
         
@@ -164,12 +177,16 @@ body {
 
         .content__container {
             margin: 0 25px;
+            margin-right: 150px;
 
             .personal-link__container {
                 flex-direction: row;
 
                 a {
                     margin: 0 5px;
+                    margin-top: 20px;
+                    font-weight: 600;
+                    color: #333;
                 }
             }
 

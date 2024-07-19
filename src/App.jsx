@@ -1,9 +1,10 @@
-function App() {
+import Accueil from "./components/Accueil";
+import Button from "./assets/svg/Button.svg";
+
+export default function App() {
   return (
-    <>
-      <h1>MON PORTFOLIO</h1>
-    </>
+    <div className="flex flex-row justify-center items-center h-screen">
+      <Accueil />
+    </div>
   );
 }
-
-export default App;

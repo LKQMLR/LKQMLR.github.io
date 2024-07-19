@@ -1,4 +1,4 @@
-import AnimedButton from "./AnimedButton";
+import AnimedButton from "../components/AnimedButton";
 import useAnimedButton from "../hooks/useAnimedButton";
 import { useEffect } from "react";
 

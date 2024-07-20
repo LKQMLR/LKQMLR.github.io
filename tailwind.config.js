@@ -13,7 +13,7 @@ export default {
       },
       animation: {
         customKeyframe: "customKeyframe 1s",
-        opacityBounce: "opacityBounce 1.3s infinite alternate ease-in-out ",
+        opacityBounce: "opacityBounce 1.3s infinite alternate ease-in-out 0.1s",
       },
       keyframes: {
         customKeyframe: {
@@ -23,6 +23,7 @@ export default {
 
         opacityBounce: {
           "0%": { opacity: "1" },
+          "30%": { opacity: "1" },
           "100%": { opacity: "0" },
         },
       },

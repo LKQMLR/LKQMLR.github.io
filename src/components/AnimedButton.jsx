@@ -3,13 +3,13 @@ import ButtonPressed from "../assets/svg/ButtonPressed.svg";
 
 export default function AnimedButton({ char, isActive, color, boxShadow }) {
   return (
-    <button className="text-6xl mx-4">
+    <button className={`text-6xl ${isActive ? "scale-75 duration-500" : ""} `}>
       <div className="flex justify-center items-center relative">
-        <span className="absolute pr-5 pb-3" style={{ color: color }}>
+        <span className={`absolute pt-3 font-josefin font-bold ${isActive ? "" : "opacity-50"}`} style={{ color: color }}>
           {char}
         </span>
         <img
-          className={`rounded-2xl opacity-75  ${isActive ? "transition duration-300 ease-in-out" : ""}`}
+          className={`rounded-2xl  ${isActive ? "transition duration-300 ease-in-out" : ""}`}
           style={isActive ? { boxShadow: boxShadow } : {}}
           src={isActive ? ButtonPressed : Button}
           alt=""

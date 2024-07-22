@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import keyboardSound from "../assets/audio/keyboardSound.mp3";
+import successSound from "../assets/audio/success.wav";
 
 export default function useAnimedButton() {
   const [animeLetter, setAnimeLetter] = useState([false, false, false, false, undefined, false]);
+  const [areValid, setAreValid] = useState(false);
+  const successAudio = new Audio(successSound);
 
   function handleKeydown(e) {
     const key = e.key.toUpperCase();
 
     const keyboardAudio = new Audio(keyboardSound);
     keyboardAudio.play();
+
     setAnimeLetter((prevState) => {
       const newState = [...prevState];
 
@@ -38,5 +42,13 @@ export default function useAnimedButton() {
     });
   }
 
-  return { animeLetter, handleKeydown };
+  useEffect(() => {
+    const allValid = animeLetter.every((v) => v === true);
+    if (allValid && !areValid) {
+      successAudio.play();
+    }
+    setAreValid(allValid);
+  }, [animeLetter, areValid, successAudio]);
+
+  return { animeLetter, handleKeydown, areValid };
 }

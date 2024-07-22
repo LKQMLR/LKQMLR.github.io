@@ -1,7 +1,7 @@
-export default function Fade(props) {
+export default function Fade({ children, areValid }) {
   return (
-    <div className="self-end  text-xl animate-opacityBounce">
-      <span className="font-josefin">{props.children}</span>
+    <div className={areValid ? "duration-1000 hidden" : "self-center pl-56 text-xl animate-opacityBounce"}>
+      <span className="font-josefin text-xl ">{children}</span>
     </div>
   );
 }

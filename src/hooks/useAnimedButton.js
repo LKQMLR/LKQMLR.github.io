@@ -1,19 +1,24 @@
-import { useState, useEffect } from "react";
-import keyboardSound from "../assets/audio/keyboardSound.mp3";
-import successSound from "../assets/audio/success.wav";
+import { useState } from "react";
 
 export default function useAnimedButton() {
-  const [animeLetter, setAnimeLetter] = useState([false, false, false, false, undefined, false]);
-  const [areValid, setAreValid] = useState(false);
-  const successAudio = new Audio(successSound);
+  const logoArray = ["L", "K", "Q", "M", "L", "R"];
+  const colorLetter = ["#0A8754", "#EA3C76", "#CD8987", "#4C6085", "#F46036", "#004BA8"];
+
+  const [isValid, setIsValid] = useState([
+    false,
+    false,
+    false,
+    false,
+    undefined,
+    false,
+  ]);
+
+  const areValid = {};
 
   function handleKeydown(e) {
     const key = e.key.toUpperCase();
 
-    const keyboardAudio = new Audio(keyboardSound);
-    keyboardAudio.play();
-
-    setAnimeLetter((prevState) => {
+    setIsValid((prevState) => {
       const newState = [...prevState];
 
       if (key === "L") {
@@ -26,29 +31,28 @@ export default function useAnimedButton() {
       }
 
       if (key === "K") {
-        newState[1] = true;
+        if(prevState[1] !== true) {
+          newState[1] = true;
+        }
       }
       if (key === "Q") {
-        newState[2] = true;
+        if(prevState[2] !== true) {
+          newState[2] = true;
+        }
       }
       if (key === "M") {
-        newState[3] = true;
+        if(prevState[3] !== true) {
+          newState[3] = true;
+        }
       }
       if (key === "R") {
-        newState[5] = true;
+        if(prevState[5] !== true) {
+          newState[5] = true;
+        }
       }
-
-      return newState;
+      return newState
     });
   }
 
-  useEffect(() => {
-    const allValid = animeLetter.every((v) => v === true);
-    if (allValid && !areValid) {
-      successAudio.play();
-    }
-    setAreValid(allValid);
-  }, [animeLetter, areValid, successAudio]);
-
-  return { animeLetter, handleKeydown, areValid };
+  return { logoArray, isValid, handleKeydown, colorLetter };
 }

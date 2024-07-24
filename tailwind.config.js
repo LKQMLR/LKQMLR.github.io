@@ -5,22 +5,15 @@ export default {
       fontFamily: {
         josefin: ["Josefin Slab", "serif"],
       },
-      colors: {
-        customBlur: ["#0A8754", "#EA3C76", "#CD8987", "#4C6085", "#F46036", "#000000"],
-      },
-      boxShadow: {
-        // customBoxShadow: "0px 0px 60px 1px rgba(0,0,0,0.63)",
-      },
       animation: {
-        opacityBounce: "opacityBounce 1.3s infinite alternate ease-in-out 0.1s",
+        wiggle : 'wiggle 1s ease-in-out infinite'
       },
       keyframes: {
-        opacityBounce: {
-          "0%": { opacity: "1" },
-          "30%": { opacity: "1" },
-          "100%": { opacity: "0" },
-        },
-      },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        }
+      }
     },
   },
   plugins: [],

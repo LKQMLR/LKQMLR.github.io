@@ -32,11 +32,12 @@ html.lenis, html.lenis body {
 
 /* HEADER */
 header {
-  height: 90px;
+  border: 1px solid black;
+  height: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 80px;
+  /* margin-bottom: 200px; */
 }
 .logo {
   display: flex;
@@ -97,10 +98,10 @@ header {
 }
 .sprite {
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 105px;
+  height: 105px;
   top: 15vh;
-  left: 85vw;
+  left: 90vw;
   transform: translateX(-50%);
 }
 .sprite:nth-child(-n+2) {
@@ -111,24 +112,40 @@ header {
   border-top-left-radius: 17px;
   border-bottom-left-radius: 17px;
   border-bottom-right-radius: 17px;
-  border-top-right-radius: 9px;
-  padding: 15px;
+  border-top-right-radius: 5px;
   line-height: 1.6;
+}
+.bubble p {
+  padding: 0 5px;
+  margin: 10px 5px;
 }
 .card-1 {
   position: absolute;
-  top: 210px;
-  width: 70%;  
-  margin: 20px;
+  top: 39vh;
+  left: 50vw;
+  transform: translateX(-50%);
+  width: 60%;  
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.card-2 {
+  position: absolute;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 17px;
 
+  top: 55vh;
+  left: 60vw;
+  transform: translateX(-50%);
+  width: 40%;
+  text-align: center;
+
+}
 /* WELCOME SECTION */
 .welcome_section {
   border: 1px solid black;
-  height: 450px;
+  height: 80vh;
 }
 
 /* ------------ MEDIA QUERY ------------ */
@@ -144,6 +161,6 @@ header {
   .sprite {
     width: 130px;
     height: 130px;
-    left: 40vw;
+    /* left: 40vw; */
   }
 }

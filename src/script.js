@@ -12,6 +12,7 @@ const spriteWalk2 = document.querySelector('.walk2');
 let progressInt = 0;
 let prevProgressInt = -1;
 const bubbleCard1 = document.querySelector('.card-1');
+const bubbleCard2 = document.querySelector('.card-2');
 
 // LENIS CONFIG
 const lenis = new Lenis({
@@ -71,8 +72,11 @@ if(window.innerWidth < 900) {
             spriteIdle.style.visibility = "visible";
             spriteWalk1.style.visibility = "hidden";
             lenis.stop();
+            
           }
-          lenis.start();
+          setTimeout(() => {
+            lenis.start();
+          },2000)
         }
       }
     },
@@ -83,20 +87,19 @@ if(window.innerWidth < 900) {
     scaleX: -1,
     duration: 0.001,
   })
-  charaTl.to('.card-1', {
+  .to('.card-1', {
     ease: "power1.inOut",
     scale: 0, transformOrigin: "100% 0%",
   })
-  charaTl.to('.sprite', {
+  .to('.sprite', {
     ease: "none",
-    yPercent: 120,
+    y: "20vh",
   })
-
-  charaTl.to('.sprite',{
+  .to('.sprite',{
     ease: "none",
-    x: -260,
+    x: "-75vw",
   })
-  charaTl.to('.sprite', {
+  .to('.sprite', {
     scaleX: 1,
     duration: 0.001,
   })

@@ -13,11 +13,25 @@ let progressInt;
 
 // LENIS CONFIG
 const lenis = new Lenis({
-  // lerp: 0.02
-  lerp: 0.035,
+  smooth: false,
+  duration: 1,
+  lerp: 0.075,
+  direction: "vertical",
+  
 });
 
-lenis.on("scroll", (e) => {});
+lenis.on("scroll", (e) => {
+  if(!e.isScrolling) {
+    ScrollTrigger.refresh()
+
+  }
+  if (e.isScrolling === false || e.isScrolling === "native") {
+    spriteIdle.style.visibility = "visible";
+    spriteWalk1.style.visibility = "hidden";
+    spriteWalk2.style.visibility = "hidden";
+    return;
+  }
+});
 
 function raf(time) {
   lenis.raf(time);
@@ -29,7 +43,6 @@ requestAnimationFrame(raf);
 
 // GSAP CHARACTER ANIMATION
 if (window.innerWidth < 900) {
-  
   // WELCOME SECTION TIMELINE SETTING
   const welcomeSectionTl = gsap.timeline({
     scrollTrigger: {
@@ -40,31 +53,41 @@ if (window.innerWidth < 900) {
       scrub: true,
       onUpdate: (self) => {
         progressInt = Math.round(Math.floor(self.progress * 10));
-        console.log(progressInt)
         handleCharacterProgress(progressInt);
       },
     },
   });
 
   // WELCOME TIMELINE
-  welcomeSectionTl.to('.sprite', {
-    scaleX: "-1",
-    duration: "0.001"
-  })
-  .to('.card-1', {
-    ease: "none",
-    scale : 0, transformOrigin: "100% 100%",
-  })
-  .to('.sprite', {
-    y: "30vh"
-  }, "-=0.5")
-  .to('.sprite', {
-    x: "-75vw"
-  })
-  .to('.card-2', {
-    ease: "none",
-    scale : 1, transformOrigin: "0% 100%"
-  })
+  welcomeSectionTl
+    .to(".sprite", {
+      scaleX: "-1",
+      duration: "0.001",
+    })
+    .to(".card-1", {
+      ease: "none",
+      scale: 0,
+      transformOrigin: "100% 100%",
+    })
+    .to(
+      ".sprite",
+      {
+        y: "30vh",
+      },
+      "-=0.5"
+    )
+    .to(".sprite", {
+      x: "-75vw",
+    })
+    .to(".card-2", {
+      ease: "none",
+      scale: 1,
+      transformOrigin: "0% 100%",
+      onComplete: () => {
+        lenis.stop()
+        timerDelay()
+      }
+    });
 }
 
 // APROPOS SECTION TIMELINE SETTING
@@ -73,47 +96,37 @@ const aproposSectionTl = gsap.timeline({
     trigger: ".apropos_section",
     markers: true,
     start: "top 45%",
-    end: "bottom 65%",
+    end: "bottom 25%",
     scrub: true,
     onUpdate: (self) => {
+      console.log(self)
       progressInt = Math.round(Math.floor(self.progress * 10));
-      console.log(progressInt)
       handleCharacterProgress(progressInt);
-    }
-  }
-})
+    },
+  },
+});
 // APROPOS TIMELINE
-aproposSectionTl.to('.sprite', {
+aproposSectionTl
+  .to(".sprite", {
     scaleX: "1",
-    duration: "0.001"
-})
-.to('.sprite', {
-  y: "80vh"
-})
+    duration: "0.001",
+  })
+  .to(".sprite", {
+    y: "80vh",
+  });
 
 // FUNCTION
 function handleCharacterProgress(progressInt) {
-  if(progressInt === 0) {
-    spriteIdle.style.visibility = "visible";
-    spriteWalk1.style.visibility = "hidden";
-    spriteWalk2.style.visibility = "hidden";
-    return;
-  }
-  if(progressInt === 10) {
-    console.log("progressInt vaut 10");
-    spriteWalk1.style.visibility = "hidden";
-    spriteWalk2.style.visibility = "hidden";
-    spriteIdle.style.visibility = "visible";
-    lenis.stop();
-    timerDelay();
-    return;
-  }
+  console.log(progressInt)
+
   if (progressInt % 2 === 0 && progressInt !== 0) {
+    // console.log('je suis pair', progressInt)
     spriteWalk1.style.visibility = "visible";
     spriteWalk2.style.visibility = "hidden";
     spriteIdle.style.visibility = "hidden";
     return;
-  }else {
+  } else {
+    // console.log('je suis impair', progressInt)
     spriteWalk2.style.visibility = "visible";
     spriteWalk1.style.visibility = "hidden";
     spriteIdle.style.visibility = "hidden";
@@ -122,8 +135,9 @@ function handleCharacterProgress(progressInt) {
 
 function timerDelay() {
   console.log("temps d'attente");
+  spriteIdle.style.visibility = "visible";
   setTimeout(() => {
     console.log("temps d'attente terminée");
     lenis.start();
-  }, 500)
+  }, 500);
 }

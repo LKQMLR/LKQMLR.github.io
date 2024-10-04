@@ -3,105 +3,127 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 
 // PLUGIN GSAP
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 // VARIABLES
-const spriteIdle = document.querySelector('.idle');
-const spriteWalk1 = document.querySelector('.walk1');
-const spriteWalk2 = document.querySelector('.walk2');
-let progressInt = 0;
-let prevProgressInt = -1;
-const bubbleCard1 = document.querySelector('.card-1');
-const bubbleCard2 = document.querySelector('.card-2');
+const spriteIdle = document.querySelector(".idle");
+const spriteWalk1 = document.querySelector(".walk1");
+const spriteWalk2 = document.querySelector(".walk2");
+let progressInt;
 
 // LENIS CONFIG
 const lenis = new Lenis({
   // lerp: 0.02
-  lerp: 0.035
-})
+  lerp: 0.035,
+});
 
-lenis.on('scroll', (e) => {
-
-
-})
-
-
-
+lenis.on("scroll", (e) => {});
 
 function raf(time) {
-  lenis.raf(time)
+  lenis.raf(time);
   ScrollTrigger.update();
-  requestAnimationFrame(raf)
+  requestAnimationFrame(raf);
 }
 
-requestAnimationFrame(raf)
+requestAnimationFrame(raf);
 
 // GSAP CHARACTER ANIMATION
-if(window.innerWidth < 900) {
-  const charaTl = gsap.timeline({
-    scrollTrigger : {
+if (window.innerWidth < 900) {
+  
+  // WELCOME SECTION TIMELINE SETTING
+  const welcomeSectionTl = gsap.timeline({
+    scrollTrigger: {
       trigger: ".welcome_section",
-      markers: true,
-      start: "top 15%",
-      end: "bottom 50%",
+      // markers: true,
+      start: "top 20%",
+      end: "bottom 45%",
       scrub: true,
-      onUpdate: (self) =>  {
-        progressInt = Math.round(self.progress * 10);
-        console.log(progressInt.toFixed(4))
-        if(progressInt !== prevProgressInt) {
-          prevProgressInt = progressInt;
-
-          if(progressInt === 0) {
-            spriteIdle.style.visibility = "visible";
-            spriteWalk1.style.visibility = "hidden"
-            spriteWalk2.style.visibility = "hidden"
-            
-          }else if (progressInt % 2 === 0 && progressInt !== 0) {
-            spriteWalk1.style.visibility = "visible";
-            spriteWalk2.style.visibility = "hidden"
-            spriteIdle.style.visibility = "hidden"
-  
-          }else{
-            spriteWalk2.style.visibility = "visible"
-            spriteWalk1.style.visibility = "hidden"
-            spriteIdle.style.visibility = "hidden"
-          }
-  
-          if(progressInt === 10) {
-            console.log("coucouc")
-            spriteIdle.style.visibility = "visible";
-            spriteWalk1.style.visibility = "hidden";
-            lenis.stop();
-            
-          }
-          setTimeout(() => {
-            lenis.start();
-          },2000)
-        }
-      }
+      onUpdate: (self) => {
+        progressInt = Math.round(Math.floor(self.progress * 10));
+        console.log(progressInt)
+        handleCharacterProgress(progressInt);
+      },
     },
-
   });
 
-  charaTl.to('.sprite', {
-    scaleX: -1,
-    duration: 0.001,
+  // WELCOME TIMELINE
+  welcomeSectionTl.to('.sprite', {
+    scaleX: "-1",
+    duration: "0.001"
   })
   .to('.card-1', {
-    ease: "power1.inOut",
-    scale: 0, transformOrigin: "100% 0%",
+    ease: "none",
+    scale : 0, transformOrigin: "100% 100%",
   })
   .to('.sprite', {
-    ease: "none",
-    y: "20vh",
-  })
-  .to('.sprite',{
-    ease: "none",
-    x: "-75vw",
-  })
+    y: "30vh"
+  }, "-=0.5")
   .to('.sprite', {
-    scaleX: 1,
-    duration: 0.001,
+    x: "-75vw"
+  })
+  .to('.card-2', {
+    ease: "none",
+    scale : 1, transformOrigin: "0% 100%"
   })
 }
 
+// APROPOS SECTION TIMELINE SETTING
+const aproposSectionTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".apropos_section",
+    markers: true,
+    start: "top 45%",
+    end: "bottom 65%",
+    scrub: true,
+    onUpdate: (self) => {
+      progressInt = Math.round(Math.floor(self.progress * 10));
+      console.log(progressInt)
+      handleCharacterProgress(progressInt);
+    }
+  }
+})
+// APROPOS TIMELINE
+aproposSectionTl.to('.sprite', {
+    scaleX: "1",
+    duration: "0.001"
+})
+.to('.sprite', {
+  y: "80vh"
+})
+
+// FUNCTION
+function handleCharacterProgress(progressInt) {
+  if(progressInt === 0) {
+    spriteIdle.style.visibility = "visible";
+    spriteWalk1.style.visibility = "hidden";
+    spriteWalk2.style.visibility = "hidden";
+    return;
+  }
+  if(progressInt === 10) {
+    console.log("progressInt vaut 10");
+    spriteWalk1.style.visibility = "hidden";
+    spriteWalk2.style.visibility = "hidden";
+    spriteIdle.style.visibility = "visible";
+    lenis.stop();
+    timerDelay();
+    return;
+  }
+  if (progressInt % 2 === 0 && progressInt !== 0) {
+    spriteWalk1.style.visibility = "visible";
+    spriteWalk2.style.visibility = "hidden";
+    spriteIdle.style.visibility = "hidden";
+    return;
+  }else {
+    spriteWalk2.style.visibility = "visible";
+    spriteWalk1.style.visibility = "hidden";
+    spriteIdle.style.visibility = "hidden";
+  }
+}
+
+function timerDelay() {
+  console.log("temps d'attente");
+  setTimeout(() => {
+    console.log("temps d'attente terminée");
+    lenis.start();
+  }, 500)
+}

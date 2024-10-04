@@ -89,18 +89,17 @@ header {
 
 /* MAIN */
 .main {
+  position: relative;
   height: 200vh;
   display: flex;
   flex-direction: column;
 }
-.sprite_container {
-  position: relative;
-}
+
 .sprite {
   position: absolute;
   width: 105px;
   height: 105px;
-  top: 15vh;
+  top: 25vh;
   left: 90vw;
   transform: translateX(-50%);
 }
@@ -108,43 +107,64 @@ header {
   visibility: hidden;
 }
 .bubble {
-  border: 2px solid black;
-  border-top-left-radius: 17px;
-  border-bottom-left-radius: 17px;
-  border-bottom-right-radius: 17px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 12px;
   line-height: 1.6;
+  text-align: center;
 }
 .bubble p {
   padding: 0 5px;
   margin: 10px 5px;
+  font-size: clamp(16px, 2vw, 32px);
 }
 .card-1 {
   position: absolute;
-  top: 39vh;
+  top: 5vh;
   left: 50vw;
   transform: translateX(-50%);
-  width: 60%;  
+  width: 60%;
+  min-height: 225px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  border-left: 2px solid rgba(10, 135, 84, 0.5);
+  border-top: 2px solid rgba(10, 135, 84, 0.5);
+  border-right: 1px solid rgba(10, 135, 84, 0.5);
+
+
+  box-shadow: inset 0 -6px rgba(10, 135, 84, 0.5);
 }
 .card-2 {
   position: absolute;
-  border-bottom-left-radius: 5px;
-  border-top-right-radius: 17px;
 
-  top: 55vh;
-  left: 60vw;
+
+  top: 43vh;
+  left: 22vw;
   transform: translateX(-50%);
-  width: 40%;
+  width: 65%;
   text-align: center;
+  transform: scale(0);
 
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 5px;
+  border-left: 1px solid rgba(234, 60, 118, 0.25);
+  border-top: 2px solid rgba(234, 60, 118, 0.25);
+  border-right: 2px solid rgba(234, 60, 118, 0.25);
+  box-shadow: inset 0 -6px rgba(234, 60, 118, 0.5);
 }
+
 /* WELCOME SECTION */
 .welcome_section {
   border: 1px solid black;
+  /* background-color: #004ca84d; */
+  height: 80vh;
+}
+.apropos_section {
+  border: 1px solid black;
+  background-color: #cd898794;
   height: 80vh;
 }
 
@@ -159,8 +179,8 @@ header {
 
   /* MAIN */
   .sprite {
-    width: 130px;
-    height: 130px;
+    width: 180px;
+    height: 180px;
     /* left: 40vw; */
   }
 }

@@ -94,7 +94,6 @@ header {
   display: flex;
   flex-direction: column;
 }
-
 .sprite {
   position: absolute;
   width: 105px;
@@ -105,6 +104,7 @@ header {
 }
 .sprite:nth-child(-n+2) {
   visibility: hidden;
+  
 }
 .bubble {
   border-top-left-radius: 12px;
@@ -140,7 +140,6 @@ header {
 .card-2 {
   position: absolute;
 
-
   top: 43vh;
   left: 22vw;
   transform: translateX(-50%);
@@ -155,18 +154,37 @@ header {
   border-right: 2px solid rgba(234, 60, 118, 0.25);
   box-shadow: inset 0 -6px rgba(234, 60, 118, 0.5);
 }
+.card-3 {
+  position: absolute;
+
+  top: 85vh;
+  left: 22vw;
+  transform: translateX(-50%);
+  width: 65%;
+  text-align: center;
+  transform: scale(1);
+
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 5px;
+  border-left: 1px solid rgba(205, 137, 135, 0.25);
+  border-top: 2px solid rgba(205, 137, 135, 0.25);
+  border-right: 2px solid rgba(205, 137, 135, 0.25);
+  box-shadow: inset 0 -6px rgba(205, 137, 135, 0.5);
+}
 
 /* WELCOME SECTION */
 .welcome_section {
-  border: 1px solid black;
+  border: 1px solid blue;
   /* background-color: #004ca84d; */
   height: 80vh;
+  margin-bottom: 105px;
 }
 .apropos_section {
-  border: 1px solid black;
-  background-color: #cd898794;
+  border: 1px solid red;
+  /* background-color: #cd898794; */
   height: 80vh;
 }
+
 
 /* ------------ MEDIA QUERY ------------ */
 @media screen and (min-width: 960px) {

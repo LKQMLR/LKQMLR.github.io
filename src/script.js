@@ -14,7 +14,7 @@ let progressInt;
 // LENIS CONFIG
 const lenis = new Lenis({
   smooth: false,
-  duration: 1,
+  duration: 0.7,
   lerp: 0.075,
   direction: "vertical",
   
@@ -43,6 +43,7 @@ requestAnimationFrame(raf);
 
 // GSAP CHARACTER ANIMATION
 if (window.innerWidth < 900) {
+
   // WELCOME SECTION TIMELINE SETTING
   const welcomeSectionTl = gsap.timeline({
     scrollTrigger: {
@@ -89,12 +90,11 @@ if (window.innerWidth < 900) {
       }
     });
 }
-
 // APROPOS SECTION TIMELINE SETTING
 const aproposSectionTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".apropos_section",
-    markers: true,
+    // markers: true,
     start: "top 45%",
     end: "bottom 25%",
     scrub: true,
@@ -112,7 +112,7 @@ aproposSectionTl
     duration: "0.001",
   })
   .to(".sprite", {
-    y: "80vh",
+    y: "75vh",
   });
 
 // FUNCTION

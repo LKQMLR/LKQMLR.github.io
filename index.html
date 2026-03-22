@@ -1,55 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mon portfolio</title>
-  </head>
-  <body>
-    <header>
-      <div class="logo">
-        <span class="l1">L</span>
-        <span class="k">K</span>
-        <span class="q">Q</span>
-        <span class="m">M</span>
-        <span class="l2">L</span>
-        <span class="r">R</span>
-      </div>
-    </header>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CarGo - Planifiez vos tourn&#233;es de livraison en quelques secondes." />
+  <meta name="theme-color" content="#1a1a2e" />
+  <title>CarGo - Planification intelligente de tourn&#233;es</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#1a1a2e;--surface:#16213e;--accent:#4f8cff;--accent2:#6c63ff;--text:#e2e8f0;--text2:#94a3b8;--green:#22c55e}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+    a{color:var(--accent);text-decoration:none}
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;position:relative;background:radial-gradient(ellipse at 50% 0%,rgba(79,140,255,.12) 0%,transparent 70%)}
+    .hero-icon{width:90px;height:90px;margin-bottom:24px;filter:drop-shadow(0 4px 20px rgba(79,140,255,.4))}
+    .hero h1{font-size:3.2rem;font-weight:800;letter-spacing:-1px}
+    .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero .tagline{font-size:1.15rem;color:var(--text2);margin-top:12px;max-width:500px;line-height:1.5}
+    .hero-cta{margin-top:36px;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 36px;border-radius:14px;font-size:1.1rem;font-weight:700;box-shadow:0 4px 24px rgba(79,140,255,.35);transition:transform .2s,box-shadow .2s}
+    .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(79,140,255,.45)}
+    .hero-cta svg{width:22px;height:22px}
+    .hero-badge{margin-top:16px;font-size:.8rem;color:var(--text2)}
+    .hero-badge strong{color:var(--green)}
+    .scroll-hint{position:absolute;bottom:30px;animation:bounce 2s infinite;color:var(--text2);font-size:1.5rem}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+    .features{padding:80px 20px;max-width:960px;margin:0 auto}
+    .features h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:48px}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+    .feature-card{background:var(--surface);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px 24px;transition:transform .2s,box-shadow .2s}
+    .feature-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+    .feature-icon{font-size:2rem;margin-bottom:14px}
+    .feature-card h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+    .feature-card p{font-size:.88rem;color:var(--text2);line-height:1.5}
+    .how{padding:80px 20px;background:var(--surface)}
+    .how-inner{max-width:700px;margin:0 auto}
+    .how h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:48px}
+    .steps{display:flex;flex-direction:column;gap:32px}
+    .step{display:flex;gap:20px;align-items:flex-start}
+    .step-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;min-width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;flex-shrink:0}
+    .step-text h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+    .step-text p{font-size:.88rem;color:var(--text2);line-height:1.5}
+    .cta-section{padding:80px 20px;text-align:center}
+    .cta-section h2{font-size:2rem;font-weight:700;margin-bottom:12px}
+    .cta-section p{color:var(--text2);margin-bottom:32px;font-size:1rem}
+    footer{padding:24px;text-align:center;font-size:.75rem;color:var(--text2);border-top:1px solid rgba(255,255,255,.06)}
+    @media(max-width:600px){.hero h1{font-size:2.4rem}.hero .tagline{font-size:1rem}.features h2,.how h2,.cta-section h2{font-size:1.6rem}}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <svg class="hero-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#1a1a2e"/><path d="M256 420 C256 420 120 290 120 200 A136 136 0 1 1 392 200 C392 290 256 420 256 420Z" fill="#4f8cff"/><circle cx="256" cy="200" r="56" fill="rgba(255,255,255,.92)"/><text x="256" y="218" text-anchor="middle" fill="#4f8cff" font-family="Arial,sans-serif" font-weight="800" font-size="60">C</text></svg>
+    <h1><span>CarGo</span></h1>
+    <p class="tagline">Planifiez et optimisez vos tourn&#233;es de livraison en quelques secondes. Gratuit, sans inscription.</p>
+    <a class="hero-cta" href="./CarGo/">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Lancer l&#8217;application
+    </a>
+    <p class="hero-badge"><strong>100% gratuit</strong> &#183; PWA installable &#183; Fonctionne hors-ligne</p>
+    <div class="scroll-hint">&#8595;</div>
+  </section>
 
-    <main class="main">
-      <img class="sprite walk2" src="./public/images/sprite_walk2.png" alt="" />
-      <img class="sprite walk1" src="./public/images/sprite_walk1.png" alt="" />
-      <img class="sprite idle" src="./public/images/sprite_idle.png" alt="" />
-
-      <section class="welcome_section"></section>
-      <div class="bubble card-1">
-        <p>
-          <span class="light-bold">Hey!!</span> C’est
-          <span class="light-bold">LKQMLR</span>, humble créateur du site 😁, tu
-          viens ? Je veux te presenter
-          <span class="light-bold">mon portfolio</span>, tu y trouveras tout un
-          tas de choses cool!
-        </p>
+  <section class="features">
+    <h2>Tout ce qu&#8217;il vous faut</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#9889;</div>
+        <h3>Optimisation intelligente</h3>
+        <p>Algorithme qui calcule le meilleur ordre de passage pour minimiser la distance et le temps de trajet.</p>
       </div>
-      <div class="bubble card-2">
-        <p>
-          Avant d'aller plus loin, je suis à la
-          <span class="light-bold">recherche d'une alternance niv. bac+3</span>
-          pour apporter et parfaire mes compétences.
-        </p>
+      <div class="feature-card">
+        <div class="feature-icon">&#128205;</div>
+        <h3>Livraisons illimit&#233;es</h3>
+        <p>Ajoutez autant d&#8217;adresses que n&#233;cessaire. Le syst&#232;me g&#232;re automatiquement les grands itin&#233;raires.</p>
       </div>
-
-      <section class="apropos_section"></section>
-      <div class="bubble card-3">
-        <p>
-          j'ai <span class="light-bold">obtenu mon diplôme</span> de développeur full stack <s class="s-style">👀</s>  en 2023, j'ai pu aborder de nombreux outils tels que..
-        </p>
+      <div class="feature-card">
+        <div class="feature-icon">&#128663;</div>
+        <h3>Navigation GPS</h3>
+        <p>Suivi en temps r&#233;el et ouverture automatique de Google Maps pour chaque &#233;tape.</p>
       </div>
-    </main>
+      <div class="feature-card">
+        <div class="feature-icon">&#128274;</div>
+        <h3>Verrouillage de positions</h3>
+        <p>Fixez certaines adresses et optimisez le reste autour. Contr&#244;le total sur votre tourn&#233;e.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128241;</div>
+        <h3>Installable sur mobile</h3>
+        <p>Ajoutez CarGo sur votre &#233;cran d&#8217;accueil comme une vraie application. iOS et Android.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128640;</div>
+        <h3>Rapide et l&#233;ger</h3>
+        <p>Aucune inscription, aucun t&#233;l&#233;chargement. Ouvrez le lien et commencez votre tourn&#233;e.</p>
+      </div>
+    </div>
+  </section>
 
-    <script type="module" src="src/script.js"></script>
-  </body>
+  <section class="how">
+    <div class="how-inner">
+      <h2>Comment &#231;a marche</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h3>D&#233;finissez votre point de d&#233;part</h3>
+            <p>Entrez votre adresse de d&#233;part ou utilisez votre position GPS actuelle.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h3>Ajoutez vos adresses de livraison</h3>
+            <p>Saisissez toutes vos destinations. L&#8217;autocompl&#233;tion vous aide &#224; trouver rapidement les bonnes adresses.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h3>Optimisez et partez</h3>
+            <p>Un clic pour optimiser l&#8217;ordre. Lancez la navigation et suivez votre progression en temps r&#233;el.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Pr&#234;t &#224; optimiser vos livraisons ?</h2>
+    <p>Rejoignez les livreurs qui gagnent du temps chaque jour avec CarGo.</p>
+    <a class="hero-cta" href="./CarGo/">Commencer maintenant</a>
+  </section>
+
+  <footer>&#169; 2026 CarGo &#8212; Planification intelligente de tourn&#233;es</footer>
+</body>
 </html>

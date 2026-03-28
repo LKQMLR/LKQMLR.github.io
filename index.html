@@ -66,6 +66,9 @@
     .showcase-img-wrap::before{content:"";position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(79,140,255,.15),transparent 60%);pointer-events:none;z-index:1}
     .result-badge{display:inline-flex;align-items:center;gap:10px;background:#16332a;border:1px solid #22c55e44;border-radius:12px;padding:14px 20px;font-size:.88rem;font-weight:600;color:var(--green);margin-bottom:22px}
     .result-badge svg{flex-shrink:0}
+    .app-result-mock{background:#16332a;border:1px solid #22c55e55;border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+    .app-result-mock svg{flex-shrink:0}
+    .app-result-mock span{font-size:.95rem;font-weight:600;color:var(--green);line-height:1.4}
 
     /* ── FEATURES GRID ── */
     .features{padding:80px 20px;background:linear-gradient(180deg,transparent,var(--surface) 20%,var(--surface) 80%,transparent)}
@@ -195,15 +198,14 @@
     <div class="showcase-block reverse" style="margin-top:80px">
       <div class="showcase-text">
         <h3>Un algorithme qui<br><span class="gradient">calcule le meilleur ordre</span></h3>
-        <p>Saisissez vos adresses dans n'importe quel ordre. CarGo calcule en quelques secondes l'itinéraire le plus court en tenant compte des routes réelles — pas à vol d'oiseau. Le résultat s'affiche directement sur la carte.</p>
-        <div class="result-badge">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Exemple réel : 28 livraisons &mdash; ~21 min gagnées
-        </div>
-        <p>Verrouillez les adresses prioritaires à leur position et laissez CarGo optimiser le reste autour de vos contraintes.</p>
+        <p>Saisissez vos adresses dans n'importe quel ordre. CarGo calcule en quelques secondes l'itinéraire le plus court en tenant compte des routes réelles — pas à vol d'oiseau. Le résultat s'affiche directement sur la carte avec le temps gagné.</p>
+        <p style="margin-top:12px">Verrouillez les adresses prioritaires à leur position et laissez CarGo optimiser le reste autour de vos contraintes.</p>
       </div>
-      <div class="showcase-img-wrap">
-        <img src="./img/result.png" alt="Résultat d'optimisation CarGo — 28 livraisons, 21 minutes économisées" />
+      <div class="showcase-img-wrap" style="background:var(--surface);border-radius:20px;padding:32px 24px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.07)">
+        <div class="app-result-mock">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>28 livraison(s) optimisée(s) &mdash; ~21 min gagnées&nbsp;!</span>
+        </div>
       </div>
     </div>
   </section>
@@ -216,9 +218,9 @@
       <p class="section-sub">Tout ce dont vous avez besoin, rien de superflu.</p>
       <div class="features-grid">
         <div class="fc"><div class="fc-icon">&#9889;</div><h3>Optimisation en 1 clic</h3><p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p></div>
-        <div class="fc"><div class="fc-icon">&#128451;&#65039;</div><h3>Secteurs de tournée <span class="new-tag">Premium</span></h3><p>Jusqu'à 5 zones distinctes. Double-tap sur une adresse pour changer son secteur à la volée.</p></div>
-        <div class="fc"><div class="fc-icon">&#128274;</div><h3>Verrouillage de positions</h3><p>Fixez certaines adresses à leur place et optimisez le reste autour de vos contraintes.</p></div>
-        <div class="fc"><div class="fc-icon">&#128506;&#65039;</div><h3>Navigation intégrée</h3><p>Suivi GPS en temps réel. Google Maps s'ouvre automatiquement à chaque étape.</p></div>
+        <div class="fc"><div class="fc-icon">&#128451;&#65039;</div><h3>Secteurs de tournée</h3><p>Organisez vos adresses par zone. 2 secteurs en gratuit, jusqu'à 5 en Premium avec changement à la volée d'un double-tap.</p></div>
+        <div class="fc"><div class="fc-icon">&#128274;</div><h3>Verrouillage de positions</h3><p>Vous avez un détour obligatoire ou une livraison à décaler ? Verrouillez cette adresse à sa place, CarGo optimise le reste autour.</p></div>
+        <div class="fc"><div class="fc-icon">&#128506;&#65039;</div><h3>Guidage étape par étape</h3><p>Suivi GPS de votre progression. Google Maps s'ouvre automatiquement pour chaque livraison, sans manipulation.</p></div>
         <div class="fc"><div class="fc-icon">&#128221;</div><h3>Notes par livraison</h3><p>Code d'accès, étage, créneau — une note visible pendant toute la tournée.</p></div>
         <div class="fc"><div class="fc-icon">&#11088;</div><h3>Adresses favorites</h3><p>Mémorisez vos points de départ favoris pour commencer encore plus vite.</p></div>
         <div class="fc"><div class="fc-icon">&#128241;</div><h3>Installable sur mobile</h3><p>Ajoutez CarGo sur votre écran d'accueil. Fonctionne comme une vraie app, même hors-ligne.</p></div>

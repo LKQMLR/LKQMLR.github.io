@@ -3,66 +3,149 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CarGo - Optimisez vos tourn&#233;es de livraison. Moins de kilom&#232;tres, plus de livraisons." />
+  <meta name="description" content="CarGo - Optimisez vos tournées de livraison. Moins de kilomètres, plus de livraisons." />
   <meta name="theme-color" content="#0f0f1a" />
-  <title>CarGo - Optimisez vos tourn&#233;es de livraison</title>
+  <title>CarGo - Optimisez vos tournées de livraison</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    :root{--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#232340;--accent:#4f8cff;--accent2:#6c63ff;--yellow:#fbbf24;--text:#e2e8f0;--text2:#94a3b8;--green:#22c55e;--radius:16px}
+    :root{
+      --bg:#0f0f1a;--surface:#1a1a2e;--surface2:#232340;
+      --accent:#4f8cff;--accent2:#6c63ff;
+      --yellow:#fbbf24;--text:#e2e8f0;--text2:#94a3b8;
+      --green:#22c55e;--red:#ef4444;--radius:16px;
+    }
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
     a{color:var(--accent);text-decoration:none}
-    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;position:relative}
-    .hero::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(79,140,255,.1) 0%,rgba(108,99,255,.05) 40%,transparent 70%);pointer-events:none}
-    .hero-logo svg{width:56px;height:56px;margin-bottom:24px;filter:drop-shadow(0 4px 20px rgba(79,140,255,.4))}
-    .hero h1{font-size:3.4rem;font-weight:800;letter-spacing:-2px;line-height:1.1}
-    .hero h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero .subtitle{font-size:1.2rem;color:var(--text2);margin-top:16px;max-width:500px;line-height:1.6}
+
+    /* ── HERO ── */
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px 80px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(79,140,255,.12) 0%,rgba(108,99,255,.06) 40%,transparent 70%);pointer-events:none}
+    .hero-logo svg{width:60px;height:60px;margin-bottom:28px;filter:drop-shadow(0 4px 24px rgba(79,140,255,.5))}
+    .hero h1{font-size:3.6rem;font-weight:800;letter-spacing:-2px;line-height:1.08}
+    .gradient{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero .subtitle{font-size:1.15rem;color:var(--text2);margin-top:18px;max-width:520px;line-height:1.65}
     .hero .subtitle strong{color:var(--text)}
-    .cta-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 36px;border-radius:14px;font-size:1.1rem;font-weight:700;box-shadow:0 4px 24px rgba(79,140,255,.3);transition:transform .2s,box-shadow .2s}
-    .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(79,140,255,.45)}
-    .hero .cta-btn{margin-top:36px}
-    .hero-badges{margin-top:18px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
-    .hero-badges span{font-size:.8rem;color:var(--text2);display:flex;align-items:center;gap:5px}
-    .hero-badges .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
-    .scroll-hint{position:absolute;bottom:30px;animation:bounce 2s infinite;color:var(--text2);font-size:1.5rem}
+    .cta-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 38px;border-radius:14px;font-size:1.05rem;font-weight:700;box-shadow:0 4px 28px rgba(79,140,255,.35);transition:transform .2s,box-shadow .2s}
+    .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(79,140,255,.5)}
+    .hero .cta-btn{margin-top:38px}
+    .hero-badges{margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+    .hero-badges span{font-size:.78rem;color:var(--text2);display:flex;align-items:center;gap:6px}
+    .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+    .scroll-hint{position:absolute;bottom:28px;animation:bounce 2s infinite;color:var(--text2);font-size:1.4rem}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-    .for-who{padding:48px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
-    .for-who h2{font-size:1.6rem;font-weight:700;margin-bottom:24px}
+
+    /* ── FOR WHO ── */
+    .for-who{padding:44px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
+    .for-who h2{font-size:1.5rem;font-weight:700;margin-bottom:22px}
     .roles{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
     .role{background:var(--surface);border:1px solid rgba(255,255,255,.06);padding:8px 18px;border-radius:50px;font-size:.82rem;font-weight:600;color:var(--text2)}
-    .features{padding:80px 20px;max-width:960px;margin:0 auto}
-    .features h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:12px}
-    .features .sub{text-align:center;color:var(--text2);margin-bottom:48px;font-size:.92rem}
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .fc{background:var(--surface);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:26px 22px;transition:transform .2s,border-color .2s}
-    .fc:hover{transform:translateY(-3px);border-color:rgba(79,140,255,.15)}
-    .fc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px;background:var(--surface2)}
-    .fc h3{font-size:.98rem;font-weight:700;margin-bottom:6px}
-    .fc p{font-size:.84rem;color:var(--text2);line-height:1.5}
-    .new-tag{display:inline-block;font-size:.58rem;font-weight:700;color:var(--yellow);background:rgba(251,191,36,.12);padding:2px 7px;border-radius:6px;margin-left:5px;vertical-align:middle;text-transform:uppercase;letter-spacing:.5px}
-    .how{padding:80px 20px;background:var(--surface)}
-    .how-inner{max-width:640px;margin:0 auto}
-    .how h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:48px}
-    .steps{display:flex;flex-direction:column;gap:28px}
+
+    /* ── SECTION TITLE ── */
+    .section-label{text-align:center;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;opacity:.8}
+    .section-title{text-align:center;font-size:2rem;font-weight:800;margin-bottom:10px;letter-spacing:-.5px}
+    .section-sub{text-align:center;color:var(--text2);font-size:.92rem;line-height:1.6;max-width:500px;margin:0 auto}
+
+    /* ── SHOWCASE SECTEURS ── */
+    .showcase{padding:90px 20px;max-width:1080px;margin:0 auto}
+    .showcase-block{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:56px}
+    .showcase-block.reverse{direction:rtl}
+    .showcase-block.reverse > *{direction:ltr}
+    .showcase-text{}
+    .showcase-text h3{font-size:1.5rem;font-weight:800;letter-spacing:-.4px;margin-bottom:14px;line-height:1.2}
+    .showcase-text p{color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:20px}
+    .showcase-pills{display:flex;flex-wrap:wrap;gap:8px}
+    .pill{background:var(--surface);border:1px solid rgba(255,255,255,.07);border-radius:50px;padding:5px 14px;font-size:.75rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px}
+    .pill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .pill-blue .pill-dot{background:#3b82f6}
+    .pill-pink .pill-dot{background:#db2777}
+    .pill-orange .pill-dot{background:#d97706}
+    .pill-violet .pill-dot{background:#7c3aed}
+    .pill-cyan .pill-dot{background:#0d9488}
+    .showcase-img-wrap{position:relative}
+    .showcase-img-wrap img{width:100%;border-radius:20px;box-shadow:0 16px 64px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.07)}
+    .showcase-img-wrap::before{content:"";position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(79,140,255,.15),transparent 60%);pointer-events:none;z-index:1}
+    .result-badge{display:inline-flex;align-items:center;gap:10px;background:#16332a;border:1px solid #22c55e44;border-radius:12px;padding:14px 20px;font-size:.88rem;font-weight:600;color:var(--green);margin-bottom:22px}
+    .result-badge svg{flex-shrink:0}
+
+    /* ── FEATURES GRID ── */
+    .features{padding:80px 20px;background:linear-gradient(180deg,transparent,var(--surface) 20%,var(--surface) 80%,transparent)}
+    .features-inner{max-width:960px;margin:0 auto}
+    .features-inner .section-title{margin-bottom:8px}
+    .features-inner .section-sub{margin-bottom:48px}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:40px}
+    .fc{background:var(--bg);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:24px 20px;transition:transform .2s,border-color .2s}
+    .fc:hover{transform:translateY(-3px);border-color:rgba(79,140,255,.18)}
+    .fc-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:14px;background:var(--surface2)}
+    .fc h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+    .fc p{font-size:.82rem;color:var(--text2);line-height:1.55}
+    .new-tag{display:inline-block;font-size:.56rem;font-weight:700;color:var(--yellow);background:rgba(251,191,36,.12);padding:2px 7px;border-radius:6px;margin-left:5px;vertical-align:middle;text-transform:uppercase;letter-spacing:.5px}
+
+    /* ── HOW IT WORKS ── */
+    .how{padding:90px 20px}
+    .how-inner{max-width:580px;margin:0 auto}
+    .how-inner .section-title{margin-bottom:48px}
+    .steps{display:flex;flex-direction:column;gap:26px}
     .step{display:flex;gap:20px;align-items:flex-start}
-    .step-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;min-width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;flex-shrink:0}
-    .step-text h3{font-size:1rem;font-weight:700;margin-bottom:4px}
-    .step-text p{font-size:.85rem;color:var(--text2);line-height:1.5}
-    .cta-section{padding:80px 20px;text-align:center}
-    .cta-section h2{font-size:2rem;font-weight:700;margin-bottom:8px}
-    .cta-section p{color:var(--text2);margin-bottom:32px;font-size:1rem}
-    footer{padding:24px;text-align:center;font-size:.75rem;color:var(--text2);border-top:1px solid rgba(255,255,255,.04)}
-    @media(max-width:600px){.hero h1{font-size:2.4rem}.hero .subtitle{font-size:1.02rem}.features h2,.how h2,.cta-section h2{font-size:1.6rem}}
+    .step-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;min-width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;box-shadow:0 4px 16px rgba(79,140,255,.3)}
+    .step-text h3{font-size:.97rem;font-weight:700;margin-bottom:4px}
+    .step-text p{font-size:.84rem;color:var(--text2);line-height:1.55}
+
+    /* ── PRICING ── */
+    .pricing{padding:90px 20px;background:linear-gradient(180deg,transparent,var(--surface) 20%,var(--surface) 80%,transparent)}
+    .pricing-inner{max-width:900px;margin:0 auto}
+    .pricing-inner .section-sub{margin-bottom:48px}
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+    .plan{background:var(--bg);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:28px 22px;position:relative;transition:transform .2s,border-color .2s}
+    .plan:hover{transform:translateY(-3px)}
+    .plan.popular{border-color:rgba(79,140,255,.4);background:linear-gradient(160deg,#141a30,#0f0f1a)}
+    .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.65rem;font-weight:700;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase}
+    .plan-name{font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+    .plan-price{font-size:2.4rem;font-weight:800;letter-spacing:-1px;line-height:1}
+    .plan-price sup{font-size:1.1rem;font-weight:700;vertical-align:super;margin-right:2px}
+    .plan-price sub{font-size:.75rem;font-weight:500;color:var(--text2);vertical-align:baseline;margin-left:2px}
+    .plan-desc{font-size:.78rem;color:var(--text2);margin-top:8px;margin-bottom:20px;line-height:1.4}
+    .plan-divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin-bottom:18px}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+    .plan-features li{font-size:.8rem;color:var(--text2);display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+    .plan-features li::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+    .plan-features li.no::before{content:"✕";color:rgba(255,255,255,.2)}
+    .plan-features li.no{opacity:.45}
+    .plan-btn{display:block;text-align:center;padding:12px;border-radius:10px;font-size:.87rem;font-weight:700;transition:opacity .2s,transform .15s}
+    .plan-btn:hover{transform:translateY(-1px)}
+    .plan-btn.secondary{background:var(--surface2);color:var(--text2)}
+    .plan-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 16px rgba(79,140,255,.3)}
+    .plan-btn.outline{background:transparent;color:var(--accent);border:1.5px solid rgba(79,140,255,.4)}
+
+    /* ── CTA ── */
+    .cta-section{padding:90px 20px;text-align:center}
+    .cta-section h2{font-size:2.2rem;font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+    .cta-section p{color:var(--text2);margin-bottom:36px;font-size:1rem}
+
+    footer{padding:28px;text-align:center;font-size:.75rem;color:var(--text2);border-top:1px solid rgba(255,255,255,.04)}
+
+    @media(max-width:768px){
+      .hero h1{font-size:2.5rem}
+      .showcase-block{grid-template-columns:1fr;gap:32px}
+      .showcase-block.reverse{direction:ltr}
+      .plans{grid-template-columns:1fr;max-width:380px;margin:40px auto 0}
+      .section-title{font-size:1.7rem}
+    }
+    @media(max-width:480px){
+      .hero h1{font-size:2rem}
+      .hero .subtitle{font-size:.95rem}
+    }
   </style>
 </head>
 <body>
+
+  <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-logo">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#1a1a2e"/><path d="M256 420 C256 420 120 290 120 200 A136 136 0 1 1 392 200 C392 290 256 420 256 420Z" fill="#4f8cff"/><circle cx="256" cy="200" r="56" fill="rgba(255,255,255,.92)"/><text x="256" y="218" text-anchor="middle" fill="#4f8cff" font-family="Arial,sans-serif" font-weight="800" font-size="60">C</text></svg>
     </div>
     <h1><span class="gradient">Moins de route,</span><br>plus de livraisons.</h1>
-    <p class="subtitle">CarGo optimise vos tourn&#233;es en quelques secondes.<br><strong>Gagnez du temps</strong>, r&#233;duisez vos kilom&#232;tres, livrez plus.</p>
-    <a class="cta-btn" href="./CarGo/">Essayer gratuitement &#8594;</a>
+    <p class="subtitle">CarGo optimise vos tournées en quelques secondes.<br><strong>Gagnez du temps</strong>, réduisez vos kilomètres, livrez plus.</p>
+    <a class="cta-btn" href="./CarGo/">Essayer gratuitement &rarr;</a>
     <div class="hero-badges">
       <span><span class="dot"></span> Gratuit</span>
       <span><span class="dot"></span> Sans inscription</span>
@@ -71,100 +154,185 @@
     <div class="scroll-hint">&#8595;</div>
   </section>
 
+  <!-- ── FOR WHO ── -->
   <section class="for-who">
-    <h2>Pens&#233; pour ceux qui roulent</h2>
+    <h2>Pensé pour ceux qui roulent</h2>
     <div class="roles">
       <div class="role">&#128666; Livreurs</div>
       <div class="role">&#127949;&#65039; Coursiers</div>
       <div class="role">&#128295; Techniciens</div>
       <div class="role">&#127968; Agents immobiliers</div>
-      <div class="role">&#129658; Infirmiers lib&#233;raux</div>
-      <div class="role">&#128230; E-commer&#231;ants</div>
+      <div class="role">&#129658; Infirmiers libéraux</div>
+      <div class="role">&#128230; E-commerçants</div>
     </div>
   </section>
 
+  <!-- ── SHOWCASE SECTEURS ── -->
+  <section class="showcase">
+    <p class="section-label">Fonctionnalités</p>
+    <h2 class="section-title">Organisez. Optimisez. Livrez.</h2>
+    <p class="section-sub">Deux outils puissants, un seul résultat : des tournées plus courtes et mieux structurées.</p>
+
+    <!-- Secteurs -->
+    <div class="showcase-block" style="margin-top:64px">
+      <div class="showcase-text">
+        <h3>Découpez votre tournée<br>en <span class="gradient">secteurs intelligents</span></h3>
+        <p>Regroupez vos adresses par zone géographique avec un simple double-tap. Chaque secteur a sa couleur, son ordre de passage, sa logique. L'algorithme optimise chaque secteur séparément pour un parcours cohérent et sans aller-retour inutiles.</p>
+        <div class="showcase-pills">
+          <span class="pill pill-blue"><span class="pill-dot"></span>Secteur 1</span>
+          <span class="pill pill-pink"><span class="pill-dot"></span>Secteur 2</span>
+          <span class="pill pill-orange"><span class="pill-dot"></span>Secteur 3</span>
+          <span class="pill pill-cyan"><span class="pill-dot"></span>Secteur 4</span>
+          <span class="pill pill-violet"><span class="pill-dot"></span>Secteur 5</span>
+        </div>
+      </div>
+      <div class="showcase-img-wrap">
+        <img src="./img/sectors.png" alt="Carte CarGo avec secteurs colorés — tournée organisée par zones" />
+      </div>
+    </div>
+
+    <!-- Optimisation -->
+    <div class="showcase-block reverse" style="margin-top:80px">
+      <div class="showcase-text">
+        <h3>Un algorithme qui<br><span class="gradient">calcule le meilleur ordre</span></h3>
+        <p>Saisissez vos adresses dans n'importe quel ordre. CarGo calcule en quelques secondes l'itinéraire le plus court en tenant compte des routes réelles — pas à vol d'oiseau. Le résultat s'affiche directement sur la carte.</p>
+        <div class="result-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Exemple réel : 28 livraisons &mdash; ~21 min gagnées
+        </div>
+        <p>Verrouillez les adresses prioritaires à leur position et laissez CarGo optimiser le reste autour de vos contraintes.</p>
+      </div>
+      <div class="showcase-img-wrap">
+        <img src="./img/result.png" alt="Résultat d'optimisation CarGo — 28 livraisons, 21 minutes économisées" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
   <section class="features">
-    <h2>Des fonctionnalit&#233;s qui comptent</h2>
-    <p class="sub">Tout ce dont vous avez besoin, rien de superflu.</p>
-    <div class="features-grid">
-      <div class="fc">
-        <div class="fc-icon">&#9889;</div>
-        <h3>Optimisation en 1 clic</h3>
-        <p>L&#8217;algorithme calcule le meilleur ordre de passage via les distances r&#233;elles de conduite.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128205;</div>
-        <h3>Livraisons illimit&#233;es</h3>
-        <p>10, 50 ou 100 adresses &#8212; pas de limite. Les grands itin&#233;raires sont d&#233;coup&#233;s automatiquement.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128451;&#65039;</div>
-        <h3>Secteurs de tourn&#233;e <span class="new-tag">Nouveau</span></h3>
-        <p>Regroupez vos adresses par zone. L&#8217;optimisation respecte vos secteurs pour un parcours coh&#233;rent.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128274;</div>
-        <h3>Verrouillage de positions</h3>
-        <p>Fixez certaines adresses &#224; leur place et optimisez le reste autour de vos contraintes.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128506;&#65039;</div>
-        <h3>Navigation int&#233;gr&#233;e</h3>
-        <p>Suivi GPS en temps r&#233;el. Google Maps s&#8217;ouvre automatiquement &#224; chaque &#233;tape.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128221;</div>
-        <h3>Notes par livraison</h3>
-        <p>Code d&#8217;acc&#232;s, &#233;tage, cr&#233;neau &#8212; une note visible pendant toute la tourn&#233;e.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128241;</div>
-        <h3>Installable sur mobile</h3>
-        <p>Ajoutez CarGo sur votre &#233;cran d&#8217;accueil. Fonctionne comme une vraie app, m&#234;me hors-ligne.</p>
-      </div>
-      <div class="fc">
-        <div class="fc-icon">&#128640;</div>
-        <h3>Rapide et l&#233;ger</h3>
-        <p>Aucune inscription, aucun t&#233;l&#233;chargement. Ouvrez et commencez.</p>
+    <div class="features-inner">
+      <p class="section-label">Ce qui est inclus</p>
+      <h2 class="section-title">Des fonctionnalités qui comptent</h2>
+      <p class="section-sub">Tout ce dont vous avez besoin, rien de superflu.</p>
+      <div class="features-grid">
+        <div class="fc"><div class="fc-icon">&#9889;</div><h3>Optimisation en 1 clic</h3><p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p></div>
+        <div class="fc"><div class="fc-icon">&#128451;&#65039;</div><h3>Secteurs de tournée <span class="new-tag">Premium</span></h3><p>Jusqu'à 5 zones distinctes. Double-tap sur une adresse pour changer son secteur à la volée.</p></div>
+        <div class="fc"><div class="fc-icon">&#128274;</div><h3>Verrouillage de positions</h3><p>Fixez certaines adresses à leur place et optimisez le reste autour de vos contraintes.</p></div>
+        <div class="fc"><div class="fc-icon">&#128506;&#65039;</div><h3>Navigation intégrée</h3><p>Suivi GPS en temps réel. Google Maps s'ouvre automatiquement à chaque étape.</p></div>
+        <div class="fc"><div class="fc-icon">&#128221;</div><h3>Notes par livraison</h3><p>Code d'accès, étage, créneau — une note visible pendant toute la tournée.</p></div>
+        <div class="fc"><div class="fc-icon">&#11088;</div><h3>Adresses favorites</h3><p>Mémorisez vos points de départ favoris pour commencer encore plus vite.</p></div>
+        <div class="fc"><div class="fc-icon">&#128241;</div><h3>Installable sur mobile</h3><p>Ajoutez CarGo sur votre écran d'accueil. Fonctionne comme une vraie app, même hors-ligne.</p></div>
+        <div class="fc"><div class="fc-icon">&#128640;</div><h3>Rapide et léger</h3><p>Aucune inscription, aucun téléchargement. Ouvrez et commencez en 10 secondes.</p></div>
       </div>
     </div>
   </section>
 
+  <!-- ── HOW ── -->
   <section class="how">
     <div class="how-inner">
-      <h2>Op&#233;rationnel en 3 &#233;tapes</h2>
+      <p class="section-label">Comment ça marche</p>
+      <h2 class="section-title">Opérationnel en 3 étapes</h2>
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-text">
-            <h3>Entrez votre point de d&#233;part</h3>
-            <p>Votre adresse est sauvegard&#233;e pour les prochaines fois.</p>
+            <h3>Entrez votre point de départ</h3>
+            <p>Votre adresse est mémorisée pour les prochaines fois. Marquez-la en favori en un tap.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-text">
-            <h3>Ajoutez vos adresses</h3>
-            <p>Autocompl&#233;tion intelligente, d&#233;tection des noms d&#8217;entreprise, ajout rapide.</p>
+            <h3>Ajoutez vos adresses de livraison</h3>
+            <p>Autocomplétion intelligente, détection des noms d'entreprise, ajout rapide. Organisez par secteur si besoin.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-text">
             <h3>Optimisez et partez</h3>
-            <p>Un clic pour optimiser. Suivez votre progression et marquez vos livraisons faites.</p>
+            <p>Un clic pour calculer le meilleur itinéraire. Suivez votre progression et démarrez la navigation.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="cta-section">
-    <h2>Pr&#234;t &#224; gagner du temps ?</h2>
-    <p>Votre premi&#232;re tourn&#233;e optimis&#233;e en moins d&#8217;une minute.</p>
-    <a class="cta-btn" href="./CarGo/">Lancer CarGo &#8594;</a>
+  <!-- ── PRICING ── -->
+  <section class="pricing">
+    <div class="pricing-inner">
+      <p class="section-label">Tarifs</p>
+      <h2 class="section-title">Simple et transparent</h2>
+      <p class="section-sub">Commencez gratuitement. Passez Premium quand vous en avez besoin.</p>
+      <div class="plans">
+
+        <!-- Gratuit -->
+        <div class="plan">
+          <div class="plan-name">Gratuit</div>
+          <div class="plan-price"><sup></sup>0<sub>€</sub></div>
+          <p class="plan-desc">Pour découvrir et tester CarGo sans engagement.</p>
+          <hr class="plan-divider"/>
+          <ul class="plan-features">
+            <li>20 adresses par tournée</li>
+            <li>2 secteurs (1 &amp; 2)</li>
+            <li>1 verrouillage d'adresse</li>
+            <li>Navigation GPS</li>
+            <li class="no">Alertes de proximité</li>
+            <li class="no">Changement de secteur à la volée</li>
+            <li class="no">Accès secteurs 3, 4, 5</li>
+          </ul>
+          <a class="plan-btn secondary" href="./CarGo/">Commencer gratuitement</a>
+        </div>
+
+        <!-- Passe journée -->
+        <div class="plan popular">
+          <div class="plan-badge">NOUVEAUTÉ</div>
+          <div class="plan-name">Passe journée</div>
+          <div class="plan-price"><sup>1</sup>99<sub>€ / jour</sub></div>
+          <p class="plan-desc">Toutes les fonctionnalités Premium pour une journée complète.</p>
+          <hr class="plan-divider"/>
+          <ul class="plan-features">
+            <li>Adresses illimitées</li>
+            <li>5 secteurs</li>
+            <li>Verrouillages illimités</li>
+            <li>Navigation GPS</li>
+            <li>Alertes de proximité</li>
+            <li>Changement de secteur à la volée</li>
+            <li>Valable 24h</li>
+          </ul>
+          <a class="plan-btn primary" href="./CarGo/">Bientôt disponible</a>
+        </div>
+
+        <!-- Premium -->
+        <div class="plan">
+          <div class="plan-name">Premium</div>
+          <div class="plan-price"><sup>11</sup>99<sub>€ / mois</sub></div>
+          <p class="plan-desc">Pour les professionnels qui roulent tous les jours.</p>
+          <hr class="plan-divider"/>
+          <ul class="plan-features">
+            <li>Adresses illimitées</li>
+            <li>5 secteurs</li>
+            <li>Verrouillages illimités</li>
+            <li>Navigation GPS</li>
+            <li>Alertes de proximité</li>
+            <li>Changement de secteur à la volée</li>
+            <li>Sans engagement</li>
+          </ul>
+          <a class="plan-btn outline" href="./CarGo/">Passer Premium</a>
+        </div>
+
+      </div>
+    </div>
   </section>
 
-  <footer>&#169; 2026 CarGo &#8212; Planification intelligente de tourn&#233;es</footer>
+  <!-- ── CTA ── -->
+  <section class="cta-section">
+    <h2>Prêt à gagner du temps ?</h2>
+    <p>Votre première tournée optimisée en moins d'une minute.</p>
+    <a class="cta-btn" href="./CarGo/">Lancer CarGo &rarr;</a>
+  </section>
+
+  <footer>&copy; 2026 CarGo &mdash; Planification intelligente de tournées</footer>
+
 </body>
 </html>

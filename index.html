@@ -28,6 +28,12 @@
     .s3{color:#d97706}
     .s4{color:#db2777}
     .s5{color:#7c3aed}
+    .road-text{position:relative;display:inline;letter-spacing:.12em}
+    .road-text::after{
+      content:"";position:absolute;left:0;right:0;bottom:-7px;height:7px;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='7'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%233b82f6'/%3E%3Cstop offset='25%25' stop-color='%230d9488'/%3E%3Cstop offset='50%25' stop-color='%23d97706'/%3E%3Cstop offset='75%25' stop-color='%23db2777'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,4 Q5,1 10,4 Q15,7 20,4 Q25,1 30,4 Q35,7 40,4 Q45,1 50,4 Q55,7 60,4 Q65,1 70,4 Q75,7 80,4 Q85,1 90,4 Q95,7 100,4' stroke='url(%23g)' stroke-width='1.8' fill='none'/%3E%3C/svg%3E");
+      background-repeat:repeat-x;background-size:100px 7px;
+    }
     .hero .subtitle{font-size:1.15rem;color:var(--text2);margin-top:18px;max-width:520px;line-height:1.65}
     .hero .subtitle strong{color:var(--text)}
     .cta-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 38px;border-radius:14px;font-size:1.05rem;font-weight:700;box-shadow:0 4px 28px rgba(79,140,255,.35);transition:transform .2s,box-shadow .2s}
@@ -154,7 +160,7 @@
     <div class="hero-logo">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#1a1a2e"/><path d="M256 420 C256 420 120 290 120 200 A136 136 0 1 1 392 200 C392 290 256 420 256 420Z" fill="#4f8cff"/><circle cx="256" cy="200" r="56" fill="rgba(255,255,255,.92)"/><text x="256" y="218" text-anchor="middle" fill="#4f8cff" font-family="Arial,sans-serif" font-weight="800" font-size="60">C</text></svg>
     </div>
-    <h1><span class="s1">M</span><span class="s2">o</span><span class="s3">i</span><span class="s4">n</span><span class="s5">s</span> <span class="s1">d</span><span class="s2">e</span> <span class="s3">r</span><span class="s4">o</span><span class="s5">u</span><span class="s1">t</span><span class="s2">e</span>,<br>plus de livraisons.</h1>
+    <h1><span class="road-text"><span class="s1">M</span><span class="s2">o</span><span class="s3">i</span><span class="s4">n</span><span class="s5">s</span> <span class="s1">d</span><span class="s2">e</span> <span class="s3">r</span><span class="s4">o</span><span class="s5">u</span><span class="s1">t</span><span class="s2">e</span></span>,<br>plus de livraisons.</h1>
     <p class="subtitle">CarGo optimise vos tournées en quelques secondes.<br><strong>Gagnez du temps</strong>, réduisez vos kilomètres, livrez plus.</p>
     <a class="cta-btn" href="./CarGo/">Essayer gratuitement &rarr;</a>
     <div class="hero-badges">
@@ -187,8 +193,7 @@
     <!-- Secteurs -->
     <div class="showcase-block" style="margin-top:64px">
       <div class="showcase-text">
-        <h3>Découpez votre tournée<br>en <span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span><span class="s3">s</span> <span class="s4">i</span><span class="s5">n</span><span class="s1">t</span><span class="s2">e</span><span class="s3">l</span><span class="s4">l</span><span class="s5">i</span><span class="s1">g</span><span class="s2">e</span><span class="s3">n</span><span class="s4">t</span><span class="s5">s</span></h3>
-        <!-- s1=bleu s2=cyan s3=orange s4=rose s5=violet -->
+        <h3>Découpez votre tournée<br>en <span class="road-text"><span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span><span class="s3">s</span> <span class="s4">i</span><span class="s5">n</span><span class="s1">t</span><span class="s2">e</span><span class="s3">l</span><span class="s4">l</span><span class="s5">i</span><span class="s1">g</span><span class="s2">e</span><span class="s3">n</span><span class="s4">t</span><span class="s5">s</span></span></h3>
         <p>Regroupez vos adresses par zone géographique avec un simple double-tap. Chaque secteur a sa couleur, son ordre de passage, sa logique. L'algorithme optimise chaque secteur séparément pour un parcours cohérent et sans aller-retour inutiles.</p>
         <div class="showcase-pills">
           <span class="pill pill-blue"><span class="pill-dot"></span>Secteur 1</span>
@@ -206,8 +211,7 @@
     <!-- Optimisation -->
     <div class="showcase-block reverse" style="margin-top:80px">
       <div class="showcase-text">
-        <h3>Un algorithme qui<br><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">e</span> <span class="s3">l</span><span class="s4">e</span> <span class="s5">m</span><span class="s1">e</span><span class="s2">i</span><span class="s3">l</span><span class="s4">l</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">r</span><span class="s2">e</span></h3>
-        <!-- s1=bleu s2=cyan s3=orange s4=rose s5=violet -->
+        <h3>Un algorithme qui<br><span class="road-text"><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">e</span> <span class="s3">l</span><span class="s4">e</span> <span class="s5">m</span><span class="s1">e</span><span class="s2">i</span><span class="s3">l</span><span class="s4">l</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">r</span><span class="s2">e</span></span></h3>
         <p>Saisissez vos adresses dans n'importe quel ordre. CarGo calcule en quelques secondes l'itinéraire le plus court en tenant compte des routes réelles — pas à vol d'oiseau. Le résultat s'affiche directement sur la carte avec le temps gagné.</p>
         <p style="margin-top:12px">Verrouillez les adresses prioritaires à leur position et laissez CarGo optimiser le reste autour de vos contraintes.</p>
       </div>
@@ -222,8 +226,7 @@
     <!-- Verrouillage -->
     <div class="showcase-block" style="margin-top:80px">
       <div class="showcase-text">
-        <h3>Gardez le contrôle sur<br><span class="s1">c</span><span class="s2">h</span><span class="s3">a</span><span class="s4">q</span><span class="s5">u</span><span class="s1">e</span> <span class="s2">c</span><span class="s3">o</span><span class="s4">n</span><span class="s5">t</span><span class="s1">r</span><span class="s2">a</span><span class="s3">i</span><span class="s4">n</span><span class="s5">t</span><span class="s1">e</span></h3>
-        <!-- s1=bleu s2=cyan s3=orange s4=rose s5=violet -->
+        <h3>Gardez le contrôle sur<br><span class="road-text"><span class="s1">c</span><span class="s2">h</span><span class="s3">a</span><span class="s4">q</span><span class="s5">u</span><span class="s1">e</span> <span class="s2">c</span><span class="s3">o</span><span class="s4">n</span><span class="s5">t</span><span class="s1">r</span><span class="s2">a</span><span class="s3">i</span><span class="s4">n</span><span class="s5">t</span><span class="s1">e</span></span></h3>
         <p>Détour obligatoire, livraison à effectuer en dernier, adresse avec un créneau horaire précis — certaines positions ne peuvent pas être déplacées. Verrouillez-les, CarGo optimise intelligemment le reste de la tournée autour de vos contraintes.</p>
         <div class="showcase-pills">
           <span class="pill pill-orange"><span class="pill-dot"></span>Adresse verrouillée</span>

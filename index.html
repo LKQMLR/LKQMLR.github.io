@@ -89,7 +89,10 @@
     .how-inner .section-title{margin-bottom:48px}
     .steps{display:flex;flex-direction:column;gap:26px}
     .step{display:flex;gap:20px;align-items:flex-start}
-    .step-num{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;min-width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;box-shadow:0 4px 16px rgba(79,140,255,.3)}
+    .step-num{color:#fff;min-width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
+    .step:nth-child(1) .step-num{background:#3b82f6;box-shadow:0 4px 16px rgba(59,130,246,.35)}
+    .step:nth-child(2) .step-num{background:#0d9488;box-shadow:0 4px 16px rgba(13,148,136,.35)}
+    .step:nth-child(3) .step-num{background:#d97706;box-shadow:0 4px 16px rgba(217,119,6,.35)}
     .step-text h3{font-size:.97rem;font-weight:700;margin-bottom:4px}
     .step-text p{font-size:.84rem;color:var(--text2);line-height:1.55}
 
@@ -103,9 +106,9 @@
     .plan.popular{border-color:rgba(79,140,255,.4);background:linear-gradient(160deg,#141a30,#0f0f1a)}
     .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.65rem;font-weight:700;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase}
     .plan-name{font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
-    .plan-price{font-size:2.4rem;font-weight:800;letter-spacing:-1px;line-height:1}
-    .plan-price sup{font-size:1.1rem;font-weight:700;vertical-align:super;margin-right:2px}
-    .plan-price sub{font-size:.75rem;font-weight:500;color:var(--text2);vertical-align:baseline;margin-left:2px}
+    .plan-price{font-size:2.2rem;font-weight:800;letter-spacing:-1px;line-height:1}
+    .plan-price .cents{font-size:1.3rem;font-weight:700}
+    .plan-price .period{font-size:.72rem;font-weight:500;color:var(--text2);display:block;margin-top:4px;letter-spacing:0}
     .plan-desc{font-size:.78rem;color:var(--text2);margin-top:8px;margin-bottom:20px;line-height:1.4}
     .plan-divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin-bottom:18px}
     .plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
@@ -208,6 +211,22 @@
         </div>
       </div>
     </div>
+
+    <!-- Verrouillage -->
+    <div class="showcase-block" style="margin-top:80px">
+      <div class="showcase-text">
+        <h3>Gardez le contrôle sur<br><span class="gradient">chaque contrainte</span></h3>
+        <p>Détour obligatoire, livraison à effectuer en dernier, adresse avec un créneau horaire précis — certaines positions ne peuvent pas être déplacées. Verrouillez-les, CarGo optimise intelligemment le reste de la tournée autour de vos contraintes.</p>
+        <div class="showcase-pills">
+          <span class="pill pill-orange"><span class="pill-dot"></span>Adresse verrouillée</span>
+          <span class="pill pill-blue"><span class="pill-dot"></span>Optimisé autour</span>
+        </div>
+      </div>
+      <div class="showcase-img-wrap">
+        <img src="./img/lock.png" alt="Verrouillage d'adresse dans CarGo" />
+      </div>
+    </div>
+
   </section>
 
   <!-- ── FEATURES ── -->
@@ -217,14 +236,14 @@
       <h2 class="section-title">Des fonctionnalités qui comptent</h2>
       <p class="section-sub">Tout ce dont vous avez besoin, rien de superflu.</p>
       <div class="features-grid">
-        <div class="fc"><div class="fc-icon">&#9889;</div><h3>Optimisation en 1 clic</h3><p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p></div>
-        <div class="fc"><div class="fc-icon">&#128451;&#65039;</div><h3>Secteurs de tournée</h3><p>Organisez vos adresses par zone. 2 secteurs en gratuit, jusqu'à 5 en Premium avec changement à la volée d'un double-tap.</p></div>
-        <div class="fc"><div class="fc-icon">&#128274;</div><h3>Verrouillage de positions</h3><p>Vous avez un détour obligatoire ou une livraison à décaler ? Verrouillez cette adresse à sa place, CarGo optimise le reste autour.</p></div>
-        <div class="fc"><div class="fc-icon">&#128506;&#65039;</div><h3>Guidage étape par étape</h3><p>Suivi GPS de votre progression. Google Maps s'ouvre automatiquement pour chaque livraison, sans manipulation.</p></div>
-        <div class="fc"><div class="fc-icon">&#128221;</div><h3>Notes par livraison</h3><p>Code d'accès, étage, créneau — une note visible pendant toute la tournée.</p></div>
-        <div class="fc"><div class="fc-icon">&#11088;</div><h3>Adresses favorites</h3><p>Mémorisez vos points de départ favoris pour commencer encore plus vite.</p></div>
-        <div class="fc"><div class="fc-icon">&#128241;</div><h3>Installable sur mobile</h3><p>Ajoutez CarGo sur votre écran d'accueil. Fonctionne comme une vraie app, même hors-ligne.</p></div>
-        <div class="fc"><div class="fc-icon">&#128640;</div><h3>Rapide et léger</h3><p>Aucune inscription, aucun téléchargement. Ouvrez et commencez en 10 secondes.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#1e2f4a;color:#3b82f6">&#9889;</div><h3>Optimisation en 1 clic</h3><p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#1e3a38;color:#0d9488">&#128451;&#65039;</div><h3>Secteurs de tournée</h3><p>Organisez vos adresses par zone. 2 secteurs en gratuit, jusqu'à 5 en Premium avec changement à la volée d'un double-tap.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#3a2a1e;color:#d97706">&#128274;</div><h3>Verrouillage de positions</h3><p>Vous avez un détour obligatoire ou une livraison à décaler ? Verrouillez cette adresse à sa place, CarGo optimise le reste autour.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#3a1e2e;color:#db2777">&#128506;&#65039;</div><h3>Guidage étape par étape</h3><p>Suivi GPS de votre progression. Google Maps s'ouvre automatiquement pour chaque livraison, sans manipulation.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#2a1e3a;color:#7c3aed">&#128221;</div><h3>Notes par livraison</h3><p>Code d'accès, étage, créneau — une note visible pendant toute la tournée.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#1e2f4a;color:#3b82f6">&#11088;</div><h3>Adresses favorites</h3><p>Mémorisez vos points de départ favoris pour commencer encore plus vite.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#1e3a38;color:#0d9488">&#128241;</div><h3>Installable sur mobile</h3><p>Ajoutez CarGo sur votre écran d'accueil. Fonctionne comme une vraie app, même hors-ligne.</p></div>
+        <div class="fc"><div class="fc-icon" style="background:#3a2a1e;color:#d97706">&#128640;</div><h3>Rapide et léger</h3><p>Aucune inscription, aucun téléchargement. Ouvrez et commencez en 10 secondes.</p></div>
       </div>
     </div>
   </section>
@@ -271,7 +290,7 @@
         <!-- Gratuit -->
         <div class="plan">
           <div class="plan-name">Gratuit</div>
-          <div class="plan-price"><sup></sup>0<sub>€</sub></div>
+          <div class="plan-price">0 €<span class="period">&nbsp;</span></div>
           <p class="plan-desc">Pour découvrir et tester CarGo sans engagement.</p>
           <hr class="plan-divider"/>
           <ul class="plan-features">
@@ -290,7 +309,7 @@
         <div class="plan popular">
           <div class="plan-badge">NOUVEAUTÉ</div>
           <div class="plan-name">Passe journée</div>
-          <div class="plan-price"><sup>1</sup>99<sub>€ / jour</sub></div>
+          <div class="plan-price">1<span class="cents">,99 €</span><span class="period">par jour</span></div>
           <p class="plan-desc">Toutes les fonctionnalités Premium pour une journée complète.</p>
           <hr class="plan-divider"/>
           <ul class="plan-features">
@@ -308,7 +327,7 @@
         <!-- Premium -->
         <div class="plan">
           <div class="plan-name">Premium</div>
-          <div class="plan-price"><sup>11</sup>99<sub>€ / mois</sub></div>
+          <div class="plan-price">11<span class="cents">,99 €</span><span class="period">par mois</span></div>
           <p class="plan-desc">Pour les professionnels qui roulent tous les jours.</p>
           <hr class="plan-divider"/>
           <ul class="plan-features">

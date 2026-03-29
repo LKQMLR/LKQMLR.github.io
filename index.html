@@ -127,6 +127,8 @@
     .plan-btn.secondary{background:var(--surface2);color:var(--text2)}
     .plan-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 16px rgba(79,140,255,.3)}
     .plan-btn.outline{background:transparent;color:var(--accent);border:1.5px solid rgba(79,140,255,.4)}
+    .plan-btn.disabled{background:transparent;color:var(--text2);border:1.5px dashed rgba(255,255,255,.15);cursor:not-allowed;opacity:.55;pointer-events:none}
+    .plan-pro{opacity:.8}
 
     /* ── CTA ── */
     .cta-section{padding:90px 20px;text-align:center}
@@ -290,7 +292,7 @@
     <div class="pricing-inner">
       <p class="section-label">Tarifs</p>
       <h2 class="section-title">Simple et transparent</h2>
-      <p class="section-sub">Commencez gratuitement. Passez Premium quand vous en avez besoin.</p>
+      <p class="section-sub">Commencez gratuitement. Passez Standard quand vous en avez besoin.</p>
       <div class="plans">
 
         <!-- Gratuit -->
@@ -300,7 +302,7 @@
           <p class="plan-desc">Pour découvrir et tester CarGo sans engagement.</p>
           <hr class="plan-divider"/>
           <ul class="plan-features">
-            <li>20 adresses par tournée</li>
+            <li>10 adresses par tournée</li>
             <li>2 secteurs (1 &amp; 2)</li>
             <li>1 verrouillage d'adresse</li>
             <li>Navigation GPS</li>
@@ -312,40 +314,57 @@
         </div>
 
         <!-- Passe journée -->
-        <div class="plan popular">
-          <div class="plan-badge">NOUVEAUTÉ</div>
+        <div class="plan">
           <div class="plan-name">Passe journée</div>
           <div class="plan-price">1<span class="cents">,99 €</span><span class="period">par jour</span></div>
-          <p class="plan-desc">Toutes les fonctionnalités Premium pour une journée complète.</p>
+          <p class="plan-desc">Toutes les fonctionnalités Standard pour une journée complète.</p>
           <hr class="plan-divider"/>
           <ul class="plan-features">
             <li>Adresses illimitées</li>
-            <li>5 secteurs</li>
+            <li>Tous les secteurs</li>
             <li>Verrouillages illimités</li>
             <li>Navigation GPS</li>
             <li>Alertes de proximité</li>
             <li>Changement de secteur à la volée</li>
             <li>Valable 24h</li>
           </ul>
-          <a class="plan-btn primary" href="./CarGo/">Bientôt disponible</a>
+          <a class="plan-btn disabled" href="#">Bientôt disponible</a>
         </div>
 
-        <!-- Premium -->
-        <div class="plan">
-          <div class="plan-name">Premium</div>
-          <div class="plan-price">11<span class="cents">,99 €</span><span class="period">par mois</span></div>
+        <!-- Standard -->
+        <div class="plan popular">
+          <div class="plan-badge">POPULAIRE</div>
+          <div class="plan-name">Standard</div>
+          <div class="plan-price">12<span class="cents">,99 €</span><span class="period">par mois</span></div>
           <p class="plan-desc">Pour les professionnels qui roulent tous les jours.</p>
           <hr class="plan-divider"/>
           <ul class="plan-features">
             <li>Adresses illimitées</li>
-            <li>5 secteurs</li>
+            <li>Tous les secteurs</li>
             <li>Verrouillages illimités</li>
             <li>Navigation GPS</li>
             <li>Alertes de proximité</li>
             <li>Changement de secteur à la volée</li>
             <li>Sans engagement</li>
           </ul>
-          <a class="plan-btn outline" href="./CarGo/">Passer Premium</a>
+          <a class="plan-btn primary" href="./CarGo/">Passer Standard</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="plan plan-pro">
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">24<span class="cents">,99 €</span><span class="period">par mois</span></div>
+          <p class="plan-desc">Pour les équipes et les pros qui veulent aller plus loin.</p>
+          <hr class="plan-divider"/>
+          <ul class="plan-features">
+            <li>Tout du Standard</li>
+            <li>Multi-tournées</li>
+            <li>Statistiques avancées</li>
+            <li>Historique illimité</li>
+            <li>Support prioritaire</li>
+            <li>Et bien plus encore…</li>
+          </ul>
+          <a class="plan-btn disabled" href="#">Bientôt disponible</a>
         </div>
 
       </div>

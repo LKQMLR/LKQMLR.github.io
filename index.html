@@ -34,6 +34,11 @@
     .cta-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 38px;border-radius:14px;font-size:1.05rem;font-weight:700;box-shadow:0 4px 28px rgba(79,140,255,.35);transition:transform .2s,box-shadow .2s}
     .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(79,140,255,.5)}
     .hero .cta-btn{margin-top:38px}
+    .install-btn{display:none;align-items:center;gap:10px;background:transparent;color:var(--accent);border:1.5px solid rgba(79,140,255,.45);padding:13px 30px;border-radius:14px;font-size:.97rem;font-weight:700;cursor:pointer;margin-top:14px;transition:transform .2s,background .2s,border-color .2s}
+    .install-btn:hover{transform:translateY(-2px);background:rgba(79,140,255,.08);border-color:var(--accent)}
+    .install-btn.visible{display:inline-flex}
+    .ios-hint{display:none;margin-top:14px;font-size:.8rem;color:var(--text2);background:var(--surface);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:11px 18px;max-width:360px;line-height:1.55;text-align:center}
+    .ios-hint.visible{display:block}
     .hero-badges{margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
     .hero-badges span{font-size:.78rem;color:var(--text2);display:flex;align-items:center;gap:6px}
     .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
@@ -160,6 +165,13 @@
     <h1><span class="s1">M</span><span class="s2">o</span><span class="s3">i</span><span class="s4">n</span><span class="s5">s</span> <span class="s1">d</span><span class="s2">e</span> <span class="s3">r</span><span class="s4">o</span><span class="s5">u</span><span class="s1">t</span><span class="s2">e</span>,<br>plus de livraisons.</h1>
     <p class="subtitle">CarGo optimise vos tournées en quelques secondes.<br><strong>Gagnez du temps</strong>, réduisez vos kilomètres, livrez plus.</p>
     <a class="cta-btn" href="./CarGo/">Essayer gratuitement &rarr;</a>
+    <button class="install-btn" id="install-btn" onclick="installApp()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Installer l'app
+    </button>
+    <div class="ios-hint" id="ios-hint">
+      Appuyez sur <strong>Partager</strong> &#8594; <strong>Sur l'écran d'accueil</strong> pour installer CarGo comme une vraie app.
+    </div>
     <div class="hero-badges">
       <span><span class="dot"></span> Gratuit</span>
       <span><span class="dot"></span> Sans inscription</span>
@@ -379,6 +391,46 @@
   </section>
 
   <footer>&copy; 2026 CarGo &mdash; Planification intelligente de tournées</footer>
+
+  <script>
+    let _installPrompt = null;
+    const installBtn = document.getElementById('install-btn');
+    const iosHint = document.getElementById('ios-hint');
+
+    // Déjà installée ?
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    if (!isStandalone) {
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+      if (isIOS && isSafari) {
+        iosHint.classList.add('visible');
+      } else {
+        window.addEventListener('beforeinstallprompt', function(e) {
+          e.preventDefault();
+          _installPrompt = e;
+          installBtn.classList.add('visible');
+        });
+      }
+    }
+
+    function installApp() {
+      if (!_installPrompt) return;
+      _installPrompt.prompt();
+      _installPrompt.userChoice.then(function(result) {
+        if (result.outcome === 'accepted') {
+          installBtn.classList.remove('visible');
+        }
+        _installPrompt = null;
+      });
+    }
+
+    window.addEventListener('appinstalled', function() {
+      installBtn.classList.remove('visible');
+      iosHint.classList.remove('visible');
+    });
+  </script>
 
 </body>
 </html>

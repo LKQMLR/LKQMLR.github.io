@@ -3,155 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CarGo - Optimisez vos tournées de livraison. Moins de kilomètres, plus de livraisons." />
-  <meta name="theme-color" content="#0f0f1a" />
-  <title>CarGo - Optimisez vos tournées de livraison</title>
+  <meta name="description" content="ATEQO optimise tes tournées de livraison en quelques secondes. Moins de kilomètres, plus de livraisons. Disponible sur Google Play." />
+  <meta name="theme-color" content="#f1f4f7" />
+  <title>ATEQO — L'itinéraire qui te suit</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="./img/logo_ateqo.png" />
+  <link rel="apple-touch-icon" href="./img/logo_ateqo.png" />
+
+  <!-- Open Graph / partage sur les réseaux sociaux -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ATEQO" />
+  <meta property="og:title" content="ATEQO — L'itinéraire qui te suit" />
+  <meta property="og:description" content="Optimise tes tournées en quelques secondes. Gagne du temps, réduis tes kilomètres, livre plus." />
+  <meta property="og:url" content="https://lkqmlr.github.io/" />
+  <meta property="og:image" content="https://lkqmlr.github.io/img/banner.png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="500" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ATEQO — L'itinéraire qui te suit" />
+  <meta name="twitter:description" content="Optimise tes tournées en quelques secondes. Gagne du temps, réduis tes kilomètres, livre plus." />
+  <meta name="twitter:image" content="https://lkqmlr.github.io/img/banner.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
-      --bg:#0f0f1a;--surface:#1a1a2e;--surface2:#232340;
-      --accent:#4f8cff;--accent2:#6c63ff;
-      --yellow:#fbbf24;--text:#e2e8f0;--text2:#94a3b8;
-      --green:#22c55e;--red:#ef4444;--radius:16px;
+      /* Palette ATEQO (thème clair, aligné sur l'app) */
+      --bg:#f1f4f7;--surface:#ffffff;--surface2:#f7f9fb;
+      --ink:#0f1923;--muted:#5b6b7e;--muted2:#8896a7;
+      --accent:#2563eb;--gold:#c8a24b;--green:#16a34a;
+      --border:rgba(15,25,35,.09);
+      /* Secteurs A-T-E-Q-O = 1-2-3-4-5 */
+      --s1:#3b82f6;--s2:#0d9488;--s3:#d97706;--s4:#db2777;--s5:#7c3aed;
+      --radius:16px;
     }
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
     a{color:var(--accent);text-decoration:none}
+    img{max-width:100%}
+
+    /* ── Bouton Google Play ── */
+    .gplay{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:#fff;padding:13px 26px 13px 22px;border-radius:14px;box-shadow:0 8px 30px rgba(15,25,35,.22);transition:transform .2s,box-shadow .2s}
+    .gplay:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(15,25,35,.3)}
+    .gplay svg{flex-shrink:0}
+    .gplay .gp-txt{display:flex;flex-direction:column;line-height:1.05;text-align:left}
+    .gplay .gp-txt small{font-size:.6rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;opacity:.8}
+    .gplay .gp-txt strong{font-size:1.15rem;font-weight:700;letter-spacing:.2px}
 
     /* ── HERO ── */
-    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px 80px;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(79,140,255,.12) 0%,rgba(108,99,255,.06) 40%,transparent 70%);pointer-events:none}
-    .hero-logo svg{width:60px;height:60px;margin-bottom:28px;filter:drop-shadow(0 4px 24px rgba(79,140,255,.5))}
-    .hero h1{font-size:3.6rem;font-weight:800;letter-spacing:-2px;line-height:1.08}
-    .gradient{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .s1{color:#3b82f6}
-    .s2{color:#0d9488}
-    .s3{color:#d97706}
-    .s4{color:#db2777}
-    .s5{color:#7c3aed}
-    .road-text{display:inline;letter-spacing:.18em}
-    .hero .subtitle{font-size:1.15rem;color:var(--text2);margin-top:18px;max-width:520px;line-height:1.65}
-    .hero .subtitle strong{color:var(--text)}
-    .cta-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 38px;border-radius:14px;font-size:1.05rem;font-weight:700;box-shadow:0 4px 28px rgba(79,140,255,.35);transition:transform .2s,box-shadow .2s}
-    .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(79,140,255,.5)}
-    .hero .cta-btn{margin-top:38px}
-    .install-btn{display:none;align-items:center;gap:10px;background:transparent;color:var(--accent);border:1.5px solid rgba(79,140,255,.45);padding:13px 30px;border-radius:14px;font-size:.97rem;font-weight:700;cursor:pointer;margin-top:14px;transition:transform .2s,background .2s,border-color .2s}
-    .install-btn:hover{transform:translateY(-2px);background:rgba(79,140,255,.08);border-color:var(--accent)}
-    .install-btn.visible{display:inline-flex}
-    .ios-hint{display:none;margin-top:14px;font-size:.8rem;color:var(--text2);background:var(--surface);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:11px 18px;max-width:360px;line-height:1.55;text-align:center}
-    .ios-hint.visible{display:block}
-    .hero-badges{margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-    .hero-badges span{font-size:.78rem;color:var(--text2);display:flex;align-items:center;gap:6px}
+    .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 20px 80px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:760px;background:radial-gradient(ellipse,rgba(37,99,235,.10) 0%,rgba(124,58,237,.05) 42%,transparent 70%);pointer-events:none}
+    .hero-icon{width:56px;height:56px;margin-bottom:22px;filter:drop-shadow(0 6px 18px rgba(15,25,35,.16))}
+    .hero-wordmark{width:min(320px,72vw);margin-bottom:26px;filter:drop-shadow(0 2px 5px rgba(15,25,35,.10))}
+    .hero h1{font-size:3.3rem;font-weight:800;letter-spacing:-1.5px;line-height:1.08;max-width:14ch}
+    .hero .subtitle{font-size:1.12rem;color:var(--muted);margin-top:20px;max-width:540px;line-height:1.65}
+    .hero .subtitle strong{color:var(--ink);font-weight:600}
+    .hero .gplay{margin-top:36px}
+    .hero-badges{margin-top:22px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+    .hero-badges span{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:7px;font-weight:500}
     .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
-    .scroll-hint{position:absolute;bottom:28px;animation:bounce 2s infinite;color:var(--text2);font-size:1.4rem}
+    .scroll-hint{position:absolute;bottom:26px;color:var(--muted2);animation:bounce 2s infinite}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
     /* ── FOR WHO ── */
-    .for-who{padding:44px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
-    .for-who h2{font-size:1.5rem;font-weight:700;margin-bottom:22px}
-    .roles{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-    .role{background:var(--surface);border:1px solid rgba(255,255,255,.06);padding:8px 18px;border-radius:50px;font-size:.82rem;font-weight:600;color:var(--text2)}
+    .for-who{padding:48px 20px;text-align:center;border-top:1px solid var(--border)}
+    .for-who h2{font-size:1.45rem;font-weight:700;margin-bottom:24px;letter-spacing:-.4px}
+    .roles{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;max-width:720px;margin:0 auto}
+    .role{background:var(--surface);border:1px solid var(--border);padding:9px 18px;border-radius:50px;font-size:.85rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;box-shadow:0 1px 3px rgba(15,25,35,.04)}
+    .role i{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
     /* ── SECTION TITLE ── */
-    .section-label{text-align:center;font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;opacity:.8}
-    .section-title{text-align:center;font-size:2rem;font-weight:800;margin-bottom:10px;letter-spacing:-.5px}
-    .section-sub{text-align:center;color:var(--text2);font-size:.92rem;line-height:1.6;max-width:500px;margin:0 auto}
+    .section-label{text-align:center;font-size:.74rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .section-title{text-align:center;font-size:2.1rem;font-weight:800;margin-bottom:12px;letter-spacing:-.8px}
+    .section-sub{text-align:center;color:var(--muted);font-size:.96rem;line-height:1.6;max-width:520px;margin:0 auto}
 
-    /* ── SHOWCASE SECTEURS ── */
-    .showcase{padding:90px 20px;max-width:1080px;margin:0 auto}
-    .showcase-block{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:56px}
+    /* ── SHOWCASE ── */
+    .showcase{padding:92px 20px;max-width:1080px;margin:0 auto}
+    .showcase-block{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;margin-top:72px}
     .showcase-block.reverse{direction:rtl}
-    .showcase-block.reverse > *{direction:ltr}
-    .showcase-text{}
-    .showcase-text h3{font-size:1.5rem;font-weight:800;letter-spacing:-.4px;margin-bottom:14px;line-height:1.2}
-    .showcase-text p{color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:20px}
+    .showcase-block.reverse>*{direction:ltr}
+    .showcase-text h3{font-size:1.55rem;font-weight:800;letter-spacing:-.5px;margin-bottom:14px;line-height:1.2}
+    .showcase-text p{color:var(--muted);font-size:.95rem;line-height:1.7;margin-bottom:20px}
     .showcase-pills{display:flex;flex-wrap:wrap;gap:8px}
-    .pill{background:var(--surface);border:1px solid rgba(255,255,255,.07);border-radius:50px;padding:5px 14px;font-size:.75rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:6px}
-    .pill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .pill-blue .pill-dot{background:#3b82f6}
-    .pill-pink .pill-dot{background:#db2777}
-    .pill-orange .pill-dot{background:#d97706}
-    .pill-violet .pill-dot{background:#7c3aed}
-    .pill-cyan .pill-dot{background:#0d9488}
+    .pill{background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:6px 14px;font-size:.76rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
+    .pill i{width:8px;height:8px;border-radius:50%;flex-shrink:0}
     .showcase-img-wrap{position:relative}
-    .showcase-img-wrap img{width:100%;border-radius:20px;box-shadow:0 16px 64px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.07)}
-    .showcase-img-wrap::before{content:"";position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(79,140,255,.15),transparent 60%);pointer-events:none;z-index:1}
-    .result-badge{display:inline-flex;align-items:center;gap:10px;background:#16332a;border:1px solid #22c55e44;border-radius:12px;padding:14px 20px;font-size:.88rem;font-weight:600;color:var(--green);margin-bottom:22px}
-    .result-badge svg{flex-shrink:0}
-    .app-result-mock{background:#16332a;border:1px solid #22c55e55;border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+    .showcase-img-wrap img{width:100%;border-radius:20px;box-shadow:0 18px 50px rgba(15,25,35,.16);border:1px solid var(--border)}
+    .app-result-mock{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.35);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:14px}
     .app-result-mock svg{flex-shrink:0}
-    .app-result-mock span{font-size:.95rem;font-weight:600;color:var(--green);line-height:1.4}
+    .app-result-mock span{font-size:1rem;font-weight:600;color:#15803d;line-height:1.4}
+    .mock-frame{background:var(--surface);border-radius:20px;padding:34px 26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);box-shadow:0 18px 50px rgba(15,25,35,.10)}
 
-    /* ── FEATURES GRID ── */
-    .features{padding:80px 20px;background:linear-gradient(180deg,transparent,var(--surface) 20%,var(--surface) 80%,transparent)}
-    .features-inner{max-width:960px;margin:0 auto}
-    .features-inner .section-title{margin-bottom:8px}
+    /* ── FEATURES ── */
+    .features{padding:88px 20px;background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .features-inner{max-width:980px;margin:0 auto}
     .features-inner .section-sub{margin-bottom:48px}
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:40px}
-    .fc{background:var(--bg);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:24px 20px;transition:transform .2s,border-color .2s}
-    .fc:hover{transform:translateY(-3px);border-color:rgba(79,140,255,.18)}
-    .fc-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:14px;background:var(--surface2)}
-    .fc h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
-    .fc p{font-size:.82rem;color:var(--text2);line-height:1.55}
-    .new-tag{display:inline-block;font-size:.56rem;font-weight:700;color:var(--yellow);background:rgba(251,191,36,.12);padding:2px 7px;border-radius:6px;margin-left:5px;vertical-align:middle;text-transform:uppercase;letter-spacing:.5px}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:40px}
+    .fc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px 22px;transition:transform .2s,box-shadow .2s;box-shadow:0 1px 3px rgba(15,25,35,.04)}
+    .fc:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,25,35,.10)}
+    .fc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .fc-icon svg{width:21px;height:21px}
+    .fc h3{font-size:.98rem;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:8px}
+    .fc p{font-size:.85rem;color:var(--muted);line-height:1.6}
+    .tag-premium{display:inline-flex;align-items:center;font-size:.56rem;font-weight:700;color:#8a6d1f;background:rgba(200,162,75,.16);padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px}
 
-    /* ── HOW IT WORKS ── */
-    .how{padding:90px 20px}
-    .how-inner{max-width:580px;margin:0 auto}
-    .how-inner .section-title{margin-bottom:48px}
-    .steps{display:flex;flex-direction:column;gap:26px}
+    /* ── HOW ── */
+    .how{padding:92px 20px}
+    .how-inner{max-width:600px;margin:0 auto}
+    .how-inner .section-title{margin-bottom:52px}
+    .steps{display:flex;flex-direction:column;gap:28px}
     .step{display:flex;gap:20px;align-items:flex-start}
-    .step-num{color:#fff;min-width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
-    .step:nth-child(1) .step-num{background:#3b82f6;box-shadow:0 4px 16px rgba(59,130,246,.35)}
-    .step:nth-child(2) .step-num{background:#0d9488;box-shadow:0 4px 16px rgba(13,148,136,.35)}
-    .step:nth-child(3) .step-num{background:#d97706;box-shadow:0 4px 16px rgba(217,119,6,.35)}
-    .step-text h3{font-size:.97rem;font-weight:700;margin-bottom:4px}
-    .step-text p{font-size:.84rem;color:var(--text2);line-height:1.55}
+    .step-num{color:#fff;min-width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;flex-shrink:0}
+    .step:nth-child(1) .step-num{background:var(--s1);box-shadow:0 5px 16px rgba(59,130,246,.35)}
+    .step:nth-child(2) .step-num{background:var(--s2);box-shadow:0 5px 16px rgba(13,148,136,.35)}
+    .step:nth-child(3) .step-num{background:var(--s3);box-shadow:0 5px 16px rgba(217,119,6,.35)}
+    .step-text h3{font-size:1.02rem;font-weight:700;margin-bottom:5px}
+    .step-text p{font-size:.88rem;color:var(--muted);line-height:1.6}
 
     /* ── PRICING ── */
-    .pricing{padding:90px 20px;background:linear-gradient(180deg,transparent,var(--surface) 20%,var(--surface) 80%,transparent)}
-    .pricing-inner{max-width:900px;margin:0 auto}
-    .pricing-inner .section-sub{margin-bottom:48px}
-    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
-    .plan{background:var(--bg);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:28px 22px;position:relative;transition:transform .2s,border-color .2s}
-    .plan:hover{transform:translateY(-3px)}
-    .plan.popular{border-color:rgba(79,140,255,.4);background:linear-gradient(160deg,#141a30,#0f0f1a)}
-    .plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.65rem;font-weight:700;padding:4px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.5px;text-transform:uppercase}
-    .plan-name{font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
-    .plan-price{font-size:2.2rem;font-weight:800;letter-spacing:-1px;line-height:1}
-    .plan-price .cents{font-size:1.3rem;font-weight:700}
-    .plan-price .period{font-size:.72rem;font-weight:500;color:var(--text2);display:block;margin-top:4px;letter-spacing:0}
-    .plan-desc{font-size:.78rem;color:var(--text2);margin-top:8px;margin-bottom:20px;line-height:1.4}
-    .plan-divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin-bottom:18px}
-    .plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
-    .plan-features li{font-size:.8rem;color:var(--text2);display:flex;align-items:flex-start;gap:8px;line-height:1.4}
-    .plan-features li::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
-    .plan-features li.no::before{content:"✕";color:rgba(255,255,255,.2)}
-    .plan-features li.no{opacity:.45}
-    .plan-btn{display:block;text-align:center;padding:12px;border-radius:10px;font-size:.87rem;font-weight:700;transition:opacity .2s,transform .15s}
+    .pricing{padding:92px 20px;background:var(--surface2);border-top:1px solid var(--border)}
+    .pricing-inner{max-width:760px;margin:0 auto}
+    .pricing-inner .section-sub{margin-bottom:16px}
+    .founder-banner{max-width:520px;margin:22px auto 0;background:linear-gradient(135deg,rgba(200,162,75,.14),rgba(200,162,75,.06));border:1px solid rgba(200,162,75,.4);border-radius:14px;padding:14px 20px;text-align:center;font-size:.86rem;color:#8a6d1f;font-weight:600;line-height:1.5}
+    .founder-banner strong{color:#6f5615}
+    .plans{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
+    .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px 26px;position:relative;display:flex;flex-direction:column}
+    .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 16px 44px rgba(200,162,75,.16)}
+    .plan-ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;font-size:.66rem;font-weight:700;padding:5px 16px;border-radius:50px;white-space:nowrap;letter-spacing:.6px;text-transform:uppercase;box-shadow:0 4px 12px rgba(200,162,75,.4)}
+    .plan-name{font-size:.76rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+    .plan-price{font-size:2.4rem;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
+    .plan-price .per{font-size:.8rem;font-weight:500;color:var(--muted)}
+    .plan-alt{font-size:.82rem;color:var(--muted);margin-top:8px}
+    .plan-alt b{color:var(--ink);font-weight:700}
+    .plan-alt .save{color:var(--green);font-weight:600}
+    .plan-note{font-size:.78rem;margin-top:12px;line-height:1.5}
+    .plan-note.founder{color:#8a6d1f;font-weight:600}
+    .plan-note.trial{color:var(--muted)}
+    .plan-desc{font-size:.82rem;color:var(--muted);margin-top:10px;line-height:1.45}
+    .plan-divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
+    .plan-features li{font-size:.83rem;color:var(--ink);display:flex;align-items:flex-start;gap:9px;line-height:1.45}
+    .plan-features li::before{content:"";width:16px;height:16px;flex-shrink:0;margin-top:1px;background-repeat:no-repeat;background-position:center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")}
+    .plan-features li.no{color:var(--muted2)}
+    .plan-features li.no::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238896a7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")}
+    .plan-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;padding:13px;border-radius:11px;font-size:.88rem;font-weight:700;margin-top:auto;transition:transform .15s,box-shadow .2s}
     .plan-btn:hover{transform:translateY(-1px)}
-    .plan-btn.secondary{background:var(--surface2);color:var(--text2)}
-    .plan-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 16px rgba(79,140,255,.3)}
-    .plan-btn.outline{background:transparent;color:var(--accent);border:1.5px solid rgba(79,140,255,.4)}
-    .plan-btn.disabled{background:transparent;color:var(--text2);border:1.5px dashed rgba(255,255,255,.15);cursor:not-allowed;opacity:.55;pointer-events:none}
-    .plan-pro{opacity:.8}
+    .plan-btn.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--border)}
+    .plan-btn.primary{background:var(--ink);color:#fff;box-shadow:0 6px 18px rgba(15,25,35,.2)}
 
     /* ── CTA ── */
-    .cta-section{padding:90px 20px;text-align:center}
-    .cta-section h2{font-size:2.2rem;font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
-    .cta-section p{color:var(--text2);margin-bottom:36px;font-size:1rem}
+    .cta-section{padding:96px 20px;text-align:center}
+    .cta-section h2{font-size:2.3rem;font-weight:800;letter-spacing:-.8px;margin-bottom:12px}
+    .cta-section p{color:var(--muted);margin-bottom:36px;font-size:1.05rem}
 
-    footer{padding:28px;text-align:center;font-size:.75rem;color:var(--text2);border-top:1px solid rgba(255,255,255,.04)}
+    /* ── FOOTER ── */
+    footer{padding:36px 20px;text-align:center;border-top:1px solid var(--border);background:var(--surface2)}
+    footer img{width:34px;height:34px;margin-bottom:12px;opacity:.9}
+    footer .fnote{font-size:.8rem;color:var(--muted);line-height:1.6}
+    footer .flinks{margin-top:12px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+    footer .flinks a{font-size:.8rem;color:var(--muted);font-weight:600}
+    footer .flinks a:hover{color:var(--accent)}
+
+    /* ── Reveal on scroll ── */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
 
     @media(max-width:768px){
-      .hero h1{font-size:2.5rem}
-      .showcase-block{grid-template-columns:1fr;gap:32px}
+      .hero h1{font-size:2.4rem}
+      .showcase-block{grid-template-columns:1fr;gap:34px;margin-top:56px}
       .showcase-block.reverse{direction:ltr}
-      .plans{grid-template-columns:1fr;max-width:380px;margin:40px auto 0}
-      .section-title{font-size:1.7rem}
+      .plans{grid-template-columns:1fr;max-width:400px;margin:34px auto 0}
+      .section-title{font-size:1.75rem}
+      .cta-section h2{font-size:1.9rem}
     }
     @media(max-width:480px){
       .hero h1{font-size:2rem}
-      .hero .subtitle{font-size:.95rem}
+      .hero .subtitle{font-size:.98rem}
+      .hero-badges{gap:14px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .reveal{transition:none;opacity:1;transform:none}
+      .scroll-hint{animation:none}
     }
   </style>
 </head>
@@ -159,94 +196,98 @@
 
   <!-- ── HERO ── -->
   <section class="hero">
-    <div class="hero-logo">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#1a1a2e"/><path d="M256 420 C256 420 120 290 120 200 A136 136 0 1 1 392 200 C392 290 256 420 256 420Z" fill="#4f8cff"/><circle cx="256" cy="200" r="56" fill="rgba(255,255,255,.92)"/><text x="256" y="218" text-anchor="middle" fill="#4f8cff" font-family="Arial,sans-serif" font-weight="800" font-size="60">C</text></svg>
-    </div>
-    <h1><span class="s1">M</span><span class="s2">o</span><span class="s3">i</span><span class="s4">n</span><span class="s5">s</span> <span class="s1">d</span><span class="s2">e</span> <span class="s3">r</span><span class="s4">o</span><span class="s5">u</span><span class="s1">t</span><span class="s2">e</span>,<br>plus de livraisons.</h1>
-    <p class="subtitle">CarGo optimise vos tournées en quelques secondes.<br><strong>Gagnez du temps</strong>, réduisez vos kilomètres, livrez plus.</p>
-    <a class="cta-btn" href="./CarGo/">Essayer gratuitement &rarr;</a>
-    <button class="install-btn" id="install-btn" onclick="installApp()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Installer l'app
-    </button>
-    <div class="ios-hint" id="ios-hint">
-      Appuyez sur <strong>Partager</strong> &#8594; <strong>Sur l'écran d'accueil</strong> pour installer CarGo comme une vraie app.
-    </div>
+    <img class="hero-icon" src="./img/logo_ateqo.png" alt="Logo ATEQO" />
+    <img class="hero-wordmark" src="./img/logo_text.png" alt="ATEQO" />
+    <h1>L'itinéraire qui te suit</h1>
+    <p class="subtitle">ATEQO optimise tes tournées en quelques secondes.<br><strong>Gagne du temps</strong>, réduis tes kilomètres, livre plus.</p>
+    <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+      <svg width="24" height="26" viewBox="0 0 40 44" aria-hidden="true">
+        <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#00d3ff"/><stop offset=".5" stop-color="#00c853"/><stop offset="1" stop-color="#ffca28"/>
+        </linearGradient></defs>
+        <path d="M3 3.2C2.4 3.5 2 4.2 2 5.1v33.8c0 .9.4 1.6 1 1.9l19.6-18.9z" fill="url(#pg)"/>
+        <path d="M3 3.2 22.6 21.9 28.4 16.3 6.7 3.9C5.4 3.1 4 3 3 3.2z" fill="#00d3ff" opacity=".85"/>
+        <path d="M3 40.8c1 .2 2.4.1 3.7-.7l21.7-12.4-5.8-5.8z" fill="#ffca28" opacity=".85"/>
+        <path d="M35.6 18.8 30 15.6l-6.4 6.3 6.4 6.3 5.6-3.2c1.8-1 1.8-3.4 0-4.4z" fill="#ff5252" opacity=".9"/>
+      </svg>
+      <span class="gp-txt"><small>Disponible sur</small><strong>Google Play</strong></span>
+    </a>
     <div class="hero-badges">
-      <span><span class="dot"></span> Gratuit</span>
-      <span><span class="dot"></span> Sans inscription</span>
-      <span><span class="dot"></span> iOS &amp; Android</span>
+      <span><span class="dot"></span> Essai Premium 14 jours</span>
+      <span><span class="dot"></span> Sans engagement</span>
+      <span><span class="dot"></span> Android</span>
     </div>
-    <div class="scroll-hint">&#8595;</div>
+    <div class="scroll-hint">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </div>
   </section>
 
   <!-- ── FOR WHO ── -->
   <section class="for-who">
     <h2>Pensé pour ceux qui roulent</h2>
     <div class="roles">
-      <div class="role">&#128666; Livreurs</div>
-      <div class="role">&#127949;&#65039; Coursiers</div>
-      <div class="role">&#128295; Techniciens</div>
-      <div class="role">&#127968; Agents immobiliers</div>
-      <div class="role">&#129658; Infirmiers libéraux</div>
-      <div class="role">&#128230; E-commerçants</div>
+      <div class="role"><i style="background:var(--s1)"></i>Livreurs</div>
+      <div class="role"><i style="background:var(--s2)"></i>Coursiers</div>
+      <div class="role"><i style="background:var(--s3)"></i>Techniciens</div>
+      <div class="role"><i style="background:var(--s4)"></i>Agents immobiliers</div>
+      <div class="role"><i style="background:var(--s5)"></i>Infirmiers libéraux</div>
+      <div class="role"><i style="background:var(--s1)"></i>E-commerçants</div>
     </div>
   </section>
 
-  <!-- ── SHOWCASE SECTEURS ── -->
+  <!-- ── SHOWCASE ── -->
   <section class="showcase">
     <p class="section-label">Fonctionnalités</p>
-    <h2 class="section-title">Organisez. Optimisez. Livrez.</h2>
-    <p class="section-sub">Deux outils puissants, un seul résultat : des tournées plus courtes et mieux structurées.</p>
+    <h2 class="section-title">Organise. Optimise. Livre.</h2>
+    <p class="section-sub">Deux outils, un seul résultat : des tournées plus courtes et mieux structurées.</p>
 
     <!-- Secteurs -->
-    <div class="showcase-block" style="margin-top:64px">
+    <div class="showcase-block reveal">
       <div class="showcase-text">
-        <h3>Découpez votre tournée<br>en <span class="road-text"><span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span><span class="s3">s</span> <span class="s4">i</span><span class="s5">n</span><span class="s1">t</span><span class="s2">e</span><span class="s3">l</span><span class="s4">l</span><span class="s5">i</span><span class="s1">g</span><span class="s2">e</span><span class="s3">n</span><span class="s4">t</span><span class="s5">s</span></span></h3>
-        <p>Regroupez vos adresses par zone géographique avec un simple double-tap. Chaque secteur a sa couleur, son ordre de passage, sa logique. L'algorithme optimise chaque secteur séparément pour un parcours cohérent et sans aller-retour inutiles.</p>
+        <h3>Découpe ta tournée<br>en secteurs intelligents</h3>
+        <p>Regroupe tes adresses par zone géographique d'un simple double-tap. Chaque secteur a sa couleur et son ordre de passage. ATEQO optimise chaque secteur séparément pour un parcours cohérent, sans aller-retour inutile.</p>
         <div class="showcase-pills">
-          <span class="pill pill-blue"><span class="pill-dot"></span>Secteur 1</span>
-          <span class="pill pill-pink"><span class="pill-dot"></span>Secteur 2</span>
-          <span class="pill pill-orange"><span class="pill-dot"></span>Secteur 3</span>
-          <span class="pill pill-cyan"><span class="pill-dot"></span>Secteur 4</span>
-          <span class="pill pill-violet"><span class="pill-dot"></span>Secteur 5</span>
+          <span class="pill"><i style="background:var(--s1)"></i>Secteur 1</span>
+          <span class="pill"><i style="background:var(--s2)"></i>Secteur 2</span>
+          <span class="pill"><i style="background:var(--s3)"></i>Secteur 3</span>
+          <span class="pill"><i style="background:var(--s4)"></i>Secteur 4</span>
+          <span class="pill"><i style="background:var(--s5)"></i>Secteur 5</span>
         </div>
       </div>
       <div class="showcase-img-wrap">
-        <img src="./img/sectors.png" alt="Carte CarGo avec secteurs colorés — tournée organisée par zones" />
+        <img src="./img/sectors.png" alt="Carte ATEQO avec secteurs colorés : tournée organisée par zones" loading="lazy" />
       </div>
     </div>
 
     <!-- Optimisation -->
-    <div class="showcase-block reverse" style="margin-top:80px">
+    <div class="showcase-block reverse reveal">
       <div class="showcase-text">
-        <h3>Un algorithme qui<br><span class="road-text"><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">e</span> <span class="s3">l</span><span class="s4">e</span> <span class="s5">m</span><span class="s1">e</span><span class="s2">i</span><span class="s3">l</span><span class="s4">l</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">r</span><span class="s2">e</span></span></h3>
-        <p>Saisissez vos adresses dans n'importe quel ordre. CarGo calcule en quelques secondes l'itinéraire le plus court en tenant compte des routes réelles — pas à vol d'oiseau. Le résultat s'affiche directement sur la carte avec le temps gagné.</p>
-        <p style="margin-top:12px">Verrouillez les adresses prioritaires à leur position et laissez CarGo optimiser le reste autour de vos contraintes.</p>
+        <h3>Un algorithme qui calcule<br>le meilleur ordre</h3>
+        <p>Saisis tes adresses dans n'importe quel ordre. ATEQO calcule en quelques secondes l'itinéraire le plus court sur routes réelles, pas à vol d'oiseau. Le temps gagné s'affiche directement sur la carte.</p>
+        <p>Verrouille les adresses prioritaires : ATEQO optimise le reste de la tournée autour de tes contraintes.</p>
       </div>
-      <div class="showcase-img-wrap" style="background:var(--surface);border-radius:20px;padding:32px 24px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.07)">
+      <div class="mock-frame">
         <div class="app-result-mock">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          <span>28 livraison(s) optimisée(s) &mdash; ~21 min gagnées&nbsp;!</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>28 arrêts optimisés&nbsp;— ~21 min gagnées</span>
         </div>
       </div>
     </div>
 
     <!-- Verrouillage -->
-    <div class="showcase-block" style="margin-top:80px">
+    <div class="showcase-block reveal">
       <div class="showcase-text">
-        <h3>Gardez le contrôle sur<br><span class="road-text"><span class="s1">c</span><span class="s2">h</span><span class="s3">a</span><span class="s4">q</span><span class="s5">u</span><span class="s1">e</span> <span class="s2">c</span><span class="s3">o</span><span class="s4">n</span><span class="s5">t</span><span class="s1">r</span><span class="s2">a</span><span class="s3">i</span><span class="s4">n</span><span class="s5">t</span><span class="s1">e</span></span></h3>
-        <p>Détour obligatoire, livraison à effectuer en dernier, adresse avec un créneau horaire précis — certaines positions ne peuvent pas être déplacées. Verrouillez-les, CarGo optimise intelligemment le reste de la tournée autour de vos contraintes.</p>
+        <h3>Garde le contrôle<br>sur chaque contrainte</h3>
+        <p>Détour obligatoire, livraison à faire en dernier, adresse avec un créneau horaire précis : certaines positions ne peuvent pas bouger. Verrouille-les, ATEQO optimise intelligemment le reste de la tournée autour.</p>
         <div class="showcase-pills">
-          <span class="pill pill-orange"><span class="pill-dot"></span>Adresse verrouillée</span>
-          <span class="pill pill-blue"><span class="pill-dot"></span>Optimisé autour</span>
+          <span class="pill"><i style="background:var(--s3)"></i>Adresse verrouillée</span>
+          <span class="pill"><i style="background:var(--s1)"></i>Optimisé autour</span>
         </div>
       </div>
       <div class="showcase-img-wrap">
-        <img src="./img/lock.png" alt="Verrouillage d'adresse dans CarGo" />
+        <img src="./img/lock.png" alt="Verrouillage d'une adresse dans ATEQO" loading="lazy" />
       </div>
     </div>
-
   </section>
 
   <!-- ── FEATURES ── -->
@@ -254,16 +295,73 @@
     <div class="features-inner">
       <p class="section-label">Ce qui est inclus</p>
       <h2 class="section-title">Des fonctionnalités qui comptent</h2>
-      <p class="section-sub">Tout ce dont vous avez besoin, rien de superflu.</p>
+      <p class="section-sub">Tout ce dont tu as besoin, rien de superflu.</p>
       <div class="features-grid">
-        <div class="fc"><div class="fc-icon" style="background:#1e2f4a;color:#3b82f6">&#9889;</div><h3>Optimisation en 1 clic</h3><p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#1e3a38;color:#0d9488">&#128451;&#65039;</div><h3>Secteurs de tournée</h3><p>Organisez vos adresses par zone. 2 secteurs en gratuit, jusqu'à 5 en Premium avec changement à la volée d'un double-tap.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#3a2a1e;color:#d97706">&#128274;</div><h3>Verrouillage de positions</h3><p>Vous avez un détour obligatoire ou une livraison à décaler ? Verrouillez cette adresse à sa place, CarGo optimise le reste autour.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#3a1e2e;color:#db2777">&#128506;&#65039;</div><h3>Guidage étape par étape</h3><p>Suivi GPS de votre progression. Google Maps s'ouvre automatiquement pour chaque livraison, sans manipulation.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#2a1e3a;color:#7c3aed">&#128221;</div><h3>Notes par livraison</h3><p>Code d'accès, étage, créneau — une note visible pendant toute la tournée.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#1e2f4a;color:#3b82f6">&#11088;</div><h3>Adresses favorites</h3><p>Mémorisez vos points de départ favoris pour commencer encore plus vite.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#1e3a38;color:#0d9488">&#128241;</div><h3>Installable sur mobile</h3><p>Ajoutez CarGo sur votre écran d'accueil. Fonctionne comme une vraie app, même hors-ligne.</p></div>
-        <div class="fc"><div class="fc-icon" style="background:#3a2a1e;color:#d97706">&#128640;</div><h3>Rapide et léger</h3><p>Aucune inscription, aucun téléchargement. Ouvrez et commencez en 10 secondes.</p></div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(59,130,246,.12);color:var(--s1)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          </div>
+          <h3>Optimisation en 1 clic</h3>
+          <p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(13,148,136,.12);color:var(--s2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+          </div>
+          <h3>Secteurs de tournée</h3>
+          <p>Organise tes adresses par zone. 2 secteurs en gratuit, 5 en Premium, avec bascule à la volée.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(217,119,6,.12);color:var(--s3)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>Verrouillage de positions</h3>
+          <p>Un détour obligatoire ? Verrouille l'adresse à sa place, ATEQO optimise le reste autour.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(219,39,119,.12);color:var(--s4)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          </div>
+          <h3>Guidage étape par étape</h3>
+          <p>Google Maps s'ouvre automatiquement pour chaque arrêt. Suis ta progression sans manipulation.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(124,58,237,.12);color:var(--s5)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          </div>
+          <h3>Notes par livraison</h3>
+          <p>Code d'accès, étage, créneau : une note visible pendant toute la tournée.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(200,162,75,.16);color:#b8912f">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+          </div>
+          <h3>Carnet d'adresses <span class="tag-premium">Premium</span></h3>
+          <p>Enregistre tes adresses récurrentes et ajoute-les en un tap à ta prochaine tournée.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(59,130,246,.12);color:var(--s1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+          </div>
+          <h3>Scan d'adresse</h3>
+          <p>Scanne une étiquette colis : ATEQO en extrait l'adresse et l'ajoute à ta tournée.</p>
+        </div>
+
+        <div class="fc reveal">
+          <div class="fc-icon" style="background:rgba(13,148,136,.12);color:var(--s2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+          </div>
+          <h3>Historique de tournées</h3>
+          <p>Sauvegarde et retrouve tes tournées passées pour les rejouer en un instant.</p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -274,25 +372,25 @@
       <p class="section-label">Comment ça marche</p>
       <h2 class="section-title">Opérationnel en 3 étapes</h2>
       <div class="steps">
-        <div class="step">
+        <div class="step reveal">
           <div class="step-num">1</div>
           <div class="step-text">
-            <h3>Entrez votre point de départ</h3>
-            <p>Votre adresse est mémorisée pour les prochaines fois. Marquez-la en favori en un tap.</p>
+            <h3>Définis ton point de départ</h3>
+            <p>Ton adresse est mémorisée pour la prochaine fois. Marque-la en favori en un tap.</p>
           </div>
         </div>
-        <div class="step">
+        <div class="step reveal">
           <div class="step-num">2</div>
           <div class="step-text">
-            <h3>Ajoutez vos adresses de livraison</h3>
-            <p>Autocomplétion intelligente, détection des noms d'entreprise, ajout rapide. Organisez par secteur si besoin.</p>
+            <h3>Ajoute tes adresses de livraison</h3>
+            <p>Autocomplétion, scan d'étiquette, dictée vocale. Organise par secteur si besoin.</p>
           </div>
         </div>
-        <div class="step">
+        <div class="step reveal">
           <div class="step-num">3</div>
           <div class="step-text">
-            <h3>Optimisez et partez</h3>
-            <p>Un clic pour calculer le meilleur itinéraire. Suivez votre progression et démarrez la navigation.</p>
+            <h3>Optimise et pars</h3>
+            <p>Un clic pour calculer le meilleur itinéraire. Suis ta progression et démarre la navigation.</p>
           </div>
         </div>
       </div>
@@ -304,132 +402,96 @@
     <div class="pricing-inner">
       <p class="section-label">Tarifs</p>
       <h2 class="section-title">Simple et transparent</h2>
-      <p class="section-sub">Commencez gratuitement. Passez Standard quand vous en avez besoin.</p>
-      <div class="plans">
+      <p class="section-sub">Commence gratuitement. Passe Premium quand tu roules tous les jours.</p>
 
+      <div class="founder-banner">
+        <strong>Offre fondateur</strong> — les premiers abonnés verrouillent leur tarif <strong>à vie</strong>. Ce prix ne bougera plus pour toi, même après la hausse.
+      </div>
+
+      <div class="plans">
         <!-- Gratuit -->
-        <div class="plan">
+        <div class="plan reveal">
           <div class="plan-name">Gratuit</div>
-          <div class="plan-price">0 €<span class="period">&nbsp;</span></div>
-          <p class="plan-desc">Pour découvrir et tester CarGo sans engagement.</p>
-          <hr class="plan-divider"/>
+          <div class="plan-price">0 <span class="per">€</span></div>
+          <p class="plan-desc">Pour découvrir ATEQO sans engagement.</p>
+          <hr class="plan-divider" />
           <ul class="plan-features">
             <li>10 adresses par tournée</li>
-            <li>2 secteurs (1 &amp; 2)</li>
-            <li>1 verrouillage d'adresse</li>
+            <li>2 secteurs actifs</li>
+            <li>3 optimisations par jour</li>
             <li>Navigation GPS</li>
-            <li class="no">Alertes de proximité</li>
-            <li class="no">Changement de secteur à la volée</li>
-            <li class="no">Accès secteurs 3, 4, 5</li>
+            <li>Notes par livraison</li>
+            <li class="no">Adresses illimitées</li>
+            <li class="no">Secteurs 3, 4 et 5</li>
+            <li class="no">Carnet d'adresses</li>
           </ul>
-          <a class="plan-btn secondary" href="./CarGo/">Commencer gratuitement</a>
+          <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Télécharger</a>
         </div>
 
-        <!-- Passe journée -->
-        <div class="plan">
-          <div class="plan-name">Passe journée</div>
-          <div class="plan-price">1<span class="cents">,99 €</span><span class="period">par jour</span></div>
-          <p class="plan-desc">Toutes les fonctionnalités Standard pour une journée complète.</p>
-          <hr class="plan-divider"/>
+        <!-- Premium -->
+        <div class="plan featured reveal">
+          <div class="plan-ribbon">Offre fondateur</div>
+          <div class="plan-name">Premium</div>
+          <div class="plan-price">13,99 <span class="per">€ / mois</span></div>
+          <p class="plan-alt">ou <b>139,99 € / an</b> <span class="save">— 2 mois offerts</span></p>
+          <p class="plan-note founder">Tarif fondateur verrouillé à vie</p>
+          <p class="plan-note trial">14 jours d'essai gratuit, sans engagement</p>
+          <hr class="plan-divider" />
           <ul class="plan-features">
             <li>Adresses illimitées</li>
-            <li>Tous les secteurs</li>
+            <li>5 secteurs actifs</li>
+            <li>Carnet d'adresses</li>
+            <li>Optimisation automatique en direct</li>
             <li>Verrouillages illimités</li>
-            <li>Navigation GPS</li>
             <li>Alertes de proximité</li>
-            <li>Changement de secteur à la volée</li>
-            <li>Valable 24h</li>
+            <li>Sans publicité</li>
           </ul>
-          <a class="plan-btn disabled" href="#">Bientôt disponible</a>
+          <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Essayer 14 jours gratuitement</a>
         </div>
-
-        <!-- Standard -->
-        <div class="plan popular">
-          <div class="plan-badge">POPULAIRE</div>
-          <div class="plan-name">Standard</div>
-          <div class="plan-price">12<span class="cents">,99 €</span><span class="period">par mois</span></div>
-          <p class="plan-desc">Pour les professionnels qui roulent tous les jours.</p>
-          <hr class="plan-divider"/>
-          <ul class="plan-features">
-            <li>Adresses illimitées</li>
-            <li>Tous les secteurs</li>
-            <li>Verrouillages illimités</li>
-            <li>Navigation GPS</li>
-            <li>Alertes de proximité</li>
-            <li>Changement de secteur à la volée</li>
-            <li>Sans engagement</li>
-          </ul>
-          <a class="plan-btn primary" href="./CarGo/#subscribe">Passer Standard</a>
-        </div>
-
-        <!-- Pro -->
-        <div class="plan plan-pro">
-          <div class="plan-name">Pro</div>
-          <div class="plan-price">24<span class="cents">,99 €</span><span class="period">par mois</span></div>
-          <p class="plan-desc">Pour les équipes et les pros qui veulent aller plus loin.</p>
-          <hr class="plan-divider"/>
-          <ul class="plan-features">
-            <li>Tout du Standard</li>
-            <li>Multi-tournées</li>
-            <li>Statistiques avancées</li>
-            <li>Historique illimité</li>
-            <li>Support prioritaire</li>
-            <li>Et bien plus encore…</li>
-          </ul>
-          <a class="plan-btn disabled" href="#">Bientôt disponible</a>
-        </div>
-
       </div>
     </div>
   </section>
 
   <!-- ── CTA ── -->
   <section class="cta-section">
-    <h2>Prêt à gagner du temps ?</h2>
-    <p>Votre première tournée optimisée en moins d'une minute.</p>
-    <a class="cta-btn" href="./CarGo/">Lancer CarGo &rarr;</a>
+    <h2>Prêt à optimiser ta tournée ?</h2>
+    <p>Ta première tournée optimisée en moins d'une minute.</p>
+    <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+      <svg width="24" height="26" viewBox="0 0 40 44" aria-hidden="true">
+        <path d="M3 3.2C2.4 3.5 2 4.2 2 5.1v33.8c0 .9.4 1.6 1 1.9l19.6-18.9z" fill="url(#pg)"/>
+        <path d="M3 3.2 22.6 21.9 28.4 16.3 6.7 3.9C5.4 3.1 4 3 3 3.2z" fill="#00d3ff" opacity=".85"/>
+        <path d="M3 40.8c1 .2 2.4.1 3.7-.7l21.7-12.4-5.8-5.8z" fill="#ffca28" opacity=".85"/>
+        <path d="M35.6 18.8 30 15.6l-6.4 6.3 6.4 6.3 5.6-3.2c1.8-1 1.8-3.4 0-4.4z" fill="#ff5252" opacity=".9"/>
+      </svg>
+      <span class="gp-txt"><small>Disponible sur</small><strong>Google Play</strong></span>
+    </a>
   </section>
 
-  <footer>&copy; 2026 CarGo &mdash; Planification intelligente de tournées</footer>
+  <!-- ── FOOTER ── -->
+  <footer>
+    <img src="./img/logo_ateqo.png" alt="ATEQO" />
+    <p class="fnote">&copy; 2026 ATEQO — L'itinéraire qui te suit</p>
+    <div class="flinks">
+      <a href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Google Play</a>
+      <a href="mailto:lkqmlr.dev@gmail.com">Contact</a>
+    </div>
+  </footer>
 
   <script>
-    let _installPrompt = null;
-    const installBtn = document.getElementById('install-btn');
-    const iosHint = document.getElementById('ios-hint');
-
-    // Déjà installée ?
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    if (!isStandalone) {
-      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-      if (isIOS && isSafari) {
-        iosHint.classList.add('visible');
-      } else {
-        window.addEventListener('beforeinstallprompt', function(e) {
-          e.preventDefault();
-          _installPrompt = e;
-          installBtn.classList.add('visible');
-        });
+    // Reveal on scroll (progressive enhancement)
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window) || !els.length) {
+        els.forEach(function (el) { el.classList.add('in'); });
+        return;
       }
-    }
-
-    function installApp() {
-      if (!_installPrompt) return;
-      _installPrompt.prompt();
-      _installPrompt.userChoice.then(function(result) {
-        if (result.outcome === 'accepted') {
-          installBtn.classList.remove('visible');
-        }
-        _installPrompt = null;
-      });
-    }
-
-    window.addEventListener('appinstalled', function() {
-      installBtn.classList.remove('visible');
-      iosHint.classList.remove('visible');
-    });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+      els.forEach(function (el) { io.observe(el); });
+    })();
   </script>
 
 </body>

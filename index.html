@@ -46,13 +46,10 @@
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%}
 
-    /* ── Bouton Google Play ── */
-    .gplay{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:#fff;padding:13px 26px 13px 22px;border-radius:14px;box-shadow:0 8px 30px rgba(15,25,35,.22);transition:transform .2s,box-shadow .2s}
-    .gplay:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(15,25,35,.3)}
-    .gplay svg{flex-shrink:0}
-    .gplay .gp-txt{display:flex;flex-direction:column;line-height:1.05;text-align:left}
-    .gplay .gp-txt small{font-size:.6rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;opacity:.8}
-    .gplay .gp-txt strong{font-size:1.15rem;font-weight:700;letter-spacing:.2px}
+    /* ── Bouton Google Play (badge officiel) ── */
+    .gplay{display:inline-flex;filter:drop-shadow(0 8px 22px rgba(15,25,35,.22));transition:transform .2s,filter .2s;border-radius:14px}
+    .gplay:hover{transform:translateY(-2px);filter:drop-shadow(0 12px 30px rgba(15,25,35,.3))}
+    .gplay img{height:58px;width:auto;display:block}
 
     /* ── BRAND MARK (coin, persistant) ── */
     .brand-mark{position:fixed;top:20px;left:20px;z-index:50;display:flex;line-height:0}
@@ -61,9 +58,8 @@
     /* ── HERO ── */
     .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 20px 80px;position:relative;overflow:hidden}
     .hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:760px;background:radial-gradient(ellipse,rgba(37,99,235,.10) 0%,rgba(124,58,237,.05) 42%,transparent 70%);pointer-events:none}
-    .hero-wordmark{width:min(300px,68vw);filter:drop-shadow(0 2px 5px rgba(15,25,35,.10))}
-    .hero-tagline{font-size:1.05rem;font-weight:600;color:var(--ink);letter-spacing:-.2px;margin-top:2px;margin-bottom:30px}
-    .hero h1{font-size:2.9rem;font-weight:800;letter-spacing:-1.3px;line-height:1.15;max-width:20ch}
+    .hero-wordmark{width:min(380px,82vw);margin-bottom:34px;filter:drop-shadow(0 2px 6px rgba(15,25,35,.10))}
+    .hero h1{font-size:clamp(.6rem,3.3vw,2.6rem);font-weight:800;letter-spacing:-1px;line-height:1.15;white-space:nowrap}
     .hero h1 .hl{color:var(--ink)}
     .hero h1 .hl-1{color:var(--s1)}
     .hero h1 .hl-2{color:var(--s2)}
@@ -106,18 +102,27 @@
     .app-result-mock span{font-size:1rem;font-weight:600;color:#15803d;line-height:1.4}
     .mock-frame{background:var(--surface);border-radius:20px;padding:34px 26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);box-shadow:0 18px 50px rgba(15,25,35,.10)}
 
-    /* Maquette "prochain arrêt" (navigation adaptative) */
-    .ns-mock{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px}
-    .ns-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:2px}
-    .ns-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface2)}
-    .ns-row.ns-reco{background:rgba(37,99,235,.06);border-color:rgba(37,99,235,.35)}
-    .ns-mark{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem}
-    .ns-reco .ns-mark{background:var(--accent);color:#fff}
-    .ns-row:not(.ns-reco) .ns-mark{background:var(--border);color:var(--muted2)}
-    .ns-info{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
-    .ns-info strong{font-size:.83rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .ns-info span{font-size:.72rem;color:var(--muted)}
-    .ns-tag{font-size:.62rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.4px;flex-shrink:0}
+    /* Maquette "prochaine destination" (navigation adaptative) — reprend les
+       couleurs reelles de l'app (recommande = or/premium, pas accent bleu). */
+    .ns-mock{width:100%;max-width:320px;display:flex;flex-direction:column;gap:16px}
+    .ns-head{border:1.5px solid var(--s1);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden}
+    .ns-head::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--s1),var(--s2),var(--s3),var(--s4),var(--s5))}
+    .ns-head-top{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
+    .ns-head-title{font-size:.68rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--ink)}
+    .ns-head-badge{font-size:.64rem;font-weight:700;color:#fff;background:var(--ink);padding:3px 9px;border-radius:50px;white-space:nowrap}
+    .ns-head-dots{display:flex;justify-content:center;gap:9px;margin:12px 0}
+    .ns-head-dots i{width:13px;height:13px;border-radius:50%;display:block}
+    .ns-head-msg{text-align:center;font-size:.74rem;color:var(--muted)}
+    .ns-section-label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted2);margin-bottom:8px}
+    .ns-card{display:flex;flex-direction:column;gap:2px;padding:11px 14px;border-radius:10px;border-left:3px solid var(--s1);background:var(--surface2);position:relative}
+    .ns-card + .ns-card{margin-top:8px}
+    .ns-card.ns-reco{border-left-color:var(--gold);background:rgba(200,162,75,.10)}
+    .ns-badge{font-size:.66rem;font-weight:800;letter-spacing:.3px;color:#a9822f;margin-bottom:2px}
+    .ns-name{font-size:.85rem;font-weight:700;color:var(--accent)}
+    .ns-detail{font-size:.78rem;color:var(--ink)}
+    .ns-dist{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px;margin-top:2px}
+    .ns-card.ns-reco .ns-dist{color:#a9822f;font-weight:600}
+    .ns-chev{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted2)}
 
     /* ── FEATURES ── */
     .features{padding:88px 20px;background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -198,7 +203,6 @@
     .reveal.in{opacity:1;transform:none}
 
     @media(max-width:768px){
-      .hero h1{font-size:2.4rem}
       .showcase-block{grid-template-columns:1fr;gap:34px;margin-top:56px}
       .showcase-block.reverse{direction:ltr}
       .features-grid{grid-template-columns:1fr}
@@ -207,7 +211,6 @@
       .cta-section h2{font-size:1.9rem}
     }
     @media(max-width:480px){
-      .hero h1{font-size:2rem}
       .hero .subtitle{font-size:.98rem}
       .hero-badges{gap:14px}
     }
@@ -227,21 +230,11 @@
 
   <!-- ── HERO ── -->
   <section class="hero" id="top">
-    <img class="hero-wordmark" src="./img/logo_text.png" alt="ATEQO" />
-    <p class="hero-tagline">L'itinéraire qui te suit</p>
+    <img class="hero-wordmark" src="./img/logo_hero.png" alt="ATEQO — L'itinéraire qui te suit" />
     <h1>Livrez <span class="hl hl-1">plus.</span> Gagnez <span class="hl hl-2">plus.</span> Gérez <span class="hl hl-3">mieux.</span></h1>
-    <p class="subtitle">ATEQO optimise tes tournées en quelques secondes. Gagne du temps, économise du carburant et choisis librement ton prochain arrêt.</p>
+    <p class="subtitle">ATEQO <strong>optimise</strong> tes tournées en quelques secondes. Gagne du temps, <strong>économise du carburant</strong> et <strong>choisis librement</strong> ton prochain arrêt.</p>
     <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-      <svg width="24" height="26" viewBox="0 0 40 44" aria-hidden="true">
-        <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#00d3ff"/><stop offset=".5" stop-color="#00c853"/><stop offset="1" stop-color="#ffca28"/>
-        </linearGradient></defs>
-        <path d="M3 3.2C2.4 3.5 2 4.2 2 5.1v33.8c0 .9.4 1.6 1 1.9l19.6-18.9z" fill="url(#pg)"/>
-        <path d="M3 3.2 22.6 21.9 28.4 16.3 6.7 3.9C5.4 3.1 4 3 3 3.2z" fill="#00d3ff" opacity=".85"/>
-        <path d="M3 40.8c1 .2 2.4.1 3.7-.7l21.7-12.4-5.8-5.8z" fill="#ffca28" opacity=".85"/>
-        <path d="M35.6 18.8 30 15.6l-6.4 6.3 6.4 6.3 5.6-3.2c1.8-1 1.8-3.4 0-4.4z" fill="#ff5252" opacity=".9"/>
-      </svg>
-      <span class="gp-txt"><small>Disponible sur</small><strong>Google Play</strong></span>
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" alt="Disponible sur Google Play" />
     </a>
     <div class="hero-badges">
       <span><span class="dot"></span> Essai Premium 14 jours</span>
@@ -276,7 +269,7 @@
     <div class="showcase-block reveal">
       <div class="showcase-text">
         <h3>Découpe ta tournée<br>en secteurs intelligents</h3>
-        <p>Regroupe tes adresses par zone géographique d'un simple double-tap. Chaque secteur a sa couleur et son ordre de passage. ATEQO optimise chaque secteur séparément pour un parcours cohérent, sans aller-retour inutile.</p>
+        <p>Regroupe tes adresses par zone géographique en un tap. Chaque secteur a sa couleur et son ordre de passage. ATEQO optimise chaque secteur séparément pour un parcours cohérent, sans aller-retour inutile.</p>
         <div class="showcase-pills">
           <span class="pill"><i style="background:var(--s1)"></i>Secteur 1</span>
           <span class="pill"><i style="background:var(--s2)"></i>Secteur 2</span>
@@ -312,25 +305,63 @@
         <p>L'ordre optimisé reste une recommandation, jamais une contrainte. À chaque arrêt livré, ATEQO indique le prochain arrêt le plus logique, mais tu restes libre d'en choisir un autre à tout moment.</p>
         <p>Le guidage Google Maps s'ajuste instantanément à ton choix, sans recalcul manuel.</p>
         <div class="showcase-pills">
-          <span class="pill"><i style="background:var(--accent)"></i>Arrêt recommandé</span>
+          <span class="pill"><i style="background:var(--gold)"></i>Arrêt recommandé</span>
           <span class="pill"><i style="background:var(--s1)"></i>Choix toujours libre</span>
         </div>
       </div>
       <div class="mock-frame">
         <div class="ns-mock">
-          <div class="ns-title">Prochain arrêt</div>
-          <div class="ns-row ns-reco">
-            <span class="ns-mark">★</span>
-            <div class="ns-info"><strong>12 Rue de la Paix</strong><span>0,4 km · 2 min</span></div>
-            <span class="ns-tag">Recommandé</span>
+          <div class="ns-head">
+            <div class="ns-head-top">
+              <span class="ns-head-title">Prochaine destination</span>
+              <span class="ns-head-badge">Livré 6/18</span>
+            </div>
+            <div class="ns-head-dots">
+              <i style="background:var(--s1)"></i><i style="background:var(--s2)"></i><i style="background:var(--s3)"></i><i style="background:var(--s4)"></i><i style="background:var(--s5)"></i>
+            </div>
+            <p class="ns-head-msg">Choisis une adresse de livraison ci-dessous.</p>
           </div>
-          <div class="ns-row">
-            <span class="ns-mark">2</span>
-            <div class="ns-info"><strong>8 Avenue Foch</strong><span>0,9 km · 3 min</span></div>
+
+          <div>
+            <p class="ns-section-label">Recommandé — ordre optimisé</p>
+            <div class="ns-card ns-reco">
+              <span class="ns-badge">★ Recommandé</span>
+              <span class="ns-name">Santé Atlantique</span>
+              <span class="ns-detail">Av. Claude Bernard, 44800 Saint-Herblain</span>
+              <span class="ns-dist">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                0,4 km · 2 min
+              </span>
+              <span class="ns-chev">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </span>
+            </div>
           </div>
-          <div class="ns-row">
-            <span class="ns-mark">3</span>
-            <div class="ns-info"><strong>21 Rue de Rivoli</strong><span>1,2 km · 4 min</span></div>
+
+          <div>
+            <p class="ns-section-label">Les plus proches</p>
+            <div class="ns-card">
+              <span class="ns-name">48 Quai Émile Cormerais</span>
+              <span class="ns-detail">44800 Saint-Herblain</span>
+              <span class="ns-dist">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                0,9 km · 3 min
+              </span>
+              <span class="ns-chev">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </span>
+            </div>
+            <div class="ns-card">
+              <span class="ns-name">35 Rue Robert Schuman</span>
+              <span class="ns-detail">44800 Saint-Herblain</span>
+              <span class="ns-dist">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                1,2 km · 4 min
+              </span>
+              <span class="ns-chev">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -532,13 +563,7 @@
     <h2>Prêt à optimiser ta tournée ?</h2>
     <p>Ta première tournée optimisée en moins d'une minute.</p>
     <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-      <svg width="24" height="26" viewBox="0 0 40 44" aria-hidden="true">
-        <path d="M3 3.2C2.4 3.5 2 4.2 2 5.1v33.8c0 .9.4 1.6 1 1.9l19.6-18.9z" fill="url(#pg)"/>
-        <path d="M3 3.2 22.6 21.9 28.4 16.3 6.7 3.9C5.4 3.1 4 3 3 3.2z" fill="#00d3ff" opacity=".85"/>
-        <path d="M3 40.8c1 .2 2.4.1 3.7-.7l21.7-12.4-5.8-5.8z" fill="#ffca28" opacity=".85"/>
-        <path d="M35.6 18.8 30 15.6l-6.4 6.3 6.4 6.3 5.6-3.2c1.8-1 1.8-3.4 0-4.4z" fill="#ff5252" opacity=".9"/>
-      </svg>
-      <span class="gp-txt"><small>Disponible sur</small><strong>Google Play</strong></span>
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" alt="Disponible sur Google Play" />
     </a>
   </section>
 

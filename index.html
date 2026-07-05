@@ -55,7 +55,12 @@
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%}
 
-    .panel{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scroll-snap-align:start;position:relative}
+    /* PAS d'overscroll-behavior:contain ici : le panneau couvre tout l'ecran et
+       quand son contenu tient (rien a defiler dedans), le geste tactile doit
+       CHAINER vers le document pour atteindre la section suivante — contain
+       l'interdisait et figeait la page sur mobile (GSAP masquait le bug sur
+       desktop en pilotant window directement). */
+    .panel{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-align:start;position:relative}
     /* .pin : contenu centre verticalement quand il tient, defile quand il deborde.
        Le debordement est porte par .panel (bloc), jamais par un flex, pour eviter
        le rognage du haut connu avec justify-content:center. */

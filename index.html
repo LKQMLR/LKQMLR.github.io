@@ -41,8 +41,14 @@
       --s1:#3b82f6;--s2:#0d9488;--s3:#d97706;--s4:#db2777;--s5:#7c3aed;
       --radius:16px;
     }
-    html{scroll-behavior:smooth}
-    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
+    /* Scroll-snap doux : chaque section s'aligne sous le bandeau fixe (64px)
+       en s'approchant. `proximity` (et non `mandatory`) evite de pieger le
+       lecteur dans les sections plus hautes que l'ecran (features, tarifs). */
+    html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:64px}
+    /* overflow-x:clip (et non hidden) pour ne pas transformer <body> en
+       conteneur de defilement, ce qui volerait le snap a <html>. */
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased;line-height:1.5}
+    body>section,body>footer{scroll-snap-align:start}
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%}
 
@@ -177,6 +183,8 @@
     .plan-btn:hover{transform:translateY(-1px)}
     .plan-btn.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--border)}
     .plan-btn.primary{background:var(--ink);color:#fff;box-shadow:0 6px 18px rgba(15,25,35,.2)}
+    .plan-note.founder sup{font-size:.7em;font-weight:800}
+    .pricing-footnote{max-width:600px;margin:26px auto 0;text-align:center;font-size:.74rem;line-height:1.55;color:var(--muted2)}
 
     /* ── CTA ── */
     .cta-section{padding:96px 20px;text-align:center}
@@ -208,9 +216,10 @@
       .hero-badges{gap:14px}
       .top-bar{height:56px;padding:0 14px}
       .hero{padding-top:92px}
+      html{scroll-padding-top:56px}
     }
     @media(prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
+      html{scroll-behavior:auto;scroll-snap-type:none}
       .reveal{transition:none;opacity:1;transform:none}
       .scroll-hint{animation:none}
     }
@@ -281,7 +290,7 @@
         </div>
       </div>
       <div class="showcase-img-wrap">
-        <img src="./img/sectors.png" data-i18n-alt="showcase.b1.img.alt" alt="Carte ATEQO avec secteurs colorés : tournée organisée par zones" loading="lazy" />
+        <img src="./img/sectors.png" width="674" height="677" data-i18n-alt="showcase.b1.img.alt" alt="Carte ATEQO avec secteurs colorés : tournée organisée par zones" loading="lazy" />
       </div>
     </div>
 
@@ -312,7 +321,7 @@
         </div>
       </div>
       <div class="showcase-img-wrap">
-        <img src="./img/nav_adaptative.png" data-i18n-alt="showcase.b3.img.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches proposées librement" loading="lazy" />
+        <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="showcase.b3.img.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches proposées librement" loading="lazy" />
       </div>
     </div>
   </section>
@@ -470,7 +479,7 @@
         <div class="plan reveal">
           <div class="plan-name" data-i18n="pricing.monthly.name">Premium mensuel</div>
           <div class="plan-price" data-i18n-html="pricing.monthly.price">13,99 <span class="per">€ / mois</span></div>
-          <p class="plan-note founder" data-i18n="pricing.premium.founder">Tarif fondateur verrouillé à vie</p>
+          <p class="plan-note founder" data-i18n-html="pricing.premium.founder">Tarif fondateur verrouillé à vie<sup>*</sup> · offre à durée limitée</p>
           <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
           <hr class="plan-divider" />
           <ul class="plan-features">
@@ -490,7 +499,7 @@
           <div class="plan-name" data-i18n="pricing.annual.name">Premium annuel</div>
           <div class="plan-price" data-i18n-html="pricing.annual.price">139,99 <span class="per">€ / an</span></div>
           <p class="plan-alt" data-i18n-html="pricing.annual.alt">soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span></p>
-          <p class="plan-note founder" data-i18n="pricing.premium.founder">Tarif fondateur verrouillé à vie</p>
+          <p class="plan-note founder" data-i18n-html="pricing.premium.founder">Tarif fondateur verrouillé à vie<sup>*</sup> · offre à durée limitée</p>
           <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
           <hr class="plan-divider" />
           <ul class="plan-features">
@@ -504,6 +513,7 @@
           <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
         </div>
       </div>
+      <p class="pricing-footnote" data-i18n="pricing.footnote">* Le tarif fondateur est acquis à vie après ton premier mois d'abonnement effectivement payé, au-delà des 14 jours d'essai gratuit.</p>
     </div>
   </section>
 
@@ -620,7 +630,8 @@
         'pricing.annual.name': 'Premium annuel',
         'pricing.annual.price': '139,99 <span class="per">€ / an</span>',
         'pricing.annual.alt': 'soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span>',
-        'pricing.premium.founder': 'Tarif fondateur verrouillé à vie · offre à durée limitée',
+        'pricing.premium.founder': 'Tarif fondateur verrouillé à vie<sup>*</sup> · offre à durée limitée',
+        'pricing.footnote': "* Le tarif fondateur est acquis à vie après ton premier mois d'abonnement effectivement payé, au-delà des 14 jours d'essai gratuit.",
         'pricing.premium.trial': "14 jours d'essai gratuit, sans engagement",
         'pricing.premium.f1': 'Adresses illimitées',
         'pricing.premium.f2': '5 secteurs actifs',
@@ -726,7 +737,8 @@
         'pricing.annual.name': 'Annual Premium',
         'pricing.annual.price': '€139.99 <span class="per">/ year</span>',
         'pricing.annual.alt': 'or <b>~€11.67 / month</b> <span class="save">— cheaper than monthly</span>',
-        'pricing.premium.founder': 'Founder price locked in for life · limited-time offer',
+        'pricing.premium.founder': 'Founder price locked in for life<sup>*</sup> · limited-time offer',
+        'pricing.footnote': '* The founder price is secured for life after your first fully paid month of subscription, beyond the 14-day free trial.',
         'pricing.premium.trial': '14-day free trial, no commitment',
         'pricing.premium.f1': 'Unlimited addresses',
         'pricing.premium.f2': '5 active sectors',

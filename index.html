@@ -54,12 +54,20 @@
     .gplay .gp-txt small{font-size:.6rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;opacity:.8}
     .gplay .gp-txt strong{font-size:1.15rem;font-weight:700;letter-spacing:.2px}
 
+    /* ── BRAND MARK (coin, persistant) ── */
+    .brand-mark{position:fixed;top:20px;left:20px;z-index:50;display:flex;line-height:0}
+    .brand-mark img{width:38px;height:38px;filter:drop-shadow(0 3px 10px rgba(15,25,35,.18))}
+
     /* ── HERO ── */
     .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 20px 80px;position:relative;overflow:hidden}
     .hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:760px;background:radial-gradient(ellipse,rgba(37,99,235,.10) 0%,rgba(124,58,237,.05) 42%,transparent 70%);pointer-events:none}
-    .hero-icon{width:56px;height:56px;margin-bottom:22px;filter:drop-shadow(0 6px 18px rgba(15,25,35,.16))}
-    .hero-wordmark{width:min(320px,72vw);margin-bottom:26px;filter:drop-shadow(0 2px 5px rgba(15,25,35,.10))}
-    .hero h1{font-size:3.3rem;font-weight:800;letter-spacing:-1.5px;line-height:1.08;max-width:14ch}
+    .hero-wordmark{width:min(300px,68vw);filter:drop-shadow(0 2px 5px rgba(15,25,35,.10))}
+    .hero-tagline{font-size:1.05rem;font-weight:600;color:var(--ink);letter-spacing:-.2px;margin-top:2px;margin-bottom:30px}
+    .hero h1{font-size:2.9rem;font-weight:800;letter-spacing:-1.3px;line-height:1.15;max-width:20ch}
+    .hero h1 .hl{color:var(--ink)}
+    .hero h1 .hl-1{color:var(--s1)}
+    .hero h1 .hl-2{color:var(--s2)}
+    .hero h1 .hl-3{color:var(--s3)}
     .hero .subtitle{font-size:1.12rem;color:var(--muted);margin-top:20px;max-width:540px;line-height:1.65}
     .hero .subtitle strong{color:var(--ink);font-weight:600}
     .hero .gplay{margin-top:36px}
@@ -98,11 +106,24 @@
     .app-result-mock span{font-size:1rem;font-weight:600;color:#15803d;line-height:1.4}
     .mock-frame{background:var(--surface);border-radius:20px;padding:34px 26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);box-shadow:0 18px 50px rgba(15,25,35,.10)}
 
+    /* Maquette "prochain arrêt" (navigation adaptative) */
+    .ns-mock{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px}
+    .ns-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:2px}
+    .ns-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface2)}
+    .ns-row.ns-reco{background:rgba(37,99,235,.06);border-color:rgba(37,99,235,.35)}
+    .ns-mark{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem}
+    .ns-reco .ns-mark{background:var(--accent);color:#fff}
+    .ns-row:not(.ns-reco) .ns-mark{background:var(--border);color:var(--muted2)}
+    .ns-info{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+    .ns-info strong{font-size:.83rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ns-info span{font-size:.72rem;color:var(--muted)}
+    .ns-tag{font-size:.62rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.4px;flex-shrink:0}
+
     /* ── FEATURES ── */
     .features{padding:88px 20px;background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
     .features-inner{max-width:980px;margin:0 auto}
     .features-inner .section-sub{margin-bottom:48px}
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:40px}
+    .features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
     .fc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px 22px;transition:transform .2s,box-shadow .2s;box-shadow:0 1px 3px rgba(15,25,35,.04)}
     .fc:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,25,35,.10)}
     .fc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
@@ -110,6 +131,9 @@
     .fc h3{font-size:.98rem;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:8px}
     .fc p{font-size:.85rem;color:var(--muted);line-height:1.6}
     .tag-premium{display:inline-flex;align-items:center;font-size:.56rem;font-weight:700;color:#8a6d1f;background:rgba(200,162,75,.16);padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px}
+    .features-kicker{text-align:center;font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2);margin-bottom:18px}
+    .features-kicker.second{margin-top:44px}
+    .fc.flagship{border-color:rgba(37,99,235,.22)}
 
     /* ── HOW ── */
     .how{padding:92px 20px}
@@ -121,16 +145,17 @@
     .step:nth-child(1) .step-num{background:var(--s1);box-shadow:0 5px 16px rgba(59,130,246,.35)}
     .step:nth-child(2) .step-num{background:var(--s2);box-shadow:0 5px 16px rgba(13,148,136,.35)}
     .step:nth-child(3) .step-num{background:var(--s3);box-shadow:0 5px 16px rgba(217,119,6,.35)}
+    .step-kicker{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);margin-bottom:4px}
     .step-text h3{font-size:1.02rem;font-weight:700;margin-bottom:5px}
     .step-text p{font-size:.88rem;color:var(--muted);line-height:1.6}
 
     /* ── PRICING ── */
     .pricing{padding:92px 20px;background:var(--surface2);border-top:1px solid var(--border)}
-    .pricing-inner{max-width:760px;margin:0 auto}
+    .pricing-inner{max-width:980px;margin:0 auto}
     .pricing-inner .section-sub{margin-bottom:16px}
-    .founder-banner{max-width:520px;margin:22px auto 0;background:linear-gradient(135deg,rgba(200,162,75,.14),rgba(200,162,75,.06));border:1px solid rgba(200,162,75,.4);border-radius:14px;padding:14px 20px;text-align:center;font-size:.86rem;color:#8a6d1f;font-weight:600;line-height:1.5}
+    .founder-banner{max-width:560px;margin:22px auto 0;background:linear-gradient(135deg,rgba(200,162,75,.14),rgba(200,162,75,.06));border:1px solid rgba(200,162,75,.4);border-radius:14px;padding:14px 20px;text-align:center;font-size:.86rem;color:#8a6d1f;font-weight:600;line-height:1.5}
     .founder-banner strong{color:#6f5615}
-    .plans{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px}
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;align-items:stretch}
     .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px 26px;position:relative;display:flex;flex-direction:column}
     .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 16px 44px rgba(200,162,75,.16)}
     .plan-ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;font-size:.66rem;font-weight:700;padding:5px 16px;border-radius:50px;white-space:nowrap;letter-spacing:.6px;text-transform:uppercase;box-shadow:0 4px 12px rgba(200,162,75,.4)}
@@ -176,6 +201,7 @@
       .hero h1{font-size:2.4rem}
       .showcase-block{grid-template-columns:1fr;gap:34px;margin-top:56px}
       .showcase-block.reverse{direction:ltr}
+      .features-grid{grid-template-columns:1fr}
       .plans{grid-template-columns:1fr;max-width:400px;margin:34px auto 0}
       .section-title{font-size:1.75rem}
       .cta-section h2{font-size:1.9rem}
@@ -194,12 +220,17 @@
 </head>
 <body>
 
+  <!-- ── BRAND MARK (coin, persistant) ── -->
+  <a class="brand-mark" href="#top" aria-label="ATEQO — retour en haut">
+    <img src="./img/logo_ateqo.png" alt="" />
+  </a>
+
   <!-- ── HERO ── -->
-  <section class="hero">
-    <img class="hero-icon" src="./img/logo_ateqo.png" alt="Logo ATEQO" />
+  <section class="hero" id="top">
     <img class="hero-wordmark" src="./img/logo_text.png" alt="ATEQO" />
-    <h1>L'itinéraire qui te suit</h1>
-    <p class="subtitle">ATEQO optimise tes tournées en quelques secondes.<br><strong>Gagne du temps</strong>, réduis tes kilomètres, livre plus.</p>
+    <p class="hero-tagline">L'itinéraire qui te suit</p>
+    <h1>Livrez <span class="hl hl-1">plus.</span> Gagnez <span class="hl hl-2">plus.</span> Gérez <span class="hl hl-3">mieux.</span></h1>
+    <p class="subtitle">ATEQO optimise tes tournées en quelques secondes. Gagne du temps, économise du carburant et choisis librement ton prochain arrêt.</p>
     <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
       <svg width="24" height="26" viewBox="0 0 40 44" aria-hidden="true">
         <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
@@ -226,10 +257,10 @@
   <section class="for-who">
     <h2>Pensé pour ceux qui roulent</h2>
     <div class="roles">
-      <div class="role"><i style="background:var(--s1)"></i>Livreurs</div>
-      <div class="role"><i style="background:var(--s2)"></i>Coursiers</div>
-      <div class="role"><i style="background:var(--s3)"></i>Techniciens</div>
-      <div class="role"><i style="background:var(--s4)"></i>Agents immobiliers</div>
+      <div class="role"><i style="background:var(--s1)"></i>Livreurs de colis</div>
+      <div class="role"><i style="background:var(--s2)"></i>Coursiers express</div>
+      <div class="role"><i style="background:var(--s3)"></i>Livreurs de repas</div>
+      <div class="role"><i style="background:var(--s4)"></i>Artisans &amp; techniciens</div>
       <div class="role"><i style="background:var(--s5)"></i>Infirmiers libéraux</div>
       <div class="role"><i style="background:var(--s1)"></i>E-commerçants</div>
     </div>
@@ -264,7 +295,7 @@
       <div class="showcase-text">
         <h3>Un algorithme qui calcule<br>le meilleur ordre</h3>
         <p>Saisis tes adresses dans n'importe quel ordre. ATEQO calcule en quelques secondes l'itinéraire le plus court sur routes réelles, pas à vol d'oiseau. Le temps gagné s'affiche directement sur la carte.</p>
-        <p>Verrouille les adresses prioritaires : ATEQO optimise le reste de la tournée autour de tes contraintes.</p>
+        <p>Chaque secteur est optimisé séparément, pour un parcours cohérent sans aller-retour inutile.</p>
       </div>
       <div class="mock-frame">
         <div class="app-result-mock">
@@ -274,18 +305,34 @@
       </div>
     </div>
 
-    <!-- Verrouillage -->
+    <!-- Navigation adaptative -->
     <div class="showcase-block reveal">
       <div class="showcase-text">
-        <h3>Garde le contrôle<br>sur chaque contrainte</h3>
-        <p>Détour obligatoire, livraison à faire en dernier, adresse avec un créneau horaire précis : certaines positions ne peuvent pas bouger. Verrouille-les, ATEQO optimise intelligemment le reste de la tournée autour.</p>
+        <h3>Une navigation<br>qui s'adapte à toi</h3>
+        <p>L'ordre optimisé reste une recommandation, jamais une contrainte. À chaque arrêt livré, ATEQO indique le prochain arrêt le plus logique, mais tu restes libre d'en choisir un autre à tout moment.</p>
+        <p>Le guidage Google Maps s'ajuste instantanément à ton choix, sans recalcul manuel.</p>
         <div class="showcase-pills">
-          <span class="pill"><i style="background:var(--s3)"></i>Adresse verrouillée</span>
-          <span class="pill"><i style="background:var(--s1)"></i>Optimisé autour</span>
+          <span class="pill"><i style="background:var(--accent)"></i>Arrêt recommandé</span>
+          <span class="pill"><i style="background:var(--s1)"></i>Choix toujours libre</span>
         </div>
       </div>
-      <div class="showcase-img-wrap">
-        <img src="./img/lock.png" alt="Verrouillage d'une adresse dans ATEQO" loading="lazy" />
+      <div class="mock-frame">
+        <div class="ns-mock">
+          <div class="ns-title">Prochain arrêt</div>
+          <div class="ns-row ns-reco">
+            <span class="ns-mark">★</span>
+            <div class="ns-info"><strong>12 Rue de la Paix</strong><span>0,4 km · 2 min</span></div>
+            <span class="ns-tag">Recommandé</span>
+          </div>
+          <div class="ns-row">
+            <span class="ns-mark">2</span>
+            <div class="ns-info"><strong>8 Avenue Foch</strong><span>0,9 km · 3 min</span></div>
+          </div>
+          <div class="ns-row">
+            <span class="ns-mark">3</span>
+            <div class="ns-info"><strong>21 Rue de Rivoli</strong><span>1,2 km · 4 min</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -296,9 +343,11 @@
       <p class="section-label">Ce qui est inclus</p>
       <h2 class="section-title">Des fonctionnalités qui comptent</h2>
       <p class="section-sub">Tout ce dont tu as besoin, rien de superflu.</p>
+
+      <p class="features-kicker">Le cœur de ta tournée</p>
       <div class="features-grid">
 
-        <div class="fc reveal">
+        <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(59,130,246,.12);color:var(--s1)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
@@ -306,7 +355,7 @@
           <p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p>
         </div>
 
-        <div class="fc reveal">
+        <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(13,148,136,.12);color:var(--s2)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
           </div>
@@ -314,21 +363,26 @@
           <p>Organise tes adresses par zone. 2 secteurs en gratuit, 5 en Premium, avec bascule à la volée.</p>
         </div>
 
-        <div class="fc reveal">
+        <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(217,119,6,.12);color:var(--s3)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v14a2 2 0 0 0 2 2h14v-4"/><path d="M18 14h4v4h-4z"/></svg>
           </div>
-          <h3>Verrouillage de positions</h3>
-          <p>Un détour obligatoire ? Verrouille l'adresse à sa place, ATEQO optimise le reste autour.</p>
+          <h3>Check-list de chargement</h3>
+          <p>L'ordre de chargement s'affiche inversé : le dernier colis livré est le premier à charger dans le véhicule.</p>
         </div>
 
-        <div class="fc reveal">
+        <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(219,39,119,.12);color:var(--s4)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
           </div>
-          <h3>Guidage étape par étape</h3>
-          <p>Google Maps s'ouvre automatiquement pour chaque arrêt. Suis ta progression sans manipulation.</p>
+          <h3>Navigation adaptative</h3>
+          <p>Google Maps s'ouvre pour chaque arrêt. L'ordre recommandé s'ajuste dès que tu choisis une autre destination.</p>
         </div>
+
+      </div>
+
+      <p class="features-kicker second">Et aussi</p>
+      <div class="features-grid">
 
         <div class="fc reveal">
           <div class="fc-icon" style="background:rgba(124,58,237,.12);color:var(--s5)">
@@ -371,26 +425,30 @@
     <div class="how-inner">
       <p class="section-label">Comment ça marche</p>
       <h2 class="section-title">Opérationnel en 3 étapes</h2>
+      <p class="section-sub" style="margin-bottom:48px">ATEQO t'accompagne à chaque étape de ta tournée : du tri de tes adresses au stockage dans le véhicule, jusqu'à la livraison.</p>
       <div class="steps">
         <div class="step reveal">
           <div class="step-num">1</div>
           <div class="step-text">
-            <h3>Définis ton point de départ</h3>
-            <p>Ton adresse est mémorisée pour la prochaine fois. Marque-la en favori en un tap.</p>
+            <span class="step-kicker">Tri</span>
+            <h3>Organise tes adresses</h3>
+            <p>Ajoute tes arrêts à la main, en scannant une étiquette ou à la voix, puis classe-les par secteur.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-num">2</div>
           <div class="step-text">
-            <h3>Ajoute tes adresses de livraison</h3>
-            <p>Autocomplétion, scan d'étiquette, dictée vocale. Organise par secteur si besoin.</p>
+            <span class="step-kicker">Stockage</span>
+            <h3>Optimise et charge ton véhicule</h3>
+            <p>Un clic calcule le trajet le plus court et affiche l'ordre de chargement inversé : dernier livré, premier chargé.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-num">3</div>
           <div class="step-text">
-            <h3>Optimise et pars</h3>
-            <p>Un clic pour calculer le meilleur itinéraire. Suis ta progression et démarre la navigation.</p>
+            <span class="step-kicker">Livraison</span>
+            <h3>Pars et navigue librement</h3>
+            <p>Un repère indique le prochain arrêt recommandé, mais tu choisis toujours ta destination. Google Maps prend le relais.</p>
           </div>
         </div>
       </div>
@@ -428,12 +486,10 @@
           <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Télécharger</a>
         </div>
 
-        <!-- Premium -->
-        <div class="plan featured reveal">
-          <div class="plan-ribbon">Offre fondateur</div>
-          <div class="plan-name">Premium</div>
+        <!-- Premium mensuel -->
+        <div class="plan reveal">
+          <div class="plan-name">Premium mensuel</div>
           <div class="plan-price">13,99 <span class="per">€ / mois</span></div>
-          <p class="plan-alt">ou <b>139,99 € / an</b> <span class="save">— 2 mois offerts</span></p>
           <p class="plan-note founder">Tarif fondateur verrouillé à vie</p>
           <p class="plan-note trial">14 jours d'essai gratuit, sans engagement</p>
           <hr class="plan-divider" />
@@ -442,7 +498,26 @@
             <li>5 secteurs actifs</li>
             <li>Carnet d'adresses</li>
             <li>Optimisation automatique en direct</li>
-            <li>Verrouillages illimités</li>
+            <li>Alertes de proximité</li>
+            <li>Sans publicité</li>
+          </ul>
+          <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Essayer 14 jours gratuitement</a>
+        </div>
+
+        <!-- Premium annuel -->
+        <div class="plan featured reveal">
+          <div class="plan-ribbon">2 mois offerts</div>
+          <div class="plan-name">Premium annuel</div>
+          <div class="plan-price">139,99 <span class="per">€ / an</span></div>
+          <p class="plan-alt">soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span></p>
+          <p class="plan-note founder">Tarif fondateur verrouillé à vie</p>
+          <p class="plan-note trial">14 jours d'essai gratuit, sans engagement</p>
+          <hr class="plan-divider" />
+          <ul class="plan-features">
+            <li>Adresses illimitées</li>
+            <li>5 secteurs actifs</li>
+            <li>Carnet d'adresses</li>
+            <li>Optimisation automatique en direct</li>
             <li>Alertes de proximité</li>
             <li>Sans publicité</li>
           </ul>

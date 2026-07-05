@@ -47,12 +47,15 @@
        masque, position:fixed stable). Chaque .panel fait exactement une hauteur
        d'ecran ; si son contenu depasse, il defile a l'interieur du panneau, puis
        le panneau suivant s'aligne (snap). */
-    html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
+    /* GSAP pilote des transitions fluides section par section sur desktop
+       (pointeur fin). Le tactile garde le snap natif (momentum deja fluide).
+       scroll-behavior:auto pour ne pas entrer en conflit avec l'anim GSAP. */
+    html{scroll-behavior:auto;scroll-snap-type:y proximity}
     body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%}
 
-    .panel{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-align:start;scroll-snap-stop:always;position:relative}
+    .panel{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scroll-snap-align:start;position:relative}
     /* .pin : contenu centre verticalement quand il tient, defile quand il deborde.
        Le debordement est porte par .panel (bloc), jamais par un flex, pour eviter
        le rognage du haut connu avec justify-content:center. */
@@ -220,8 +223,13 @@
       :root{--bar:56px}
       .pin{padding-left:16px;padding-right:16px}
     }
+    /* Tactile : snap natif ferme (une section a la fois), GSAP n'intervient pas. */
+    @media (pointer:coarse){
+      html{scroll-snap-type:y mandatory}
+      .panel{scroll-snap-stop:always}
+    }
     @media(prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto;scroll-snap-type:none}
+      html{scroll-snap-type:none}
       .reveal{transition:none;opacity:1;transform:none}
       .scroll-hint{animation:none}
     }
@@ -849,6 +857,90 @@
         });
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
       els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+
+  <!-- ── GSAP : defilement fluide section par section (desktop, pointeur fin) ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script>
+    (function () {
+      if (!window.gsap || !window.ScrollToPlugin) return; // CDN indisponible : fallback snap CSS
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return; // tactile : snap natif
+
+      gsap.registerPlugin(ScrollToPlugin);
+      // GSAP prend la main : on coupe le snap CSS pour eviter tout conflit.
+      document.documentElement.style.scrollSnapType = 'none';
+
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+      if (panels.length < 2) return;
+      var index = 0, animating = false, cooldown = false, quiet;
+
+      function maxScroll(p){ return Math.max(0, p.scrollHeight - p.clientHeight); }
+      function activeIndex(){
+        var y = window.scrollY || window.pageYOffset, best = 0, bd = Infinity;
+        for (var i = 0; i < panels.length; i++){ var d = Math.abs(panels[i].offsetTop - y); if (d < bd){ bd = d; best = i; } }
+        return best;
+      }
+      function keepQuiet(){ clearTimeout(quiet); quiet = setTimeout(function(){ cooldown = false; }, 220); }
+
+      function go(target){
+        target = Math.max(0, Math.min(panels.length - 1, target));
+        if (target === index || animating) return;
+        var dir = target > index ? 1 : -1;
+        index = target;
+        var p = panels[target];
+        // Continuite : en descendant on arrive en haut du panneau, en montant en bas.
+        p.scrollTop = dir > 0 ? 0 : maxScroll(p);
+        animating = true;
+        gsap.to(window, {
+          duration: 0.85,
+          ease: 'power2.inOut',
+          scrollTo: { y: p.offsetTop, autoKill: false },
+          onComplete: function(){ animating = false; cooldown = true; keepQuiet(); }
+        });
+      }
+
+      window.addEventListener('wheel', function (e){
+        if (animating){ e.preventDefault(); return; }
+        if (cooldown){ e.preventDefault(); keepQuiet(); return; } // absorbe l'inertie du trackpad
+        index = activeIndex();
+        var p = panels[index];
+        var down = e.deltaY > 0;
+        var canScrollInside = down ? (maxScroll(p) - p.scrollTop > 1) : (p.scrollTop > 1);
+        if (canScrollInside) return; // laisse le defilement interne natif du panneau
+        e.preventDefault();
+        go(index + (down ? 1 : -1));
+      }, { passive: false });
+
+      window.addEventListener('keydown', function (e){
+        var nav = ['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' ','Spacebar'];
+        if (nav.indexOf(e.key) < 0) return;
+        var tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+        if (e.key === 'Home'){ e.preventDefault(); go(0); return; }
+        if (e.key === 'End'){ e.preventDefault(); go(panels.length - 1); return; }
+        index = activeIndex();
+        var p = panels[index];
+        var down = (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Spacebar');
+        var canScrollInside = down ? (maxScroll(p) - p.scrollTop > 1) : (p.scrollTop > 1);
+        if (canScrollInside) return;
+        if (animating){ e.preventDefault(); return; }
+        e.preventDefault();
+        go(index + (down ? 1 : -1));
+      });
+
+      var brand = document.querySelector('.brand-mark');
+      if (brand) brand.addEventListener('click', function (e){ e.preventDefault(); go(0); });
+      var hint = document.querySelector('.scroll-hint');
+      if (hint){ hint.style.cursor = 'pointer'; hint.addEventListener('click', function (){ go(index + 1); }); }
+
+      var rt;
+      window.addEventListener('resize', function (){
+        clearTimeout(rt);
+        rt = setTimeout(function (){ index = activeIndex(); window.scrollTo(0, panels[index].offsetTop); }, 160);
+      });
     })();
   </script>
 

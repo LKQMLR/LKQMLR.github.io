@@ -34,7 +34,7 @@
     :root{
       /* Palette ATEQO (thème clair, aligné sur l'app) */
       --bg:#f1f4f7;--surface:#ffffff;--surface2:#f7f9fb;
-      --ink:#0f1923;--muted:#5b6b7e;--muted2:#8896a7;
+      --ink:#17356B;--muted:#5b6b7e;--muted2:#8896a7;
       --accent:#2563eb;--gold:#c8a24b;--green:#16a34a;
       --border:rgba(15,25,35,.09);
       /* Secteurs A-T-E-Q-O = 1-2-3-4-5 */
@@ -55,9 +55,11 @@
     .top-bar{position:fixed;top:0;left:0;right:0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:0 2px 14px rgba(15,25,35,.06)}
     .brand-mark{display:flex;line-height:0}
     .brand-mark img{width:32px;height:32px;filter:drop-shadow(0 2px 5px rgba(15,25,35,.12))}
-    .lang-switch{display:flex;align-items:center;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:50px;padding:4px}
-    .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.3px;color:var(--muted2);padding:6px 12px;border-radius:50px;cursor:pointer;transition:background .15s,color .15s}
-    .lang-switch button.active{background:var(--ink);color:#fff}
+    .lang-switch{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:600;letter-spacing:.2px}
+    .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;color:var(--muted2);padding:4px 1px;cursor:pointer;transition:color .15s}
+    .lang-switch button.active{color:var(--ink);font-weight:700}
+    .lang-switch button:hover{color:var(--accent)}
+    .lang-switch .sep{color:var(--border);font-size:.7rem}
 
     /* ── HERO ── */
     .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:104px 20px 80px;position:relative;overflow:hidden}
@@ -108,7 +110,7 @@
 
     /* Lettres colorees aux 5 couleurs des secteurs, sur les phrases-cles des
        titres de section (reprend le traitement de la V1 du site). */
-    .road-text{display:inline;letter-spacing:.18em}
+    .road-text{display:inline;letter-spacing:.06em}
     .s1{color:var(--s1)}
     .s2{color:var(--s2)}
     .s3{color:var(--s3)}
@@ -223,6 +225,7 @@
     </a>
     <div class="lang-switch">
       <button type="button" data-lang-btn="fr">FR</button>
+      <span class="sep">/</span>
       <button type="button" data-lang-btn="en">EN</button>
     </div>
   </header>
@@ -601,7 +604,7 @@
         'pricing.label': 'Tarifs',
         'pricing.title': 'Simple et transparent',
         'pricing.sub': 'Commence gratuitement. Passe Premium quand tu roules tous les jours.',
-        'pricing.founder': '<strong>Offre fondateur</strong> — les premiers abonnés verrouillent leur tarif <strong>à vie</strong>. Ce prix ne bougera plus pour toi, même après la hausse.',
+        'pricing.founder': "<strong>Offre fondateur</strong> — les premiers abonnés verrouillent leur tarif <strong>à vie</strong>, durant toute la période fondateur.",
         'pricing.free.name': 'Gratuit',
         'pricing.free.desc': 'Pour découvrir ATEQO sans engagement.',
         'pricing.free.f1': '10 adresses par tournée',
@@ -617,7 +620,7 @@
         'pricing.annual.name': 'Premium annuel',
         'pricing.annual.price': '139,99 <span class="per">€ / an</span>',
         'pricing.annual.alt': 'soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span>',
-        'pricing.premium.founder': 'Tarif fondateur verrouillé à vie',
+        'pricing.premium.founder': 'Tarif fondateur verrouillé à vie · offre à durée limitée',
         'pricing.premium.trial': "14 jours d'essai gratuit, sans engagement",
         'pricing.premium.f1': 'Adresses illimitées',
         'pricing.premium.f2': '5 secteurs actifs',
@@ -707,7 +710,7 @@
         'pricing.label': 'Pricing',
         'pricing.title': 'Simple and transparent',
         'pricing.sub': "Start for free. Go Premium once you're on the road every day.",
-        'pricing.founder': "<strong>Founder's offer</strong> — the first subscribers lock in their price <strong>for life</strong>. This rate won't change for you, even after the price increases.",
+        'pricing.founder': "<strong>Founder's offer</strong> — the first subscribers lock in their price <strong>for life</strong>, for the entire founder period.",
         'pricing.free.name': 'Free',
         'pricing.free.desc': 'To try ATEQO with no commitment.',
         'pricing.free.f1': '10 addresses per route',
@@ -723,7 +726,7 @@
         'pricing.annual.name': 'Annual Premium',
         'pricing.annual.price': '€139.99 <span class="per">/ year</span>',
         'pricing.annual.alt': 'or <b>~€11.67 / month</b> <span class="save">— cheaper than monthly</span>',
-        'pricing.premium.founder': 'Founder price locked in for life',
+        'pricing.premium.founder': 'Founder price locked in for life · limited-time offer',
         'pricing.premium.trial': '14-day free trial, no commitment',
         'pricing.premium.f1': 'Unlimited addresses',
         'pricing.premium.f2': '5 active sectors',

@@ -520,6 +520,9 @@
     <p class="fnote" data-i18n="footer.note">© 2026 ATEQO — L'itinéraire qui te suit</p>
     <div class="flinks">
       <a href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Google Play</a>
+      <a href="https://lkqmlr.github.io/cargoV1-policy/support.html" data-i18n="footer.support">Support</a>
+      <a href="https://lkqmlr.github.io/cargoV1-policy/" data-i18n="footer.privacy" data-i18n-href="footer.privacy.href">Politique de confidentialité</a>
+      <a href="https://lkqmlr.github.io/cargoV1-policy/terms.html" data-i18n="footer.terms">Conditions d'utilisation</a>
       <a href="mailto:lkqmlr.dev@gmail.com" data-i18n="footer.contact">Contact</a>
     </div>
   </footer>
@@ -627,6 +630,10 @@
         'cta.title': 'Prêt à optimiser ta tournée ?',
         'cta.sub': "Ta première tournée optimisée en moins d'une minute.",
         'footer.note': "© 2026 ATEQO — L'itinéraire qui te suit",
+        'footer.support': 'Support',
+        'footer.privacy': 'Politique de confidentialité',
+        'footer.privacy.href': 'https://lkqmlr.github.io/cargoV1-policy/',
+        'footer.terms': "Conditions d'utilisation",
         'footer.contact': 'Contact',
       },
       en: {
@@ -729,6 +736,10 @@
         'cta.title': 'Ready to optimize your route?',
         'cta.sub': 'Your first optimized route in under a minute.',
         'footer.note': '© 2026 ATEQO — The route that follows you',
+        'footer.support': 'Support',
+        'footer.privacy': 'Privacy Policy',
+        'footer.privacy.href': 'https://lkqmlr.github.io/cargoV1-policy/index.en.html',
+        'footer.terms': 'Terms of Use',
         'footer.contact': 'Contact',
       },
     };
@@ -767,6 +778,10 @@
       document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
         var key = el.getAttribute('data-i18n-aria');
         if (dict[key] != null) el.setAttribute('aria-label', dict[key]);
+      });
+      document.querySelectorAll('[data-i18n-href]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-href');
+        if (dict[key] != null) el.setAttribute('href', dict[key]);
       });
       document.querySelectorAll('.gplay-img').forEach(function (el) {
         el.src = GPLAY_BADGE[lang] || GPLAY_BADGE.fr;

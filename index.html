@@ -55,6 +55,11 @@
     .brand-mark{position:fixed;top:20px;left:20px;z-index:50;display:flex;line-height:0}
     .brand-mark img{width:38px;height:38px;filter:drop-shadow(0 3px 10px rgba(15,25,35,.18))}
 
+    /* ── LANG SWITCH (coin, persistant) ── */
+    .lang-switch{position:fixed;top:20px;right:20px;z-index:50;display:flex;align-items:center;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:4px;box-shadow:0 2px 10px rgba(15,25,35,.08)}
+    .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.3px;color:var(--muted2);padding:6px 12px;border-radius:50px;cursor:pointer;transition:background .15s,color .15s}
+    .lang-switch button.active{background:var(--ink);color:#fff}
+
     /* ── HERO ── */
     .hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 20px 80px;position:relative;overflow:hidden}
     .hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1000px;height:760px;background:radial-gradient(ellipse,rgba(37,99,235,.10) 0%,rgba(124,58,237,.05) 42%,transparent 70%);pointer-events:none}
@@ -200,6 +205,8 @@
     @media(max-width:480px){
       .hero .subtitle{font-size:.98rem}
       .hero-badges{gap:14px}
+      .lang-switch{top:14px;right:14px}
+      .brand-mark{top:14px;left:14px}
     }
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
@@ -211,21 +218,27 @@
 <body>
 
   <!-- ── BRAND MARK (coin, persistant) ── -->
-  <a class="brand-mark" href="#top" aria-label="ATEQO — retour en haut">
+  <a class="brand-mark" href="#top" data-i18n-aria="brand.aria" aria-label="ATEQO — retour en haut">
     <img src="./img/logo_ateqo.png" alt="" />
   </a>
 
+  <!-- ── LANG SWITCH (coin, persistant) ── -->
+  <div class="lang-switch">
+    <button type="button" data-lang-btn="fr">FR</button>
+    <button type="button" data-lang-btn="en">EN</button>
+  </div>
+
   <!-- ── HERO ── -->
   <section class="hero" id="top">
-    <img class="hero-wordmark" src="./img/logo_hero.png" alt="ATEQO — L'itinéraire qui te suit" />
-    <h1>Livrez <span class="hl hl-1">plus.</span> Gagnez <span class="hl hl-2">plus.</span> Gérez <span class="hl hl-3">mieux.</span></h1>
-    <p class="subtitle">ATEQO <strong>optimise</strong> tes tournées en quelques secondes. Gagne du temps, <strong>économise du carburant</strong> et <strong>choisis librement</strong> ton prochain arrêt.</p>
+    <img class="hero-wordmark" src="./img/logo_hero.png" data-i18n-alt="hero.wordmark.alt" alt="ATEQO — L'itinéraire qui te suit" />
+    <h1 data-i18n-html="hero.h1">Livrez <span class="hl hl-1">plus.</span> Gagnez <span class="hl hl-2">plus.</span> Gérez <span class="hl hl-3">mieux.</span></h1>
+    <p class="subtitle" data-i18n-html="hero.subtitle">ATEQO <strong>optimise</strong> tes tournées en quelques secondes. Gagne du temps, <strong>économise du carburant</strong> et <strong>choisis librement</strong> ton prochain arrêt.</p>
     <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" alt="Disponible sur Google Play" />
+      <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
     </a>
     <div class="hero-badges">
-      <span><span class="dot"></span> Essai Premium 14 jours</span>
-      <span><span class="dot"></span> Sans engagement</span>
+      <span><span class="dot"></span> <span data-i18n="hero.badge.trial">Essai Premium 14 jours</span></span>
+      <span><span class="dot"></span> <span data-i18n="hero.badge.commitment">Sans engagement</span></span>
       <span><span class="dot"></span> Android</span>
     </div>
     <div class="scroll-hint">
@@ -235,52 +248,52 @@
 
   <!-- ── FOR WHO ── -->
   <section class="for-who">
-    <h2>Pensé pour ceux qui roulent</h2>
+    <h2 data-i18n="forwho.title">Pensé pour ceux qui roulent</h2>
     <div class="roles">
-      <div class="role"><i style="background:var(--s1)"></i>Livreurs de colis</div>
-      <div class="role"><i style="background:var(--s2)"></i>Coursiers express</div>
-      <div class="role"><i style="background:var(--s3)"></i>Livreurs de repas</div>
-      <div class="role"><i style="background:var(--s4)"></i>Artisans &amp; techniciens</div>
-      <div class="role"><i style="background:var(--s5)"></i>Infirmiers libéraux</div>
-      <div class="role"><i style="background:var(--s1)"></i>E-commerçants</div>
+      <div class="role"><i style="background:var(--s1)"></i><span data-i18n="forwho.role1">Livreurs de colis</span></div>
+      <div class="role"><i style="background:var(--s2)"></i><span data-i18n="forwho.role2">Coursiers express</span></div>
+      <div class="role"><i style="background:var(--s3)"></i><span data-i18n="forwho.role3">Livreurs de repas</span></div>
+      <div class="role"><i style="background:var(--s4)"></i><span data-i18n="forwho.role4">Artisans &amp; techniciens</span></div>
+      <div class="role"><i style="background:var(--s5)"></i><span data-i18n="forwho.role5">Infirmiers libéraux</span></div>
+      <div class="role"><i style="background:var(--s1)"></i><span data-i18n="forwho.role6">E-commerçants</span></div>
     </div>
   </section>
 
   <!-- ── SHOWCASE ── -->
   <section class="showcase">
-    <p class="section-label">Fonctionnalités</p>
-    <h2 class="section-title">Organise. Optimise. Livre.</h2>
-    <p class="section-sub">Deux outils, un seul résultat : des tournées plus courtes et mieux structurées.</p>
+    <p class="section-label" data-i18n="showcase.label">Fonctionnalités</p>
+    <h2 class="section-title" data-i18n="showcase.title">Organise. Optimise. Livre.</h2>
+    <p class="section-sub" data-i18n="showcase.sub">Deux outils, un seul résultat : des tournées plus courtes et mieux structurées.</p>
 
     <!-- Secteurs -->
     <div class="showcase-block reveal">
       <div class="showcase-text">
-        <h3>Découpe ta tournée<br>en <span class="road-text"><span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span><span class="s3">s</span> <span class="s4">i</span><span class="s5">n</span><span class="s1">t</span><span class="s2">e</span><span class="s3">l</span><span class="s4">l</span><span class="s5">i</span><span class="s1">g</span><span class="s2">e</span><span class="s3">n</span><span class="s4">t</span><span class="s5">s</span></span></h3>
-        <p>Regroupe tes adresses par zone géographique en un tap. Chaque secteur a sa couleur et son ordre de passage. ATEQO optimise chaque secteur séparément pour un parcours cohérent, sans aller-retour inutile.</p>
+        <h3 data-i18n-html="showcase.b1.h3">Découpe ta tournée<br>en <span class="road-text"><span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span><span class="s3">s</span> <span class="s4">i</span><span class="s5">n</span><span class="s1">t</span><span class="s2">e</span><span class="s3">l</span><span class="s4">l</span><span class="s5">i</span><span class="s1">g</span><span class="s2">e</span><span class="s3">n</span><span class="s4">t</span><span class="s5">s</span></span></h3>
+        <p data-i18n="showcase.b1.p">Regroupe tes adresses par zone géographique en un tap. Chaque secteur a sa couleur et son ordre de passage. ATEQO optimise chaque secteur séparément pour un parcours cohérent, sans aller-retour inutile.</p>
         <div class="showcase-pills">
-          <span class="pill"><i style="background:var(--s1)"></i>Secteur 1</span>
-          <span class="pill"><i style="background:var(--s2)"></i>Secteur 2</span>
-          <span class="pill"><i style="background:var(--s3)"></i>Secteur 3</span>
-          <span class="pill"><i style="background:var(--s4)"></i>Secteur 4</span>
-          <span class="pill"><i style="background:var(--s5)"></i>Secteur 5</span>
+          <span class="pill"><i style="background:var(--s1)"></i><span data-i18n="showcase.pill.sector1">Secteur 1</span></span>
+          <span class="pill"><i style="background:var(--s2)"></i><span data-i18n="showcase.pill.sector2">Secteur 2</span></span>
+          <span class="pill"><i style="background:var(--s3)"></i><span data-i18n="showcase.pill.sector3">Secteur 3</span></span>
+          <span class="pill"><i style="background:var(--s4)"></i><span data-i18n="showcase.pill.sector4">Secteur 4</span></span>
+          <span class="pill"><i style="background:var(--s5)"></i><span data-i18n="showcase.pill.sector5">Secteur 5</span></span>
         </div>
       </div>
       <div class="showcase-img-wrap">
-        <img src="./img/sectors.png" alt="Carte ATEQO avec secteurs colorés : tournée organisée par zones" loading="lazy" />
+        <img src="./img/sectors.png" data-i18n-alt="showcase.b1.img.alt" alt="Carte ATEQO avec secteurs colorés : tournée organisée par zones" loading="lazy" />
       </div>
     </div>
 
     <!-- Optimisation -->
     <div class="showcase-block reverse reveal">
       <div class="showcase-text">
-        <h3>Un algorithme qui<br><span class="road-text"><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">e</span> <span class="s3">l</span><span class="s4">e</span> <span class="s5">m</span><span class="s1">e</span><span class="s2">i</span><span class="s3">l</span><span class="s4">l</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">r</span><span class="s2">e</span></span></h3>
-        <p>Saisis tes adresses dans n'importe quel ordre. ATEQO calcule en quelques secondes l'itinéraire le plus court sur routes réelles, pas à vol d'oiseau. Le temps gagné s'affiche directement sur la carte.</p>
-        <p>Chaque secteur est optimisé séparément, pour un parcours cohérent sans aller-retour inutile.</p>
+        <h3 data-i18n-html="showcase.b2.h3">Un algorithme qui<br><span class="road-text"><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">e</span> <span class="s3">l</span><span class="s4">e</span> <span class="s5">m</span><span class="s1">e</span><span class="s2">i</span><span class="s3">l</span><span class="s4">l</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">r</span><span class="s2">e</span></span></h3>
+        <p data-i18n="showcase.b2.p1">Saisis tes adresses dans n'importe quel ordre. ATEQO calcule en quelques secondes l'itinéraire le plus court sur routes réelles, pas à vol d'oiseau. Le temps gagné s'affiche directement sur la carte.</p>
+        <p data-i18n="showcase.b2.p2">Chaque secteur est optimisé séparément, pour un parcours cohérent sans aller-retour inutile.</p>
       </div>
       <div class="mock-frame">
         <div class="app-result-mock">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          <span>28 arrêts optimisés&nbsp;— ~21 min gagnées</span>
+          <span data-i18n-html="showcase.mock">28 arrêts optimisés&nbsp;— ~21 min gagnées</span>
         </div>
       </div>
     </div>
@@ -288,16 +301,16 @@
     <!-- Navigation adaptative -->
     <div class="showcase-block reveal">
       <div class="showcase-text">
-        <h3>Une navigation<br>qui <span class="road-text"><span class="s1">s</span><span class="s2">'</span><span class="s3">a</span><span class="s4">d</span><span class="s5">a</span><span class="s1">p</span><span class="s2">t</span><span class="s3">e</span> <span class="s4">à</span> <span class="s5">t</span><span class="s1">o</span><span class="s2">i</span></span></h3>
-        <p>L'ordre optimisé reste une recommandation, jamais une contrainte. À chaque arrêt livré, ATEQO indique le prochain arrêt le plus logique, mais tu restes libre d'en choisir un autre à tout moment.</p>
-        <p>Le guidage Google Maps s'ajuste instantanément à ton choix, sans recalcul manuel.</p>
+        <h3 data-i18n-html="showcase.b3.h3">Une navigation<br>qui <span class="road-text"><span class="s1">s</span><span class="s2">'</span><span class="s3">a</span><span class="s4">d</span><span class="s5">a</span><span class="s1">p</span><span class="s2">t</span><span class="s3">e</span> <span class="s4">à</span> <span class="s5">t</span><span class="s1">o</span><span class="s2">i</span></span></h3>
+        <p data-i18n="showcase.b3.p1">L'ordre optimisé reste une recommandation, jamais une contrainte. À chaque arrêt livré, ATEQO indique le prochain arrêt le plus logique, mais tu restes libre d'en choisir un autre à tout moment.</p>
+        <p data-i18n="showcase.b3.p2">Le guidage Google Maps s'ajuste instantanément à ton choix, sans recalcul manuel.</p>
         <div class="showcase-pills">
-          <span class="pill"><i style="background:var(--gold)"></i>Arrêt recommandé</span>
-          <span class="pill"><i style="background:var(--s1)"></i>Choix toujours libre</span>
+          <span class="pill"><i style="background:var(--gold)"></i><span data-i18n="showcase.pill.reco">Arrêt recommandé</span></span>
+          <span class="pill"><i style="background:var(--s1)"></i><span data-i18n="showcase.pill.free">Choix toujours libre</span></span>
         </div>
       </div>
       <div class="showcase-img-wrap">
-        <img src="./img/nav_adaptative.png" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches proposées librement" loading="lazy" />
+        <img src="./img/nav_adaptative.png" data-i18n-alt="showcase.b3.img.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches proposées librement" loading="lazy" />
       </div>
     </div>
   </section>
@@ -305,80 +318,80 @@
   <!-- ── FEATURES ── -->
   <section class="features">
     <div class="features-inner">
-      <p class="section-label">Ce qui est inclus</p>
-      <h2 class="section-title">Des fonctionnalités qui comptent</h2>
-      <p class="section-sub">Tout ce dont tu as besoin, rien de superflu.</p>
+      <p class="section-label" data-i18n="features.label">Ce qui est inclus</p>
+      <h2 class="section-title" data-i18n="features.title">Des fonctionnalités qui comptent</h2>
+      <p class="section-sub" data-i18n="features.sub">Tout ce dont tu as besoin, rien de superflu.</p>
 
-      <p class="features-kicker">Le cœur de ta tournée</p>
+      <p class="features-kicker" data-i18n="features.kicker1">Le cœur de ta tournée</p>
       <div class="features-grid">
 
         <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(59,130,246,.12);color:var(--s1)">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
-          <h3>Optimisation en 1 clic</h3>
-          <p>L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p>
+          <h3 data-i18n="features.f1.h3">Optimisation en 1 clic</h3>
+          <p data-i18n="features.f1.p">L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.</p>
         </div>
 
         <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(13,148,136,.12);color:var(--s2)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
           </div>
-          <h3>Secteurs de tournée</h3>
-          <p>Organise tes adresses par zone. 2 secteurs en gratuit, 5 en Premium, avec bascule à la volée.</p>
+          <h3 data-i18n="features.f2.h3">Secteurs de tournée</h3>
+          <p data-i18n="features.f2.p">Organise tes adresses par zone. 2 secteurs en gratuit, 5 en Premium, avec bascule à la volée.</p>
         </div>
 
         <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(217,119,6,.12);color:var(--s3)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v14a2 2 0 0 0 2 2h14v-4"/><path d="M18 14h4v4h-4z"/></svg>
           </div>
-          <h3>Check-list de chargement</h3>
-          <p>L'ordre de chargement s'affiche inversé : le dernier colis livré est le premier à charger dans le véhicule.</p>
+          <h3 data-i18n="features.f3.h3">Check-list de chargement</h3>
+          <p data-i18n="features.f3.p">L'ordre de chargement s'affiche inversé : le dernier colis livré est le premier à charger dans le véhicule.</p>
         </div>
 
         <div class="fc flagship reveal">
           <div class="fc-icon" style="background:rgba(219,39,119,.12);color:var(--s4)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
           </div>
-          <h3>Navigation adaptative</h3>
-          <p>Google Maps s'ouvre pour chaque arrêt. L'ordre recommandé s'ajuste dès que tu choisis une autre destination.</p>
+          <h3 data-i18n="features.f4.h3">Navigation adaptative</h3>
+          <p data-i18n="features.f4.p">Google Maps s'ouvre pour chaque arrêt. L'ordre recommandé s'ajuste dès que tu choisis une autre destination.</p>
         </div>
 
       </div>
 
-      <p class="features-kicker second">Et aussi</p>
+      <p class="features-kicker second" data-i18n="features.kicker2">Et aussi</p>
       <div class="features-grid">
 
         <div class="fc reveal">
           <div class="fc-icon" style="background:rgba(124,58,237,.12);color:var(--s5)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
           </div>
-          <h3>Notes par livraison</h3>
-          <p>Code d'accès, étage, créneau : une note visible pendant toute la tournée.</p>
+          <h3 data-i18n="features.f5.h3">Notes par livraison</h3>
+          <p data-i18n="features.f5.p">Code d'accès, étage, créneau : une note visible pendant toute la tournée.</p>
         </div>
 
         <div class="fc reveal">
           <div class="fc-icon" style="background:rgba(200,162,75,.16);color:#b8912f">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
           </div>
-          <h3>Carnet d'adresses <span class="tag-premium">Premium</span></h3>
-          <p>Enregistre tes adresses récurrentes et ajoute-les en un tap à ta prochaine tournée.</p>
+          <h3><span data-i18n="features.f6.h3">Carnet d'adresses</span> <span class="tag-premium">Premium</span></h3>
+          <p data-i18n="features.f6.p">Enregistre tes adresses récurrentes et ajoute-les en un tap à ta prochaine tournée.</p>
         </div>
 
         <div class="fc reveal">
           <div class="fc-icon" style="background:rgba(59,130,246,.12);color:var(--s1)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
           </div>
-          <h3>Scan d'adresse</h3>
-          <p>Scanne une étiquette colis : ATEQO en extrait l'adresse et l'ajoute à ta tournée.</p>
+          <h3 data-i18n="features.f7.h3">Scan d'adresse</h3>
+          <p data-i18n="features.f7.p">Scanne une étiquette colis : ATEQO en extrait l'adresse et l'ajoute à ta tournée.</p>
         </div>
 
         <div class="fc reveal">
           <div class="fc-icon" style="background:rgba(13,148,136,.12);color:var(--s2)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
           </div>
-          <h3>Historique de tournées</h3>
-          <p>Sauvegarde et retrouve tes tournées passées pour les rejouer en un instant.</p>
+          <h3 data-i18n="features.f8.h3">Historique de tournées</h3>
+          <p data-i18n="features.f8.p">Sauvegarde et retrouve tes tournées passées pour les rejouer en un instant.</p>
         </div>
 
       </div>
@@ -388,32 +401,32 @@
   <!-- ── HOW ── -->
   <section class="how">
     <div class="how-inner">
-      <p class="section-label">Comment ça marche</p>
-      <h2 class="section-title">Opérationnel en 3 étapes</h2>
-      <p class="section-sub" style="margin-bottom:48px">ATEQO t'accompagne à chaque étape de ta tournée : du tri de tes adresses au stockage dans le véhicule, jusqu'à la livraison.</p>
+      <p class="section-label" data-i18n="how.label">Comment ça marche</p>
+      <h2 class="section-title" data-i18n="how.title">Opérationnel en 3 étapes</h2>
+      <p class="section-sub" style="margin-bottom:48px" data-i18n="how.sub">ATEQO t'accompagne à chaque étape de ta tournée : du tri de tes adresses au stockage dans le véhicule, jusqu'à la livraison.</p>
       <div class="steps">
         <div class="step reveal">
           <div class="step-num">1</div>
           <div class="step-text">
-            <span class="step-kicker">Tri</span>
-            <h3>Organise tes adresses</h3>
-            <p>Ajoute tes arrêts à la main, en scannant une étiquette ou à la voix, puis classe-les par secteur.</p>
+            <span class="step-kicker" data-i18n="how.step1.kicker">Tri</span>
+            <h3 data-i18n="how.step1.h3">Organise tes adresses</h3>
+            <p data-i18n="how.step1.p">Ajoute tes arrêts à la main, en scannant une étiquette ou à la voix, puis classe-les par secteur.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-num">2</div>
           <div class="step-text">
-            <span class="step-kicker">Stockage</span>
-            <h3>Optimise et charge ton véhicule</h3>
-            <p>Un clic calcule le trajet le plus court et affiche l'ordre de chargement inversé : dernier livré, premier chargé.</p>
+            <span class="step-kicker" data-i18n="how.step2.kicker">Stockage</span>
+            <h3 data-i18n="how.step2.h3">Optimise et charge ton véhicule</h3>
+            <p data-i18n="how.step2.p">Un clic calcule le trajet le plus court et affiche l'ordre de chargement inversé : dernier livré, premier chargé.</p>
           </div>
         </div>
         <div class="step reveal">
           <div class="step-num">3</div>
           <div class="step-text">
-            <span class="step-kicker">Livraison</span>
-            <h3>Pars et navigue librement</h3>
-            <p>Un repère indique le prochain arrêt recommandé, mais tu choisis toujours ta destination. Google Maps prend le relais.</p>
+            <span class="step-kicker" data-i18n="how.step3.kicker">Livraison</span>
+            <h3 data-i18n="how.step3.h3">Pars et navigue librement</h3>
+            <p data-i18n="how.step3.p">Un repère indique le prochain arrêt recommandé, mais tu choisis toujours ta destination. Google Maps prend le relais.</p>
           </div>
         </div>
       </div>
@@ -423,70 +436,70 @@
   <!-- ── PRICING ── -->
   <section class="pricing">
     <div class="pricing-inner">
-      <p class="section-label">Tarifs</p>
-      <h2 class="section-title">Simple et transparent</h2>
-      <p class="section-sub">Commence gratuitement. Passe Premium quand tu roules tous les jours.</p>
+      <p class="section-label" data-i18n="pricing.label">Tarifs</p>
+      <h2 class="section-title" data-i18n="pricing.title">Simple et transparent</h2>
+      <p class="section-sub" data-i18n="pricing.sub">Commence gratuitement. Passe Premium quand tu roules tous les jours.</p>
 
-      <div class="founder-banner">
+      <div class="founder-banner" data-i18n-html="pricing.founder">
         <strong>Offre fondateur</strong> — les premiers abonnés verrouillent leur tarif <strong>à vie</strong>. Ce prix ne bougera plus pour toi, même après la hausse.
       </div>
 
       <div class="plans">
         <!-- Gratuit -->
         <div class="plan reveal">
-          <div class="plan-name">Gratuit</div>
+          <div class="plan-name" data-i18n="pricing.free.name">Gratuit</div>
           <div class="plan-price">0 <span class="per">€</span></div>
-          <p class="plan-desc">Pour découvrir ATEQO sans engagement.</p>
+          <p class="plan-desc" data-i18n="pricing.free.desc">Pour découvrir ATEQO sans engagement.</p>
           <hr class="plan-divider" />
           <ul class="plan-features">
-            <li>10 adresses par tournée</li>
-            <li>2 secteurs actifs</li>
-            <li>3 optimisations par jour</li>
-            <li>Navigation GPS</li>
-            <li>Notes par livraison</li>
-            <li class="no">Adresses illimitées</li>
-            <li class="no">Secteurs 3, 4 et 5</li>
-            <li class="no">Carnet d'adresses</li>
+            <li data-i18n="pricing.free.f1">10 adresses par tournée</li>
+            <li data-i18n="pricing.free.f2">2 secteurs actifs</li>
+            <li data-i18n="pricing.free.f3">3 optimisations par jour</li>
+            <li data-i18n="pricing.free.f4">Navigation GPS</li>
+            <li data-i18n="pricing.free.f5">Notes par livraison</li>
+            <li class="no" data-i18n="pricing.premium.f1">Adresses illimitées</li>
+            <li class="no" data-i18n="pricing.free.f7">Secteurs 3, 4 et 5</li>
+            <li class="no" data-i18n="pricing.premium.f3">Carnet d'adresses</li>
           </ul>
-          <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Télécharger</a>
+          <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.free.cta">Télécharger</a>
         </div>
 
         <!-- Premium mensuel -->
         <div class="plan reveal">
-          <div class="plan-name">Premium mensuel</div>
-          <div class="plan-price">13,99 <span class="per">€ / mois</span></div>
-          <p class="plan-note founder">Tarif fondateur verrouillé à vie</p>
-          <p class="plan-note trial">14 jours d'essai gratuit, sans engagement</p>
+          <div class="plan-name" data-i18n="pricing.monthly.name">Premium mensuel</div>
+          <div class="plan-price" data-i18n-html="pricing.monthly.price">13,99 <span class="per">€ / mois</span></div>
+          <p class="plan-note founder" data-i18n="pricing.premium.founder">Tarif fondateur verrouillé à vie</p>
+          <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
           <hr class="plan-divider" />
           <ul class="plan-features">
-            <li>Adresses illimitées</li>
-            <li>5 secteurs actifs</li>
-            <li>Carnet d'adresses</li>
-            <li>Optimisation automatique en direct</li>
-            <li>Alertes de proximité</li>
-            <li>Sans publicité</li>
+            <li data-i18n="pricing.premium.f1">Adresses illimitées</li>
+            <li data-i18n="pricing.premium.f2">5 secteurs actifs</li>
+            <li data-i18n="pricing.premium.f3">Carnet d'adresses</li>
+            <li data-i18n="pricing.premium.f4">Optimisation automatique en direct</li>
+            <li data-i18n="pricing.premium.f5">Alertes de proximité</li>
+            <li data-i18n="pricing.premium.f6">Sans publicité</li>
           </ul>
-          <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Essayer 14 jours gratuitement</a>
+          <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
         </div>
 
         <!-- Premium annuel -->
         <div class="plan featured reveal">
-          <div class="plan-ribbon">2 mois offerts</div>
-          <div class="plan-name">Premium annuel</div>
-          <div class="plan-price">139,99 <span class="per">€ / an</span></div>
-          <p class="plan-alt">soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span></p>
-          <p class="plan-note founder">Tarif fondateur verrouillé à vie</p>
-          <p class="plan-note trial">14 jours d'essai gratuit, sans engagement</p>
+          <div class="plan-ribbon" data-i18n="pricing.annual.ribbon">2 mois offerts</div>
+          <div class="plan-name" data-i18n="pricing.annual.name">Premium annuel</div>
+          <div class="plan-price" data-i18n-html="pricing.annual.price">139,99 <span class="per">€ / an</span></div>
+          <p class="plan-alt" data-i18n-html="pricing.annual.alt">soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span></p>
+          <p class="plan-note founder" data-i18n="pricing.premium.founder">Tarif fondateur verrouillé à vie</p>
+          <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
           <hr class="plan-divider" />
           <ul class="plan-features">
-            <li>Adresses illimitées</li>
-            <li>5 secteurs actifs</li>
-            <li>Carnet d'adresses</li>
-            <li>Optimisation automatique en direct</li>
-            <li>Alertes de proximité</li>
-            <li>Sans publicité</li>
+            <li data-i18n="pricing.premium.f1">Adresses illimitées</li>
+            <li data-i18n="pricing.premium.f2">5 secteurs actifs</li>
+            <li data-i18n="pricing.premium.f3">Carnet d'adresses</li>
+            <li data-i18n="pricing.premium.f4">Optimisation automatique en direct</li>
+            <li data-i18n="pricing.premium.f5">Alertes de proximité</li>
+            <li data-i18n="pricing.premium.f6">Sans publicité</li>
           </ul>
-          <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Essayer 14 jours gratuitement</a>
+          <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
         </div>
       </div>
     </div>
@@ -494,22 +507,290 @@
 
   <!-- ── CTA ── -->
   <section class="cta-section">
-    <h2>Prêt à optimiser ta tournée ?</h2>
-    <p>Ta première tournée optimisée en moins d'une minute.</p>
+    <h2 data-i18n="cta.title">Prêt à optimiser ta tournée ?</h2>
+    <p data-i18n="cta.sub">Ta première tournée optimisée en moins d'une minute.</p>
     <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" alt="Disponible sur Google Play" />
+      <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
     </a>
   </section>
 
   <!-- ── FOOTER ── -->
   <footer>
     <img src="./img/logo_ateqo.png" alt="ATEQO" />
-    <p class="fnote">&copy; 2026 ATEQO — L'itinéraire qui te suit</p>
+    <p class="fnote" data-i18n="footer.note">© 2026 ATEQO — L'itinéraire qui te suit</p>
     <div class="flinks">
       <a href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Google Play</a>
-      <a href="mailto:lkqmlr.dev@gmail.com">Contact</a>
+      <a href="mailto:lkqmlr.dev@gmail.com" data-i18n="footer.contact">Contact</a>
     </div>
   </footer>
+
+  <script>
+    // ── i18n : dictionnaire FR / EN ──────────────────────────────────────────
+    var I18N = {
+      fr: {
+        'brand.aria': 'ATEQO — retour en haut',
+        'hero.wordmark.alt': "ATEQO — L'itinéraire qui te suit",
+        'hero.h1': 'Livrez <span class="hl hl-1">plus.</span> Gagnez <span class="hl hl-2">plus.</span> Gérez <span class="hl hl-3">mieux.</span>',
+        'hero.subtitle': 'ATEQO <strong>optimise</strong> tes tournées en quelques secondes. Gagne du temps, <strong>économise du carburant</strong> et <strong>choisis librement</strong> ton prochain arrêt.',
+        'badge.alt': 'Disponible sur Google Play',
+        'hero.badge.trial': 'Essai Premium 14 jours',
+        'hero.badge.commitment': 'Sans engagement',
+        'forwho.title': 'Pensé pour ceux qui roulent',
+        'forwho.role1': 'Livreurs de colis',
+        'forwho.role2': 'Coursiers express',
+        'forwho.role3': 'Livreurs de repas',
+        'forwho.role4': 'Artisans &amp; techniciens',
+        'forwho.role5': 'Infirmiers libéraux',
+        'forwho.role6': 'E-commerçants',
+        'showcase.label': 'Fonctionnalités',
+        'showcase.title': 'Organise. Optimise. Livre.',
+        'showcase.sub': 'Deux outils, un seul résultat : des tournées plus courtes et mieux structurées.',
+        'showcase.b1.h3': 'Découpe ta tournée<br>en <span class="road-text"><span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span><span class="s3">s</span> <span class="s4">i</span><span class="s5">n</span><span class="s1">t</span><span class="s2">e</span><span class="s3">l</span><span class="s4">l</span><span class="s5">i</span><span class="s1">g</span><span class="s2">e</span><span class="s3">n</span><span class="s4">t</span><span class="s5">s</span></span>',
+        'showcase.b1.p': "Regroupe tes adresses par zone géographique en un tap. Chaque secteur a sa couleur et son ordre de passage. ATEQO optimise chaque secteur séparément pour un parcours cohérent, sans aller-retour inutile.",
+        'showcase.pill.sector1': 'Secteur 1',
+        'showcase.pill.sector2': 'Secteur 2',
+        'showcase.pill.sector3': 'Secteur 3',
+        'showcase.pill.sector4': 'Secteur 4',
+        'showcase.pill.sector5': 'Secteur 5',
+        'showcase.b1.img.alt': 'Carte ATEQO avec secteurs colorés : tournée organisée par zones',
+        'showcase.b2.h3': 'Un algorithme qui<br><span class="road-text"><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">e</span> <span class="s3">l</span><span class="s4">e</span> <span class="s5">m</span><span class="s1">e</span><span class="s2">i</span><span class="s3">l</span><span class="s4">l</span><span class="s5">e</span><span class="s1">u</span><span class="s2">r</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">r</span><span class="s2">e</span></span>',
+        'showcase.b2.p1': "Saisis tes adresses dans n'importe quel ordre. ATEQO calcule en quelques secondes l'itinéraire le plus court sur routes réelles, pas à vol d'oiseau. Le temps gagné s'affiche directement sur la carte.",
+        'showcase.b2.p2': 'Chaque secteur est optimisé séparément, pour un parcours cohérent sans aller-retour inutile.',
+        'showcase.mock': '28 arrêts optimisés&nbsp;— ~21 min gagnées',
+        'showcase.b3.h3': 'Une navigation<br>qui <span class="road-text"><span class="s1">s</span><span class="s2">\'</span><span class="s3">a</span><span class="s4">d</span><span class="s5">a</span><span class="s1">p</span><span class="s2">t</span><span class="s3">e</span> <span class="s4">à</span> <span class="s5">t</span><span class="s1">o</span><span class="s2">i</span></span>',
+        'showcase.b3.p1': "L'ordre optimisé reste une recommandation, jamais une contrainte. À chaque arrêt livré, ATEQO indique le prochain arrêt le plus logique, mais tu restes libre d'en choisir un autre à tout moment.",
+        'showcase.b3.p2': "Le guidage Google Maps s'ajuste instantanément à ton choix, sans recalcul manuel.",
+        'showcase.pill.reco': 'Arrêt recommandé',
+        'showcase.pill.free': 'Choix toujours libre',
+        'showcase.b3.img.alt': 'Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches proposées librement',
+        'features.label': 'Ce qui est inclus',
+        'features.title': 'Des fonctionnalités qui comptent',
+        'features.sub': 'Tout ce dont tu as besoin, rien de superflu.',
+        'features.kicker1': 'Le cœur de ta tournée',
+        'features.f1.h3': 'Optimisation en 1 clic',
+        'features.f1.p': "L'algorithme calcule le meilleur ordre de passage via les distances réelles de conduite.",
+        'features.f2.h3': 'Secteurs de tournée',
+        'features.f2.p': 'Organise tes adresses par zone. 2 secteurs en gratuit, 5 en Premium, avec bascule à la volée.',
+        'features.f3.h3': 'Check-list de chargement',
+        'features.f3.p': "L'ordre de chargement s'affiche inversé : le dernier colis livré est le premier à charger dans le véhicule.",
+        'features.f4.h3': 'Navigation adaptative',
+        'features.f4.p': "Google Maps s'ouvre pour chaque arrêt. L'ordre recommandé s'ajuste dès que tu choisis une autre destination.",
+        'features.kicker2': 'Et aussi',
+        'features.f5.h3': 'Notes par livraison',
+        'features.f5.p': "Code d'accès, étage, créneau : une note visible pendant toute la tournée.",
+        'features.f6.h3': "Carnet d'adresses",
+        'features.f6.p': 'Enregistre tes adresses récurrentes et ajoute-les en un tap à ta prochaine tournée.',
+        'features.f7.h3': "Scan d'adresse",
+        'features.f7.p': "Scanne une étiquette colis : ATEQO en extrait l'adresse et l'ajoute à ta tournée.",
+        'features.f8.h3': 'Historique de tournées',
+        'features.f8.p': 'Sauvegarde et retrouve tes tournées passées pour les rejouer en un instant.',
+        'how.label': 'Comment ça marche',
+        'how.title': 'Opérationnel en 3 étapes',
+        'how.sub': "ATEQO t'accompagne à chaque étape de ta tournée : du tri de tes adresses au stockage dans le véhicule, jusqu'à la livraison.",
+        'how.step1.kicker': 'Tri',
+        'how.step1.h3': 'Organise tes adresses',
+        'how.step1.p': "Ajoute tes arrêts à la main, en scannant une étiquette ou à la voix, puis classe-les par secteur.",
+        'how.step2.kicker': 'Stockage',
+        'how.step2.h3': 'Optimise et charge ton véhicule',
+        'how.step2.p': "Un clic calcule le trajet le plus court et affiche l'ordre de chargement inversé : dernier livré, premier chargé.",
+        'how.step3.kicker': 'Livraison',
+        'how.step3.h3': 'Pars et navigue librement',
+        'how.step3.p': "Un repère indique le prochain arrêt recommandé, mais tu choisis toujours ta destination. Google Maps prend le relais.",
+        'pricing.label': 'Tarifs',
+        'pricing.title': 'Simple et transparent',
+        'pricing.sub': 'Commence gratuitement. Passe Premium quand tu roules tous les jours.',
+        'pricing.founder': '<strong>Offre fondateur</strong> — les premiers abonnés verrouillent leur tarif <strong>à vie</strong>. Ce prix ne bougera plus pour toi, même après la hausse.',
+        'pricing.free.name': 'Gratuit',
+        'pricing.free.desc': 'Pour découvrir ATEQO sans engagement.',
+        'pricing.free.f1': '10 adresses par tournée',
+        'pricing.free.f2': '2 secteurs actifs',
+        'pricing.free.f3': '3 optimisations par jour',
+        'pricing.free.f4': 'Navigation GPS',
+        'pricing.free.f5': 'Notes par livraison',
+        'pricing.free.f7': 'Secteurs 3, 4 et 5',
+        'pricing.free.cta': 'Télécharger',
+        'pricing.monthly.name': 'Premium mensuel',
+        'pricing.monthly.price': '13,99 <span class="per">€ / mois</span>',
+        'pricing.annual.ribbon': '2 mois offerts',
+        'pricing.annual.name': 'Premium annuel',
+        'pricing.annual.price': '139,99 <span class="per">€ / an</span>',
+        'pricing.annual.alt': 'soit <b>~11,67 € / mois</b> <span class="save">— moins cher que le mensuel</span>',
+        'pricing.premium.founder': 'Tarif fondateur verrouillé à vie',
+        'pricing.premium.trial': "14 jours d'essai gratuit, sans engagement",
+        'pricing.premium.f1': 'Adresses illimitées',
+        'pricing.premium.f2': '5 secteurs actifs',
+        'pricing.premium.f3': "Carnet d'adresses",
+        'pricing.premium.f4': 'Optimisation automatique en direct',
+        'pricing.premium.f5': 'Alertes de proximité',
+        'pricing.premium.f6': 'Sans publicité',
+        'pricing.premium.cta': 'Essayer 14 jours gratuitement',
+        'cta.title': 'Prêt à optimiser ta tournée ?',
+        'cta.sub': "Ta première tournée optimisée en moins d'une minute.",
+        'footer.note': "© 2026 ATEQO — L'itinéraire qui te suit",
+        'footer.contact': 'Contact',
+      },
+      en: {
+        'brand.aria': 'ATEQO — back to top',
+        'hero.wordmark.alt': 'ATEQO — The route that follows you',
+        'hero.h1': 'Deliver <span class="hl hl-1">more.</span> Earn <span class="hl hl-2">more.</span> Manage <span class="hl hl-3">better.</span>',
+        'hero.subtitle': 'ATEQO <strong>optimizes</strong> your routes in seconds. Save time, <strong>save on fuel</strong>, and <strong>freely choose</strong> your next stop.',
+        'badge.alt': 'Get it on Google Play',
+        'hero.badge.trial': '14-day Premium trial',
+        'hero.badge.commitment': 'No commitment',
+        'forwho.title': 'Built for those who drive',
+        'forwho.role1': 'Parcel couriers',
+        'forwho.role2': 'Express couriers',
+        'forwho.role3': 'Food delivery',
+        'forwho.role4': 'Tradespeople &amp; technicians',
+        'forwho.role5': 'Home care nurses',
+        'forwho.role6': 'E-commerce sellers',
+        'showcase.label': 'Features',
+        'showcase.title': 'Organize. Optimize. Deliver.',
+        'showcase.sub': 'Two tools, one result: shorter, better-organized routes.',
+        'showcase.b1.h3': 'Split your route<br>into <span class="road-text"><span class="s1">s</span><span class="s2">m</span><span class="s3">a</span><span class="s4">r</span><span class="s5">t</span> <span class="s1">s</span><span class="s2">e</span><span class="s3">c</span><span class="s4">t</span><span class="s5">o</span><span class="s1">r</span><span class="s2">s</span></span>',
+        'showcase.b1.p': 'Group your addresses by geographic zone in one tap. Each sector has its own color and visiting order. ATEQO optimizes each sector separately for a consistent route, with no wasted backtracking.',
+        'showcase.pill.sector1': 'Sector 1',
+        'showcase.pill.sector2': 'Sector 2',
+        'showcase.pill.sector3': 'Sector 3',
+        'showcase.pill.sector4': 'Sector 4',
+        'showcase.pill.sector5': 'Sector 5',
+        'showcase.b1.img.alt': 'ATEQO map with colored sectors: route organized by zone',
+        'showcase.b2.h3': 'An algorithm that<br><span class="road-text"><span class="s1">c</span><span class="s2">a</span><span class="s3">l</span><span class="s4">c</span><span class="s5">u</span><span class="s1">l</span><span class="s2">a</span><span class="s3">t</span><span class="s4">e</span><span class="s5">s</span> <span class="s1">t</span><span class="s2">h</span><span class="s3">e</span> <span class="s4">b</span><span class="s5">e</span><span class="s1">s</span><span class="s2">t</span> <span class="s3">o</span><span class="s4">r</span><span class="s5">d</span><span class="s1">e</span><span class="s2">r</span></span>',
+        'showcase.b2.p1': "Enter your addresses in any order. ATEQO calculates the shortest route in seconds using real roads, not straight lines. The time saved is shown directly on the map.",
+        'showcase.b2.p2': 'Each sector is optimized separately, for a consistent route with no wasted backtracking.',
+        'showcase.mock': '28 stops optimized&nbsp;— ~21 min saved',
+        'showcase.b3.h3': 'Navigation<br>that <span class="road-text"><span class="s1">a</span><span class="s2">d</span><span class="s3">a</span><span class="s4">p</span><span class="s5">t</span><span class="s1">s</span> <span class="s2">t</span><span class="s3">o</span> <span class="s4">y</span><span class="s5">o</span><span class="s1">u</span></span>',
+        'showcase.b3.p1': "The optimized order is a recommendation, never a constraint. After every delivery, ATEQO suggests the most logical next stop, but you're always free to choose another one.",
+        'showcase.b3.p2': 'Google Maps guidance adjusts instantly to your choice, with no manual recalculation.',
+        'showcase.pill.reco': 'Recommended stop',
+        'showcase.pill.free': 'Always your choice',
+        'showcase.b3.img.alt': 'ATEQO screen: recommended next destination, with the closest addresses freely available',
+        'features.label': "What's included",
+        'features.title': 'Features that matter',
+        'features.sub': "Everything you need, nothing you don't.",
+        'features.kicker1': 'The heart of your route',
+        'features.f1.h3': 'One-click optimization',
+        'features.f1.p': 'The algorithm calculates the best visiting order using real driving distances.',
+        'features.f2.h3': 'Route sectors',
+        'features.f2.p': 'Organize your addresses by zone. 2 sectors for free, 5 with Premium, switch on the fly.',
+        'features.f3.h3': 'Loading checklist',
+        'features.f3.p': 'The loading order is shown reversed: the last parcel delivered is the first one loaded into the vehicle.',
+        'features.f4.h3': 'Adaptive navigation',
+        'features.f4.p': 'Google Maps opens for every stop. The recommended order adjusts as soon as you choose another destination.',
+        'features.kicker2': 'Also included',
+        'features.f5.h3': 'Delivery notes',
+        'features.f5.p': 'Access code, floor, time slot: a note visible throughout the route.',
+        'features.f6.h3': 'Address book',
+        'features.f6.p': 'Save your recurring addresses and add them with one tap to your next route.',
+        'features.f7.h3': 'Address scan',
+        'features.f7.p': 'Scan a parcel label: ATEQO extracts the address and adds it to your route.',
+        'features.f8.h3': 'Route history',
+        'features.f8.p': 'Save and revisit your past routes to replay them in an instant.',
+        'how.label': 'How it works',
+        'how.title': 'Up and running in 3 steps',
+        'how.sub': 'ATEQO supports every stage of your route: from sorting your addresses to loading the vehicle, all the way to delivery.',
+        'how.step1.kicker': 'Sort',
+        'how.step1.h3': 'Organize your addresses',
+        'how.step1.p': 'Add your stops by hand, by scanning a label, or by voice, then sort them by sector.',
+        'how.step2.kicker': 'Load',
+        'how.step2.h3': 'Optimize and load your vehicle',
+        'how.step2.p': 'One click calculates the shortest route and shows the reversed loading order: last delivered, first loaded.',
+        'how.step3.kicker': 'Deliver',
+        'how.step3.h3': 'Head out and navigate freely',
+        'how.step3.p': 'A marker shows the recommended next stop, but you always choose your destination. Google Maps takes over from there.',
+        'pricing.label': 'Pricing',
+        'pricing.title': 'Simple and transparent',
+        'pricing.sub': "Start for free. Go Premium once you're on the road every day.",
+        'pricing.founder': "<strong>Founder's offer</strong> — the first subscribers lock in their price <strong>for life</strong>. This rate won't change for you, even after the price increases.",
+        'pricing.free.name': 'Free',
+        'pricing.free.desc': 'To try ATEQO with no commitment.',
+        'pricing.free.f1': '10 addresses per route',
+        'pricing.free.f2': '2 active sectors',
+        'pricing.free.f3': '3 optimizations per day',
+        'pricing.free.f4': 'GPS navigation',
+        'pricing.free.f5': 'Delivery notes',
+        'pricing.free.f7': 'Sectors 3, 4 and 5',
+        'pricing.free.cta': 'Download',
+        'pricing.monthly.name': 'Monthly Premium',
+        'pricing.monthly.price': '€13.99 <span class="per">/ month</span>',
+        'pricing.annual.ribbon': '2 months free',
+        'pricing.annual.name': 'Annual Premium',
+        'pricing.annual.price': '€139.99 <span class="per">/ year</span>',
+        'pricing.annual.alt': 'or <b>~€11.67 / month</b> <span class="save">— cheaper than monthly</span>',
+        'pricing.premium.founder': 'Founder price locked in for life',
+        'pricing.premium.trial': '14-day free trial, no commitment',
+        'pricing.premium.f1': 'Unlimited addresses',
+        'pricing.premium.f2': '5 active sectors',
+        'pricing.premium.f3': 'Address book',
+        'pricing.premium.f4': 'Real-time automatic optimization',
+        'pricing.premium.f5': 'Proximity alerts',
+        'pricing.premium.f6': 'No ads',
+        'pricing.premium.cta': 'Try free for 14 days',
+        'cta.title': 'Ready to optimize your route?',
+        'cta.sub': 'Your first optimized route in under a minute.',
+        'footer.note': '© 2026 ATEQO — The route that follows you',
+        'footer.contact': 'Contact',
+      },
+    };
+
+    var GPLAY_BADGE = {
+      fr: 'https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png',
+      en: 'https://play.google.com/intl/en/badges/static/images/badges/en_badge_web_generic.png',
+    };
+
+    var LANG_KEY = 'ateqo_site_lang';
+
+    function detectLang() {
+      var saved = null;
+      try { saved = localStorage.getItem(LANG_KEY); } catch (e) { /* stockage indisponible */ }
+      if (saved === 'fr' || saved === 'en') return saved;
+      var nav = (navigator.language || (navigator.languages && navigator.languages[0]) || 'fr').toLowerCase();
+      return nav.indexOf('fr') === 0 ? 'fr' : 'en';
+    }
+
+    function applyLang(lang) {
+      var dict = I18N[lang] || I18N.fr;
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        if (dict[key] != null) el.textContent = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-html');
+        if (dict[key] != null) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-alt');
+        if (dict[key] != null) el.setAttribute('alt', dict[key]);
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n-aria');
+        if (dict[key] != null) el.setAttribute('aria-label', dict[key]);
+      });
+      document.querySelectorAll('.gplay-img').forEach(function (el) {
+        el.src = GPLAY_BADGE[lang] || GPLAY_BADGE.fr;
+      });
+      document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
+      });
+
+      document.title = lang === 'en'
+        ? 'ATEQO — The route that follows you'
+        : "ATEQO — L'itinéraire qui te suit";
+    }
+
+    function setLang(lang) {
+      try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* stockage indisponible */ }
+      applyLang(lang);
+    }
+
+    document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
+      btn.addEventListener('click', function () { setLang(btn.getAttribute('data-lang-btn')); });
+    });
+
+    applyLang(detectLang());
+  </script>
 
   <script>
     // Reveal on scroll (progressive enhancement)

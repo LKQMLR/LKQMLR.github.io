@@ -1,3 +1,3 @@
 [submodule "policy"]
 	path = policy
-	url = git@github.com:LKQMLR/cargoV1-policy.git
+	url = https://github.com/LKQMLR/cargoV1-policy.git

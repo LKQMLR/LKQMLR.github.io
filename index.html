@@ -48,8 +48,8 @@
        d'ecran ; si son contenu depasse, il defile a l'interieur du panneau, puis
        le panneau suivant s'aligne (snap). */
     /* GSAP pilote des transitions fluides section par section sur desktop
-       (pointeur fin). Le tactile garde le snap natif (momentum deja fluide).
-       scroll-behavior:auto pour ne pas entrer en conflit avec l'anim GSAP. */
+       (pointeur fin). Le tactile defile librement (snap doux proximity, cf. bloc
+       pointer:coarse). scroll-behavior:auto pour ne pas gener l'anim GSAP. */
     html{scroll-behavior:auto;scroll-snap-type:y proximity}
     body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
     a{color:var(--accent);text-decoration:none}
@@ -166,8 +166,6 @@
     .pricing{background:var(--surface2);border-top:1px solid var(--border)}
     .pricing-inner{max-width:980px}
     .pricing-inner .section-sub{margin-bottom:16px}
-    .founder-banner{max-width:560px;margin:20px auto 0;background:linear-gradient(135deg,rgba(200,162,75,.14),rgba(200,162,75,.06));border:1px solid rgba(200,162,75,.4);border-radius:14px;padding:13px 20px;text-align:center;font-size:.85rem;color:#8a6d1f;font-weight:600;line-height:1.5}
-    .founder-banner strong{color:#6f5615}
     .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px;align-items:stretch}
     .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;display:flex;flex-direction:column}
     .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 16px 44px rgba(200,162,75,.16)}
@@ -175,13 +173,10 @@
     .plan-name{font-size:.76rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
     .plan-price{font-size:2.3rem;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
     .plan-price .per{font-size:.8rem;font-weight:500;color:var(--muted)}
-    .plan-price-was{font-size:.92rem;font-weight:600;color:var(--muted);text-decoration:line-through;margin-bottom:5px}
     .plan-alt{font-size:.82rem;color:var(--muted);margin-top:8px}
     .plan-alt b{color:var(--ink);font-weight:700}
     .plan-alt .save{color:var(--green);font-weight:600}
     .plan-note{font-size:.78rem;margin-top:10px;line-height:1.45}
-    .plan-note.founder{color:#8a6d1f;font-weight:600;font-size:.7rem}
-    .plan-note.founder sup{font-size:.7em;font-weight:800}
     .plan-note.trial{color:var(--muted)}
     .plan-desc{font-size:.82rem;color:var(--muted);margin-top:10px;line-height:1.45}
     .plan-divider{border:none;border-top:1px solid var(--border);margin:18px 0}
@@ -194,7 +189,6 @@
     .plan-btn:hover{transform:translateY(-1px)}
     .plan-btn.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--border)}
     .plan-btn.primary{background:var(--ink);color:#fff;box-shadow:0 6px 18px rgba(15,25,35,.2)}
-    .pricing-footnote{max-width:640px;margin:22px auto 0;text-align:center;font-size:.72rem;line-height:1.5;color:var(--muted2)}
 
     /* ── CTA ── */
     .cta-inner{text-align:center;margin-top:64px}
@@ -229,10 +223,17 @@
       :root{--bar:56px}
       .pin{padding-left:16px;padding-right:16px}
     }
-    /* Tactile : snap natif ferme (une section a la fois), GSAP n'intervient pas. */
+    /* Tactile : AUCUN scroll imbrique — le document defile seul, librement, avec
+       le snap doux de base (proximity) qui aligne les sections sans casser l'elan.
+       L'ancien montage (panneaux 100dvh overflow:auto + snap mandatory) bloquait :
+       des que le contenu depassait de quelques pixels (barre d'adresse mobile),
+       le geste defilait l'INTERIEUR du panneau, l'inertie ne chainait pas vers la
+       page, puis le snap obligatoire avalait le reste du geste → sections qui
+       "collent", surtout le hero. Ici les panneaux poussent leur hauteur naturelle
+       (min-height plein ecran) et n'ont plus d'overflow propre. */
     @media (pointer:coarse){
-      html{scroll-snap-type:y mandatory}
-      .panel{scroll-snap-stop:always}
+      .panel{height:auto;min-height:100vh;min-height:100dvh;overflow:visible}
+      .pin{min-height:100vh;min-height:100dvh}
     }
     @media(prefers-reduced-motion:reduce){
       html{scroll-snap-type:none}
@@ -480,10 +481,6 @@
         <h2 class="section-title" data-i18n="pricing.title">Simple et transparent</h2>
         <p class="section-sub" data-i18n="pricing.sub">Commence gratuitement. Passe Premium quand tu roules tous les jours.</p>
 
-        <div class="founder-banner" data-i18n-html="pricing.founder">
-          <strong>Offre fondateur</strong> : abonne-toi pendant la période de lancement et garde le tarif de lancement pendant <strong>1 an</strong>.
-        </div>
-
         <div class="plans">
           <!-- Gratuit -->
           <div class="plan reveal">
@@ -507,9 +504,7 @@
           <!-- Premium mensuel -->
           <div class="plan reveal">
             <div class="plan-name" data-i18n="pricing.monthly.name">Premium mensuel</div>
-            <div class="plan-price-was" data-i18n="pricing.monthly.was">16,99 € / mois</div>
-            <div class="plan-price" data-i18n-html="pricing.monthly.price">13,99 <span class="per">€ / mois</span></div>
-            <p class="plan-note founder" data-i18n-html="pricing.monthly.founder">Tarif fondateur pendant 12 mois<sup>*</sup> · offre à durée limitée</p>
+            <div class="plan-price" data-i18n-html="pricing.monthly.price">16,99 <span class="per">€ / mois</span></div>
             <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
             <hr class="plan-divider" />
             <ul class="plan-features">
@@ -527,10 +522,8 @@
           <div class="plan featured reveal">
             <div class="plan-ribbon" data-i18n="pricing.annual.ribbon">2 mois offerts</div>
             <div class="plan-name" data-i18n="pricing.annual.name">Premium annuel</div>
-            <div class="plan-price-was" data-i18n="pricing.annual.was">169,99 € / an</div>
-            <div class="plan-price" data-i18n-html="pricing.annual.price">139,99 <span class="per">€ / an</span></div>
-            <p class="plan-alt" data-i18n-html="pricing.annual.alt">soit <b>~11,67 € / mois</b>, <span class="save">moins cher que le mensuel</span></p>
-            <p class="plan-note founder" data-i18n-html="pricing.annual.founder">Tarif fondateur la 1re année<sup>*</sup> · offre à durée limitée</p>
+            <div class="plan-price" data-i18n-html="pricing.annual.price">169,99 <span class="per">€ / an</span></div>
+            <p class="plan-alt" data-i18n-html="pricing.annual.alt">soit <b>~14,17 € / mois</b>, <span class="save">moins cher que le mensuel</span></p>
             <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
             <hr class="plan-divider" />
             <ul class="plan-features">
@@ -544,7 +537,6 @@
             <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
           </div>
         </div>
-        <p class="pricing-footnote" data-i18n="pricing.footnote">* Offre fondateur réservée aux abonnements souscrits pendant la période de lancement : le tarif de lancement s'applique pendant 12 mois (mensuel) ou sur la première année (annuel), puis le tarif standard (16,99 € / mois ou 169,99 € / an) prend le relais. Les 14 jours d'essai gratuit ne comptent pas dans cette période.</p>
       </div>
 
       <!-- CTA -->
@@ -645,7 +637,6 @@
         'pricing.label': 'Tarifs',
         'pricing.title': 'Simple et transparent',
         'pricing.sub': 'Commence gratuitement. Passe Premium quand tu roules tous les jours.',
-        'pricing.founder': "<strong>Offre fondateur</strong> : abonne-toi pendant la période de lancement et garde le tarif de lancement pendant <strong>1 an</strong>.",
         'pricing.free.name': 'Gratuit',
         'pricing.free.desc': 'Pour découvrir ATEQO sans engagement.',
         'pricing.free.f1': '10 adresses par tournée',
@@ -656,16 +647,11 @@
         'pricing.free.f7': 'Secteurs 3, 4 et 5',
         'pricing.free.cta': 'Télécharger',
         'pricing.monthly.name': 'Premium mensuel',
-        'pricing.monthly.was': '16,99 € / mois',
-        'pricing.monthly.price': '13,99 <span class="per">€ / mois</span>',
+        'pricing.monthly.price': '16,99 <span class="per">€ / mois</span>',
         'pricing.annual.ribbon': '2 mois offerts',
         'pricing.annual.name': 'Premium annuel',
-        'pricing.annual.was': '169,99 € / an',
-        'pricing.annual.price': '139,99 <span class="per">€ / an</span>',
-        'pricing.annual.alt': 'soit <b>~11,67 € / mois</b>, <span class="save">moins cher que le mensuel</span>',
-        'pricing.monthly.founder': 'Tarif fondateur pendant 12 mois<sup>*</sup> · offre à durée limitée',
-        'pricing.annual.founder': 'Tarif fondateur la 1re année<sup>*</sup> · offre à durée limitée',
-        'pricing.footnote': "* Offre fondateur réservée aux abonnements souscrits pendant la période de lancement : le tarif de lancement s'applique pendant 12 mois (mensuel) ou sur la première année (annuel), puis le tarif standard (16,99 € / mois ou 169,99 € / an) prend le relais. Les 14 jours d'essai gratuit ne comptent pas dans cette période.",
+        'pricing.annual.price': '169,99 <span class="per">€ / an</span>',
+        'pricing.annual.alt': 'soit <b>~14,17 € / mois</b>, <span class="save">moins cher que le mensuel</span>',
         'pricing.premium.trial': "14 jours d'essai gratuit, sans engagement",
         'pricing.premium.f1': 'Adresses illimitées',
         'pricing.premium.f2': '5 secteurs actifs',
@@ -754,7 +740,6 @@
         'pricing.label': 'Pricing',
         'pricing.title': 'Simple and transparent',
         'pricing.sub': "Start for free. Go Premium once you're on the road every day.",
-        'pricing.founder': "<strong>Founder's offer</strong>: subscribe during the launch period and keep the launch price for <strong>1 year</strong>.",
         'pricing.free.name': 'Free',
         'pricing.free.desc': 'To try ATEQO with no commitment.',
         'pricing.free.f1': '10 addresses per route',
@@ -765,16 +750,11 @@
         'pricing.free.f7': 'Sectors 3, 4 and 5',
         'pricing.free.cta': 'Download',
         'pricing.monthly.name': 'Monthly Premium',
-        'pricing.monthly.was': '€16.99 / month',
-        'pricing.monthly.price': '€13.99 <span class="per">/ month</span>',
+        'pricing.monthly.price': '€16.99 <span class="per">/ month</span>',
         'pricing.annual.ribbon': '2 months free',
         'pricing.annual.name': 'Annual Premium',
-        'pricing.annual.was': '€169.99 / year',
-        'pricing.annual.price': '€139.99 <span class="per">/ year</span>',
-        'pricing.annual.alt': 'or <b>~€11.67 / month</b>, <span class="save">cheaper than monthly</span>',
-        'pricing.monthly.founder': 'Founder price for 12 months<sup>*</sup> · limited-time offer',
-        'pricing.annual.founder': 'Founder price for the first year<sup>*</sup> · limited-time offer',
-        'pricing.footnote': '* Founder offer for subscriptions started during the launch period: the launch price applies for 12 months (monthly) or the first year (annual), then the standard price (€16.99 / month or €169.99 / year) applies. The 14-day free trial does not count toward this period.',
+        'pricing.annual.price': '€169.99 <span class="per">/ year</span>',
+        'pricing.annual.alt': 'or <b>~€14.17 / month</b>, <span class="save">cheaper than monthly</span>',
         'pricing.premium.trial': '14-day free trial, no commitment',
         'pricing.premium.f1': 'Unlimited addresses',
         'pricing.premium.f2': '5 active sectors',

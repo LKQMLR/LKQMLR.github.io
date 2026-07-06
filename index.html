@@ -175,6 +175,7 @@
     .plan-name{font-size:.76rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
     .plan-price{font-size:2.3rem;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
     .plan-price .per{font-size:.8rem;font-weight:500;color:var(--muted)}
+    .plan-price-was{font-size:.92rem;font-weight:600;color:var(--muted);text-decoration:line-through;margin-bottom:5px}
     .plan-alt{font-size:.82rem;color:var(--muted);margin-top:8px}
     .plan-alt b{color:var(--ink);font-weight:700}
     .plan-alt .save{color:var(--green);font-weight:600}
@@ -480,7 +481,7 @@
         <p class="section-sub" data-i18n="pricing.sub">Commence gratuitement. Passe Premium quand tu roules tous les jours.</p>
 
         <div class="founder-banner" data-i18n-html="pricing.founder">
-          <strong>Offre fondateur</strong> : les premiers abonnés verrouillent leur tarif <strong>à vie</strong>, durant toute la période fondateur.
+          <strong>Offre fondateur</strong> : abonne-toi pendant la période de lancement et garde le tarif de lancement pendant <strong>1 an</strong>.
         </div>
 
         <div class="plans">
@@ -506,8 +507,9 @@
           <!-- Premium mensuel -->
           <div class="plan reveal">
             <div class="plan-name" data-i18n="pricing.monthly.name">Premium mensuel</div>
+            <div class="plan-price-was" data-i18n="pricing.monthly.was">16,99 € / mois</div>
             <div class="plan-price" data-i18n-html="pricing.monthly.price">13,99 <span class="per">€ / mois</span></div>
-            <p class="plan-note founder" data-i18n-html="pricing.premium.founder">Tarif fondateur verrouillé à vie<sup>*</sup> · offre à durée limitée</p>
+            <p class="plan-note founder" data-i18n-html="pricing.monthly.founder">Tarif fondateur pendant 12 mois<sup>*</sup> · offre à durée limitée</p>
             <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
             <hr class="plan-divider" />
             <ul class="plan-features">
@@ -525,9 +527,10 @@
           <div class="plan featured reveal">
             <div class="plan-ribbon" data-i18n="pricing.annual.ribbon">2 mois offerts</div>
             <div class="plan-name" data-i18n="pricing.annual.name">Premium annuel</div>
+            <div class="plan-price-was" data-i18n="pricing.annual.was">169,99 € / an</div>
             <div class="plan-price" data-i18n-html="pricing.annual.price">139,99 <span class="per">€ / an</span></div>
             <p class="plan-alt" data-i18n-html="pricing.annual.alt">soit <b>~11,67 € / mois</b>, <span class="save">moins cher que le mensuel</span></p>
-            <p class="plan-note founder" data-i18n-html="pricing.premium.founder">Tarif fondateur verrouillé à vie<sup>*</sup> · offre à durée limitée</p>
+            <p class="plan-note founder" data-i18n-html="pricing.annual.founder">Tarif fondateur la 1re année<sup>*</sup> · offre à durée limitée</p>
             <p class="plan-note trial" data-i18n="pricing.premium.trial">14 jours d'essai gratuit, sans engagement</p>
             <hr class="plan-divider" />
             <ul class="plan-features">
@@ -541,7 +544,7 @@
             <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
           </div>
         </div>
-        <p class="pricing-footnote" data-i18n="pricing.footnote">* Les utilisateurs ayant eu au minimum 1 mois d'abonnement durant la période limitée « Fondateur » conserveront leur prix d'abonnement. La période des 14 jours d'essai gratuit n'est pas prise en compte.</p>
+        <p class="pricing-footnote" data-i18n="pricing.footnote">* Offre fondateur réservée aux abonnements souscrits pendant la période de lancement : le tarif de lancement s'applique pendant 12 mois (mensuel) ou sur la première année (annuel), puis le tarif standard (16,99 € / mois ou 169,99 € / an) prend le relais. Les 14 jours d'essai gratuit ne comptent pas dans cette période.</p>
       </div>
 
       <!-- CTA -->
@@ -642,7 +645,7 @@
         'pricing.label': 'Tarifs',
         'pricing.title': 'Simple et transparent',
         'pricing.sub': 'Commence gratuitement. Passe Premium quand tu roules tous les jours.',
-        'pricing.founder': "<strong>Offre fondateur</strong> : les premiers abonnés verrouillent leur tarif <strong>à vie</strong>, durant toute la période fondateur.",
+        'pricing.founder': "<strong>Offre fondateur</strong> : abonne-toi pendant la période de lancement et garde le tarif de lancement pendant <strong>1 an</strong>.",
         'pricing.free.name': 'Gratuit',
         'pricing.free.desc': 'Pour découvrir ATEQO sans engagement.',
         'pricing.free.f1': '10 adresses par tournée',
@@ -653,13 +656,16 @@
         'pricing.free.f7': 'Secteurs 3, 4 et 5',
         'pricing.free.cta': 'Télécharger',
         'pricing.monthly.name': 'Premium mensuel',
+        'pricing.monthly.was': '16,99 € / mois',
         'pricing.monthly.price': '13,99 <span class="per">€ / mois</span>',
         'pricing.annual.ribbon': '2 mois offerts',
         'pricing.annual.name': 'Premium annuel',
+        'pricing.annual.was': '169,99 € / an',
         'pricing.annual.price': '139,99 <span class="per">€ / an</span>',
         'pricing.annual.alt': 'soit <b>~11,67 € / mois</b>, <span class="save">moins cher que le mensuel</span>',
-        'pricing.premium.founder': 'Tarif fondateur verrouillé à vie<sup>*</sup> · offre à durée limitée',
-        'pricing.footnote': "* Les utilisateurs ayant eu au minimum 1 mois d'abonnement durant la période limitée « Fondateur » conserveront leur prix d'abonnement. La période des 14 jours d'essai gratuit n'est pas prise en compte.",
+        'pricing.monthly.founder': 'Tarif fondateur pendant 12 mois<sup>*</sup> · offre à durée limitée',
+        'pricing.annual.founder': 'Tarif fondateur la 1re année<sup>*</sup> · offre à durée limitée',
+        'pricing.footnote': "* Offre fondateur réservée aux abonnements souscrits pendant la période de lancement : le tarif de lancement s'applique pendant 12 mois (mensuel) ou sur la première année (annuel), puis le tarif standard (16,99 € / mois ou 169,99 € / an) prend le relais. Les 14 jours d'essai gratuit ne comptent pas dans cette période.",
         'pricing.premium.trial': "14 jours d'essai gratuit, sans engagement",
         'pricing.premium.f1': 'Adresses illimitées',
         'pricing.premium.f2': '5 secteurs actifs',
@@ -748,7 +754,7 @@
         'pricing.label': 'Pricing',
         'pricing.title': 'Simple and transparent',
         'pricing.sub': "Start for free. Go Premium once you're on the road every day.",
-        'pricing.founder': "<strong>Founder's offer</strong> : the first subscribers lock in their price <strong>for life</strong>, for the entire founder period.",
+        'pricing.founder': "<strong>Founder's offer</strong>: subscribe during the launch period and keep the launch price for <strong>1 year</strong>.",
         'pricing.free.name': 'Free',
         'pricing.free.desc': 'To try ATEQO with no commitment.',
         'pricing.free.f1': '10 addresses per route',
@@ -759,13 +765,16 @@
         'pricing.free.f7': 'Sectors 3, 4 and 5',
         'pricing.free.cta': 'Download',
         'pricing.monthly.name': 'Monthly Premium',
+        'pricing.monthly.was': '€16.99 / month',
         'pricing.monthly.price': '€13.99 <span class="per">/ month</span>',
         'pricing.annual.ribbon': '2 months free',
         'pricing.annual.name': 'Annual Premium',
+        'pricing.annual.was': '€169.99 / year',
         'pricing.annual.price': '€139.99 <span class="per">/ year</span>',
         'pricing.annual.alt': 'or <b>~€11.67 / month</b>, <span class="save">cheaper than monthly</span>',
-        'pricing.premium.founder': 'Founder price locked in for life<sup>*</sup> · limited-time offer',
-        'pricing.footnote': '* Users with at least one month of paid subscription during the limited « Founder » period keep their subscription price. The 14-day free-trial period is not taken into account.',
+        'pricing.monthly.founder': 'Founder price for 12 months<sup>*</sup> · limited-time offer',
+        'pricing.annual.founder': 'Founder price for the first year<sup>*</sup> · limited-time offer',
+        'pricing.footnote': '* Founder offer for subscriptions started during the launch period: the launch price applies for 12 months (monthly) or the first year (annual), then the standard price (€16.99 / month or €169.99 / year) applies. The 14-day free trial does not count toward this period.',
         'pricing.premium.trial': '14-day free trial, no commitment',
         'pricing.premium.f1': 'Unlimited addresses',
         'pricing.premium.f2': '5 active sectors',

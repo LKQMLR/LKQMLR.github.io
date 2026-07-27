@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ATEQO · redirection</title>
+<script>
+  /* ── Page relais (Politique de confidentialité) ───────────────────────────────────────────────────
+     Le depot cargoV1-policy a ete renomme ateqo-policy. GitHub ne redirige PAS
+     les URL des sites Pages de projet lors d'un renommage, c'est documente :
+     « all existing information, with the exception of project site URLs, is
+     automatically redirected to the new name ».
+
+     Ce fichier maintient donc l'ancien chemin vivant, indefiniment, pour les
+     versions de l'application DEJA INSTALLEES qui pointent vers lui en dur et
+     ne seront jamais mises a jour, ainsi que pour les liens externes existants
+     (fiche Play, e-mails deja envoyes, signets).
+
+     On utilise location.replace et non un meta refresh pour deux raisons :
+     la query string ET le fragment sont conserves (la confirmation d'e-mail
+     Supabase transmet ses jetons dans le hash, qu'un meta refresh perdrait),
+     et l'historique de navigation n'est pas pollue.
+
+     A NE PAS SUPPRIMER avant extinction des versions concernees.
+     ────────────────────────────────────────────────────────────────────── */
+  location.replace('/ateqo-policy/' + location.search + location.hash);
+</script>
+</head>
+<body>
+<p style="font-family:system-ui,-apple-system,'Segoe UI',sans-serif;text-align:center;padding:48px 24px;color:#515151">
+  Cette page a déménagé. <a href="/ateqo-policy/" style="color:#2563eb">Politique de confidentialité</a>
+</p>
+</body>
+</html>

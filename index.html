@@ -54,6 +54,8 @@
     body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%}
+    /* L'attribut hidden doit primer sur les display: des regles qui suivent. */
+    [hidden]{display:none!important}
 
     /* PAS d'overscroll-behavior:contain ici : le panneau couvre tout l'ecran et
        quand son contenu tient (rien a defiler dedans), le geste tactile doit
@@ -241,6 +243,12 @@
       .scroll-hint{animation:none}
     }
   </style>
+
+  <!-- ── Mesure d'audience (GA4) + conversions Google Ads ──────────────────────
+       Chargement conditionne au consentement, banniere incluse. Le module reste
+       totalement inerte (aucun cookie, aucune requete, aucune banniere) tant que
+       les identifiants ne sont pas renseignes dans assets/analytics.js. -->
+  <script src="./assets/analytics.js?v=1" defer></script>
 </head>
 <body>
 
@@ -263,7 +271,8 @@
         <img class="hero-wordmark" src="./img/logo_hero.png" data-i18n-alt="hero.wordmark.alt" alt="ATEQO · L'itinéraire qui te suit" />
         <h1 data-i18n-html="hero.h1">Livrez <span class="hl hl-1">plus.</span> Gagnez <span class="hl hl-2">plus.</span> Gérez <span class="hl hl-3">mieux.</span></h1>
         <p class="subtitle" data-i18n-html="hero.subtitle">ATEQO <strong>optimise</strong> tes tournées en quelques secondes. Gagne du temps, <strong>économise du carburant</strong> et <strong>choisis librement</strong> ton prochain arrêt.</p>
-        <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+        <!-- data-track-position : identifie dans GA4 quel emplacement convertit. -->
+        <a class="gplay" data-track-position="hero" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
           <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
         </a>
         <div class="hero-badges">
@@ -499,7 +508,7 @@
               <li class="no" data-i18n="pricing.free.f7">Secteurs 4 et 5</li>
               <li class="no" data-i18n="pricing.premium.f3">Carnet d'adresses</li>
             </ul>
-            <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.free.cta">Télécharger</a>
+            <a class="plan-btn secondary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.free.cta">Télécharger</a>
           </div>
 
           <!-- Premium mensuel -->
@@ -513,7 +522,7 @@
               <li data-i18n="pricing.premium.f2">5 secteurs actifs</li>
               <li data-i18n="pricing.premium.f3">Carnet d'adresses</li>
             </ul>
-            <a class="plan-btn secondary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
+            <a class="plan-btn secondary" data-track-position="tarifs-mensuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
           </div>
 
           <!-- Premium annuel -->
@@ -529,7 +538,7 @@
               <li data-i18n="pricing.premium.f2">5 secteurs actifs</li>
               <li data-i18n="pricing.premium.f3">Carnet d'adresses</li>
             </ul>
-            <a class="plan-btn primary" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
+            <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="pricing.premium.cta">Essayer 14 jours gratuitement</a>
           </div>
         </div>
       </div>
@@ -538,7 +547,7 @@
       <div class="pin-w cta-inner">
         <h2 data-i18n="cta.title">Prêt à optimiser ta tournée ?</h2>
         <p data-i18n="cta.sub">Ta première tournée optimisée en moins d'une minute.</p>
-        <a class="gplay" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+        <a class="gplay" data-track-position="cta-final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
           <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
         </a>
       </div>
@@ -548,11 +557,18 @@
         <img src="./img/logo_ateqo.png" alt="ATEQO" />
         <p class="fnote" data-i18n="footer.note">© 2026 ATEQO · L'itinéraire qui te suit</p>
         <div class="flinks">
-          <a href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Google Play</a>
-          <a href="https://lkqmlr.github.io/cargoV1-policy/support.html" data-i18n="footer.support">Support</a>
-          <a href="https://lkqmlr.github.io/cargoV1-policy/" data-i18n="footer.privacy" data-i18n-href="footer.privacy.href">Politique de confidentialité</a>
-          <a href="https://lkqmlr.github.io/cargoV1-policy/terms.html" data-i18n="footer.terms">Conditions d'utilisation</a>
+          <a data-track-position="footer" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Google Play</a>
+          <a href="/ateqo-policy/support.html" data-i18n="footer.support">Support</a>
+          <a href="/ateqo-policy/" data-i18n="footer.privacy" data-i18n-href="footer.privacy.href">Politique de confidentialité</a>
+          <a href="/ateqo-policy/terms.html" data-i18n="footer.terms">Conditions d'utilisation</a>
+          <a href="./mentions-legales/" data-i18n="footer.legal" data-i18n-href="footer.legal.href">Mentions légales</a>
           <a href="mailto:lkqmlr.dev@gmail.com" data-i18n="footer.contact">Contact</a>
+          <!-- Retrait du consentement : obligation RGPD, doit rester aussi
+               accessible que l'acceptation. Masque par defaut et revele par
+               assets/analytics.js seulement si une mesure est reellement active :
+               sans identifiant configure, aucun cookie n'est depose, ce lien
+               n'aurait donc rien a proposer. -->
+          <a href="#" data-consent-open data-i18n="footer.cookies" hidden>Cookies</a>
         </div>
       </footer>
     </div>
@@ -658,9 +674,12 @@
         'footer.note': "© 2026 ATEQO · L'itinéraire qui te suit",
         'footer.support': 'Support',
         'footer.privacy': 'Politique de confidentialité',
-        'footer.privacy.href': 'https://lkqmlr.github.io/cargoV1-policy/',
+        'footer.privacy.href': '/ateqo-policy/',
         'footer.terms': "Conditions d'utilisation",
+        'footer.legal': 'Mentions légales',
+        'footer.legal.href': './mentions-legales/',
         'footer.contact': 'Contact',
+        'footer.cookies': 'Cookies',
       },
       en: {
         'brand.aria': 'ATEQO · back to top',
@@ -759,9 +778,12 @@
         'footer.note': '© 2026 ATEQO · The route that follows you',
         'footer.support': 'Support',
         'footer.privacy': 'Privacy Policy',
-        'footer.privacy.href': 'https://lkqmlr.github.io/cargoV1-policy/index.en.html',
+        'footer.privacy.href': '/ateqo-policy/index.en.html',
         'footer.terms': 'Terms of Use',
+        'footer.legal': 'Legal Notice',
+        'footer.legal.href': './mentions-legales/index.en.html',
         'footer.contact': 'Contact',
+        'footer.cookies': 'Cookies',
       },
     };
 

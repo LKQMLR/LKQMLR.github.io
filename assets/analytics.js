@@ -32,8 +32,8 @@
     // Lien « Politique de confidentialite » de la banniere. A mettre a jour en
     // meme temps que le reste du site le jour de la bascule vers ateqo.fr.
     PRIVACY_URL: {
-      fr: '/ateqo-policy/',
-      en: '/ateqo-policy/index.en.html',
+      fr: '/policy/',
+      en: '/policy/index.en.html',
     },
   };
 

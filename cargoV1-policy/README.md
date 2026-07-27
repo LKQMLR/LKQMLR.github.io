@@ -1,7 +1,7 @@
 # cargoV1-policy — pages relais (ne pas supprimer)
 
 Ce dossier ne contient **aucun contenu réel**. Les pages légales vivent dans le
-dépôt `ateqo-policy`, publié sur `/ateqo-policy/`.
+dépôt `ateqo-policy`, publié sur `/policy/`.
 
 ## Pourquoi ce dossier existe
 
@@ -14,7 +14,7 @@ redirige pas les URL des sites Pages de projet lors d'un renommage.
 > — [documentation GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository)
 
 Ces six fichiers maintiennent donc l'ancien chemin vivant. Chacun redirige en
-JavaScript vers son équivalent dans `/ateqo-policy/`, en conservant la query
+JavaScript vers son équivalent dans `/policy/`, en conservant la query
 string et le fragment.
 
 ## Qui dépend encore de ces URL

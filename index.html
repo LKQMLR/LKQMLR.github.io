@@ -57,6 +57,17 @@
     /* L'attribut hidden doit primer sur les display: des regles qui suivent. */
     [hidden]{display:none!important}
 
+    /* Barres de defilement masquees. Chaque .panel porte son propre overflow-y,
+       donc le navigateur en dessinait une par section en plus de celle du
+       document : bruit visuel sur une page concue en plein ecran.
+       On masque UNIQUEMENT le dessin de la barre — le defilement, la molette, le
+       tactile et le clavier restent intacts. Ne touche ni au scroll-snap ni a
+       l'overflow (cf. le bug de figeage mobile documente juste en dessous). */
+    html,body,.panel{scrollbar-width:none;-ms-overflow-style:none}
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .panel::-webkit-scrollbar{width:0;height:0;display:none}
+
     /* PAS d'overscroll-behavior:contain ici : le panneau couvre tout l'ecran et
        quand son contenu tient (rien a defiler dedans), le geste tactile doit
        CHAINER vers le document pour atteindre la section suivante — contain
@@ -426,6 +437,14 @@
             <p data-i18n="features.f8.p">Sauvegarde et retrouve tes tournées passées pour les rejouer en un instant.</p>
           </div>
 
+          <div class="fc reveal">
+            <div class="fc-icon" style="background:rgba(217,119,6,.12);color:var(--s3)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+            </div>
+            <h3 data-i18n="features.f9.h3">Saisie vocale</h3>
+            <p data-i18n="features.f9.p">Dicte l'adresse au lieu de la taper, les mains dans les colis. Reconnaissance intégrée au téléphone, sans surcoût.</p>
+          </div>
+
         </div>
       </div>
     </div>
@@ -635,6 +654,8 @@
         'features.f7.p': "Scanne une étiquette colis : ATEQO en extrait l'adresse et l'ajoute à ta tournée.",
         'features.f8.h3': 'Historique de tournées',
         'features.f8.p': 'Sauvegarde et retrouve tes tournées passées pour les rejouer en un instant.',
+        'features.f9.h3': 'Saisie vocale',
+        'features.f9.p': 'Dicte l\'adresse au lieu de la taper, les mains dans les colis. Reconnaissance intégrée au téléphone, sans surcoût.',
         'how.label': 'Comment ça marche',
         'how.title': 'Opérationnel en 3 étapes',
         'how.sub': "ATEQO t'accompagne à chaque étape de ta tournée : du tri de tes adresses au stockage dans le véhicule, jusqu'à la livraison.",
@@ -740,6 +761,8 @@
         'features.f7.p': 'Scan a parcel label: ATEQO extracts the address and adds it to your route.',
         'features.f8.h3': 'Route history',
         'features.f8.p': 'Save and revisit your past routes to replay them in an instant.',
+        'features.f9.h3': 'Voice input',
+        'features.f9.p': 'Say the address instead of typing it, hands full of parcels. Uses your phone\'s built-in recognition, at no extra cost.',
         'how.label': 'How it works',
         'how.title': 'Up and running in 3 steps',
         'how.sub': 'ATEQO supports every stage of your route: from sorting your addresses to loading the vehicle, all the way to delivery.',

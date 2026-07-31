@@ -132,6 +132,33 @@
     .tone-4{--tone:var(--s4);--tone-soft:rgba(219,39,119,.10)}
     .tone-5{--tone:var(--s5);--tone-soft:rgba(124,58,237,.10)}
 
+    /* ── L'ESSENTIEL (premiere section rencontree au defilement) ──────────────
+       Repond en un ecran aux deux questions qui decident de la suite : qu'est-ce
+       que ca fait, et est-ce que c'est pour moi. Les rails developpent ensuite. */
+    .essentials{background:linear-gradient(180deg,var(--tone-soft),transparent 58%),var(--surface2);border-top:1px solid var(--border)}
+    .essentials-inner{max-width:960px}
+    .essentials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
+    .ess{display:flex;gap:15px;align-items:flex-start;background:var(--surface);
+         border:1px solid var(--border);border-radius:var(--radius);padding:20px;
+         box-shadow:0 1px 3px rgba(15,25,35,.04);transition:transform .2s,box-shadow .2s}
+    .ess:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,25,35,.10)}
+    .ess-icon{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff}
+    .ess-icon svg{width:21px;height:21px}
+    .ess:nth-child(1) .ess-icon{background:var(--s1);box-shadow:0 5px 16px rgba(59,130,246,.35)}
+    .ess:nth-child(2) .ess-icon{background:var(--s2);box-shadow:0 5px 16px rgba(13,148,136,.35)}
+    .ess:nth-child(3) .ess-icon{background:var(--s3);box-shadow:0 5px 16px rgba(217,119,6,.35)}
+    .ess:nth-child(4) .ess-icon{background:var(--s4);box-shadow:0 5px 16px rgba(219,39,119,.35)}
+    .ess h3{font-size:1rem;font-weight:700;margin-bottom:5px;letter-spacing:-.2px}
+    .ess p{font-size:.85rem;color:var(--muted);line-height:1.55}
+    /* Bande « pour qui » : le visiteur doit se reconnaitre tout de suite. */
+    .forwho-strip{margin-top:30px;border-top:1px solid var(--border);padding-top:24px;text-align:center}
+    .forwho-strip h3{font-size:.98rem;font-weight:700;margin-bottom:14px;letter-spacing:-.2px}
+    .roles{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;max-width:760px;margin:0 auto}
+    .role{background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:50px;
+          font-size:.82rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;
+          box-shadow:0 1px 3px rgba(15,25,35,.04)}
+    .role i{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
     /* ── RAILS D'ARGUMENTS (defilement horizontal) ────────────────────────────
        Rail NATIF : overflow-x + scroll-snap horizontal. Le defilement vertical
        de la page n'est jamais capture (a la difference d'un montage "pin" qui
@@ -157,7 +184,10 @@
           scroll-padding-left:max(20px,calc((100% - 1060px)/2));
           scrollbar-width:none;-ms-overflow-style:none}
     .rail::-webkit-scrollbar{width:0;height:0;display:none}
-    .rail-card{flex:0 0 clamp(248px,76vw,326px);scroll-snap-align:start;
+    /* Les cartes occupent une vraie part de la hauteur du panneau : une carte
+       basse au milieu d'une section plein ecran laisse un grand vide autour
+       d'elle et donne l'impression d'une page inachevee. */
+    .rail-card{flex:0 0 clamp(256px,80vw,340px);scroll-snap-align:start;min-height:min(58vh,470px);
                background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
                padding:24px 22px;display:flex;flex-direction:column;
                box-shadow:0 1px 3px rgba(15,25,35,.05);transition:transform .2s,box-shadow .2s}
@@ -174,6 +204,52 @@
     .rail-card .rc-shot{margin-top:16px;border-radius:12px;border:1px solid var(--border);
                         max-height:30vh;width:auto;max-width:100%;align-self:center;object-fit:contain;
                         box-shadow:0 10px 26px rgba(15,25,35,.14)}
+
+    /* ── MAQUETTES D'INTERFACE ────────────────────────────────────────────────
+       Fragments d'ecran ATEQO reconstitues en HTML : ils montrent le produit la
+       ou une icone seule ne dit rien. Reconstitues plutot que photographies,
+       pour rester nets a toute taille, suivre le theme et se traduire.
+       Aucune information inventee : ce sont les vrais elements de l'app, avec
+       des adresses d'exemple. */
+    .mock{margin-top:auto;background:var(--surface2);border:1px solid var(--border);border-radius:12px;
+          padding:12px;display:flex;flex-direction:column;gap:7px}
+    .mock-row{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);
+              border-radius:8px;padding:8px 10px;font-size:.76rem;color:var(--ink);line-height:1.3}
+    .mock-row .mk-pin{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .mock-row .mk-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mock-row .mk-tag{font-size:.62rem;font-weight:700;color:#fff;background:var(--tone);
+                      border-radius:4px;padding:2px 6px;flex-shrink:0}
+    .mock-row.dim{opacity:.5}
+    /* Arret recommande : le seul element mis en avant, comme dans l'app. */
+    .mock-row.reco{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;background:rgba(200,162,75,.07)}
+    .mock-row .mk-check{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0}
+    .mock-row .mk-check.done{background:var(--green);border-color:var(--green);
+                             background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+                             background-size:11px;background-position:center;background-repeat:no-repeat}
+    .mock-row .mk-order{font-size:.62rem;font-weight:800;color:var(--muted2);flex-shrink:0;min-width:14px}
+    /* Bandeau de resultat, repris de l'ecran d'optimisation. */
+    .mock-result{display:flex;align-items:center;gap:9px;background:rgba(22,163,74,.09);
+                 border:1px solid rgba(22,163,74,.32);border-radius:8px;padding:9px 11px;
+                 font-size:.78rem;font-weight:700;color:#15803d}
+    .mock-result svg{width:15px;height:15px;flex-shrink:0}
+    /* Barre comparative avant / apres. */
+    .mock-compare{display:flex;flex-direction:column;gap:6px}
+    .mock-compare .mk-line{display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--muted)}
+    .mock-compare .mk-track{flex:1;height:7px;border-radius:4px;background:var(--border);overflow:hidden}
+    .mock-compare .mk-fill{height:100%;border-radius:4px;background:var(--muted2)}
+    .mock-compare .mk-line>span:first-child{min-width:82px}
+    .mock-compare .mk-line.after{color:var(--ink);font-weight:700}
+    .mock-compare .mk-line.after .mk-fill{background:var(--tone)}
+    .mock-compare .mk-val{min-width:46px;text-align:right;font-variant-numeric:tabular-nums}
+    /* Chiffre mis en avant, pour les cartes sans interface a montrer. */
+    .mock-stat{display:flex;align-items:baseline;gap:8px;justify-content:center;padding:6px 0}
+    .mock-stat .mk-big{font-size:2.5rem;font-weight:800;letter-spacing:-1.5px;color:var(--tone);line-height:1}
+    .mock-stat .mk-unit{font-size:.82rem;font-weight:600;color:var(--muted)}
+    /* Barre de saisie d'adresse, avec ses deux raccourcis voix et scan. */
+    .mock-field{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
+                border-radius:8px;padding:9px 10px;font-size:.76rem;color:var(--muted2)}
+    .mock-field .mk-caret{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mock-field svg{width:15px;height:15px;color:var(--tone);flex-shrink:0}
     /* Fleches : pointeur fin uniquement. Sur tactile on balaye, une fleche n'y
        apporte rien et volerait de la place a la carte. */
     .rail-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
@@ -186,6 +262,11 @@
     .rail-nav.prev{left:2px}
     .rail-nav.next{right:2px}
     @media(hover:hover) and (pointer:fine){.rail-nav{display:flex}}
+
+    /* Lenis pose ses classes sur <html> quand le defilement inertiel est actif.
+       Il lui faut une hauteur libre et pas de scroll-behavior concurrent. */
+    html.lenis,html.lenis body{height:auto}
+    .lenis.lenis-smooth{scroll-behavior:auto!important}
 
     /* ── MODE EPINGLE (desktop, pilote par ScrollTrigger) ─────────────────────
        La classe est posee sur <html> par le script GSAP, une fois seulement
@@ -283,6 +364,8 @@
       .section-title{font-size:1.75rem}
       .cta-inner h2{font-size:1.7rem}
       .rail-card .rc-shot{max-height:26vh}
+      .essentials-grid{grid-template-columns:1fr;gap:12px}
+      .ess{padding:16px}
     }
     @media(max-width:480px){
       .hero .subtitle{font-size:.96rem}
@@ -360,8 +443,76 @@
     </div>
   </section>
 
-  <!-- ════ PANNEAU 2 · CE QUE ÇA CHANGE SUR TA JOURNÉE ════ -->
-  <section class="panel rail-panel tone-1">
+  <!-- ════ PANNEAU 2 · L'ESSENTIEL ════ -->
+  <section class="panel essentials tone-1">
+    <div class="pin">
+      <div class="pin-w essentials-inner">
+        <p class="section-label" data-i18n="ess.label">En un coup d'œil</p>
+        <h2 class="section-title" data-i18n-html="ess.title">ATEQO optimise, <span class="accent">tu choisis</span></h2>
+        <p class="section-sub" data-i18n="ess.sub">Quatre outils qui portent toute la tournée. Le reste vient ensuite.</p>
+
+        <div class="essentials-grid">
+
+          <div class="ess">
+            <div class="ess-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            </div>
+            <div>
+              <h3 data-i18n="ess.f1.h3">Navigation adaptative</h3>
+              <p data-i18n="ess.f1.p">À chaque arrêt, la destination recommandée et les arrêts les plus proches. Tu gardes toujours la main.</p>
+            </div>
+          </div>
+
+          <div class="ess">
+            <div class="ess-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+            </div>
+            <div>
+              <h3 data-i18n="ess.f2.h3">Optimisation par secteurs</h3>
+              <p data-i18n="ess.f2.p">Sur des zones étendues, ATEQO calcule l'ordre le plus efficace secteur par secteur.</p>
+            </div>
+          </div>
+
+          <div class="ess">
+            <div class="ess-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+            </div>
+            <div>
+              <h3 data-i18n="ess.f3.h3">Scan et saisie vocale</h3>
+              <p data-i18n="ess.f3.p">Scanne l'étiquette ou dicte l'adresse, les mains dans les colis. Elle part dans la tournée.</p>
+            </div>
+          </div>
+
+          <div class="ess">
+            <div class="ess-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v14a2 2 0 0 0 2 2h14v-4"/><path d="M18 14h4v4h-4z"/></svg>
+            </div>
+            <div>
+              <h3 data-i18n="ess.f4.h3">Chargement guidé</h3>
+              <p data-i18n="ess.f4.p">L'ordre de chargement s'affiche inversé : le dernier colis livré est le premier chargé.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="forwho-strip">
+          <h3 data-i18n="ess.who">Pensé pour ceux qui roulent</h3>
+          <div class="roles">
+            <div class="role"><i style="background:var(--s1)"></i><span data-i18n="forwho.c1.h3">Prestataires de messagerie</span></div>
+            <div class="role"><i style="background:var(--s2)"></i><span data-i18n="forwho.c2.h3">Livreurs indépendants</span></div>
+            <div class="role"><i style="background:var(--s3)"></i><span data-i18n="forwho.c3.h3">Coursiers express</span></div>
+            <div class="role"><i style="background:var(--s4)"></i><span data-i18n="forwho.c4.h3">Livreurs de repas</span></div>
+            <div class="role"><i style="background:var(--s5)"></i><span data-i18n="forwho.c5.h3">Artisans et techniciens</span></div>
+            <div class="role"><i style="background:var(--s1)"></i><span data-i18n="forwho.c6.h3">Infirmiers libéraux</span></div>
+            <div class="role"><i style="background:var(--s2)"></i><span data-i18n="forwho.c7.h3">E-commerçants</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ PANNEAU 3 · CE QUE ÇA CHANGE SUR TA JOURNÉE ════ -->
+  <section class="panel rail-panel tone-2">
     <div class="pin">
       <div class="pin-w rail-head">
         <p class="section-label" data-i18n="gain.label">Ce que tu gagnes</p>
@@ -380,6 +531,10 @@
             </div>
             <h3 data-i18n="gain.c1.h3">Des kilomètres en moins</h3>
             <p data-i18n="gain.c1.p">L'ordre de passage est calculé sur routes réelles, pas à vol d'oiseau. Sur une tournée de 28 arrêts, ce sont environ 21 minutes récupérées.</p>
+            <div class="mock mock-compare">
+              <div class="mk-line"><span data-i18n="mock.before">Ordre de saisie</span><span class="mk-track"><span class="mk-fill" style="width:100%"></span></span><span class="mk-val">42 km</span></div>
+              <div class="mk-line after"><span data-i18n="mock.after">Ordre optimisé</span><span class="mk-track"><span class="mk-fill" style="width:74%"></span></span><span class="mk-val">31 km</span></div>
+            </div>
           </article>
 
           <article class="rail-card">
@@ -388,6 +543,10 @@
             </div>
             <h3 data-i18n="gain.c2.h3">Du carburant économisé</h3>
             <p data-i18n="gain.c2.p">Moins de détours, plus d'aller-retours inutiles entre deux zones. Le gain roule tous les jours, pas seulement le premier.</p>
+            <div class="mock">
+              <div class="mock-stat"><span class="mk-big">11 km</span></div>
+              <div class="mock-row"><span class="mk-label" data-i18n="mock.fuel">évités sur la tournée d'exemple ci-contre</span></div>
+            </div>
           </article>
 
           <article class="rail-card">
@@ -396,6 +555,12 @@
             </div>
             <h3 data-i18n="gain.c3.h3">Une tournée qui se prépare seule</h3>
             <p data-i18n="gain.c3.p">Tes adresses arrivent dans le désordre, tu les saisis dans le désordre. Le classement, c'est l'app qui s'en charge.</p>
+            <div class="mock">
+              <div class="mock-row"><span class="mk-order">1</span><span class="mk-pin" style="background:var(--s1)"></span><span class="mk-label" data-i18n="mock.addr1">12 rue des Lilas</span></div>
+              <div class="mock-row"><span class="mk-order">2</span><span class="mk-pin" style="background:var(--s1)"></span><span class="mk-label" data-i18n="mock.addr2">8 avenue Gambetta</span></div>
+              <div class="mock-row"><span class="mk-order">3</span><span class="mk-pin" style="background:var(--s2)"></span><span class="mk-label" data-i18n="mock.addr3">44 boulevard Victor Hugo</span></div>
+              <div class="mock-row dim"><span class="mk-order">4</span><span class="mk-pin" style="background:var(--s3)"></span><span class="mk-label" data-i18n="mock.addr4">3 place du Marché</span></div>
+            </div>
           </article>
 
           <article class="rail-card">
@@ -404,6 +569,11 @@
             </div>
             <h3 data-i18n="gain.c4.h3">Tu gardes la main</h3>
             <p data-i18n="gain.c4.p">L'ordre optimisé est une recommandation, jamais une contrainte. Un imprévu, un client absent : tu choisis un autre arrêt, le guidage suit.</p>
+            <div class="mock">
+              <div class="mock-row reco"><span class="mk-pin" style="background:var(--gold)"></span><span class="mk-label" data-i18n="mock.addr2">8 avenue Gambetta</span><span class="mk-tag" style="background:var(--gold)" data-i18n="mock.reco">Recommandé</span></div>
+              <div class="mock-row"><span class="mk-pin" style="background:var(--s2)"></span><span class="mk-label" data-i18n="mock.addr3">44 boulevard Victor Hugo</span></div>
+              <div class="mock-row"><span class="mk-pin" style="background:var(--s3)"></span><span class="mk-label" data-i18n="mock.addr4">3 place du Marché</span></div>
+            </div>
           </article>
 
           <article class="rail-card">
@@ -412,6 +582,13 @@
             </div>
             <h3 data-i18n="gain.c5.h3">Testé avant de payer</h3>
             <p data-i18n="gain.c5.p">Tes 7 premières tournées sont sans aucune limite, sans moyen de paiement à renseigner. Tu juges sur ta propre tournée.</p>
+            <div class="mock">
+              <div class="mock-stat"><span class="mk-big">7</span><span class="mk-unit" data-i18n="mock.trial">tournées sans limite</span></div>
+              <div class="mock-result">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span data-i18n="mock.nocard">Sans carte bancaire</span>
+              </div>
+            </div>
           </article>
 
         </div>
@@ -423,8 +600,8 @@
     </div>
   </section>
 
-  <!-- ════ PANNEAU 3 · TA TOURNÉE, DE BOUT EN BOUT ════ -->
-  <section class="panel rail-panel tone-2">
+  <!-- ════ PANNEAU 4 · TA TOURNÉE, DE BOUT EN BOUT ════ -->
+  <section class="panel rail-panel tone-3">
     <div class="pin">
       <div class="pin-w rail-head">
         <p class="section-label" data-i18n="flow.label">Comment ça marche</p>
@@ -441,6 +618,15 @@
             <div class="rc-step">1</div>
             <h3 data-i18n="flow.c1.h3">Saisis</h3>
             <p data-i18n="flow.c1.p">Au clavier, à la voix les mains dans les colis, ou en scannant l'étiquette. L'adresse est extraite et ajoutée à la tournée.</p>
+            <div class="mock">
+              <div class="mock-field">
+                <span class="mk-caret" data-i18n="mock.field">Ajouter une adresse</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+              </div>
+              <div class="mock-row"><span class="mk-pin" style="background:var(--s1)"></span><span class="mk-label" data-i18n="mock.addr1">12 rue des Lilas</span></div>
+              <div class="mock-row dim"><span class="mk-pin" style="background:var(--muted2)"></span><span class="mk-label" data-i18n="mock.addr2">8 avenue Gambetta</span></div>
+            </div>
           </article>
 
           <article class="rail-card">
@@ -454,12 +640,26 @@
             <div class="rc-step">3</div>
             <h3 data-i18n="flow.c3.h3">Optimise</h3>
             <p data-i18n="flow.c3.p">Un clic. ATEQO calcule l'ordre le plus efficace, secteur par secteur, et affiche le temps gagné directement sur la carte.</p>
+            <div class="mock">
+              <div class="mock-row"><span class="mk-order">1</span><span class="mk-pin" style="background:var(--s1)"></span><span class="mk-label" data-i18n="mock.addr2">8 avenue Gambetta</span><span class="mk-tag">S1</span></div>
+              <div class="mock-row"><span class="mk-order">2</span><span class="mk-pin" style="background:var(--s1)"></span><span class="mk-label" data-i18n="mock.addr1">12 rue des Lilas</span><span class="mk-tag">S1</span></div>
+              <div class="mock-row"><span class="mk-order">3</span><span class="mk-pin" style="background:var(--s2)"></span><span class="mk-label" data-i18n="mock.addr3">44 boulevard Victor Hugo</span><span class="mk-tag" style="background:var(--s2)">S2</span></div>
+              <div class="mock-result">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span data-i18n="mock.result">28 arrêts optimisés · ~21 min gagnées</span>
+              </div>
+            </div>
           </article>
 
           <article class="rail-card">
             <div class="rc-step">4</div>
             <h3 data-i18n="flow.c4.h3">Charge ton véhicule</h3>
             <p data-i18n="flow.c4.p">L'ordre de chargement s'affiche inversé, adresse par adresse : le dernier colis livré est le premier chargé. Plus de colis à déterrer.</p>
+            <div class="mock">
+              <div class="mock-row"><span class="mk-check done"></span><span class="mk-label" data-i18n="mock.addr3">44 boulevard Victor Hugo</span><span class="mk-tag" data-i18n="mock.loadFirst">1er chargé</span></div>
+              <div class="mock-row"><span class="mk-check done"></span><span class="mk-label" data-i18n="mock.addr1">12 rue des Lilas</span></div>
+              <div class="mock-row"><span class="mk-check"></span><span class="mk-label" data-i18n="mock.addr2">8 avenue Gambetta</span><span class="mk-tag" style="background:var(--muted2)" data-i18n="mock.loadLast">1er livré</span></div>
+            </div>
           </article>
 
           <article class="rail-card">
@@ -478,8 +678,8 @@
     </div>
   </section>
 
-  <!-- ════ PANNEAU 4 · TOUT CE QUI EST INCLUS ════ -->
-  <section class="panel rail-panel tone-3">
+  <!-- ════ PANNEAU 5 · TOUT CE QUI EST INCLUS ════ -->
+  <section class="panel rail-panel tone-4">
     <div class="pin">
       <div class="pin-w rail-head">
         <p class="section-label" data-i18n="tools.label">Ce qui est inclus</p>
@@ -573,8 +773,8 @@
     </div>
   </section>
 
-  <!-- ════ PANNEAU 5 · PENSÉ POUR CEUX QUI ROULENT ════ -->
-  <section class="panel rail-panel tone-4">
+  <!-- ════ PANNEAU 6 · PENSÉ POUR CEUX QUI ROULENT ════ -->
+  <section class="panel rail-panel tone-5">
     <div class="pin">
       <div class="pin-w rail-head">
         <p class="section-label" data-i18n="forwho.label">Pour qui</p>
@@ -652,7 +852,7 @@
     </div>
   </section>
 
-  <!-- ════ PANNEAU 6 · TARIFS + PRÊT À OPTIMISER ════ -->
+  <!-- ════ PANNEAU 7 · TARIFS + PRÊT À OPTIMISER ════ -->
   <section class="panel pricing tone-5">
     <div class="pin">
       <div class="pin-w pricing-inner">
@@ -774,6 +974,33 @@
         'hero.badge.commitment': 'Sans engagement',
         'rail.prev': 'Argument précédent',
         'rail.next': 'Argument suivant',
+        'ess.label': "En un coup d'œil",
+        'ess.title': 'ATEQO optimise, <span class="accent">tu choisis</span>',
+        'ess.sub': 'Quatre outils qui portent toute la tournée. Le reste vient ensuite.',
+        'ess.f1.h3': 'Navigation adaptative',
+        'ess.f1.p': "À chaque arrêt, la destination recommandée et les arrêts les plus proches. Tu gardes toujours la main.",
+        'ess.f2.h3': 'Optimisation par secteurs',
+        'ess.f2.p': "Sur des zones étendues, ATEQO calcule l'ordre le plus efficace secteur par secteur.",
+        'ess.f3.h3': 'Scan et saisie vocale',
+        'ess.f3.p': "Scanne l'étiquette ou dicte l'adresse, les mains dans les colis. Elle part dans la tournée.",
+        'ess.f4.h3': 'Chargement guidé',
+        'ess.f4.p': "L'ordre de chargement s'affiche inversé : le dernier colis livré est le premier chargé.",
+        'ess.who': 'Pensé pour ceux qui roulent',
+        // Maquettes d'interface : adresses d'exemple et libelles des ecrans.
+        'mock.addr1': '12 rue des Lilas',
+        'mock.addr2': '8 avenue Gambetta',
+        'mock.addr3': '44 boulevard Victor Hugo',
+        'mock.addr4': '3 place du Marché',
+        'mock.before': 'Ordre de saisie',
+        'mock.after': 'Ordre optimisé',
+        'mock.fuel': "évités sur la tournée d'exemple ci-contre",
+        'mock.reco': 'Recommandé',
+        'mock.trial': 'tournées sans limite',
+        'mock.nocard': 'Sans carte bancaire',
+        'mock.field': 'Ajouter une adresse',
+        'mock.result': '28 arrêts optimisés · ~21 min gagnées',
+        'mock.loadFirst': '1er chargé',
+        'mock.loadLast': '1er livré',
         'gain.label': 'Ce que tu gagnes',
         'gain.title': 'Ce que ça change sur <span class="accent">ta journée</span>',
         'gain.sub': 'ATEQO optimise, tu choisis. Le calcul travaille pour toi, la décision reste la tienne.',
@@ -893,6 +1120,33 @@
         'hero.badge.commitment': 'No commitment',
         'rail.prev': 'Previous point',
         'rail.next': 'Next point',
+        'ess.label': 'At a glance',
+        'ess.title': 'ATEQO optimizes, <span class="accent">you decide</span>',
+        'ess.sub': 'Four tools that carry the whole route. The rest comes after.',
+        'ess.f1.h3': 'Adaptive navigation',
+        'ess.f1.p': 'At every stop, the recommended destination and the closest stops. You always stay in control.',
+        'ess.f2.h3': 'Sector optimization',
+        'ess.f2.p': 'Across wide areas, ATEQO calculates the most efficient order sector by sector.',
+        'ess.f3.h3': 'Label scan and voice input',
+        'ess.f3.p': 'Scan the label or say the address, hands full of parcels. It goes straight into the route.',
+        'ess.f4.h3': 'Guided loading',
+        'ess.f4.p': 'The loading order is shown reversed: the last parcel delivered is the first one loaded.',
+        'ess.who': 'Built for those who drive',
+        // Maquettes d'interface : adresses d'exemple et libelles des ecrans.
+        'mock.addr1': '12 Maple Street',
+        'mock.addr2': '8 Gambetta Avenue',
+        'mock.addr3': '44 Victor Hugo Boulevard',
+        'mock.addr4': '3 Market Square',
+        'mock.before': 'Order entered',
+        'mock.after': 'Optimized order',
+        'mock.fuel': 'saved on the example route shown here',
+        'mock.reco': 'Recommended',
+        'mock.trial': 'routes with no limit',
+        'mock.nocard': 'No card required',
+        'mock.field': 'Add an address',
+        'mock.result': '28 stops optimized · ~21 min saved',
+        'mock.loadFirst': 'Loaded 1st',
+        'mock.loadLast': 'Delivered 1st',
         'gain.label': 'What you gain',
         'gain.title': 'What it changes about <span class="accent">your day</span>',
         'gain.sub': 'ATEQO optimizes, you decide. The calculation works for you, the call stays yours.',
@@ -1208,6 +1462,7 @@
        ne doit pas revenir par cette porte. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
   <script>
     (function () {
       if (!window.gsap || !window.ScrollTrigger) return;                        // CDN indisponible : rail natif
@@ -1218,6 +1473,19 @@
       if (!railPanels.length) return;
 
       gsap.registerPlugin(ScrollTrigger);
+
+      // ── Defilement inertiel (Lenis) ────────────────────────────────────────
+      // Donne son elan au passage d'une section a l'autre, la ou la molette
+      // avancait par crans secs. Lenis reste facultatif : s'il n'a pas ete
+      // servi, le reste fonctionne a l'identique, en moins doux.
+      // syncTouch reste a false : le tactile garde son defilement systeme, on
+      // n'y touche pas (cf. le figeage mobile deja corrige).
+      if (window.Lenis) {
+        var lenis = new window.Lenis({ duration: 1.05, smoothWheel: true, syncTouch: false });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
 
       // Le snap vertical du document entrerait en conflit avec les sections
       // epinglees : c'est desormais ScrollTrigger qui cale le defilement.

@@ -40,7 +40,7 @@
       /* Secteurs A-T-E-Q-O = 1-2-3-4-5. Les trois premieres portent les trois
          themes du site : livrer, gagner, gerer. */
       --s1:#3b82f6;--s2:#0d9488;--s3:#d97706;--s4:#db2777;--s5:#7c3aed;
-      --radius:16px;
+      --radius:16px;--safe:clamp(76px,9.5vh,124px);
       --tone:var(--s1);      /* couleur du theme courant, suit le defilement */
     }
 
@@ -81,19 +81,14 @@
     .gplay:hover{transform:translateY(-2px)}
     .gplay img{height:clamp(38px,3.4vw,46px);width:auto;display:block}
 
-    /* Signature de marque, fixe en bas a droite, par-dessus le defilement. */
-    .sig{position:fixed;right:clamp(18px,2.4vw,34px);bottom:clamp(18px,2.4vw,32px);z-index:60;
-         width:clamp(44px,4vw,58px);height:clamp(44px,4vw,58px);border-radius:16px;
-         background:var(--surface);border:1px solid var(--border);
-         box-shadow:0 12px 30px rgba(15,25,35,.16);
-         display:flex;align-items:center;justify-content:center;
-         transition:transform .2s,box-shadow .2s}
-    .sig:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(15,25,35,.22)}
-    .sig img{width:64%;height:auto;display:block}
-    /* Anneau teinte de la couleur du theme traverse : la signature respire avec
-       le contenu au lieu de rester une pastille morte. */
-    .sig::after{content:"";position:absolute;inset:-3px;border-radius:19px;
-                border:2px solid var(--tone);opacity:.34;transition:border-color .6s ease}
+    /* Signature de marque, fixe en bas a droite, par-dessus le defilement.
+       Le logo vit seul, sans pastille ni cadre : c'est un repere, pas un
+       bouton. Il occupe la marge basse, que le contenu ne franchit jamais. */
+    .sig{position:fixed;right:clamp(20px,2.6vw,38px);bottom:clamp(18px,2.4vw,34px);z-index:60;
+         display:block;width:clamp(40px,3.6vw,54px);transition:transform .2s}
+    .sig:hover{transform:translateY(-3px)}
+    .sig img{width:100%;height:auto;display:block;
+             filter:drop-shadow(0 8px 20px rgba(15,25,35,.20))}
 
     /* Indice de defilement, sur la premiere section seulement. */
     .hint{position:fixed;left:clamp(20px,3vw,44px);bottom:clamp(18px,2.4vw,32px);z-index:58;
@@ -115,37 +110,46 @@
        mordre sur le titre. Ce chevauchement est voulu : c'est ce qui donne la
        profondeur, avec la parallaxe qui les fait partir a des vitesses
        differentes. */
-    .stage{position:relative;width:190vw;height:100%}
+    .stage{position:relative;width:190vw;height:100%;padding:var(--safe) 0}
+    /* Les bandes du haut et du bas n'accueillent que la marque : la
+       composition vit dans .field, jamais dedans. */
+    .field{position:relative;width:100%;height:100%}
+    .field>*{position:absolute}
     .slide.t1{background:radial-gradient(70% 80% at 46% 46%,rgba(59,130,246,.18),transparent 60%)}
     .slide.t2{background:radial-gradient(70% 80% at 46% 46%,rgba(13,148,136,.18),transparent 60%)}
     .slide.t3{background:radial-gradient(70% 80% at 46% 46%,rgba(217,119,6,.18),transparent 60%)}
 
-    /* Tout element de la scene est positionne en pourcentage : left et top sont
-       portes par l'attribut style, au cas par cas, pour composer le nuage. */
-    .stage>*{position:absolute}
+    /* Tout element de la scene est positionne en pourcentage ou en largeur
+       d'ecran : left et top sont portes par l'attribut style, au cas par cas,
+       pour composer le nuage. */
 
-    /* Le titre : la plus grande masse, au centre, en arriere-plan de tout. */
-    .giant{left:50%;top:47%;transform:translate(-50%,-50%);z-index:1;
+    /* Le titre : centre sur le PREMIER ecran de la scene, pas au milieu de la
+       scene entiere. 50vw est la moitie de l'ecran, la ou 50% serait la moitie
+       des deux ecrans de large : c'est ce qui garantit qu'on le lit en entier
+       des l'arrivee. */
+    .giant{left:50vw;top:50%;transform:translate(-50%,-50%);z-index:2;
            text-align:center;white-space:nowrap;
            font-size:clamp(3.2rem,11vw,13rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
     .giant em{font-style:normal;color:var(--tone)}
     /* Les lettres sont detachees pour partir a des vitesses legerement
        differentes : elles s'etirent au defilement au lieu de bouger d'un bloc. */
     .giant .ltr{display:inline-block;will-change:transform}
-    .kicker{z-index:3;font-size:.76rem;font-weight:700;letter-spacing:2px;
-            text-transform:uppercase;color:var(--tone)}
-    .lead{z-index:3;font-size:clamp(.94rem,1.1vw,1.08rem);color:var(--muted);
-          line-height:1.65;width:min(38ch,30vw)}
+    /* Le resume passe DERRIERE le titre, en filigrane : il habille la masse du
+       mot sans lui disputer la lecture, et deborde dessous pour rester lisible. */
+    .lead{left:50vw;top:50%;transform:translate(-50%,-50%);z-index:1;
+          width:min(46ch,42vw);text-align:center;margin-top:clamp(60px,7.2vw,132px);
+          font-size:clamp(.86rem,1.02vw,1rem);line-height:1.6;color:var(--ink);opacity:.42}
 
-    /* Blocs de texte secondaires, poses autour du titre. Fond translucide :
-       la ou ils mordent sur le titre, ils restent lisibles. */
-    .note{z-index:3;width:min(34ch,26vw);background:rgba(241,244,247,.72);
-          backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
-          border-radius:12px;padding:12px 14px;margin:-12px -14px}
-    .note h3{font-size:clamp(1rem,1.3vw,1.24rem);font-weight:700;letter-spacing:-.3px;margin-bottom:7px}
-    .note p{font-size:clamp(.82rem,.92vw,.92rem);color:var(--muted);line-height:1.6}
-    .note .eyebrow{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-                   color:var(--tone);margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    /* Commentaires : petits, et colles au visuel qu'ils commentent, quitte a
+       mordre dessus. C'est ce chevauchement qui donne son relief a la page. */
+    .note{z-index:4;width:min(30ch,23vw);background:rgba(241,244,247,.82);
+          backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+          border-radius:12px;padding:11px 13px;
+          box-shadow:0 10px 26px rgba(15,25,35,.10)}
+    .note h3{font-size:clamp(.92rem,1.08vw,1.06rem);font-weight:700;letter-spacing:-.3px;margin-bottom:5px}
+    .note p{font-size:clamp(.74rem,.82vw,.83rem);color:var(--muted);line-height:1.55}
+    .note .eyebrow{font-size:.62rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+                   color:var(--tone);margin-bottom:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
     .tag-premium{display:inline-flex;align-items:center;font-size:.55rem;font-weight:700;color:#8a6d1f;
                  background:rgba(200,162,75,.16);padding:2px 7px;border-radius:6px;
                  text-transform:uppercase;letter-spacing:.5px}
@@ -156,6 +160,9 @@
        presence d'un ecran a l'autre, sans se retrouver minuscules ou enormes. */
     .viz{z-index:2;position:absolute}
     .viz img{display:block;width:100%;height:auto}
+    /* Le commentaire est enfant du visuel qu'il commente : il le suit dans la
+       derive et se pose dessus, en debordant volontairement d'un coin. */
+    .viz .note{position:absolute}
     .frame{background:#fff;border:1px solid var(--border);border-radius:20px;padding:8px;
            box-shadow:0 30px 70px rgba(15,25,35,.22);position:relative}
     .frame img{border-radius:13px}
@@ -258,6 +265,9 @@
     /* ── Section finale ────────────────────────────────────────────────────── */
     .slide.end .stage{width:100vw;
                       background:radial-gradient(80% 70% at 50% 30%,rgba(124,58,237,.13),transparent 62%)}
+    /* La section finale n'a pas de .field : ses deux blocs se positionnent
+       directement dans la scene, marges de securite comprises. */
+    .end-block,.slide.end .site-footer{position:absolute}
     .end-block{left:50%;top:44%;transform:translate(-50%,-50%);width:min(680px,80vw);
                display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
     .end-block h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;letter-spacing:-1.6px;line-height:1.06}
@@ -354,11 +364,11 @@
     <!-- ══ LIVREZ PLUS ═══════════════════════════════════════════════════════ -->
     <section class="slide t1" data-theme="0">
       <div class="stage">
-        <p class="kicker" data-i18n="t1.kicker" style="left:5%;top:24%" data-speed="0.88">Le cœur du métier</p>
+       <div class="field">
         <h2 class="giant" data-i18n-html="t1.title">Livrez <em>plus.</em></h2>
-        <p class="lead" data-i18n="t1.lead" style="left:5%;top:31%" data-speed="0.9">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.</p>
+        <p class="lead" data-i18n="t1.lead">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.</p>
 
-        <figure class="viz" style="left:22%;top:58%" data-speed="1.14">
+        <figure class="viz" style="left:60vw;top:3%" data-speed="1.16">
           <div class="frame flat">
             <img src="./img/map_sectors_zoom.jpg" width="963" height="717" data-i18n-alt="t1.imgA.alt" alt="Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire" />
             <div class="stamp">
@@ -366,15 +376,14 @@
               <span data-i18n="t1.stamp">28 arrêts · ~21 min gagnées</span>
             </div>
           </div>
+          <div class="note" style="left:-17%;bottom:-16%">
+            <p class="eyebrow" data-i18n="t1.n1.eyebrow">Secteurs</p>
+            <h3 data-i18n="t1.n1.h3">Ta zone, découpée</h3>
+            <p data-i18n="t1.n1.p">Regroupe tes adresses par zone. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.</p>
+          </div>
         </figure>
 
-        <div class="note" style="left:23%;top:20%" data-speed="0.94">
-          <p class="eyebrow" data-i18n="t1.n1.eyebrow">Secteurs</p>
-          <h3 data-i18n="t1.n1.h3">Ta zone, découpée</h3>
-          <p data-i18n="t1.n1.p">Regroupe tes adresses par zone géographique. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.</p>
-        </div>
-
-        <figure class="viz" style="left:47%;top:11%" data-speed="1.2">
+        <figure class="viz" style="left:106vw;top:34%" data-speed="1.22">
           <!-- Les arrets se replacent sous les yeux du visiteur : c'est le
                mecanisme central de l'app, une capture figee ne le montre pas. -->
           <div class="mock" data-reorder>
@@ -389,67 +398,59 @@
               <div class="stop" data-slot="3" data-to="1"><span class="st-num">4</span><span class="st-label" data-i18n="addr.4">3 place du Marché</span><span class="st-far">3,1 km</span></div>
             </div>
           </div>
-        </figure>
-
-        <div class="note" style="left:48%;top:74%" data-speed="0.92">
-          <p class="eyebrow" data-i18n="t1.n2.eyebrow">Optimisation</p>
-          <h3 data-i18n="t1.n2.h3">Un clic, et l'ordre change</h3>
-          <p data-i18n="t1.n2.p">Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite, pas à vol d'oiseau.</p>
-        </div>
-
-        <figure class="viz" style="left:68%;top:44%" data-speed="1.1">
-          <div class="frame tall">
-            <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="t1.imgB.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches" loading="lazy" />
+          <div class="note" style="left:34%;top:-27%">
+            <p class="eyebrow" data-i18n="t1.n2.eyebrow">Optimisation</p>
+            <h3 data-i18n="t1.n2.h3">Un clic, et l'ordre change</h3>
+            <p data-i18n="t1.n2.p">Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite.</p>
           </div>
         </figure>
 
-        <div class="note" style="left:83%;top:22%" data-speed="0.96">
-          <p class="eyebrow" data-i18n="t1.n3.eyebrow">Navigation</p>
-          <h3 data-i18n="t1.n3.h3">Le prochain arrêt, jamais imposé</h3>
-          <p data-i18n="t1.n3.p">À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.</p>
-        </div>
+        <figure class="viz" style="left:152vw;top:8%" data-speed="1.1">
+          <div class="frame tall">
+            <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="t1.imgB.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches" loading="lazy" />
+          </div>
+          <div class="note" style="left:-24%;bottom:-11%">
+            <p class="eyebrow" data-i18n="t1.n3.eyebrow">Navigation</p>
+            <h3 data-i18n="t1.n3.h3">Le prochain arrêt, jamais imposé</h3>
+            <p data-i18n="t1.n3.p">À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.</p>
+          </div>
+        </figure>
+       </div>
       </div>
     </section>
 
     <!-- ══ GAGNEZ PLUS ═══════════════════════════════════════════════════════ -->
     <section class="slide t2" data-theme="1">
-      <div class="stage" style="width:178vw">
-        <p class="kicker" data-i18n="t2.kicker" style="left:5%;top:24%" data-speed="0.88">Ce que ça rapporte</p>
+      <div class="stage" style="width:172vw">
+       <div class="field">
         <h2 class="giant" data-i18n-html="t2.title">Gagnez <em>plus.</em></h2>
-        <p class="lead" data-i18n="t2.lead" style="left:5%;top:31%" data-speed="0.9">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.</p>
+        <p class="lead" data-i18n="t2.lead">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.</p>
 
-        <figure class="viz" style="left:24%;top:22%" data-speed="1.16">
+        <figure class="viz" style="left:62vw;top:22%" data-speed="1.18">
           <div class="compare" data-compare>
             <div class="cmp-line"><span data-i18n="cmp.before">Ordre de saisie</span><span class="cmp-track"><span class="cmp-fill" data-fill="100"></span></span><span class="cmp-val">42 km</span></div>
             <div class="cmp-line after"><span data-i18n="cmp.after">Ordre optimisé</span><span class="cmp-track"><span class="cmp-fill" data-fill="74"></span></span><span class="cmp-val">31 km</span></div>
           </div>
+          <div class="note" style="left:12%;top:78%">
+            <p class="eyebrow" data-i18n="t2.n1.eyebrow">Kilomètres</p>
+            <h3 data-i18n="t2.n1.h3">Moins de route, même tournée</h3>
+            <p data-i18n="t2.n1.p">Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours.</p>
+          </div>
         </figure>
 
-        <div class="note" style="left:24%;top:66%" data-speed="0.94">
-          <p class="eyebrow" data-i18n="t2.n1.eyebrow">Kilomètres</p>
-          <h3 data-i18n="t2.n1.h3">Moins de route, même tournée</h3>
-          <p data-i18n="t2.n1.p">Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.</p>
-        </div>
-
-        <figure class="viz" style="left:47%;top:16%" data-speed="1.22">
+        <figure class="viz" style="left:104vw;top:56%" data-speed="1.24">
           <div class="counter" data-count="7">
             <span class="ct-num">0</span>
             <span class="ct-unit" data-i18n="t2.unit">tournées sans limite</span>
           </div>
+          <div class="note" style="left:6%;top:74%">
+            <p class="eyebrow" data-i18n="t2.n2.eyebrow">Essai</p>
+            <h3 data-i18n="t2.n2.h3">Juge sur ta propre tournée</h3>
+            <p data-i18n="t2.n2.p">Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.</p>
+          </div>
         </figure>
 
-        <div class="note" style="left:47%;top:28%" data-speed="0.96">
-          <p class="eyebrow" data-i18n="t2.n2.eyebrow">Essai</p>
-          <h3 data-i18n="t2.n2.h3">Juge sur ta propre tournée</h3>
-          <p data-i18n="t2.n2.p">Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.</p>
-        </div>
-
-        <div class="note" style="left:66%;top:20%;width:min(40ch,32vw)" data-speed="0.92">
-          <p class="eyebrow" data-i18n="t2.n3.eyebrow">Tarifs</p>
-          <h3 data-i18n="t2.n3.h3">Premium quand tu roules tous les jours</h3>
-        </div>
-
-        <div class="viz" style="left:66%;top:40%" data-speed="1.08">
+        <div class="viz" style="left:128vw;top:14%" data-speed="1.08">
           <div class="plans">
             <div class="plan">
               <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
@@ -486,18 +487,23 @@
               <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
             </div>
           </div>
+          <div class="note" style="left:-14%;top:-24%">
+            <p class="eyebrow" data-i18n="t2.n3.eyebrow">Tarifs</p>
+            <h3 data-i18n="t2.n3.h3">Premium quand tu roules tous les jours</h3>
+          </div>
         </div>
+       </div>
       </div>
     </section>
 
     <!-- ══ GEREZ MIEUX ═══════════════════════════════════════════════════════ -->
     <section class="slide t3" data-theme="2">
       <div class="stage">
-        <p class="kicker" data-i18n="t3.kicker" style="left:5%;top:24%" data-speed="0.88">Tout ce qui n'est pas la conduite</p>
+       <div class="field">
         <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
-        <p class="lead" data-i18n="t3.lead" style="left:5%;top:31%" data-speed="0.9">Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.</p>
+        <p class="lead" data-i18n="t3.lead">Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.</p>
 
-        <figure class="viz" style="left:23%;top:17%" data-speed="1.18">
+        <figure class="viz" style="left:61vw;top:9%" data-speed="1.18">
           <!-- Les cases se cochent du dernier livre au premier : la logique
                inversee se comprend en la regardant se faire. -->
           <div class="mock" data-checklist>
@@ -511,15 +517,14 @@
               <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.2">8 avenue Gambetta</span><span class="ck-tag last" data-i18n="t3.last">1er livré</span></div>
             </div>
           </div>
+          <div class="note" style="left:-20%;bottom:-19%">
+            <p class="eyebrow" data-i18n="t3.n1.eyebrow">Chargement</p>
+            <h3 data-i18n="t3.n1.h3">Charge dans l'ordre inverse</h3>
+            <p data-i18n="t3.n1.p">Le dernier colis livré est le premier chargé. Plus de colis à déterrer au fond du véhicule.</p>
+          </div>
         </figure>
 
-        <div class="note" style="left:24%;top:70%" data-speed="0.94">
-          <p class="eyebrow" data-i18n="t3.n1.eyebrow">Chargement</p>
-          <h3 data-i18n="t3.n1.h3">Charge dans l'ordre inverse</h3>
-          <p data-i18n="t3.n1.p">Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi. Plus de colis à déterrer au fond du véhicule.</p>
-        </div>
-
-        <figure class="viz" style="left:48%;top:56%" data-speed="1.12">
+        <figure class="viz" style="left:106vw;top:48%" data-speed="1.24">
           <div class="mock">
             <div class="mock-head">
               <span data-i18n="t3.book.head">Carnet d'adresses</span>
@@ -531,15 +536,14 @@
               <div class="stop s3"><span class="st-num">★</span><span class="st-label" data-i18n="addr.7">Zone artisanale des Chênes</span></div>
             </div>
           </div>
+          <div class="note" style="left:28%;top:-46%">
+            <p class="eyebrow"><span data-i18n="t3.n2.eyebrow">Carnet</span> <span class="tag-premium">Premium</span></p>
+            <h3 data-i18n="t3.n2.h3">Tes adresses, une fois pour toutes</h3>
+            <p data-i18n="t3.n2.p">Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.</p>
+          </div>
         </figure>
 
-        <div class="note" style="left:49%;top:16%" data-speed="0.96">
-          <p class="eyebrow"><span data-i18n="t3.n2.eyebrow">Carnet</span> <span class="tag-premium">Premium</span></p>
-          <h3 data-i18n="t3.n2.h3">Tes adresses, une fois pour toutes</h3>
-          <p data-i18n="t3.n2.p">Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.</p>
-        </div>
-
-        <figure class="viz" style="left:70%;top:24%" data-speed="1.2">
+        <figure class="viz" style="left:150vw;top:12%" data-speed="1.12">
           <div class="mock">
             <div class="mock-head">
               <span data-i18n="mock.tour">Ma tournée</span>
@@ -551,13 +555,13 @@
               <div class="stop s2"><span class="st-num">↺</span><span class="st-label" data-i18n="t3.day.history">Tournée du 12 mars · 24 arrêts</span></div>
             </div>
           </div>
+          <div class="note" style="left:-22%;bottom:-21%">
+            <p class="eyebrow" data-i18n="t3.n3.eyebrow">Au quotidien</p>
+            <h3 data-i18n="t3.n3.h3">Dicte, note, retrouve</h3>
+            <p data-i18n="t3.n3.p">Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.</p>
+          </div>
         </figure>
-
-        <div class="note" style="left:71%;top:70%" data-speed="0.92">
-          <p class="eyebrow" data-i18n="t3.n3.eyebrow">Au quotidien</p>
-          <h3 data-i18n="t3.n3.h3">Dicte, note, retrouve</h3>
-          <p data-i18n="t3.n3.p">Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.</p>
-        </div>
+       </div>
       </div>
     </section>
 
@@ -613,7 +617,7 @@
         'cmp.before': 'Ordre de saisie',
         'cmp.after': 'Ordre optimisé',
         // ── Livrez plus ──
-        't1.kicker': 'Le cœur du métier',
+        
         't1.title': 'Livrez <em>plus.</em>',
         't1.lead': "Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.",
         't1.imgA.alt': "Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire",
@@ -629,7 +633,7 @@
         't1.n3.h3': 'Le prochain arrêt, jamais imposé',
         't1.n3.p': 'À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.',
         // ── Gagnez plus ──
-        't2.kicker': 'Ce que ça rapporte',
+        
         't2.title': 'Gagnez <em>plus.</em>',
         't2.lead': "Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.",
         't2.n1.eyebrow': 'Kilomètres',
@@ -656,7 +660,7 @@
         'plan.annual.ribbon': '2 mois offerts',
         'plan.cta': 'Essayer 14 jours',
         // ── Gérez mieux ──
-        't3.kicker': "Tout ce qui n'est pas la conduite",
+        
         't3.title': 'Gérez <em>mieux.</em>',
         't3.lead': "Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.",
         't3.mock.head': 'Check-list de chargement',
@@ -707,7 +711,7 @@
         'mock.after': 'Optimized order',
         'cmp.before': 'Order entered',
         'cmp.after': 'Optimized order',
-        't1.kicker': 'The heart of the job',
+        
         't1.title': 'Deliver <em>more.</em>',
         't1.lead': 'The same working day, with more stops in it. ATEQO calculates the shortest visiting order on real roads, sector by sector, and leaves you the final say at every stop.',
         't1.imgA.alt': 'ATEQO map: stops numbered and colored by sector, with the route drawn',
@@ -722,7 +726,7 @@
         't1.n3.eyebrow': 'Navigation',
         't1.n3.h3': 'The next stop, never imposed',
         't1.n3.p': 'After every delivery, the recommended destination and the closest stops. You choose, Google Maps follows.',
-        't2.kicker': 'What it brings in',
+        
         't2.title': 'Earn <em>more.</em>',
         't2.lead': 'Every mile avoided is fuel saved and margin kept. And nothing ties you down: your first seven routes have no limit at all.',
         't2.n1.eyebrow': 'Distance',
@@ -748,7 +752,7 @@
         'plan.annual.price': '€169.99 <span class="per">/ year</span>',
         'plan.annual.ribbon': '2 months free',
         'plan.cta': 'Try free for 14 days',
-        't3.kicker': 'Everything that is not driving',
+        
         't3.title': 'Manage <em>better.</em>',
         't3.lead': 'Preparing, loading, noting, finding again. That is where the minutes go, and that is where ATEQO works while you drive.',
         't3.mock.head': 'Loading checklist',

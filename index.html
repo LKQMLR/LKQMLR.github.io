@@ -41,8 +41,7 @@
          themes du site : livrer, gagner, gerer. */
       --s1:#3b82f6;--s2:#0d9488;--s3:#d97706;--s4:#db2777;--s5:#7c3aed;
       --radius:16px;
-      --side:340px;          /* largeur de la colonne d'en-tete */
-      --tone:var(--s1);      /* couleur du theme courant, pilotee au defilement */
+      --tone:var(--s1);      /* couleur du theme courant, suit le defilement */
     }
 
     html{-webkit-text-size-adjust:100%}
@@ -52,257 +51,238 @@
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%}
     [hidden]{display:none!important}
-    /* Barres de defilement masquees : le site se lit en plein ecran, une barre
-       horizontale parasite casserait la composition. Le defilement lui-meme,
-       la molette, le tactile et le clavier restent intacts. */
+    /* Barres de defilement masquees : le site se lit en plein ecran. Le
+       defilement, la molette, le tactile et le clavier restent intacts. */
     html,body{scrollbar-width:none;-ms-overflow-style:none}
     html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
     /* Lenis a besoin d'une hauteur libre et d'aucun comportement concurrent. */
     html.lenis,html.lenis body{height:auto}
     .lenis.lenis-smooth{scroll-behavior:auto!important}
 
-    /* ══ COLONNE D'EN-TETE ═════════════════════════════════════════════════════
-       Fixe a gauche sur desktop : c'est elle qui porte l'identite (logo, les
-       trois themes, le bouton) pendant que le contenu defile a cote. Elle
-       remplace a la fois l'ancien hero et l'ancien bandeau tarifaire. */
-    .side{position:fixed;top:0;left:0;bottom:0;width:var(--side);z-index:50;
-          background:var(--surface);border-right:1px solid var(--border);
-          display:flex;flex-direction:column;padding:34px 30px 26px;
-          box-shadow:2px 0 24px rgba(15,25,35,.05)}
-    /* Halo teinte de la couleur du theme courant : la colonne change d'ambiance
-       en meme temps que le contenu, sans rien clignoter. */
-    .side::before{content:"";position:absolute;inset:0;pointer-events:none;
-                  background:radial-gradient(120% 55% at 0% 0%,var(--tone) 0%,transparent 62%);
-                  opacity:.09;transition:background .6s ease}
-    .side-brand{display:flex;flex-direction:column;gap:14px;position:relative}
-    .side-logo{width:44px;height:44px}
-    .side-word{width:min(210px,80%)}
-    .side-baseline{font-size:.78rem;color:var(--muted2);font-weight:500;letter-spacing:.2px}
-
-    /* ── Les trois themes ─────────────────────────────────────────────────────
-       Ils sont a la fois la promesse de la marque et le reperage dans le site :
-       celui qu'on traverse s'allume, les autres s'effacent. Aucune legende a
-       lire, la position se comprend d'un coup d'oeil. */
-    .themes{margin-top:auto;margin-bottom:auto;display:flex;flex-direction:column;gap:4px;position:relative}
-    .theme{display:flex;align-items:baseline;gap:11px;padding:7px 0;border:none;background:none;
-           font-family:inherit;text-align:left;cursor:pointer;color:var(--muted2);
-           font-size:1.62rem;font-weight:800;letter-spacing:-1.1px;line-height:1.12;
-           transition:color .45s ease,transform .45s ease,opacity .45s ease;
-           transform-origin:left center;opacity:.55}
-    .theme .th-num{font-size:.66rem;font-weight:700;letter-spacing:1px;
-                   color:var(--muted2);opacity:.7;min-width:16px;transition:color .45s ease}
-    .theme.on{opacity:1;transform:scale(1.045)}
-    .theme.on .th-num{color:var(--th)}
-    .theme .th-word{position:relative;display:inline-block}
-    /* Trait qui se remplit sous le theme courant : il avance avec la lecture. */
-    .theme .th-word::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;
-                           border-radius:3px;background:var(--th);
-                           transform:scaleX(0);transform-origin:left;transition:transform .5s ease}
-    .theme.on{color:var(--th)}
-    .theme.on .th-word::after{transform:scaleX(1)}
-    .theme:hover{opacity:1}
-    .theme:nth-child(1){--th:var(--s1)}
-    .theme:nth-child(2){--th:var(--s2)}
-    .theme:nth-child(3){--th:var(--s3)}
-
-    .side-foot{display:flex;flex-direction:column;gap:16px;position:relative}
-    .side-cta{display:inline-flex;filter:drop-shadow(0 8px 20px rgba(15,25,35,.2));
-              transition:transform .2s;align-self:flex-start}
-    .side-cta:hover{transform:translateY(-2px)}
-    .side-cta img{height:50px;width:auto;display:block}
-    .side-note{font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:7px}
-    .side-note .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
-    .lang-switch{display:flex;align-items:center;gap:7px;font-size:.74rem;font-weight:600;letter-spacing:.2px}
+    /* ══ REPERES FLOTTANTS ═════════════════════════════════════════════════════
+       Ni bandeau ni colonne : rien qui coupe la page. Le nom de la marque et les
+       commandes flottent au-dessus du contenu, la marque signe en bas a droite.
+       pointer-events est rendu aux seuls elements cliquables, pour ne pas
+       neutraliser le contenu qui passe dessous. */
+    .top{position:fixed;top:0;left:0;right:0;z-index:60;pointer-events:none;
+         display:flex;align-items:flex-start;justify-content:space-between;
+         padding:clamp(20px,2.6vw,34px) clamp(20px,3vw,44px)}
+    .top>*{pointer-events:auto}
+    .wordmark{display:block;width:clamp(140px,13vw,196px);filter:drop-shadow(0 2px 8px rgba(15,25,35,.10))}
+    .top-right{display:flex;align-items:center;gap:clamp(14px,1.6vw,24px)}
+    .lang-switch{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:600;letter-spacing:.2px}
     .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:inherit;
-                        font-weight:inherit;letter-spacing:inherit;color:var(--muted2);padding:2px 1px;
+                        font-weight:inherit;letter-spacing:inherit;color:var(--muted2);padding:4px 1px;
                         cursor:pointer;transition:color .15s}
     .lang-switch button.active{color:var(--ink);font-weight:700}
     .lang-switch button:hover{color:var(--accent)}
     .lang-switch .sep{color:var(--border)}
+    .gplay{display:inline-flex;filter:drop-shadow(0 8px 20px rgba(15,25,35,.18));transition:transform .2s}
+    .gplay:hover{transform:translateY(-2px)}
+    .gplay img{height:clamp(38px,3.4vw,46px);width:auto;display:block}
 
-    /* ══ PISTE HORIZONTALE ═════════════════════════════════════════════════════
-       Sur desktop, les volets sont poses cote a cote et la piste est poussee
-       lateralement par le defilement vertical (ScrollTrigger). Sur mobile, la
-       meme piste redevient une simple pile verticale : le doigt garde son geste
-       naturel, et le montage qui figeait la page ne peut pas revenir. */
-    .track{margin-left:var(--side);display:flex;align-items:stretch;will-change:transform}
-    .slide{flex:0 0 calc(100vw - var(--side));min-height:100vh;min-height:100dvh;
-           display:flex;flex-direction:column;justify-content:center;
-           padding:64px clamp(28px,5vw,76px);position:relative}
-    .slide-inner{width:100%;max-width:1080px;margin:0 auto}
+    /* Signature de marque, fixe en bas a droite, par-dessus le defilement. */
+    .sig{position:fixed;right:clamp(18px,2.4vw,34px);bottom:clamp(18px,2.4vw,32px);z-index:60;
+         width:clamp(44px,4vw,58px);height:clamp(44px,4vw,58px);border-radius:16px;
+         background:var(--surface);border:1px solid var(--border);
+         box-shadow:0 12px 30px rgba(15,25,35,.16);
+         display:flex;align-items:center;justify-content:center;
+         transition:transform .2s,box-shadow .2s}
+    .sig:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(15,25,35,.22)}
+    .sig img{width:64%;height:auto;display:block}
+    /* Anneau teinte de la couleur du theme traverse : la signature respire avec
+       le contenu au lieu de rester une pastille morte. */
+    .sig::after{content:"";position:absolute;inset:-3px;border-radius:19px;
+                border:2px solid var(--tone);opacity:.34;transition:border-color .6s ease}
 
-    /* Volet d'ouverture d'un theme : un mot, une phrase, une preuve. */
-    .slide.opener{background:linear-gradient(120deg,var(--tone-soft),transparent 62%)}
-    .opener-kicker{font-size:.74rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
-                   color:var(--tone);margin-bottom:14px}
-    .opener h2{font-size:clamp(2.4rem,5.4vw,4rem);font-weight:800;letter-spacing:-2px;line-height:1.02;
-               margin-bottom:18px}
-    .opener h2 .accent{color:var(--tone)}
-    .opener p{font-size:clamp(1rem,1.5vw,1.16rem);color:var(--muted);max-width:560px;line-height:1.6}
+    /* Indice de defilement, sur la premiere section seulement. */
+    .hint{position:fixed;left:clamp(20px,3vw,44px);bottom:clamp(18px,2.4vw,32px);z-index:58;
+          display:flex;align-items:center;gap:10px;font-size:.74rem;font-weight:600;
+          color:var(--muted2);letter-spacing:.3px;transition:opacity .4s}
+    .hint svg{width:20px;height:20px;animation:nudge 2s infinite}
+    @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
 
-    /* Volet de contenu : un visuel dominant, un titre, une phrase. Jamais plus. */
-    .duo{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,72px);align-items:center}
-    .duo.flip .duo-visual{order:2}
-    .duo-text .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
-                       color:var(--tone);margin-bottom:12px;display:flex;align-items:center;gap:9px}
-    .duo-text .eyebrow .tag-premium{margin-left:2px}
-    .duo-text h3{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:800;letter-spacing:-1px;
-                 line-height:1.12;margin-bottom:14px}
-    .duo-text p{font-size:clamp(.94rem,1.25vw,1.04rem);color:var(--muted);line-height:1.65;max-width:460px}
-    .duo-visual{display:flex;align-items:center;justify-content:center}
-    .tag-premium{display:inline-flex;align-items:center;font-size:.56rem;font-weight:700;color:#8a6d1f;
-                 background:rgba(200,162,75,.16);padding:2px 8px;border-radius:6px;
+    /* ══ PISTE ═════════════════════════════════════════════════════════════════
+       Sur desktop, les sections sont posees cote a cote et la piste est poussee
+       lateralement par le defilement vertical. Sur mobile, la meme piste
+       redevient une pile : le doigt garde son geste naturel. */
+    .track{display:flex;align-items:stretch;will-change:transform}
+    .slide{flex:0 0 auto;height:100vh;height:100dvh;position:relative;overflow:hidden}
+
+    /* ── Composition d'un theme ───────────────────────────────────────────────
+       Le titre occupe la plus grande part de la scene ; les textes et les
+       visuels se posent autour de lui, a des hauteurs differentes, pour eviter
+       l'alignement en grille qui rendait la page morne. */
+    .stage{width:172vw;height:100%;display:grid;
+           grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(10,1fr);
+           gap:clamp(10px,1.1vw,20px);
+           padding:clamp(74px,7vh,110px) clamp(28px,3.4vw,64px) clamp(40px,5vh,70px)}
+    .slide.t1{background:radial-gradient(90% 70% at 12% 22%,rgba(59,130,246,.16),transparent 62%)}
+    .slide.t2{background:radial-gradient(90% 70% at 12% 22%,rgba(13,148,136,.16),transparent 62%)}
+    .slide.t3{background:radial-gradient(90% 70% at 12% 22%,rgba(217,119,6,.16),transparent 62%)}
+
+    .kicker{grid-column:1 / 5;grid-row:2 / 3;align-self:end;
+            font-size:.76rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tone)}
+    /* Le titre : la plus grande masse de la composition. */
+    .giant{grid-column:1 / 7;grid-row:3 / 7;align-self:center;
+           font-size:clamp(3.2rem,9.4vw,10.5rem);font-weight:800;letter-spacing:-.055em;
+           line-height:.86;text-wrap:balance}
+    .giant em{font-style:normal;color:var(--tone)}
+    .lead{grid-column:1 / 5;grid-row:7 / 9;font-size:clamp(.96rem,1.15vw,1.14rem);
+          color:var(--muted);line-height:1.65;max-width:44ch}
+
+    /* Blocs de texte secondaires, poses autour du titre. */
+    .note h3{font-size:clamp(1.02rem,1.35vw,1.28rem);font-weight:700;letter-spacing:-.3px;margin-bottom:7px}
+    .note p{font-size:clamp(.83rem,.95vw,.94rem);color:var(--muted);line-height:1.6;max-width:34ch}
+    .note .eyebrow{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                   color:var(--tone);margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .tag-premium{display:inline-flex;align-items:center;font-size:.55rem;font-weight:700;color:#8a6d1f;
+                 background:rgba(200,162,75,.16);padding:2px 7px;border-radius:6px;
                  text-transform:uppercase;letter-spacing:.5px}
 
-    /* Tonalite portee par chaque volet : la couleur du theme traverse. */
-    .t1{--tone:var(--s1);--tone-soft:rgba(59,130,246,.13)}
-    .t2{--tone:var(--s2);--tone-soft:rgba(13,148,136,.13)}
-    .t3{--tone:var(--s3);--tone-soft:rgba(217,119,6,.13)}
+    /* Visuels : jamais alignes entre eux, chacun a sa hauteur. */
+    .viz{display:flex;align-items:center;justify-content:center;position:relative}
+    .viz img{display:block;width:100%;height:auto}
+    .frame{background:#fff;border:1px solid var(--border);border-radius:20px;padding:8px;
+           box-shadow:0 26px 64px rgba(15,25,35,.20);position:relative}
+    .frame img{border-radius:13px}
+    .frame.flat{border-radius:14px;padding:7px}
+    .frame.flat img{border-radius:8px}
+    /* Pastille de resultat posee sur un visuel, comme dans l'app. */
+    .stamp{position:absolute;right:-16px;bottom:-15px;background:var(--surface);
+           border:1px solid rgba(22,163,74,.34);border-radius:12px;padding:10px 14px;
+           box-shadow:0 14px 32px rgba(15,25,35,.16);display:flex;align-items:center;gap:8px;
+           font-size:.78rem;font-weight:700;color:#15803d;white-space:nowrap}
+    .stamp svg{width:15px;height:15px;flex-shrink:0}
 
-    /* ══ VISUELS ═══════════════════════════════════════════════════════════════
-       Deux registres : les vraies captures de l'app, posees dans un cadre de
-       telephone, et des reconstitutions HTML animees la ou une capture figee ne
-       montrerait pas le mecanisme (le reordonnancement, le chargement inverse). */
-    .phone{position:relative;background:#fff;border:1px solid var(--border);border-radius:24px;
-           padding:9px;box-shadow:0 24px 60px rgba(15,25,35,.18);max-width:330px;width:100%}
-    .phone img{display:block;width:100%;height:auto;border-radius:16px}
-    .phone.wide{max-width:520px;border-radius:18px}
-    .phone.wide img{border-radius:11px}
-    /* Pastille de resultat posee sur le visuel, comme dans l'app. */
-    .stamp{position:absolute;right:-14px;bottom:-16px;background:var(--surface);
-           border:1px solid rgba(22,163,74,.34);border-radius:12px;padding:11px 15px;
-           box-shadow:0 14px 32px rgba(15,25,35,.16);display:flex;align-items:center;gap:9px;
-           font-size:.82rem;font-weight:700;color:#15803d;white-space:nowrap}
-    .stamp svg{width:16px;height:16px;flex-shrink:0}
-
+    /* ══ MAQUETTES D'INTERFACE ═════════════════════════════════════════════════
+       Fragments d'ecran ATEQO reconstitues en HTML, la ou une capture figee ne
+       montrerait pas le mecanisme (le reordonnancement, le chargement inverse).
+       Nets a toute taille, traduits, et animes a l'arrivee du volet. */
     .mock{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-          padding:16px;box-shadow:0 16px 44px rgba(15,25,35,.10);width:100%;max-width:390px}
+          padding:15px;box-shadow:0 20px 50px rgba(15,25,35,.13);width:100%}
     .mock-head{display:flex;align-items:center;justify-content:space-between;
-               font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-               color:var(--muted2);margin-bottom:12px}
+               font-size:.66rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+               color:var(--muted2);margin-bottom:11px}
     .mock-head .mh-state{color:var(--tone)}
-
-    /* Liste d'arrets. Les lignes sont animees a la position, jamais reordonnees
-       dans le DOM : l'ordre lu par un lecteur d'ecran reste stable. */
-    .stops{display:flex;flex-direction:column;gap:8px}
-    .stop{display:flex;align-items:center;gap:10px;background:var(--surface2);
-          border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:.82rem}
-    .stop .st-num{width:22px;height:22px;border-radius:7px;flex-shrink:0;color:#fff;
+    .stops{display:flex;flex-direction:column;gap:7px}
+    .stop{display:flex;align-items:center;gap:9px;background:var(--surface2);
+          border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:.79rem}
+    .stop .st-num{width:21px;height:21px;border-radius:7px;flex-shrink:0;color:#fff;
                   display:flex;align-items:center;justify-content:center;
-                  font-size:.7rem;font-weight:800;background:var(--muted2);transition:background .45s ease}
+                  font-size:.68rem;font-weight:800;background:var(--muted2);transition:background .45s ease}
     .stop .st-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
-    .stop .st-far{font-size:.7rem;color:var(--muted2);font-variant-numeric:tabular-nums;flex-shrink:0}
+    .stop .st-far{font-size:.68rem;color:var(--muted2);font-variant-numeric:tabular-nums;flex-shrink:0}
     .stop.s1 .st-num{background:var(--s1)}
     .stop.s2 .st-num{background:var(--s2)}
     .stop.s3 .st-num{background:var(--s3)}
     .stop.reco{border-color:var(--gold);background:rgba(200,162,75,.09)}
     .stop.reco .st-label{font-weight:700}
-    .stop .st-star{color:var(--gold);font-size:.68rem;font-weight:800;letter-spacing:.4px;flex-shrink:0}
+    .stop .st-star{color:var(--gold);font-size:.66rem;font-weight:800;flex-shrink:0}
 
-    /* Compteur : le chiffre monte quand le volet arrive a l'ecran. */
     .counter{display:flex;align-items:baseline;gap:10px}
-    .counter .ct-num{font-size:clamp(3.2rem,7vw,5.2rem);font-weight:800;letter-spacing:-3px;
+    .counter .ct-num{font-size:clamp(2.8rem,5.6vw,4.6rem);font-weight:800;letter-spacing:-3px;
                      color:var(--tone);line-height:1;font-variant-numeric:tabular-nums}
-    .counter .ct-unit{font-size:1rem;font-weight:600;color:var(--muted)}
-    .counter-note{font-size:.84rem;color:var(--muted2);margin-top:8px}
+    .counter .ct-unit{font-size:.94rem;font-weight:600;color:var(--muted)}
 
-    /* Comparatif avant / apres : les barres se remplissent a l'arrivee. */
-    .compare{display:flex;flex-direction:column;gap:14px;width:100%;max-width:390px}
-    .cmp-line{display:flex;align-items:center;gap:12px;font-size:.82rem;color:var(--muted)}
-    .cmp-line>span:first-child{min-width:104px}
+    .compare{display:flex;flex-direction:column;gap:13px;width:100%}
+    .cmp-line{display:flex;align-items:center;gap:11px;font-size:.8rem;color:var(--muted)}
+    .cmp-line>span:first-child{min-width:98px}
     .cmp-track{flex:1;height:11px;border-radius:6px;background:var(--border);overflow:hidden}
-    .cmp-fill{height:100%;border-radius:6px;background:var(--muted2);width:0;transform-origin:left}
+    .cmp-fill{height:100%;border-radius:6px;background:var(--muted2);width:0}
     .cmp-line.after{color:var(--ink);font-weight:700}
     .cmp-line.after .cmp-fill{background:var(--tone)}
-    .cmp-val{min-width:56px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+    .cmp-val{min-width:54px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
 
-    /* Check-list de chargement : les cases se cochent du dernier livre au premier. */
-    .check{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);
-           border-radius:10px;padding:11px 13px;font-size:.83rem}
-    .check .ck-box{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--border);
+    .check{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);
+           border-radius:10px;padding:10px 12px;font-size:.79rem}
+    .check .ck-box{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--border);
                    flex-shrink:0;background:var(--surface);transition:background .3s,border-color .3s}
     .check.done .ck-box{background:var(--green);border-color:var(--green);
                         background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-                        background-size:12px;background-position:center;background-repeat:no-repeat}
+                        background-size:11px;background-position:center;background-repeat:no-repeat}
     .check .ck-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .check .ck-tag{font-size:.62rem;font-weight:700;color:#fff;background:var(--tone);
+    .check .ck-tag{font-size:.6rem;font-weight:700;color:#fff;background:var(--tone);
                    border-radius:4px;padding:3px 7px;flex-shrink:0}
     .check .ck-tag.last{background:var(--muted2)}
 
     /* ── Tarifs, en fin de theme « gagnez plus » ────────────────────────────── */
-    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px;align-items:stretch}
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;width:100%}
     .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-          padding:24px 20px;position:relative;display:flex;flex-direction:column}
-    .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 16px 44px rgba(200,162,75,.16)}
-    .plan-ribbon{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
-                 background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;font-size:.63rem;
-                 font-weight:700;padding:4px 14px;border-radius:50px;white-space:nowrap;
-                 letter-spacing:.6px;text-transform:uppercase;box-shadow:0 4px 12px rgba(200,162,75,.4)}
-    .plan-name{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-               color:var(--muted);margin-bottom:10px}
-    .plan-price{font-size:2rem;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
-    .plan-price .per{font-size:.74rem;font-weight:500;color:var(--muted)}
-    .plan-note{font-size:.75rem;color:var(--muted);margin-top:9px;line-height:1.45}
-    .plan-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin:16px 0 20px}
-    .plan-features li{font-size:.8rem;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
-    .plan-features li::before{content:"";width:15px;height:15px;flex-shrink:0;margin-top:1px;
+          padding:18px 16px;position:relative;display:flex;flex-direction:column;
+          box-shadow:0 12px 34px rgba(15,25,35,.09)}
+    .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 16px 44px rgba(200,162,75,.18)}
+    .plan-ribbon{position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+                 background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;font-size:.58rem;
+                 font-weight:700;padding:4px 12px;border-radius:50px;white-space:nowrap;
+                 letter-spacing:.5px;text-transform:uppercase;box-shadow:0 4px 12px rgba(200,162,75,.4)}
+    .plan-name{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+               color:var(--muted);margin-bottom:8px}
+    .plan-price{font-size:1.6rem;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
+    .plan-price .per{font-size:.66rem;font-weight:500;color:var(--muted)}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:6px;margin:13px 0 16px}
+    .plan-features li{font-size:.74rem;display:flex;align-items:flex-start;gap:7px;line-height:1.35}
+    .plan-features li::before{content:"";width:13px;height:13px;flex-shrink:0;margin-top:1px;
       background-repeat:no-repeat;background-position:center;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")}
     .plan-features li.no{color:var(--muted2)}
     .plan-features li.no::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238896a7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")}
-    .plan-btn{display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;
-              border-radius:11px;font-size:.85rem;font-weight:700;margin-top:auto;transition:transform .15s}
+    .plan-btn{display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;
+              border-radius:10px;font-size:.78rem;font-weight:700;margin-top:auto;transition:transform .15s}
     .plan-btn:hover{transform:translateY(-1px)}
     .plan-btn.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--border)}
     .plan-btn.primary{background:var(--ink);color:#fff}
 
-    /* ── Volet final : appel a l'action et mentions ─────────────────────────── */
-    .finale{text-align:center;align-items:center}
-    .finale h2{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;letter-spacing:-1.4px;margin-bottom:14px}
-    .finale p{color:var(--muted);font-size:1.02rem;margin-bottom:28px}
-    .finale .side-cta{align-self:center}
-    .site-footer{margin-top:44px;padding-top:26px;border-top:1px solid var(--border);width:100%}
-    .site-footer .fnote{font-size:.78rem;color:var(--muted)}
-    .site-footer .flinks{margin-top:12px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-    .site-footer .flinks a{font-size:.78rem;color:var(--muted);font-weight:600}
+    /* ── Section finale ────────────────────────────────────────────────────── */
+    .slide.end .stage{width:100vw;grid-template-rows:repeat(10,1fr);
+                      background:radial-gradient(80% 70% at 50% 30%,rgba(124,58,237,.13),transparent 62%)}
+    .end-block{grid-column:2 / 12;grid-row:3 / 8;display:flex;flex-direction:column;
+               align-items:center;justify-content:center;text-align:center;gap:16px}
+    .end-block h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;letter-spacing:-1.6px;line-height:1.06}
+    .end-block p{color:var(--muted);font-size:clamp(.96rem,1.15vw,1.08rem)}
+    .end-block .gplay{margin-top:8px}
+    .site-footer{grid-column:2 / 12;grid-row:9 / 11;align-self:end;text-align:center;
+                 border-top:1px solid var(--border);padding-top:20px}
+    .site-footer .fnote{font-size:.76rem;color:var(--muted)}
+    .site-footer .flinks{margin-top:10px;display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+    .site-footer .flinks a{font-size:.76rem;color:var(--muted);font-weight:600}
     .site-footer .flinks a:hover{color:var(--accent)}
 
-    /* Indice de defilement, sur le premier volet seulement. */
-    .hint{position:absolute;left:clamp(28px,5vw,76px);bottom:30px;display:flex;align-items:center;gap:10px;
-          font-size:.74rem;font-weight:600;color:var(--muted2);letter-spacing:.3px}
-    .hint svg{width:20px;height:20px;animation:nudge 2s infinite}
-    @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
-
     /* ══ MOBILE ════════════════════════════════════════════════════════════════
-       Le parti pris horizontal s'arrete ici : au doigt, le geste naturel est
+       Le parti pris horizontal s'arrete ici : au doigt le geste naturel est
        vertical, et l'essentiel du trafic vient des reseaux. La piste redevient
-       une pile, la colonne repasse en en-tete. Aucun defilement imbrique. */
-    @media(max-width:900px){
-      .side{position:static;width:auto;height:auto;flex-direction:column;
-            padding:22px 20px 20px;border-right:none;border-bottom:1px solid var(--border);
-            box-shadow:0 2px 14px rgba(15,25,35,.06)}
-      .side-logo{width:38px;height:38px}
-      .themes{margin:20px 0;gap:2px}
-      .theme{font-size:1.34rem;padding:5px 0}
-      .side-foot{flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-      .side-cta img{height:44px}
-      .track{margin-left:0;display:block}
-      .slide{flex:none;width:auto;min-height:auto;padding:52px clamp(20px,6vw,32px)}
-      .duo{grid-template-columns:1fr;gap:26px}
-      .duo.flip .duo-visual{order:0}
-      .duo-visual{margin-top:4px}
-      .phone{max-width:290px}
-      .plans{grid-template-columns:1fr;max-width:390px;margin:26px auto 0}
+       une pile, la composition redevient un flux. Aucun defilement imbrique. */
+    @media(max-width:980px){
+      .track{display:block}
+      .slide{flex:none;height:auto;overflow:visible}
+      .stage{width:auto;height:auto;display:flex;flex-direction:column;align-items:flex-start;
+             gap:26px;padding:clamp(84px,12vh,120px) 20px clamp(48px,8vh,72px)}
+      .giant{font-size:clamp(3rem,15vw,5.2rem);line-height:.9}
+      .lead{max-width:none}
+      .note p{max-width:none}
+      .viz{width:100%;justify-content:flex-start}
+      .frame{max-width:300px}
+      .frame.flat{max-width:100%}
+      .mock{max-width:400px}
+      .compare{max-width:400px}
+      .plans{grid-template-columns:1fr;max-width:380px}
       .hint{display:none}
-      .opener{min-height:62vh;justify-content:flex-end}
+      .slide.end .stage{width:auto}
+      .end-block{align-items:flex-start;text-align:left}
+      .site-footer{text-align:left;width:100%}
+      .site-footer .flinks{justify-content:flex-start}
+      .top{padding:16px 20px;background:linear-gradient(180deg,var(--bg) 55%,transparent)}
+      .wordmark{width:132px}
+      .gplay img{height:36px}
+      .sig{width:44px;height:44px;border-radius:13px}
     }
     @media(max-width:480px){
-      .theme{font-size:1.18rem;letter-spacing:-.6px}
-      .slide{padding-left:18px;padding-right:18px}
+      .top-right{gap:12px}
+      .gplay img{height:32px}
     }
     @media(prefers-reduced-motion:reduce){
       .hint svg{animation:none}
-      .theme,.side::before{transition:none}
+      .sig::after,.sig,.mock-head .mh-state{transition:none}
     }
   </style>
 
@@ -315,84 +295,65 @@
 
 <body>
 
-  <!-- ══ COLONNE D'EN-TETE ═══════════════════════════════════════════════════ -->
-  <aside class="side">
-    <div class="side-brand">
-      <a href="#top" data-scroll-top data-i18n-aria="brand.aria" aria-label="ATEQO · retour au début">
-        <img class="side-logo" src="./img/logo_ateqo.png" alt="" />
-      </a>
-      <img class="side-word" src="./img/logo_hero.png" data-i18n-alt="hero.wordmark.alt" alt="ATEQO · L'itinéraire qui te suit" />
-      <p class="side-baseline" data-i18n="side.baseline">L'itinéraire qui te suit</p>
-    </div>
-
-    <!-- Les trois themes : promesse de la marque et reperage dans le site. -->
-    <nav class="themes">
-      <button type="button" class="theme on" data-theme-jump="0">
-        <span class="th-num">01</span><span class="th-word" data-i18n="theme.1">Livrez plus.</span>
-      </button>
-      <button type="button" class="theme" data-theme-jump="1">
-        <span class="th-num">02</span><span class="th-word" data-i18n="theme.2">Gagnez plus.</span>
-      </button>
-      <button type="button" class="theme" data-theme-jump="2">
-        <span class="th-num">03</span><span class="th-word" data-i18n="theme.3">Gérez mieux.</span>
-      </button>
-    </nav>
-
-    <div class="side-foot">
-      <a class="side-cta" data-track-position="entete" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-        <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
-      </a>
-      <p class="side-note"><span class="dot"></span><span data-i18n="side.note">7 tournées offertes, sans carte bancaire</span></p>
+  <!-- Reperes flottants : rien qui coupe la page. -->
+  <header class="top">
+    <a href="#top" data-scroll-top data-i18n-aria="brand.aria" aria-label="ATEQO · retour au début">
+      <img class="wordmark" src="./img/logo_hero.png" data-i18n-alt="brand.alt" alt="ATEQO · L'itinéraire qui te suit" />
+    </a>
+    <div class="top-right">
       <div class="lang-switch">
         <button type="button" data-lang-btn="fr">FR</button>
         <span class="sep">/</span>
         <button type="button" data-lang-btn="en">EN</button>
       </div>
+      <a class="gplay" data-track-position="entete" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+        <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
+      </a>
     </div>
-  </aside>
+  </header>
 
-  <!-- ══ PISTE ═══════════════════════════════════════════════════════════════ -->
+  <!-- Signature de marque, fixe en bas a droite. -->
+  <a class="sig" href="#top" data-scroll-top data-i18n-aria="brand.aria" aria-label="ATEQO · retour au début">
+    <img src="./img/logo_ateqo.png" alt="" />
+  </a>
+
+  <div class="hint" data-hint>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <span data-i18n="hint.scroll">Fais défiler</span>
+  </div>
+
   <main class="track" id="top">
 
-    <!-- ── THEME 1 · LIVREZ PLUS ─────────────────────────────────────────── -->
-    <section class="slide opener t1" data-theme="0">
-      <div class="slide-inner duo">
-        <div class="duo-text">
-          <p class="opener-kicker" data-i18n="t1.kicker">Thème 01</p>
-          <h2 data-i18n-html="t1.title">Livrez <span class="accent">plus.</span></h2>
-          <p data-i18n="t1.sub">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur.</p>
-        </div>
-        <div class="duo-visual">
-          <div class="phone wide">
-            <img src="./img/map_sectors_zoom.jpg" width="963" height="717" data-i18n-alt="t1.img.alt" alt="Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire" />
+    <!-- ══ LIVREZ PLUS ═══════════════════════════════════════════════════════ -->
+    <section class="slide t1" data-theme="0">
+      <div class="stage">
+        <p class="kicker" data-i18n="t1.kicker">Le cœur du métier</p>
+        <h2 class="giant" data-i18n-html="t1.title">Livrez <em>plus.</em></h2>
+        <p class="lead" data-i18n="t1.lead">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.</p>
+
+        <figure class="viz" style="grid-column:8 / 13;grid-row:1 / 5">
+          <div class="frame flat">
+            <img src="./img/map_sectors_zoom.jpg" width="963" height="717" data-i18n-alt="t1.imgA.alt" alt="Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire" />
             <div class="stamp">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-              <span data-i18n="t1.stamp">28 arrêts optimisés</span>
+              <span data-i18n="t1.stamp">28 arrêts · ~21 min gagnées</span>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        <span data-i18n="hint.scroll">Fais défiler</span>
-      </div>
-    </section>
+        </figure>
 
-    <section class="slide t1" data-theme="0">
-      <div class="slide-inner duo">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s1.eyebrow">Optimisation</p>
-          <h3 data-i18n="s1.h3">Un clic, et l'ordre change</h3>
-          <p data-i18n="s1.p">Saisis tes adresses dans n'importe quel ordre. ATEQO les replace selon les distances réelles de conduite, pas à vol d'oiseau.</p>
+        <div class="note" style="grid-column:9 / 13;grid-row:5 / 7">
+          <p class="eyebrow" data-i18n="t1.n1.eyebrow">Secteurs</p>
+          <h3 data-i18n="t1.n1.h3">Ta zone, découpée</h3>
+          <p data-i18n="t1.n1.p">Regroupe tes adresses par zone géographique. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.</p>
         </div>
-        <div class="duo-visual">
-          <!-- Maquette animee : les lignes glissent de l'ordre de saisie a
-               l'ordre optimise quand le volet arrive a l'ecran. C'est le
-               mecanisme central de l'app, une capture figee ne le montrerait pas. -->
+
+        <figure class="viz" style="grid-column:13 / 17;grid-row:2 / 6">
+          <!-- Les arrets se replacent sous les yeux du visiteur : c'est le
+               mecanisme central de l'app, une capture figee ne le montre pas. -->
           <div class="mock" data-reorder>
             <div class="mock-head">
-              <span data-i18n="s1.mock.head">Ma tournée</span>
-              <span class="mh-state" data-reorder-state data-i18n="s1.mock.before">Ordre de saisie</span>
+              <span data-i18n="mock.tour">Ma tournée</span>
+              <span class="mh-state" data-reorder-state data-i18n="mock.before">Ordre de saisie</span>
             </div>
             <div class="stops">
               <div class="stop" data-slot="0" data-to="2"><span class="st-num">1</span><span class="st-label" data-i18n="addr.1">12 rue des Lilas</span><span class="st-far">6,2 km</span></div>
@@ -401,177 +362,141 @@
               <div class="stop" data-slot="3" data-to="1"><span class="st-num">4</span><span class="st-label" data-i18n="addr.4">3 place du Marché</span><span class="st-far">3,1 km</span></div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </figure>
 
-    <section class="slide t1" data-theme="0">
-      <div class="slide-inner duo flip">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s2.eyebrow">Secteurs</p>
-          <h3 data-i18n="s2.h3">Découpe ta zone en secteurs</h3>
-          <p data-i18n="s2.p">Sur un territoire étendu, regroupe tes adresses par zone. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.</p>
+        <div class="note" style="grid-column:13 / 17;grid-row:7 / 9">
+          <p class="eyebrow" data-i18n="t1.n2.eyebrow">Optimisation</p>
+          <h3 data-i18n="t1.n2.h3">Un clic, et l'ordre change</h3>
+          <p data-i18n="t1.n2.p">Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite, pas à vol d'oiseau.</p>
         </div>
-        <div class="duo-visual">
-          <div class="phone wide">
-            <img src="./img/sectors.png" width="674" height="677" data-i18n-alt="s2.img.alt" alt="Carte ATEQO avec secteurs colorés : tournée organisée par zones" loading="lazy" />
+
+        <figure class="viz" style="grid-column:5 / 9;grid-row:7 / 11">
+          <div class="frame" style="max-width:250px">
+            <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="t1.imgB.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches" loading="lazy" />
           </div>
+        </figure>
+
+        <div class="note" style="grid-column:9 / 13;grid-row:8 / 10">
+          <p class="eyebrow" data-i18n="t1.n3.eyebrow">Navigation</p>
+          <h3 data-i18n="t1.n3.h3">Le prochain arrêt, jamais imposé</h3>
+          <p data-i18n="t1.n3.p">À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide t1" data-theme="0">
-      <div class="slide-inner duo">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s3.eyebrow">Navigation</p>
-          <h3 data-i18n="s3.h3">Le prochain arrêt, jamais imposé</h3>
-          <p data-i18n="s3.p">À chaque livraison, ATEQO propose la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.</p>
-        </div>
-        <div class="duo-visual">
-          <div class="phone">
-            <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="s3.img.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches" loading="lazy" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── THEME 2 · GAGNEZ PLUS ─────────────────────────────────────────── -->
-    <section class="slide opener t2" data-theme="1">
-      <div class="slide-inner">
-        <p class="opener-kicker" data-i18n="t2.kicker">Thème 02</p>
-        <h2 data-i18n-html="t2.title">Gagnez <span class="accent">plus.</span></h2>
-        <p data-i18n="t2.sub">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et l'essai ne coûte rien.</p>
-      </div>
-    </section>
-
+    <!-- ══ GAGNEZ PLUS ═══════════════════════════════════════════════════════ -->
     <section class="slide t2" data-theme="1">
-      <div class="slide-inner duo">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s4.eyebrow">Kilomètres</p>
-          <h3 data-i18n="s4.h3">Moins de route, même tournée</h3>
-          <p data-i18n="s4.p">Sur la tournée d'exemple ci-contre, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.</p>
-        </div>
-        <div class="duo-visual">
+      <div class="stage" style="width:158vw">
+        <p class="kicker" data-i18n="t2.kicker">Ce que ça rapporte</p>
+        <h2 class="giant" data-i18n-html="t2.title">Gagnez <em>plus.</em></h2>
+        <p class="lead" data-i18n="t2.lead">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.</p>
+
+        <figure class="viz" style="grid-column:9 / 13;grid-row:2 / 5">
           <div class="compare" data-compare>
             <div class="cmp-line"><span data-i18n="cmp.before">Ordre de saisie</span><span class="cmp-track"><span class="cmp-fill" data-fill="100"></span></span><span class="cmp-val">42 km</span></div>
             <div class="cmp-line after"><span data-i18n="cmp.after">Ordre optimisé</span><span class="cmp-track"><span class="cmp-fill" data-fill="74"></span></span><span class="cmp-val">31 km</span></div>
           </div>
-        </div>
-      </div>
-    </section>
+        </figure>
 
-    <section class="slide t2" data-theme="1">
-      <div class="slide-inner duo flip">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s5.eyebrow">Essai</p>
-          <h3 data-i18n="s5.h3">Juge sur ta propre tournée</h3>
-          <p data-i18n="s5.p">Tes sept premières tournées sont sans aucune limite, sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup.</p>
+        <div class="note" style="grid-column:9 / 13;grid-row:5 / 7">
+          <p class="eyebrow" data-i18n="t2.n1.eyebrow">Kilomètres</p>
+          <h3 data-i18n="t2.n1.h3">Moins de route, même tournée</h3>
+          <p data-i18n="t2.n1.p">Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.</p>
         </div>
-        <div class="duo-visual">
-          <div>
-            <div class="counter" data-count="7">
-              <span class="ct-num">0</span>
-              <span class="ct-unit" data-i18n="s5.unit">tournées sans limite</span>
+
+        <figure class="viz" style="grid-column:13 / 17;grid-row:2 / 4;justify-content:flex-start">
+          <div class="counter" data-count="7">
+            <span class="ct-num">0</span>
+            <span class="ct-unit" data-i18n="t2.unit">tournées sans limite</span>
+          </div>
+        </figure>
+
+        <div class="note" style="grid-column:13 / 17;grid-row:4 / 6">
+          <p class="eyebrow" data-i18n="t2.n2.eyebrow">Essai</p>
+          <h3 data-i18n="t2.n2.h3">Juge sur ta propre tournée</h3>
+          <p data-i18n="t2.n2.p">Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.</p>
+        </div>
+
+        <div class="note" style="grid-column:9 / 17;grid-row:7 / 8;align-self:end">
+          <p class="eyebrow" data-i18n="t2.n3.eyebrow">Tarifs</p>
+          <h3 data-i18n="t2.n3.h3">Premium quand tu roules tous les jours</h3>
+        </div>
+
+        <div class="viz" style="grid-column:9 / 17;grid-row:8 / 11;align-items:flex-start">
+          <div class="plans">
+            <div class="plan">
+              <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
+              <div class="plan-price">0 <span class="per">€</span></div>
+              <ul class="plan-features">
+                <li data-i18n="plan.free.f1">5 tournées par mois</li>
+                <li data-i18n="plan.f.addr">Adresses illimitées</li>
+                <li data-i18n="plan.free.f2">3 secteurs actifs</li>
+                <li class="no" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
+              </ul>
+              <a class="plan-btn secondary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.free.cta">Télécharger</a>
             </div>
-            <p class="counter-note" data-i18n="s5.note">Puis 5 tournées par mois en gratuit, adresses illimitées.</p>
+            <div class="plan">
+              <div class="plan-name" data-i18n="plan.monthly.name">Premium mensuel</div>
+              <div class="plan-price" data-i18n-html="plan.monthly.price">16,99 <span class="per">€ / mois</span></div>
+              <ul class="plan-features">
+                <li data-i18n="plan.f.tours">Tournées illimitées</li>
+                <li data-i18n="plan.f.addr">Adresses illimitées</li>
+                <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
+                <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
+              </ul>
+              <a class="plan-btn secondary" data-track-position="tarifs-mensuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
+            </div>
+            <div class="plan featured">
+              <div class="plan-ribbon" data-i18n="plan.annual.ribbon">2 mois offerts</div>
+              <div class="plan-name" data-i18n="plan.annual.name">Premium annuel</div>
+              <div class="plan-price" data-i18n-html="plan.annual.price">169,99 <span class="per">€ / an</span></div>
+              <ul class="plan-features">
+                <li data-i18n="plan.f.tours">Tournées illimitées</li>
+                <li data-i18n="plan.f.addr">Adresses illimitées</li>
+                <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
+                <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
+              </ul>
+              <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="slide t2" data-theme="1">
-      <div class="slide-inner">
-        <p class="eyebrow" data-i18n="s6.eyebrow">Tarifs</p>
-        <h3 data-i18n="s6.h3">Premium quand tu roules tous les jours</h3>
-        <div class="plans">
-          <div class="plan">
-            <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
-            <div class="plan-price">0 <span class="per">€</span></div>
-            <p class="plan-note" data-i18n="plan.free.note">Pour découvrir ATEQO sans engagement.</p>
-            <ul class="plan-features">
-              <li data-i18n="plan.free.f1">5 tournées par mois</li>
-              <li data-i18n="plan.f.addr">Adresses illimitées</li>
-              <li data-i18n="plan.free.f2">3 secteurs actifs</li>
-              <li class="no" data-i18n="plan.f.tours">Tournées illimitées</li>
-              <li class="no" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
-            </ul>
-            <a class="plan-btn secondary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.free.cta">Télécharger</a>
-          </div>
-          <div class="plan">
-            <div class="plan-name" data-i18n="plan.monthly.name">Premium mensuel</div>
-            <div class="plan-price" data-i18n-html="plan.monthly.price">16,99 <span class="per">€ / mois</span></div>
-            <p class="plan-note" data-i18n="plan.trial">14 jours d'essai gratuit, sans engagement</p>
-            <ul class="plan-features">
-              <li data-i18n="plan.f.tours">Tournées illimitées</li>
-              <li data-i18n="plan.f.addr">Adresses illimitées</li>
-              <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
-              <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
-            </ul>
-            <a class="plan-btn secondary" data-track-position="tarifs-mensuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
-          </div>
-          <div class="plan featured">
-            <div class="plan-ribbon" data-i18n="plan.annual.ribbon">2 mois offerts</div>
-            <div class="plan-name" data-i18n="plan.annual.name">Premium annuel</div>
-            <div class="plan-price" data-i18n-html="plan.annual.price">169,99 <span class="per">€ / an</span></div>
-            <p class="plan-note" data-i18n-html="plan.annual.alt">soit <b>~14,17 € / mois</b></p>
-            <ul class="plan-features">
-              <li data-i18n="plan.f.tours">Tournées illimitées</li>
-              <li data-i18n="plan.f.addr">Adresses illimitées</li>
-              <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
-              <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
-            </ul>
-            <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── THEME 3 · GEREZ MIEUX ─────────────────────────────────────────── -->
-    <section class="slide opener t3" data-theme="2">
-      <div class="slide-inner">
-        <p class="opener-kicker" data-i18n="t3.kicker">Thème 03</p>
-        <h2 data-i18n-html="t3.title">Gérez <span class="accent">mieux.</span></h2>
-        <p data-i18n="t3.sub">Tout ce qui n'est pas la conduite : préparer, charger, noter, retrouver. C'est là que les minutes se perdent.</p>
-      </div>
-    </section>
-
+    <!-- ══ GEREZ MIEUX ═══════════════════════════════════════════════════════ -->
     <section class="slide t3" data-theme="2">
-      <div class="slide-inner duo">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s7.eyebrow">Chargement</p>
-          <h3 data-i18n="s7.h3">Charge dans l'ordre inverse</h3>
-          <p data-i18n="s7.p">Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi, adresse par adresse. Plus de colis à déterrer au fond.</p>
-        </div>
-        <div class="duo-visual">
-          <!-- Les cases se cochent une a une, du dernier livre au premier : la
-               logique inversee se comprend en la regardant se faire. -->
+      <div class="stage">
+        <p class="kicker" data-i18n="t3.kicker">Tout ce qui n'est pas la conduite</p>
+        <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
+        <p class="lead" data-i18n="t3.lead">Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.</p>
+
+        <figure class="viz" style="grid-column:9 / 13;grid-row:1 / 5">
+          <!-- Les cases se cochent du dernier livre au premier : la logique
+               inversee se comprend en la regardant se faire. -->
           <div class="mock" data-checklist>
             <div class="mock-head">
-              <span data-i18n="s7.mock.head">Check-list de chargement</span>
+              <span data-i18n="t3.mock.head">Check-list de chargement</span>
               <span class="mh-state" data-check-count>0 / 3</span>
             </div>
             <div class="stops">
-              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.3">44 boulevard Victor Hugo</span><span class="ck-tag" data-i18n="s7.first">1er chargé</span></div>
+              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.3">44 boulevard Victor Hugo</span><span class="ck-tag" data-i18n="t3.first">1er chargé</span></div>
               <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.1">12 rue des Lilas</span></div>
-              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.2">8 avenue Gambetta</span><span class="ck-tag last" data-i18n="s7.last">1er livré</span></div>
+              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.2">8 avenue Gambetta</span><span class="ck-tag last" data-i18n="t3.last">1er livré</span></div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </figure>
 
-    <section class="slide t3" data-theme="2">
-      <div class="slide-inner duo flip">
-        <div class="duo-text">
-          <p class="eyebrow"><span data-i18n="s8.eyebrow">Carnet</span> <span class="tag-premium">Premium</span></p>
-          <h3 data-i18n="s8.h3">Tes adresses, une fois pour toutes</h3>
-          <p data-i18n="s8.p">Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap, sans rien ressaisir.</p>
+        <div class="note" style="grid-column:9 / 13;grid-row:5 / 7">
+          <p class="eyebrow" data-i18n="t3.n1.eyebrow">Chargement</p>
+          <h3 data-i18n="t3.n1.h3">Charge dans l'ordre inverse</h3>
+          <p data-i18n="t3.n1.p">Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi. Plus de colis à déterrer au fond du véhicule.</p>
         </div>
-        <div class="duo-visual">
+
+        <figure class="viz" style="grid-column:13 / 17;grid-row:3 / 7">
           <div class="mock">
             <div class="mock-head">
-              <span data-i18n="s8.mock.head">Carnet d'adresses</span>
-              <span class="mh-state" data-i18n="s8.mock.count">18 enregistrées</span>
+              <span data-i18n="t3.book.head">Carnet d'adresses</span>
+              <span class="mh-state" data-i18n="t3.book.count">18 enregistrées</span>
             </div>
             <div class="stops">
               <div class="stop s1"><span class="st-num">★</span><span class="st-label" data-i18n="addr.5">Clinique Saint-Joseph</span></div>
@@ -579,45 +504,46 @@
               <div class="stop s3"><span class="st-num">★</span><span class="st-label" data-i18n="addr.7">Zone artisanale des Chênes</span></div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </figure>
 
-    <section class="slide t3" data-theme="2">
-      <div class="slide-inner duo">
-        <div class="duo-text">
-          <p class="eyebrow" data-i18n="s9.eyebrow">Au quotidien</p>
-          <h3 data-i18n="s9.h3">Dicte, note, retrouve</h3>
-          <p data-i18n="s9.p">Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Retrouve une tournée passée et rejoue-la.</p>
+        <div class="note" style="grid-column:13 / 17;grid-row:7 / 9">
+          <p class="eyebrow"><span data-i18n="t3.n2.eyebrow">Carnet</span> <span class="tag-premium">Premium</span></p>
+          <h3 data-i18n="t3.n2.h3">Tes adresses, une fois pour toutes</h3>
+          <p data-i18n="t3.n2.p">Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.</p>
         </div>
-        <div class="duo-visual">
+
+        <figure class="viz" style="grid-column:5 / 9;grid-row:7 / 11">
           <div class="mock">
             <div class="mock-head">
-              <span data-i18n="s9.mock.head">Ma tournée</span>
-              <span class="mh-state" data-i18n="s9.mock.state">Arrêt 4 sur 18</span>
+              <span data-i18n="mock.tour">Ma tournée</span>
+              <span class="mh-state" data-i18n="t3.day.state">Arrêt 4 sur 18</span>
             </div>
             <div class="stops">
-              <div class="stop reco">
-                <span class="st-star">★</span>
-                <span class="st-label" data-i18n="addr.5">Clinique Saint-Joseph</span>
-                <span class="st-far">1,2 km</span>
-              </div>
-              <div class="stop"><span class="st-num" style="background:var(--muted2)">!</span><span class="st-label" data-i18n="s9.note">Code 4512B · 3e étage</span></div>
-              <div class="stop s2"><span class="st-num">↺</span><span class="st-label" data-i18n="s9.history">Tournée du 12 mars · 24 arrêts</span></div>
+              <div class="stop reco"><span class="st-star">★</span><span class="st-label" data-i18n="addr.5">Clinique Saint-Joseph</span><span class="st-far">1,2 km</span></div>
+              <div class="stop"><span class="st-num" style="background:var(--muted2)">!</span><span class="st-label" data-i18n="t3.day.note">Code 4512B · 3e étage</span></div>
+              <div class="stop s2"><span class="st-num">↺</span><span class="st-label" data-i18n="t3.day.history">Tournée du 12 mars · 24 arrêts</span></div>
             </div>
           </div>
+        </figure>
+
+        <div class="note" style="grid-column:1 / 5;grid-row:9 / 11">
+          <p class="eyebrow" data-i18n="t3.n3.eyebrow">Au quotidien</p>
+          <h3 data-i18n="t3.n3.h3">Dicte, note, retrouve</h3>
+          <p data-i18n="t3.n3.p">Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── VOLET FINAL ───────────────────────────────────────────────────── -->
-    <section class="slide finale t1" data-theme="0">
-      <div class="slide-inner">
-        <h2 data-i18n="end.title">Prêt à optimiser ta tournée ?</h2>
-        <p data-i18n="end.sub">Ta première tournée optimisée en moins d'une minute.</p>
-        <a class="side-cta" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-          <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
-        </a>
+    <!-- ══ FIN ═══════════════════════════════════════════════════════════════ -->
+    <section class="slide end t1" data-theme="0">
+      <div class="stage">
+        <div class="end-block">
+          <h2 data-i18n="end.title">Prêt à optimiser ta tournée ?</h2>
+          <p data-i18n="end.sub">Ta première tournée optimisée en moins d'une minute.</p>
+          <a class="gplay" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+            <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
+          </a>
+        </div>
         <footer class="site-footer">
           <p class="fnote" data-i18n="footer.note">© 2026 ATEQO · L'itinéraire qui te suit</p>
           <div class="flinks">
@@ -643,13 +569,8 @@
     var I18N = {
       fr: {
         'brand.aria': 'ATEQO · retour au début',
-        'hero.wordmark.alt': "ATEQO · L'itinéraire qui te suit",
+        'brand.alt': "ATEQO · L'itinéraire qui te suit",
         'badge.alt': 'Disponible sur Google Play',
-        'side.baseline': "L'itinéraire qui te suit",
-        'side.note': '7 tournées offertes, sans carte bancaire',
-        'theme.1': 'Livrez plus.',
-        'theme.2': 'Gagnez plus.',
-        'theme.3': 'Gérez mieux.',
         'hint.scroll': 'Fais défiler',
         // Adresses d'exemple, partagees par les maquettes.
         'addr.1': '12 rue des Lilas',
@@ -659,44 +580,41 @@
         'addr.5': 'Clinique Saint-Joseph',
         'addr.6': 'Pharmacie du Centre',
         'addr.7': 'Zone artisanale des Chênes',
-        // Theme 1
-        't1.kicker': 'Thème 01',
-        't1.title': 'Livrez <span class="accent">plus.</span>',
-        't1.sub': "Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur.",
-        't1.img.alt': "Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire",
-        't1.stamp': '28 arrêts optimisés',
-        's1.eyebrow': 'Optimisation',
-        's1.h3': "Un clic, et l'ordre change",
-        's1.p': "Saisis tes adresses dans n'importe quel ordre. ATEQO les replace selon les distances réelles de conduite, pas à vol d'oiseau.",
-        's1.mock.head': 'Ma tournée',
-        's1.mock.before': 'Ordre de saisie',
-        's1.mock.after': 'Ordre optimisé',
-        's2.eyebrow': 'Secteurs',
-        's2.h3': 'Découpe ta zone en secteurs',
-        's2.p': 'Sur un territoire étendu, regroupe tes adresses par zone. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.',
-        's2.img.alt': 'Carte ATEQO avec secteurs colorés : tournée organisée par zones',
-        's3.eyebrow': 'Navigation',
-        's3.h3': 'Le prochain arrêt, jamais imposé',
-        's3.p': 'À chaque livraison, ATEQO propose la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.',
-        's3.img.alt': 'Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches',
-        // Theme 2
-        't2.kicker': 'Thème 02',
-        't2.title': 'Gagnez <span class="accent">plus.</span>',
-        't2.sub': "Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et l'essai ne coûte rien.",
-        's4.eyebrow': 'Kilomètres',
-        's4.h3': 'Moins de route, même tournée',
-        's4.p': "Sur la tournée d'exemple ci-contre, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.",
+        'mock.tour': 'Ma tournée',
+        'mock.before': 'Ordre de saisie',
+        'mock.after': 'Ordre optimisé',
         'cmp.before': 'Ordre de saisie',
         'cmp.after': 'Ordre optimisé',
-        's5.eyebrow': 'Essai',
-        's5.h3': 'Juge sur ta propre tournée',
-        's5.p': 'Tes sept premières tournées sont sans aucune limite, sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup.',
-        's5.unit': 'tournées sans limite',
-        's5.note': 'Puis 5 tournées par mois en gratuit, adresses illimitées.',
-        's6.eyebrow': 'Tarifs',
-        's6.h3': 'Premium quand tu roules tous les jours',
+        // ── Livrez plus ──
+        't1.kicker': 'Le cœur du métier',
+        't1.title': 'Livrez <em>plus.</em>',
+        't1.lead': "Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.",
+        't1.imgA.alt': "Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire",
+        't1.imgB.alt': 'Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches',
+        't1.stamp': '28 arrêts · ~21 min gagnées',
+        't1.n1.eyebrow': 'Secteurs',
+        't1.n1.h3': 'Ta zone, découpée',
+        't1.n1.p': 'Regroupe tes adresses par zone géographique. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.',
+        't1.n2.eyebrow': 'Optimisation',
+        't1.n2.h3': "Un clic, et l'ordre change",
+        't1.n2.p': "Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite, pas à vol d'oiseau.",
+        't1.n3.eyebrow': 'Navigation',
+        't1.n3.h3': 'Le prochain arrêt, jamais imposé',
+        't1.n3.p': 'À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.',
+        // ── Gagnez plus ──
+        't2.kicker': 'Ce que ça rapporte',
+        't2.title': 'Gagnez <em>plus.</em>',
+        't2.lead': "Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.",
+        't2.n1.eyebrow': 'Kilomètres',
+        't2.n1.h3': 'Moins de route, même tournée',
+        't2.n1.p': "Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.",
+        't2.unit': 'tournées sans limite',
+        't2.n2.eyebrow': 'Essai',
+        't2.n2.h3': 'Juge sur ta propre tournée',
+        't2.n2.p': 'Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.',
+        't2.n3.eyebrow': 'Tarifs',
+        't2.n3.h3': 'Premium quand tu roules tous les jours',
         'plan.free.name': 'Gratuit',
-        'plan.free.note': 'Pour découvrir ATEQO sans engagement.',
         'plan.free.f1': '5 tournées par mois',
         'plan.free.f2': '3 secteurs actifs',
         'plan.free.cta': 'Télécharger',
@@ -709,31 +627,28 @@
         'plan.annual.name': 'Premium annuel',
         'plan.annual.price': '169,99 <span class="per">€ / an</span>',
         'plan.annual.ribbon': '2 mois offerts',
-        'plan.annual.alt': 'soit <b>~14,17 € / mois</b>',
-        'plan.trial': "14 jours d'essai gratuit, sans engagement",
         'plan.cta': 'Essayer 14 jours',
-        // Theme 3
-        't3.kicker': 'Thème 03',
-        't3.title': 'Gérez <span class="accent">mieux.</span>',
-        't3.sub': "Tout ce qui n'est pas la conduite : préparer, charger, noter, retrouver. C'est là que les minutes se perdent.",
-        's7.eyebrow': 'Chargement',
-        's7.h3': "Charge dans l'ordre inverse",
-        's7.p': 'Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi, adresse par adresse. Plus de colis à déterrer au fond.',
-        's7.mock.head': 'Check-list de chargement',
-        's7.first': '1er chargé',
-        's7.last': '1er livré',
-        's8.eyebrow': 'Carnet',
-        's8.h3': 'Tes adresses, une fois pour toutes',
-        's8.p': 'Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap, sans rien ressaisir.',
-        's8.mock.head': "Carnet d'adresses",
-        's8.mock.count': '18 enregistrées',
-        's9.eyebrow': 'Au quotidien',
-        's9.h3': 'Dicte, note, retrouve',
-        's9.p': "Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Retrouve une tournée passée et rejoue-la.",
-        's9.mock.head': 'Ma tournée',
-        's9.mock.state': 'Arrêt 4 sur 18',
-        's9.note': 'Code 4512B · 3e étage',
-        's9.history': 'Tournée du 12 mars · 24 arrêts',
+        // ── Gérez mieux ──
+        't3.kicker': "Tout ce qui n'est pas la conduite",
+        't3.title': 'Gérez <em>mieux.</em>',
+        't3.lead': "Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.",
+        't3.mock.head': 'Check-list de chargement',
+        't3.first': '1er chargé',
+        't3.last': '1er livré',
+        't3.n1.eyebrow': 'Chargement',
+        't3.n1.h3': "Charge dans l'ordre inverse",
+        't3.n1.p': 'Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi. Plus de colis à déterrer au fond du véhicule.',
+        't3.book.head': "Carnet d'adresses",
+        't3.book.count': '18 enregistrées',
+        't3.n2.eyebrow': 'Carnet',
+        't3.n2.h3': 'Tes adresses, une fois pour toutes',
+        't3.n2.p': 'Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.',
+        't3.day.state': 'Arrêt 4 sur 18',
+        't3.day.note': 'Code 4512B · 3e étage',
+        't3.day.history': 'Tournée du 12 mars · 24 arrêts',
+        't3.n3.eyebrow': 'Au quotidien',
+        't3.n3.h3': 'Dicte, note, retrouve',
+        't3.n3.p': "Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.",
         'end.title': 'Prêt à optimiser ta tournée ?',
         'end.sub': "Ta première tournée optimisée en moins d'une minute.",
         'footer.note': "© 2026 ATEQO · L'itinéraire qui te suit",
@@ -750,13 +665,8 @@
       },
       en: {
         'brand.aria': 'ATEQO · back to the start',
-        'hero.wordmark.alt': 'ATEQO · The route that follows you',
+        'brand.alt': 'ATEQO · The route that follows you',
         'badge.alt': 'Get it on Google Play',
-        'side.baseline': 'The route that follows you',
-        'side.note': '7 free routes, no card required',
-        'theme.1': 'Deliver more.',
-        'theme.2': 'Earn more.',
-        'theme.3': 'Manage better.',
         'hint.scroll': 'Scroll',
         'addr.1': '12 Maple Street',
         'addr.2': '8 Gambetta Avenue',
@@ -765,42 +675,39 @@
         'addr.5': 'Saint-Joseph Clinic',
         'addr.6': 'Central Pharmacy',
         'addr.7': 'Oakwood Business Park',
-        't1.kicker': 'Theme 01',
-        't1.title': 'Deliver <span class="accent">more.</span>',
-        't1.sub': 'The same working day, with more stops in it. ATEQO calculates the shortest visiting order on real roads, sector by sector.',
-        't1.img.alt': 'ATEQO map: stops numbered and colored by sector, with the route drawn',
-        't1.stamp': '28 stops optimized',
-        's1.eyebrow': 'Optimization',
-        's1.h3': 'One click, and the order changes',
-        's1.p': 'Enter your addresses in any order. ATEQO reorders them using real driving distances, not straight lines.',
-        's1.mock.head': 'My route',
-        's1.mock.before': 'Order entered',
-        's1.mock.after': 'Optimized order',
-        's2.eyebrow': 'Sectors',
-        's2.h3': 'Split your area into sectors',
-        's2.p': 'Across a wide territory, group your addresses by zone. Each sector has its own color and visiting order, optimized separately.',
-        's2.img.alt': 'ATEQO map with colored sectors: route organized by zone',
-        's3.eyebrow': 'Navigation',
-        's3.h3': 'The next stop, never imposed',
-        's3.p': 'After every delivery, ATEQO suggests the recommended destination and the closest stops. You choose, Google Maps follows.',
-        's3.img.alt': 'ATEQO screen: recommended next destination, with the closest addresses',
-        't2.kicker': 'Theme 02',
-        't2.title': 'Earn <span class="accent">more.</span>',
-        't2.sub': 'Every mile avoided is fuel saved and margin kept. And trying it costs nothing.',
-        's4.eyebrow': 'Distance',
-        's4.h3': 'Less road, same route',
-        's4.p': 'On the example route shown here, the optimized order cuts eleven kilometres. A saving that happens every day, not just the first one.',
+        'mock.tour': 'My route',
+        'mock.before': 'Order entered',
+        'mock.after': 'Optimized order',
         'cmp.before': 'Order entered',
         'cmp.after': 'Optimized order',
-        's5.eyebrow': 'Free trial',
-        's5.h3': 'Judge it on your own route',
-        's5.p': 'Your first seven routes have no limit at all, with no payment method to enter. After that, the free plan is enough for many.',
-        's5.unit': 'routes with no limit',
-        's5.note': 'Then 5 routes per month on the free plan, unlimited addresses.',
-        's6.eyebrow': 'Pricing',
-        's6.h3': "Premium once you're on the road every day",
+        't1.kicker': 'The heart of the job',
+        't1.title': 'Deliver <em>more.</em>',
+        't1.lead': 'The same working day, with more stops in it. ATEQO calculates the shortest visiting order on real roads, sector by sector, and leaves you the final say at every stop.',
+        't1.imgA.alt': 'ATEQO map: stops numbered and colored by sector, with the route drawn',
+        't1.imgB.alt': 'ATEQO screen: recommended next destination, with the closest addresses',
+        't1.stamp': '28 stops · ~21 min saved',
+        't1.n1.eyebrow': 'Sectors',
+        't1.n1.h3': 'Your area, carved up',
+        't1.n1.p': 'Group your addresses by geographic zone. Each sector has its own color and visiting order, optimized separately.',
+        't1.n2.eyebrow': 'Optimization',
+        't1.n2.h3': 'One click, and the order changes',
+        't1.n2.p': 'Enter them in any order. ATEQO reorders everything using real driving distances, not straight lines.',
+        't1.n3.eyebrow': 'Navigation',
+        't1.n3.h3': 'The next stop, never imposed',
+        't1.n3.p': 'After every delivery, the recommended destination and the closest stops. You choose, Google Maps follows.',
+        't2.kicker': 'What it brings in',
+        't2.title': 'Earn <em>more.</em>',
+        't2.lead': 'Every mile avoided is fuel saved and margin kept. And nothing ties you down: your first seven routes have no limit at all.',
+        't2.n1.eyebrow': 'Distance',
+        't2.n1.h3': 'Less road, same route',
+        't2.n1.p': 'On this example route, the optimized order cuts eleven kilometres. A saving that happens every day, not just the first one.',
+        't2.unit': 'routes with no limit',
+        't2.n2.eyebrow': 'Free trial',
+        't2.n2.h3': 'Judge it on your own route',
+        't2.n2.p': 'With no payment method to enter. After that, the free plan is enough for many: 5 routes per month, unlimited addresses.',
+        't2.n3.eyebrow': 'Pricing',
+        't2.n3.h3': "Premium once you're on the road every day",
         'plan.free.name': 'Free',
-        'plan.free.note': 'To try ATEQO with no commitment.',
         'plan.free.f1': '5 routes per month',
         'plan.free.f2': '3 active sectors',
         'plan.free.cta': 'Download',
@@ -813,30 +720,27 @@
         'plan.annual.name': 'Annual Premium',
         'plan.annual.price': '€169.99 <span class="per">/ year</span>',
         'plan.annual.ribbon': '2 months free',
-        'plan.annual.alt': 'or <b>~€14.17 / month</b>',
-        'plan.trial': '14-day free trial, no commitment',
         'plan.cta': 'Try free for 14 days',
-        't3.kicker': 'Theme 03',
-        't3.title': 'Manage <span class="accent">better.</span>',
-        't3.sub': 'Everything that is not driving: preparing, loading, noting, finding again. That is where the minutes go.',
-        's7.eyebrow': 'Loading',
-        's7.h3': 'Load in reverse order',
-        's7.p': 'The last parcel delivered is the first one loaded. ATEQO flips the list for you, address by address. No more digging at the back of the van.',
-        's7.mock.head': 'Loading checklist',
-        's7.first': 'Loaded 1st',
-        's7.last': 'Delivered 1st',
-        's8.eyebrow': 'Address book',
-        's8.h3': 'Your addresses, once and for all',
-        's8.p': 'Save your usual addresses and lists. You find them again in the morning and optimize them afresh in one tap, without entering anything.',
-        's8.mock.head': 'Address book',
-        's8.mock.count': '18 saved',
-        's9.eyebrow': 'Day to day',
-        's9.h3': 'Speak it, note it, find it',
-        's9.p': 'Add an address by voice, hands full of parcels. Keep the access code in sight. Find a past route and replay it.',
-        's9.mock.head': 'My route',
-        's9.mock.state': 'Stop 4 of 18',
-        's9.note': 'Code 4512B · 3rd floor',
-        's9.history': 'Route of 12 March · 24 stops',
+        't3.kicker': 'Everything that is not driving',
+        't3.title': 'Manage <em>better.</em>',
+        't3.lead': 'Preparing, loading, noting, finding again. That is where the minutes go, and that is where ATEQO works while you drive.',
+        't3.mock.head': 'Loading checklist',
+        't3.first': 'Loaded 1st',
+        't3.last': 'Delivered 1st',
+        't3.n1.eyebrow': 'Loading',
+        't3.n1.h3': 'Load in reverse order',
+        't3.n1.p': 'The last parcel delivered is the first one loaded. ATEQO flips the list for you. No more digging at the back of the van.',
+        't3.book.head': 'Address book',
+        't3.book.count': '18 saved',
+        't3.n2.eyebrow': 'Address book',
+        't3.n2.h3': 'Your addresses, once and for all',
+        't3.n2.p': 'Save your usual addresses and lists. You find them again in the morning and optimize them afresh in one tap.',
+        't3.day.state': 'Stop 4 of 18',
+        't3.day.note': 'Code 4512B · 3rd floor',
+        't3.day.history': 'Route of 12 March · 24 stops',
+        't3.n3.eyebrow': 'Day to day',
+        't3.n3.h3': 'Speak it, note it, find it',
+        't3.n3.p': 'Add an address by voice, hands full of parcels. Keep the access code in sight. Replay a past route.',
         'end.title': 'Ready to optimize your route?',
         'end.sub': 'Your first optimized route in under a minute.',
         'footer.note': '© 2026 ATEQO · The route that follows you',
@@ -930,26 +834,26 @@
        lisible : les demonstrations affichent directement leur etat final. */
     (function () {
       var THEME_COLORS = ['var(--s1)', 'var(--s2)', 'var(--s3)'];
+      var SECTOR_CLASS = ['s1', 's1', 's2', 's3'];
 
       var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-      var themeButtons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-jump]'));
+      var hint = document.querySelector('[data-hint]');
 
-      // ── Etat courant : quel theme est traverse ──────────────────────────────
       var currentTheme = -1;
       function showTheme(themeIndex) {
         if (themeIndex === currentTheme) return;
         currentTheme = themeIndex;
         document.documentElement.style.setProperty('--tone', THEME_COLORS[themeIndex] || THEME_COLORS[0]);
-        themeButtons.forEach(function (button, i) {
-          button.classList.toggle('on', i === themeIndex);
-        });
       }
-      showTheme(0);
+
+      // L'indice de defilement a fait son travail des le premier geste.
+      function dismissHint() {
+        if (!hint) return;
+        hint.style.opacity = '0';
+        hint.style.pointerEvents = 'none';
+      }
 
       // ── Demonstrations ──────────────────────────────────────────────────────
-      // Chacune se joue une seule fois, quand son volet arrive a l'ecran.
-      var SECTOR_CLASS = ['s1', 's1', 's2', 's3'];
-
       function playReorder(mock) {
         if (mock.dataset.played) return;
         mock.dataset.played = '1';
@@ -973,8 +877,8 @@
         if (state) {
           gsap.delayedCall(0.95, function () {
             var dict = I18N[document.documentElement.lang] || I18N.fr;
-            state.setAttribute('data-i18n', 's1.mock.after');
-            state.textContent = dict['s1.mock.after'];
+            state.setAttribute('data-i18n', 'mock.after');
+            state.textContent = dict['mock.after'];
           });
         }
       }
@@ -1020,7 +924,7 @@
         slide.querySelectorAll('[data-checklist]').forEach(playChecklist);
       }
 
-      // Sans GSAP (CDN muet) ou animations refusees : etat final tout de suite.
+      // ── Repli : sans GSAP ou animations refusees, etat final immediat ───────
       var animationsAllowed = !!window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!animationsAllowed) {
         document.querySelectorAll('[data-count]').forEach(function (block) {
@@ -1030,19 +934,17 @@
           fill.style.width = fill.getAttribute('data-fill') + '%';
         });
         document.querySelectorAll('[data-checklist] .check').forEach(function (line) { line.classList.add('done'); });
-        var stops = document.querySelectorAll('[data-reorder] .stop');
-        stops.forEach(function (stop) {
+        document.querySelectorAll('[data-reorder] .stop').forEach(function (stop) {
           var to = parseInt(stop.getAttribute('data-to'), 10);
           stop.querySelector('.st-num').textContent = String(to + 1);
           stop.classList.add(SECTOR_CLASS[to]);
         });
-        // Le theme suit alors le volet visible, sans animation.
         if ('IntersectionObserver' in window) {
           var basicObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
               if (entry.isIntersecting) showTheme(parseInt(entry.target.getAttribute('data-theme'), 10));
             });
-          }, { threshold: 0.5 });
+          }, { threshold: 0.4 });
           slides.forEach(function (slide) { basicObserver.observe(slide); });
         }
         return;
@@ -1050,7 +952,7 @@
 
       gsap.registerPlugin(ScrollTrigger);
 
-      // Defilement inertiel : il donne son elan au passage d'un volet a l'autre.
+      // Defilement inertiel : il donne son elan d'une scene a l'autre.
       // syncTouch reste false, le tactile garde le defilement du systeme.
       if (window.Lenis) {
         var lenis = new window.Lenis({ duration: 1.05, smoothWheel: true, syncTouch: false });
@@ -1062,13 +964,13 @@
       var media = gsap.matchMedia();
 
       // ── Disposition horizontale (desktop, pointeur fin) ─────────────────────
-      media.add('(min-width: 901px) and (hover: hover) and (pointer: fine)', function () {
+      media.add('(min-width: 981px) and (hover: hover) and (pointer: fine)', function () {
         var track = document.querySelector('.track');
 
-        function distance() {
-          return Math.max(0, track.scrollWidth - track.clientWidth);
-        }
+        function distance() { return Math.max(0, track.scrollWidth - track.clientWidth); }
 
+        // Pas de recalage force : les scenes sont larges et le visiteur doit
+        // pouvoir s'arreter n'importe ou pour regarder un visuel.
         var slide = gsap.to(track, {
           x: function () { return -distance(); },
           ease: 'none',
@@ -1078,44 +980,36 @@
             end: function () { return '+=' + distance(); },
             pin: true,
             scrub: 0.7,
-            snap: { snapTo: 1 / (slides.length - 1), duration: { min: 0.15, max: 0.35 }, ease: 'power1.inOut' },
             invalidateOnRefresh: true,
             onUpdate: function (self) {
-              var index = Math.round(self.progress * (slides.length - 1));
-              var visible = slides[Math.max(0, Math.min(slides.length - 1, index))];
-              showTheme(parseInt(visible.getAttribute('data-theme'), 10));
+              if (self.progress > 0.02) dismissHint();
             }
           }
         });
 
-        // Les demonstrations vivent DANS le defilement horizontal : sans
-        // containerAnimation, ScrollTrigger les croirait toutes deja passees.
         slides.forEach(function (element) {
+          // Les demonstrations vivent DANS le defilement horizontal : sans
+          // containerAnimation, ScrollTrigger les croirait toutes deja passees.
           ScrollTrigger.create({
             trigger: element,
             containerAnimation: slide,
             start: 'left 62%',
             onEnter: function () { playDemosIn(element); }
           });
-        });
-
-        themeButtons.forEach(function (button, themeIndex) {
-          button.addEventListener('click', function () {
-            var target = slides.filter(function (element) {
-              return parseInt(element.getAttribute('data-theme'), 10) === themeIndex;
-            })[0];
-            if (!target) return;
-            var trigger = slide.scrollTrigger;
-            var ratio = slides.indexOf(target) / (slides.length - 1);
-            window.scrollTo({ top: trigger.start + ratio * (trigger.end - trigger.start), behavior: 'smooth' });
+          ScrollTrigger.create({
+            trigger: element,
+            containerAnimation: slide,
+            start: 'left 55%',
+            end: 'right 45%',
+            onToggle: function (self) {
+              if (self.isActive) showTheme(parseInt(element.getAttribute('data-theme'), 10));
+            }
           });
         });
-
-        return function () { /* matchMedia revient tout seul en arriere */ };
       });
 
       // ── Disposition verticale (tactile, petits ecrans) ──────────────────────
-      media.add('(max-width: 900px), (pointer: coarse)', function () {
+      media.add('(max-width: 980px), (pointer: coarse)', function () {
         slides.forEach(function (element) {
           ScrollTrigger.create({
             trigger: element,
@@ -1131,14 +1025,10 @@
             }
           });
         });
-
-        themeButtons.forEach(function (button, themeIndex) {
-          button.addEventListener('click', function () {
-            var target = slides.filter(function (element) {
-              return parseInt(element.getAttribute('data-theme'), 10) === themeIndex;
-            })[0];
-            if (target) target.scrollIntoView({ behavior: 'smooth' });
-          });
+        ScrollTrigger.create({
+          trigger: document.body,
+          start: '80px top',
+          onEnter: dismissHint
         });
       });
 
@@ -1146,13 +1036,12 @@
       // sans ce recalcul, la course horizontale serait sous-estimee.
       window.addEventListener('load', function () { ScrollTrigger.refresh(); });
 
-      var backToTop = document.querySelector('[data-scroll-top]');
-      if (backToTop) {
-        backToTop.addEventListener('click', function (e) {
+      document.querySelectorAll('[data-scroll-top]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-      }
+      });
     })();
   </script>
 

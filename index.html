@@ -110,44 +110,66 @@
     .slide{flex:0 0 auto;height:100vh;height:100dvh;position:relative;overflow:hidden}
 
     /* ── Composition d'un theme ───────────────────────────────────────────────
-       Le titre occupe la plus grande part de la scene ; les textes et les
-       visuels se posent autour de lui, a des hauteurs differentes, pour eviter
-       l'alignement en grille qui rendait la page morne. */
-    .stage{width:172vw;height:100%;display:grid;
-           grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(10,1fr);
-           gap:clamp(10px,1.1vw,20px);
-           padding:clamp(74px,7vh,110px) clamp(28px,3.4vw,64px) clamp(40px,5vh,70px)}
-    .slide.t1{background:radial-gradient(90% 70% at 12% 22%,rgba(59,130,246,.16),transparent 62%)}
-    .slide.t2{background:radial-gradient(90% 70% at 12% 22%,rgba(13,148,136,.16),transparent 62%)}
-    .slide.t3{background:radial-gradient(90% 70% at 12% 22%,rgba(217,119,6,.16),transparent 62%)}
+       Le titre est pose au centre de la scene et tout gravite autour : textes
+       courts et visuels sont places librement, en pourcentage, et peuvent
+       mordre sur le titre. Ce chevauchement est voulu : c'est ce qui donne la
+       profondeur, avec la parallaxe qui les fait partir a des vitesses
+       differentes. */
+    .stage{position:relative;width:190vw;height:100%}
+    .slide.t1{background:radial-gradient(70% 80% at 46% 46%,rgba(59,130,246,.18),transparent 60%)}
+    .slide.t2{background:radial-gradient(70% 80% at 46% 46%,rgba(13,148,136,.18),transparent 60%)}
+    .slide.t3{background:radial-gradient(70% 80% at 46% 46%,rgba(217,119,6,.18),transparent 60%)}
 
-    .kicker{grid-column:1 / 5;grid-row:2 / 3;align-self:end;
-            font-size:.76rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tone)}
-    /* Le titre : la plus grande masse de la composition. */
-    .giant{grid-column:1 / 7;grid-row:3 / 7;align-self:center;
-           font-size:clamp(3.2rem,9.4vw,10.5rem);font-weight:800;letter-spacing:-.055em;
-           line-height:.86;text-wrap:balance}
+    /* Tout element de la scene est positionne en pourcentage : left et top sont
+       portes par l'attribut style, au cas par cas, pour composer le nuage. */
+    .stage>*{position:absolute}
+
+    /* Le titre : la plus grande masse, au centre, en arriere-plan de tout. */
+    .giant{left:50%;top:47%;transform:translate(-50%,-50%);z-index:1;
+           text-align:center;white-space:nowrap;
+           font-size:clamp(3.2rem,11vw,13rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
     .giant em{font-style:normal;color:var(--tone)}
-    .lead{grid-column:1 / 5;grid-row:7 / 9;font-size:clamp(.96rem,1.15vw,1.14rem);
-          color:var(--muted);line-height:1.65;max-width:44ch}
+    /* Les lettres sont detachees pour partir a des vitesses legerement
+       differentes : elles s'etirent au defilement au lieu de bouger d'un bloc. */
+    .giant .ltr{display:inline-block;will-change:transform}
+    .kicker{z-index:3;font-size:.76rem;font-weight:700;letter-spacing:2px;
+            text-transform:uppercase;color:var(--tone)}
+    .lead{z-index:3;font-size:clamp(.94rem,1.1vw,1.08rem);color:var(--muted);
+          line-height:1.65;width:min(38ch,30vw)}
 
-    /* Blocs de texte secondaires, poses autour du titre. */
-    .note h3{font-size:clamp(1.02rem,1.35vw,1.28rem);font-weight:700;letter-spacing:-.3px;margin-bottom:7px}
-    .note p{font-size:clamp(.83rem,.95vw,.94rem);color:var(--muted);line-height:1.6;max-width:34ch}
+    /* Blocs de texte secondaires, poses autour du titre. Fond translucide :
+       la ou ils mordent sur le titre, ils restent lisibles. */
+    .note{z-index:3;width:min(34ch,26vw);background:rgba(241,244,247,.72);
+          backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+          border-radius:12px;padding:12px 14px;margin:-12px -14px}
+    .note h3{font-size:clamp(1rem,1.3vw,1.24rem);font-weight:700;letter-spacing:-.3px;margin-bottom:7px}
+    .note p{font-size:clamp(.82rem,.92vw,.92rem);color:var(--muted);line-height:1.6}
     .note .eyebrow{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
                    color:var(--tone);margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .tag-premium{display:inline-flex;align-items:center;font-size:.55rem;font-weight:700;color:#8a6d1f;
                  background:rgba(200,162,75,.16);padding:2px 7px;border-radius:6px;
                  text-transform:uppercase;letter-spacing:.5px}
 
-    /* Visuels : jamais alignes entre eux, chacun a sa hauteur. */
-    .viz{display:flex;align-items:center;justify-content:center;position:relative}
+    /* ── Visuels ──────────────────────────────────────────────────────────────
+       Toutes les captures sont calees sur la hauteur de l'ecran, jamais sur une
+       largeur en pixels : c'est ce qui garantit qu'elles gardent la meme
+       presence d'un ecran a l'autre, sans se retrouver minuscules ou enormes. */
+    .viz{z-index:2;position:absolute}
     .viz img{display:block;width:100%;height:auto}
     .frame{background:#fff;border:1px solid var(--border);border-radius:20px;padding:8px;
-           box-shadow:0 26px 64px rgba(15,25,35,.20);position:relative}
+           box-shadow:0 30px 70px rgba(15,25,35,.22);position:relative}
     .frame img{border-radius:13px}
-    .frame.flat{border-radius:14px;padding:7px}
-    .frame.flat img{border-radius:8px}
+    /* Capture d'ecran de telephone : hauteur visee 46vh, largeur deduite du
+       ratio reel de l'image (920 x 1234). */
+    .frame.tall{width:calc(46vh * 920 / 1234)}
+    /* Capture de carte, format paysage (963 x 717), hauteur visee 40vh. */
+    .frame.flat{width:calc(40vh * 963 / 717);border-radius:15px;padding:7px}
+    .frame.flat img{border-radius:9px}
+    /* Les maquettes suivent la meme regle : dimensionnees en hauteur d'ecran,
+       elles gardent le meme poids visuel que les captures a cote d'elles. */
+    .viz .mock{width:34vh;min-width:270px;max-width:380px}
+    .viz .compare{width:34vh;min-width:270px;max-width:380px}
+    .viz .plans{width:64vh;min-width:520px;max-width:760px}
     /* Pastille de resultat posee sur un visuel, comme dans l'app. */
     .stamp{position:absolute;right:-16px;bottom:-15px;background:var(--surface);
            border:1px solid rgba(22,163,74,.34);border-radius:12px;padding:10px 14px;
@@ -234,14 +256,15 @@
     .plan-btn.primary{background:var(--ink);color:#fff}
 
     /* ── Section finale ────────────────────────────────────────────────────── */
-    .slide.end .stage{width:100vw;grid-template-rows:repeat(10,1fr);
+    .slide.end .stage{width:100vw;
                       background:radial-gradient(80% 70% at 50% 30%,rgba(124,58,237,.13),transparent 62%)}
-    .end-block{grid-column:2 / 12;grid-row:3 / 8;display:flex;flex-direction:column;
-               align-items:center;justify-content:center;text-align:center;gap:16px}
+    .end-block{left:50%;top:44%;transform:translate(-50%,-50%);width:min(680px,80vw);
+               display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
     .end-block h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;letter-spacing:-1.6px;line-height:1.06}
     .end-block p{color:var(--muted);font-size:clamp(.96rem,1.15vw,1.08rem)}
     .end-block .gplay{margin-top:8px}
-    .site-footer{grid-column:2 / 12;grid-row:9 / 11;align-self:end;text-align:center;
+    .site-footer{left:50%;bottom:clamp(28px,5vh,54px);transform:translateX(-50%);
+                 width:min(880px,86vw);text-align:center;
                  border-top:1px solid var(--border);padding-top:20px}
     .site-footer .fnote{font-size:.76rem;color:var(--muted)}
     .site-footer .flinks{margin-top:10px;display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
@@ -255,19 +278,23 @@
     @media(max-width:980px){
       .track{display:block}
       .slide{flex:none;height:auto;overflow:visible}
-      .stage{width:auto;height:auto;display:flex;flex-direction:column;align-items:flex-start;
+      /* La composition libre n'a plus lieu d'etre : tout revient dans le flux,
+         dans l'ordre du document, et les placements en pourcentage sautent. */
+      .stage,.slide.end .stage{width:auto;height:auto;position:static;
+             display:flex;flex-direction:column;align-items:flex-start;
              gap:26px;padding:clamp(84px,12vh,120px) 20px clamp(48px,8vh,72px)}
-      .giant{font-size:clamp(3rem,15vw,5.2rem);line-height:.9}
-      .lead{max-width:none}
-      .note p{max-width:none}
-      .viz{width:100%;justify-content:flex-start}
-      .frame{max-width:300px}
-      .frame.flat{max-width:100%}
-      .mock{max-width:400px}
-      .compare{max-width:400px}
-      .plans{grid-template-columns:1fr;max-width:380px}
+      .stage>*{position:static!important;left:auto!important;top:auto!important;
+               bottom:auto!important;transform:none!important;width:auto}
+      .giant{font-size:clamp(3rem,15vw,5.2rem);line-height:.9;text-align:left;white-space:normal}
+      .giant .ltr{transform:none!important}
+      .lead,.note{width:auto}
+      .note{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;margin:0}
+      .viz{width:100%;justify-content:flex-start;display:flex}
+      .frame.tall{width:min(280px,72vw)}
+      .frame.flat{width:min(420px,100%)}
+      .viz .mock,.viz .compare{width:min(400px,100%);min-width:0;max-width:none}
+      .viz .plans{width:100%;min-width:0;max-width:400px;grid-template-columns:1fr}
       .hint{display:none}
-      .slide.end .stage{width:auto}
       .end-block{align-items:flex-start;text-align:left}
       .site-footer{text-align:left;width:100%}
       .site-footer .flinks{justify-content:flex-start}
@@ -327,11 +354,11 @@
     <!-- ══ LIVREZ PLUS ═══════════════════════════════════════════════════════ -->
     <section class="slide t1" data-theme="0">
       <div class="stage">
-        <p class="kicker" data-i18n="t1.kicker">Le cœur du métier</p>
+        <p class="kicker" data-i18n="t1.kicker" style="left:5%;top:24%" data-speed="0.88">Le cœur du métier</p>
         <h2 class="giant" data-i18n-html="t1.title">Livrez <em>plus.</em></h2>
-        <p class="lead" data-i18n="t1.lead">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.</p>
+        <p class="lead" data-i18n="t1.lead" style="left:5%;top:31%" data-speed="0.9">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.</p>
 
-        <figure class="viz" style="grid-column:8 / 13;grid-row:1 / 5">
+        <figure class="viz" style="left:22%;top:58%" data-speed="1.14">
           <div class="frame flat">
             <img src="./img/map_sectors_zoom.jpg" width="963" height="717" data-i18n-alt="t1.imgA.alt" alt="Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire" />
             <div class="stamp">
@@ -341,13 +368,13 @@
           </div>
         </figure>
 
-        <div class="note" style="grid-column:9 / 13;grid-row:5 / 7">
+        <div class="note" style="left:23%;top:20%" data-speed="0.94">
           <p class="eyebrow" data-i18n="t1.n1.eyebrow">Secteurs</p>
           <h3 data-i18n="t1.n1.h3">Ta zone, découpée</h3>
           <p data-i18n="t1.n1.p">Regroupe tes adresses par zone géographique. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.</p>
         </div>
 
-        <figure class="viz" style="grid-column:13 / 17;grid-row:2 / 6">
+        <figure class="viz" style="left:47%;top:11%" data-speed="1.2">
           <!-- Les arrets se replacent sous les yeux du visiteur : c'est le
                mecanisme central de l'app, une capture figee ne le montre pas. -->
           <div class="mock" data-reorder>
@@ -364,19 +391,19 @@
           </div>
         </figure>
 
-        <div class="note" style="grid-column:13 / 17;grid-row:7 / 9">
+        <div class="note" style="left:48%;top:74%" data-speed="0.92">
           <p class="eyebrow" data-i18n="t1.n2.eyebrow">Optimisation</p>
           <h3 data-i18n="t1.n2.h3">Un clic, et l'ordre change</h3>
           <p data-i18n="t1.n2.p">Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite, pas à vol d'oiseau.</p>
         </div>
 
-        <figure class="viz" style="grid-column:5 / 9;grid-row:7 / 11">
-          <div class="frame" style="max-width:250px">
+        <figure class="viz" style="left:68%;top:44%" data-speed="1.1">
+          <div class="frame tall">
             <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="t1.imgB.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches" loading="lazy" />
           </div>
         </figure>
 
-        <div class="note" style="grid-column:9 / 13;grid-row:8 / 10">
+        <div class="note" style="left:83%;top:22%" data-speed="0.96">
           <p class="eyebrow" data-i18n="t1.n3.eyebrow">Navigation</p>
           <h3 data-i18n="t1.n3.h3">Le prochain arrêt, jamais imposé</h3>
           <p data-i18n="t1.n3.p">À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.</p>
@@ -386,43 +413,43 @@
 
     <!-- ══ GAGNEZ PLUS ═══════════════════════════════════════════════════════ -->
     <section class="slide t2" data-theme="1">
-      <div class="stage" style="width:158vw">
-        <p class="kicker" data-i18n="t2.kicker">Ce que ça rapporte</p>
+      <div class="stage" style="width:178vw">
+        <p class="kicker" data-i18n="t2.kicker" style="left:5%;top:24%" data-speed="0.88">Ce que ça rapporte</p>
         <h2 class="giant" data-i18n-html="t2.title">Gagnez <em>plus.</em></h2>
-        <p class="lead" data-i18n="t2.lead">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.</p>
+        <p class="lead" data-i18n="t2.lead" style="left:5%;top:31%" data-speed="0.9">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.</p>
 
-        <figure class="viz" style="grid-column:9 / 13;grid-row:2 / 5">
+        <figure class="viz" style="left:24%;top:22%" data-speed="1.16">
           <div class="compare" data-compare>
             <div class="cmp-line"><span data-i18n="cmp.before">Ordre de saisie</span><span class="cmp-track"><span class="cmp-fill" data-fill="100"></span></span><span class="cmp-val">42 km</span></div>
             <div class="cmp-line after"><span data-i18n="cmp.after">Ordre optimisé</span><span class="cmp-track"><span class="cmp-fill" data-fill="74"></span></span><span class="cmp-val">31 km</span></div>
           </div>
         </figure>
 
-        <div class="note" style="grid-column:9 / 13;grid-row:5 / 7">
+        <div class="note" style="left:24%;top:66%" data-speed="0.94">
           <p class="eyebrow" data-i18n="t2.n1.eyebrow">Kilomètres</p>
           <h3 data-i18n="t2.n1.h3">Moins de route, même tournée</h3>
           <p data-i18n="t2.n1.p">Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.</p>
         </div>
 
-        <figure class="viz" style="grid-column:13 / 17;grid-row:2 / 4;justify-content:flex-start">
+        <figure class="viz" style="left:47%;top:16%" data-speed="1.22">
           <div class="counter" data-count="7">
             <span class="ct-num">0</span>
             <span class="ct-unit" data-i18n="t2.unit">tournées sans limite</span>
           </div>
         </figure>
 
-        <div class="note" style="grid-column:13 / 17;grid-row:4 / 6">
+        <div class="note" style="left:47%;top:28%" data-speed="0.96">
           <p class="eyebrow" data-i18n="t2.n2.eyebrow">Essai</p>
           <h3 data-i18n="t2.n2.h3">Juge sur ta propre tournée</h3>
           <p data-i18n="t2.n2.p">Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.</p>
         </div>
 
-        <div class="note" style="grid-column:9 / 17;grid-row:7 / 8;align-self:end">
+        <div class="note" style="left:66%;top:20%;width:min(40ch,32vw)" data-speed="0.92">
           <p class="eyebrow" data-i18n="t2.n3.eyebrow">Tarifs</p>
           <h3 data-i18n="t2.n3.h3">Premium quand tu roules tous les jours</h3>
         </div>
 
-        <div class="viz" style="grid-column:9 / 17;grid-row:8 / 11;align-items:flex-start">
+        <div class="viz" style="left:66%;top:40%" data-speed="1.08">
           <div class="plans">
             <div class="plan">
               <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
@@ -466,11 +493,11 @@
     <!-- ══ GEREZ MIEUX ═══════════════════════════════════════════════════════ -->
     <section class="slide t3" data-theme="2">
       <div class="stage">
-        <p class="kicker" data-i18n="t3.kicker">Tout ce qui n'est pas la conduite</p>
+        <p class="kicker" data-i18n="t3.kicker" style="left:5%;top:24%" data-speed="0.88">Tout ce qui n'est pas la conduite</p>
         <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
-        <p class="lead" data-i18n="t3.lead">Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.</p>
+        <p class="lead" data-i18n="t3.lead" style="left:5%;top:31%" data-speed="0.9">Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.</p>
 
-        <figure class="viz" style="grid-column:9 / 13;grid-row:1 / 5">
+        <figure class="viz" style="left:23%;top:17%" data-speed="1.18">
           <!-- Les cases se cochent du dernier livre au premier : la logique
                inversee se comprend en la regardant se faire. -->
           <div class="mock" data-checklist>
@@ -486,13 +513,13 @@
           </div>
         </figure>
 
-        <div class="note" style="grid-column:9 / 13;grid-row:5 / 7">
+        <div class="note" style="left:24%;top:70%" data-speed="0.94">
           <p class="eyebrow" data-i18n="t3.n1.eyebrow">Chargement</p>
           <h3 data-i18n="t3.n1.h3">Charge dans l'ordre inverse</h3>
           <p data-i18n="t3.n1.p">Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi. Plus de colis à déterrer au fond du véhicule.</p>
         </div>
 
-        <figure class="viz" style="grid-column:13 / 17;grid-row:3 / 7">
+        <figure class="viz" style="left:48%;top:56%" data-speed="1.12">
           <div class="mock">
             <div class="mock-head">
               <span data-i18n="t3.book.head">Carnet d'adresses</span>
@@ -506,13 +533,13 @@
           </div>
         </figure>
 
-        <div class="note" style="grid-column:13 / 17;grid-row:7 / 9">
+        <div class="note" style="left:49%;top:16%" data-speed="0.96">
           <p class="eyebrow"><span data-i18n="t3.n2.eyebrow">Carnet</span> <span class="tag-premium">Premium</span></p>
           <h3 data-i18n="t3.n2.h3">Tes adresses, une fois pour toutes</h3>
           <p data-i18n="t3.n2.p">Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.</p>
         </div>
 
-        <figure class="viz" style="grid-column:5 / 9;grid-row:7 / 11">
+        <figure class="viz" style="left:70%;top:24%" data-speed="1.2">
           <div class="mock">
             <div class="mock-head">
               <span data-i18n="mock.tour">Ma tournée</span>
@@ -526,7 +553,7 @@
           </div>
         </figure>
 
-        <div class="note" style="grid-column:1 / 5;grid-row:9 / 11">
+        <div class="note" style="left:71%;top:70%" data-speed="0.92">
           <p class="eyebrow" data-i18n="t3.n3.eyebrow">Au quotidien</p>
           <h3 data-i18n="t3.n3.h3">Dicte, note, retrouve</h3>
           <p data-i18n="t3.n3.p">Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.</p>
@@ -803,6 +830,9 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
       });
 
+      // Les titres detaches en lettres doivent etre reconstruits apres coup.
+      if (typeof window.ATEQO_afterLang === 'function') window.ATEQO_afterLang();
+
       document.title = lang === 'en'
         ? 'ATEQO · The route that follows you'
         : "ATEQO · L'itinéraire qui te suit";
@@ -838,6 +868,34 @@
 
       var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
       var hint = document.querySelector('[data-hint]');
+
+      // ── Titres detaches en lettres ──────────────────────────────────────────
+      // Chaque lettre part a une vitesse legerement differente : le mot s'etire
+      // au defilement au lieu de glisser d'un bloc. Refait apres un changement
+      // de langue, puisque applyLang reecrit le contenu du titre.
+      function splitGiants() {
+        document.querySelectorAll('.giant').forEach(function (giant) {
+          var letters = [];
+          Array.prototype.forEach.call(giant.childNodes, function (node) {
+            var isAccent = node.nodeType === 1 && node.tagName === 'EM';
+            var text = node.textContent || '';
+            for (var i = 0; i < text.length; i++) letters.push({ ch: text[i], accent: isAccent });
+          });
+          if (!letters.length) return;
+          giant.innerHTML = '';
+          letters.forEach(function (letter, index) {
+            var span = document.createElement('span');
+            span.className = 'ltr';
+            if (letter.accent) span.style.color = 'var(--tone)';
+            // Espace insecable : sans lui, un display:inline-block avale l'espace.
+            span.textContent = letter.ch === ' ' ? ' ' : letter.ch;
+            // Les premieres lettres trainent, les dernieres filent : l'ecart
+            // reste faible, c'est un etirement, pas un eparpillement.
+            span.setAttribute('data-speed', String(1 + (index - letters.length / 2) * 0.012));
+            giant.appendChild(span);
+          });
+        });
+      }
 
       var currentTheme = -1;
       function showTheme(themeIndex) {
@@ -969,6 +1027,28 @@
 
         function distance() { return Math.max(0, track.scrollWidth - track.clientWidth); }
 
+        // ── Derive ────────────────────────────────────────────────────────────
+        // Chaque element porte une vitesse propre : au-dessus de 1 il file vers
+        // la gauche plus vite que la scene, en dessous il traine derriere. Rien
+        // ne se deplace donc du meme mouvement, et la scene se defait comme des
+        // nuages qui s'en vont. L'amplitude est calee sur la largeur de l'ecran
+        // plutot que sur la course totale, sinon les ecarts partiraient loin.
+        var drifters = [];
+        function collectDrifters() {
+          drifters = Array.prototype.slice.call(document.querySelectorAll('[data-speed]'))
+            .map(function (element) {
+              return {
+                apply: gsap.quickSetter(element, 'x', 'px'),
+                speed: parseFloat(element.getAttribute('data-speed')) || 1
+              };
+            });
+        }
+        splitGiants();
+        collectDrifters();
+        // Le titre est reecrit a chaque changement de langue : ses lettres sont
+        // alors de nouveaux elements, a redecouper et a recollecter.
+        window.ATEQO_afterLang = function () { splitGiants(); collectDrifters(); };
+
         // Pas de recalage force : les scenes sont larges et le visiteur doit
         // pouvoir s'arreter n'importe ou pour regarder un visuel.
         var slide = gsap.to(track, {
@@ -983,6 +1063,10 @@
             invalidateOnRefresh: true,
             onUpdate: function (self) {
               if (self.progress > 0.02) dismissHint();
+              var drift = self.progress * window.innerWidth;
+              for (var i = 0; i < drifters.length; i++) {
+                drifters[i].apply(-drift * (drifters[i].speed - 1));
+              }
             }
           }
         });

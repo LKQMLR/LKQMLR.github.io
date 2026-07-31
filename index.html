@@ -187,6 +187,26 @@
     .rail-nav.next{right:2px}
     @media(hover:hover) and (pointer:fine){.rail-nav{display:flex}}
 
+    /* ── MODE EPINGLE (desktop, pilote par ScrollTrigger) ─────────────────────
+       La classe est posee sur <html> par le script GSAP, une fois seulement
+       qu'il a verifie que le CDN a repondu et que le pointeur est fin. Tant
+       qu'elle est absente, tout ce qui suit reste inerte et le rail garde son
+       comportement natif : c'est le repli, jamais une page cassee. */
+    .rails-pinned .rail{scroll-snap-type:none;overflow-x:hidden}
+    /* Le defilement de la page pilote deja le rail : une fleche ferait un
+       second pilote, avec deux positions concurrentes. */
+    .rails-pinned .rail-nav{display:none}
+    /* Les puces restent, mais comme temoin d'avancement, plus comme commande. */
+    .rails-pinned .rail-dots button{pointer-events:none}
+    /* Le defilement redevient continu : plus aucun panneau ne porte son propre
+       defilement vertical. Un panneau epingle en aurait un concurrent de celui
+       que ScrollTrigger convertit, et la section tarifaire, plus haute qu'un
+       ecran, rognerait sa grille et son pied de page. Chaque panneau pousse
+       donc sa hauteur naturelle — exactement le montage deja eprouve sur
+       tactile juste en dessous. */
+    .rails-pinned .panel{height:auto;min-height:100vh;min-height:100dvh;overflow:visible}
+    .rails-pinned .pin{min-height:100vh;min-height:100dvh}
+
     .rail-dots{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:16px}
     .rail-dots button{width:7px;height:7px;padding:0;border:none;border-radius:50%;background:var(--border);
                       cursor:pointer;transition:width .2s,background .2s}
@@ -1055,6 +1075,14 @@
     (function () {
       var STEP_LOCK_MS = 260;
 
+      // En mode epingle, c'est le defilement de la page qui pousse le rail :
+      // ces commandes se tairaient sinon en plein milieu de l'animation. Le
+      // test est fait au declenchement, car la classe est posee plus bas dans
+      // la page, une fois GSAP charge.
+      function isPinnedMode() {
+        return document.documentElement.classList.contains('rails-pinned');
+      }
+
       document.querySelectorAll('[data-rail]').forEach(function (rail) {
         var section = rail.closest('.panel');
         var cards = Array.prototype.slice.call(rail.querySelectorAll('.rail-card'));
@@ -1104,7 +1132,8 @@
           dots.forEach(function (dot, i) { dot.classList.toggle('on', i === index); });
           if (previousButton) previousButton.disabled = rail.scrollLeft <= 1;
           if (nextButton) nextButton.disabled = rail.scrollLeft >= maxScroll() - 1;
-          // Rail qui tient entierement a l'ecran : ni fleches ni puces.
+          // Rail qui tient entierement a l'ecran : ni fleches ni puces. En mode
+          // epingle les fleches sont deja masquees par le CSS.
           var hasOverflow = overflows();
           if (dotsContainer) dotsContainer.style.display = hasOverflow ? '' : 'none';
           [previousButton, nextButton].forEach(function (button) {
@@ -1124,6 +1153,7 @@
         // et le defilement reprend son cours normal vers la section suivante.
         var stepLocked = false;
         rail.addEventListener('wheel', function (e) {
+          if (isPinnedMode()) return;
           // Trackpad horizontal : le rail defile deja tout seul, on empeche
           // seulement la page d'interpreter ce geste comme un saut de section.
           if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.stopPropagation(); return; }
@@ -1166,87 +1196,90 @@
     })();
   </script>
 
-  <!-- ── GSAP : defilement fluide section par section (desktop, pointeur fin) ── -->
+  <!-- ── GSAP : sections d'arguments figees et poussees horizontalement ────────
+       Sur desktop, chaque rail se fige a l'ecran et le defilement vertical est
+       converti en deplacement horizontal des cartes (ScrollTrigger + pin), avec
+       recalage sur chaque carte. Le rail reste un conteneur scrollable natif :
+       ScrollTrigger ne fait qu'animer son scrollLeft, sans toucher a la
+       structure, ce qui evite tout probleme de rognage.
+
+       TACTILE : aucun pin, aucune conversion de geste. Le doigt balaye le rail
+       et la page defile normalement — le montage qui figeait la page sur mobile
+       ne doit pas revenir par cette porte. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
     (function () {
-      if (!window.gsap || !window.ScrollToPlugin) return; // CDN indisponible : fallback snap CSS
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return; // tactile : snap natif
+      if (!window.gsap || !window.ScrollTrigger) return;                        // CDN indisponible : rail natif
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;       // animation refusee : rail natif
+      if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;    // tactile : rail natif
 
-      gsap.registerPlugin(ScrollToPlugin);
-      // GSAP prend la main : on coupe le snap CSS pour eviter tout conflit.
+      var railPanels = Array.prototype.slice.call(document.querySelectorAll('.rail-panel'));
+      if (!railPanels.length) return;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Le snap vertical du document entrerait en conflit avec les sections
+      // epinglees : c'est desormais ScrollTrigger qui cale le defilement.
       document.documentElement.style.scrollSnapType = 'none';
+      // Bascule les rails en mode epingle : plus de snap horizontal natif ni de
+      // commandes qui doubleraient le pilotage par le defilement (cf. CSS).
+      document.documentElement.classList.add('rails-pinned');
 
-      var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
-      if (panels.length < 2) return;
-      var index = 0, animating = false, cooldown = false, quiet;
+      railPanels.forEach(function (panel) {
+        var rail = panel.querySelector('[data-rail]');
+        if (!rail) return;
+        var cardCount = rail.querySelectorAll('.rail-card').length;
+        if (cardCount < 2) return;
 
-      function maxScroll(p){ return Math.max(0, p.scrollHeight - p.clientHeight); }
-      function activeIndex(){
-        var y = window.scrollY || window.pageYOffset, best = 0, bd = Infinity;
-        for (var i = 0; i < panels.length; i++){ var d = Math.abs(panels[i].offsetTop - y); if (d < bd){ bd = d; best = i; } }
-        return best;
-      }
-      function keepQuiet(){ clearTimeout(quiet); quiet = setTimeout(function(){ cooldown = false; }, 220); }
+        // Distance horizontale restant a parcourir dans le rail. Recalculee a
+        // chaque refresh : elle depend de la largeur de la fenetre.
+        function horizontalDistance() {
+          return Math.max(0, rail.scrollWidth - rail.clientWidth);
+        }
 
-      function go(target){
-        target = Math.max(0, Math.min(panels.length - 1, target));
-        if (target === index || animating) return;
-        var dir = target > index ? 1 : -1;
-        index = target;
-        var p = panels[target];
-        // Continuite : en descendant on arrive en haut du panneau, en montant en bas.
-        p.scrollTop = dir > 0 ? 0 : maxScroll(p);
-        animating = true;
-        gsap.to(window, {
-          duration: 0.85,
-          ease: 'power2.inOut',
-          scrollTo: { y: p.offsetTop, autoKill: false },
-          onComplete: function(){ animating = false; cooldown = true; keepQuiet(); }
+        gsap.to(rail, {
+          scrollLeft: horizontalDistance,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top top',
+            // Autant de defilement vertical que de course horizontale : le
+            // rapport reste 1:1, le geste ne parait ni etire ni precipite.
+            end: function () { return '+=' + horizontalDistance(); },
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.6,
+            snap: {
+              snapTo: 1 / (cardCount - 1),
+              duration: { min: 0.15, max: 0.35 },
+              ease: 'power1.inOut'
+            },
+            invalidateOnRefresh: true
+          }
         });
-      }
-
-      window.addEventListener('wheel', function (e){
-        if (animating){ e.preventDefault(); return; }
-        if (cooldown){ e.preventDefault(); keepQuiet(); return; } // absorbe l'inertie du trackpad
-        index = activeIndex();
-        var p = panels[index];
-        var down = e.deltaY > 0;
-        var canScrollInside = down ? (maxScroll(p) - p.scrollTop > 1) : (p.scrollTop > 1);
-        if (canScrollInside) return; // laisse le defilement interne natif du panneau
-        e.preventDefault();
-        go(index + (down ? 1 : -1));
-      }, { passive: false });
-
-      window.addEventListener('keydown', function (e){
-        var nav = ['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' ','Spacebar'];
-        if (nav.indexOf(e.key) < 0) return;
-        var tag = (e.target.tagName || '').toLowerCase();
-        if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
-        if (e.key === 'Home'){ e.preventDefault(); go(0); return; }
-        if (e.key === 'End'){ e.preventDefault(); go(panels.length - 1); return; }
-        index = activeIndex();
-        var p = panels[index];
-        var down = (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Spacebar');
-        var canScrollInside = down ? (maxScroll(p) - p.scrollTop > 1) : (p.scrollTop > 1);
-        if (canScrollInside) return;
-        if (animating){ e.preventDefault(); return; }
-        e.preventDefault();
-        go(index + (down ? 1 : -1));
       });
+
+      // Les captures d'ecran arrivent apres le premier calcul et changent la
+      // largeur des cartes : sans ce recalcul, la course horizontale serait
+      // sous-estimee et les dernieres cartes resteraient inaccessibles.
+      window.addEventListener('load', function () { ScrollTrigger.refresh(); });
 
       var brand = document.querySelector('.brand-mark');
-      if (brand) brand.addEventListener('click', function (e){ e.preventDefault(); go(0); });
+      if (brand) {
+        brand.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
       var hint = document.querySelector('.scroll-hint');
-      if (hint){ hint.style.cursor = 'pointer'; hint.addEventListener('click', function (){ go(index + 1); }); }
-
-      var rt;
-      window.addEventListener('resize', function (){
-        clearTimeout(rt);
-        rt = setTimeout(function (){ index = activeIndex(); window.scrollTo(0, panels[index].offsetTop); }, 160);
-      });
+      if (hint) {
+        hint.style.cursor = 'pointer';
+        hint.addEventListener('click', function () {
+          var firstRail = railPanels[0];
+          window.scrollTo({ top: firstRail.offsetTop, behavior: 'smooth' });
+        });
+      }
     })();
   </script>
 

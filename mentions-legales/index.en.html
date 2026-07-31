@@ -103,8 +103,8 @@
 <main>
 
 <div class="lang-switch">
-  <a href="index.html">FR</a>
-  <a href="index.en.html" class="active">EN</a>
+  <a href="index.html" data-lang="fr">FR</a>
+  <a href="index.en.html" class="active" data-lang="en">EN</a>
 </div>
 
 <a href="/" style="text-decoration:none;"><div class="logo"><span>A</span><span>T</span><span>E</span><span>Q</span><span>O</span></div></a>
@@ -138,7 +138,7 @@
 <h2>3. Mobile application and subscriptions</h2>
 <p>The ATEQO application is distributed exclusively through the <strong>Google Play</strong> store, under the identifier <em>com.lkqmlr.cargo</em>.</p>
 <p>Premium subscriptions are purchased, billed and managed directly by Google Play. Payment, renewal, cancellation and refund requests are governed by Google's terms and are handled from your Google Play account, not by the publisher.</p>
-<p>The terms applicable to the service are set out in the <a href="/policy/terms.html">terms of use</a>.</p>
+<p>The terms applicable to the service are set out in the <a href="/policy/terms.en.html">terms of use</a>.</p>
 
 <h2>4. Intellectual property</h2>
 <p>The ATEQO trademark, logo, interface, texts, visuals and source code of the application and of this website are the property of the publisher and are protected by intellectual property law. Any reproduction or representation, in whole or in part, without prior written authorisation is prohibited.</p>
@@ -166,11 +166,23 @@
   <div style="margin-top:12px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
     <a href="/" style="color:var(--accent);">← Back to ATEQO</a>
     <a href="/policy/index.en.html" style="color:var(--accent);">Privacy</a>
-    <a href="/policy/terms.html" style="color:var(--accent);">Terms</a>
+    <a href="/policy/terms.en.html" style="color:var(--accent);">Terms</a>
     <a href="mailto:cargo.app.admin@gmail.com" style="color:var(--accent);">Contact</a>
   </div>
 </footer>
 
 </main>
+
+<script>
+  /* Le selecteur de langue des pages annexes ecrit la meme cle que l'accueil
+     (cf. index.html), pour que la navigation reste dans une seule langue. */
+  document.querySelectorAll('.lang-switch a[data-lang]').forEach(function (languageLink) {
+    languageLink.addEventListener('click', function () {
+      try { localStorage.setItem('ateqo_site_lang', languageLink.getAttribute('data-lang')); }
+      catch (e) { /* stockage indisponible */ }
+    });
+  });
+</script>
+
 </body>
 </html>

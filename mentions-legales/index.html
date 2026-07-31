@@ -103,8 +103,8 @@
 <main>
 
 <div class="lang-switch">
-  <a href="index.html" class="active">FR</a>
-  <a href="index.en.html">EN</a>
+  <a href="index.html" class="active" data-lang="fr">FR</a>
+  <a href="index.en.html" data-lang="en">EN</a>
 </div>
 
 <a href="/" style="text-decoration:none;"><div class="logo"><span>A</span><span>T</span><span>E</span><span>Q</span><span>O</span></div></a>
@@ -178,5 +178,17 @@
 </footer>
 
 </main>
+
+<script>
+  /* Le selecteur de langue des pages annexes ecrit la meme cle que l'accueil
+     (cf. index.html), pour que la navigation reste dans une seule langue. */
+  document.querySelectorAll('.lang-switch a[data-lang]').forEach(function (languageLink) {
+    languageLink.addEventListener('click', function () {
+      try { localStorage.setItem('ateqo_site_lang', languageLink.getAttribute('data-lang')); }
+      catch (e) { /* stockage indisponible */ }
+    });
+  });
+</script>
+
 </body>
 </html>

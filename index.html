@@ -55,21 +55,22 @@
        defilement, la molette, le tactile et le clavier restent intacts. */
     html,body{scrollbar-width:none;-ms-overflow-style:none}
     html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
-    /* Lenis a besoin d'une hauteur libre et d'aucun comportement concurrent. */
-    html.lenis,html.lenis body{height:auto}
-    .lenis.lenis-smooth{scroll-behavior:auto!important}
 
-    /* ══ REPERES FLOTTANTS ═════════════════════════════════════════════════════
-       Ni bandeau ni colonne : rien qui coupe la page. Le nom de la marque et les
-       commandes flottent au-dessus du contenu, la marque signe en bas a droite.
-       pointer-events est rendu aux seuls elements cliquables, pour ne pas
-       neutraliser le contenu qui passe dessous. */
-    .top{position:fixed;top:0;left:0;right:0;z-index:60;pointer-events:none;
-         display:flex;align-items:flex-start;justify-content:space-between;
-         padding:clamp(20px,2.6vw,34px) clamp(20px,3vw,44px)}
-    .top>*{pointer-events:auto}
-    .wordmark{display:block;width:clamp(140px,13vw,196px);filter:drop-shadow(0 2px 8px rgba(15,25,35,.10))}
-    .top-right{display:flex;align-items:center;gap:clamp(14px,1.6vw,24px)}
+    /* ══ BANDEAU ═══════════════════════════════════════════════════════════════
+       Une bande blanche pleine largeur, posee au-dessus de tout et qui ne bouge
+       jamais : le nom de la marque a gauche, les commandes et le losange a
+       droite. Sa hauteur commande la marge haute des scenes (--safe), qui doit
+       lui rester superieure pour qu'aucun bloc ne passe dessous. */
+    .top{position:fixed;top:0;left:0;right:0;z-index:60;
+         height:clamp(64px,5.9vw,88px);
+         display:flex;align-items:center;justify-content:space-between;
+         padding:0 clamp(16px,2.2vw,34px);
+         background:var(--surface);border-bottom:1px solid var(--border);
+         box-shadow:0 1px 12px rgba(15,25,35,.05)}
+    /* Le logo porte sa signature en tout petit : sous 170px de large, elle
+       n'est plus qu'une trainee grise. Le bandeau est dimensionne pour elle. */
+    .wordmark{display:block;width:clamp(140px,11.4vw,196px)}
+    .top-right{display:flex;align-items:center;gap:clamp(12px,1.4vw,22px)}
     .lang-switch{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:600;letter-spacing:.2px}
     .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:inherit;
                         font-weight:inherit;letter-spacing:inherit;color:var(--muted2);padding:4px 1px;
@@ -77,18 +78,22 @@
     .lang-switch button.active{color:var(--ink);font-weight:700}
     .lang-switch button:hover{color:var(--accent)}
     .lang-switch .sep{color:var(--border)}
-    .gplay{display:inline-flex;filter:drop-shadow(0 8px 20px rgba(15,25,35,.18));transition:transform .2s}
+    .gplay{display:inline-flex;transition:transform .2s}
     .gplay:hover{transform:translateY(-2px)}
-    .gplay img{height:clamp(38px,3.4vw,46px);width:auto;display:block}
+    .gplay img{height:clamp(46px,4vw,58px);width:auto;display:block}
+    /* Fixe en bas a droite, sous la main pendant toute la traversee. Il
+       s'efface en arrivant sur le dernier ecran : celui-ci porte deja son
+       propre bouton, et deux appels identiques a l'ecran s'annulent. */
+    .gplay-fixe{position:fixed;right:clamp(16px,2.2vw,34px);bottom:clamp(16px,2.2vw,30px);z-index:60;
+                filter:drop-shadow(0 8px 22px rgba(15,25,35,.20));
+                transition:opacity .55s ease,translate .55s cubic-bezier(.16,.72,.24,1)}
+    .gplay-fixe.range{opacity:0;translate:0 26px;pointer-events:none}
 
-    /* Signature de marque, fixe en bas a droite, par-dessus le defilement.
-       Le logo vit seul, sans pastille ni cadre : c'est un repere, pas un
-       bouton. Il occupe la marge basse, que le contenu ne franchit jamais. */
-    .sig{position:fixed;right:clamp(20px,2.6vw,38px);bottom:clamp(18px,2.4vw,34px);z-index:60;
-         display:block;width:clamp(40px,3.6vw,54px);transition:transform .2s}
-    .sig:hover{transform:translateY(-3px)}
-    .sig img{width:100%;height:auto;display:block;
-             filter:drop-shadow(0 8px 20px rgba(15,25,35,.20))}
+    /* Signature de marque, a droite dans le bandeau : un repere, pas un bouton,
+       meme s'il ramene en haut comme le nom a gauche. */
+    .sig{display:block;width:clamp(26px,2.1vw,34px);transition:transform .2s}
+    .sig:hover{transform:translateY(-2px)}
+    .sig img{width:100%;height:auto;display:block}
 
     /* Indice de defilement, sur la premiere section seulement. */
     .hint{position:fixed;left:clamp(20px,3vw,44px);bottom:clamp(18px,2.4vw,32px);z-index:58;
@@ -96,6 +101,74 @@
           color:var(--muted2);letter-spacing:.3px;transition:opacity .4s}
     .hint svg{width:20px;height:20px;animation:nudge 2s infinite}
     @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+
+    /* ══ DECOR ═════════════════════════════════════════════════════════════════
+       Une seule image tres large, posee derriere toute la piste : la ville et le
+       trace qui relie les tournees. Elle ne defile pas a la vitesse des scenes,
+       elle parcourt son etendue pendant que la piste parcourt la sienne : on
+       arrive au bout du trace en meme temps qu'au bout du site, quel que soit
+       l'ecran. Absente, elle ne se montre pas : les degrades suffisent. */
+    .scenery{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+             opacity:0;transition:opacity 1s ease}
+    .scenery.ready{opacity:1}
+    .scenery img{position:absolute;left:0;top:0;height:100%;width:auto;max-width:none;
+                 will-change:transform}
+    /* Voile de lisibilite : le decor reste un decor, le texte passe devant. Il
+       est plus dense en haut et en bas, la ou passent la marque et les liens,
+       et s'allege au milieu, la ou le trace se lit. Monter les trois valeurs
+       efface le decor, les baisser le fait ressortir. */
+    .scenery::after{content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(241,244,247,.62),rgba(241,244,247,.4) 45%,rgba(241,244,247,.68))}
+    /* Le decor est en fond de pile : la piste passe devant. */
+    .track{position:relative;z-index:1}
+
+    /* ══ APPARITION EN NUAGE ═══════════════════════════════════════════════════
+       Rien n'est pose d'emblee : chaque bloc arrive flou et transparent, puis se
+       condense quand il entre dans l'ecran. Le mouvement passe par translate et
+       filter, jamais par transform : transform porte deja la derive laterale,
+       les deux se marcheraient dessus. Un navigateur qui ignore translate perd
+       la montee et garde le fondu : la page reste juste.
+       cloud-ready n'est posee que si le navigateur sait observer les entrees a
+       l'ecran ; sans elle, tout est visible d'emblee. */
+    .cloud-ready .viz,
+    .cloud-ready .giant,
+    .cloud-ready .end-block,
+    .cloud-ready .site-footer{opacity:0;filter:blur(14px);translate:0 30px}
+    .cloud-ready .viz .note{opacity:0;filter:blur(12px);translate:0 22px}
+    .cloud-ready .is-in{opacity:1;filter:blur(0px);translate:0 0;
+      transition:opacity .95s ease,filter 1.05s ease,translate 1.05s cubic-bezier(.16,.72,.24,1)}
+    /* La bulle se forme juste apres le visuel qu'elle commente. */
+    .cloud-ready .viz.is-in .note{opacity:1;filter:blur(0px);translate:0 0;
+      transition:opacity .95s ease .18s,filter 1.05s ease .18s,
+                 translate 1.05s cubic-bezier(.16,.72,.24,1) .18s}
+
+    /* ── Flottement ───────────────────────────────────────────────────────────
+       Une fois pose, rien ne reste tout a fait immobile : chaque bloc respire,
+       lentement et sur sa propre duree, pour que la scene ne se fige pas.
+       Le mouvement reprend translate LA OU la transition d'arrivee l'a laisse :
+       l'animation ne demarre qu'apres elle (1.15s), sinon les deux se
+       disputeraient la meme propriete. transform reste libre, c'est la derive
+       laterale qui s'en sert. */
+    @keyframes flotte{0%,100%{translate:0 0}50%{translate:0 calc(var(--flot-h,9px) * -1)}}
+    /* Le titre ne bouge pas : c'est le point fixe autour duquel le reste
+       gravite. Seuls les blocs respirent. */
+    .viz.is-in{animation:flotte var(--flot,7.4s) ease-in-out 1.15s infinite}
+    /* Chaque bloc d'une meme scene sur un rythme different : synchrones, ils
+       feraient mecanique. */
+    .field .viz:nth-of-type(2){--flot:8.7s}
+    .field .viz:nth-of-type(3){--flot:6.6s;--flot-h:7px}
+    /* La bulle a sa propre vie : elle derive doucement AUTOUR de sa capture, sur
+       un cycle plus court et desaccorde de celui du bloc. Comme elle est portee
+       par le bloc, les deux mouvements se composent et aucun tour ne repasse
+       exactement au meme endroit. */
+    @keyframes flotte-bulle{
+      0%,100%{translate:0 0}
+      30%{translate:4px -7px}
+      60%{translate:-4px -4px}
+    }
+    .viz.is-in .note{animation:flotte-bulle var(--flot-bulle,5.3s) ease-in-out 1.35s infinite}
+    .field .viz:nth-of-type(2) .note{--flot-bulle:6.1s}
+    .field .viz:nth-of-type(3) .note{--flot-bulle:4.7s}
 
     /* ══ PISTE ═════════════════════════════════════════════════════════════════
        Sur desktop, les sections sont posees cote a cote et la piste est poussee
@@ -105,12 +178,13 @@
     .slide{flex:0 0 auto;height:100vh;height:100dvh;position:relative;overflow:hidden}
 
     /* ── Composition d'un theme ───────────────────────────────────────────────
-       Le titre est pose au centre de la scene et tout gravite autour : textes
-       courts et visuels sont places librement, en pourcentage, et peuvent
-       mordre sur le titre. Ce chevauchement est voulu : c'est ce qui donne la
-       profondeur, avec la parallaxe qui les fait partir a des vitesses
-       differentes. */
-    .stage{position:relative;width:190vw;height:100%;padding:var(--safe) 0}
+       Une scene tient dans UN ecran, jamais plus : c'est ce qui permet de la
+       decouvrir d'un seul coup de molette, composee comme la maquette. Le titre
+       est pose au centre et tout gravite autour, en pourcentage, quitte a
+       mordre sur lui. Ce chevauchement est voulu : c'est ce qui donne la
+       profondeur, avec la parallaxe qui fait partir les elements a des vitesses
+       differentes des que la scene s'eloigne. */
+    .stage{position:relative;width:100vw;height:100%;padding:var(--safe) 0}
     /* Les bandes du haut et du bas n'accueillent que la marque : la
        composition vit dans .field, jamais dedans. */
     .field{position:relative;width:100%;height:100%}
@@ -123,141 +197,107 @@
        d'ecran : left et top sont portes par l'attribut style, au cas par cas,
        pour composer le nuage. */
 
-    /* Le titre : centre sur le PREMIER ecran de la scene, pas au milieu de la
-       scene entiere. 50vw est la moitie de l'ecran, la ou 50% serait la moitie
-       des deux ecrans de large : c'est ce qui garantit qu'on le lit en entier
-       des l'arrivee. */
-    .giant{left:50vw;top:50%;transform:translate(-50%,-50%);z-index:2;
+    /* Le titre occupe le centre de l'ecran, les blocs se posent autour et
+       dessus. Sa taille suit la largeur de l'ecran (7.8vw = la mesure de la
+       maquette sur un ecran de 1920), bornee pour ne pas devenir enorme sur un
+       tres grand moniteur. */
+    .giant{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
            text-align:center;white-space:nowrap;
-           font-size:clamp(3.2rem,11vw,13rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
+           font-size:clamp(2.6rem,7.8vw,9.6rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
     .giant em{font-style:normal;color:var(--tone)}
     /* Les lettres sont detachees pour partir a des vitesses legerement
        differentes : elles s'etirent au defilement au lieu de bouger d'un bloc. */
     .giant .ltr{display:inline-block;will-change:transform}
-    /* Le resume passe DERRIERE le titre, en filigrane : il habille la masse du
-       mot sans lui disputer la lecture, et deborde dessous pour rester lisible. */
-    .lead{left:50vw;top:50%;transform:translate(-50%,-50%);z-index:1;
-          width:min(46ch,42vw);text-align:center;margin-top:clamp(60px,7.2vw,132px);
-          font-size:clamp(.86rem,1.02vw,1rem);line-height:1.6;color:var(--ink);opacity:.42}
 
-    /* Commentaires : petits, et colles au visuel qu'ils commentent, quitte a
-       mordre dessus. C'est ce chevauchement qui donne son relief a la page. */
-    .note{z-index:4;width:min(30ch,23vw);background:rgba(241,244,247,.82);
-          backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-          border-radius:12px;padding:11px 13px;
-          box-shadow:0 10px 26px rgba(15,25,35,.10)}
+    /* ── Bulles ───────────────────────────────────────────────────────────────
+       Le commentaire est pose sur la capture qu'il commente, quitte a mordre
+       dessus : c'est ce chevauchement qui donne son relief a la page. Un aplat
+       pastel, du texte centre, rien d'autre.
+       Les cinq teintes sont relevees une a une sur la maquette et tournent d'un
+       bloc a l'autre, sans suivre le theme : une scene monochrome s'aplatirait. */
+    .note{--bub:206,223,252;--bub-ink:var(--tone);
+          z-index:4;width:min(330px,17.2vw);background:rgb(var(--bub));
+          border-radius:12px;padding:13px 15px;
+          /* La meme ombre que les captures de la maquette : 0 4 4, noir a 25%. */
+          box-shadow:0 4px 4px rgba(0,0,0,.25);
+          text-align:center;color:var(--ink);
+          font-size:clamp(.8rem,.92vw,.9rem);line-height:1.45}
+    .note.h1{--bub:206,223,252;--bub-ink:#1d4ed8}   /* bleu       */
+    .note.h2{--bub:194,228,225;--bub-ink:#0f766e}   /* vert d'eau */
+    .note.h3{--bub:245,221,192;--bub-ink:#b45309}   /* orange     */
+    .note.h4{--bub:246,201,221;--bub-ink:#be185d}   /* rose       */
+    .note.h5{--bub:222,205,250;--bub-ink:#6d28d9}   /* violet     */
+    /* Les deux commentaires qui ne sont pas des blocs illustres (l'essai et les
+       tarifs) portent en plus un intitule et un titre. */
     .note h3{font-size:clamp(.92rem,1.08vw,1.06rem);font-weight:700;letter-spacing:-.3px;margin-bottom:5px}
-    .note p{font-size:clamp(.74rem,.82vw,.83rem);color:var(--muted);line-height:1.55}
     .note .eyebrow{font-size:.62rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
-                   color:var(--tone);margin-bottom:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-    .tag-premium{display:inline-flex;align-items:center;font-size:.55rem;font-weight:700;color:#8a6d1f;
-                 background:rgba(200,162,75,.16);padding:2px 7px;border-radius:6px;
-                 text-transform:uppercase;letter-spacing:.5px}
+                   color:var(--bub-ink);margin-bottom:6px;display:flex;align-items:center;
+                   justify-content:center;gap:7px;flex-wrap:wrap}
 
-    /* ── Visuels ──────────────────────────────────────────────────────────────
-       Toutes les captures sont calees sur la hauteur de l'ecran, jamais sur une
-       largeur en pixels : c'est ce qui garantit qu'elles gardent la meme
-       presence d'un ecran a l'autre, sans se retrouver minuscules ou enormes. */
+    /* ── Blocs illustres ──────────────────────────────────────────────────────
+       Le titre et la bulle sont du texte, la capture est une image : c'est ce
+       qui permet de traduire un bloc sans le reexporter, et de le lire net a
+       n'importe quel zoom. Chaque bloc est borne a la largeur d'origine de sa
+       capture (la valeur en px de son style) autant qu'a la hauteur d'ecran :
+       au-dela de sa definition il deviendrait flou, en deca il perdrait sa
+       presence d'une scene a l'autre.
+       L'ombre est deja dans la capture, il n'y en a pas a ajouter ici. */
     .viz{z-index:2;position:absolute}
     .viz img{display:block;width:100%;height:auto}
+    .bloc-titre{font-size:clamp(.98rem,1.28vw,1.45rem);font-weight:800;letter-spacing:-.5px;
+                color:var(--ink);margin-bottom:5px;white-space:nowrap}
+    /* La bulle se place par rapport a la capture seule, jamais par rapport au
+       titre : sinon elle glisserait des qu'un titre passe sur deux lignes. */
+    .bloc-shot{position:relative}
+    /* Deux captures portent un peu de vide en haut de leur image (5px sur le
+       bandeau de temps, 10px sur la saisie vocale). Sans compensation, leur
+       sous-titre parait plus loin que celui des autres. La valeur est un
+       pourcentage de la LARGEUR : c'est ainsi que se calcule une marge en
+       pourcentage, et cela suit donc l'echelle de la capture. */
+    .bloc-shot img{margin-top:var(--vide,0)}
+    /* Deux blocs ont leur capture decalee a droite, la bulle restant a gauche.
+       Le sous-titre suit la capture et non le bord du bloc : un sous-titre se
+       lit comme l'en-tete de l'image qu'il annonce, il doit donc commencer la
+       ou elle commence. */
+    .bloc.decale .bloc-shot,
+    .bloc.decale .bloc-titre{margin-left:var(--decale)}
     /* Le commentaire est enfant du visuel qu'il commente : il le suit dans la
        derive et se pose dessus, en debordant volontairement d'un coin. */
     .viz .note{position:absolute}
-    .frame{background:#fff;border:1px solid var(--border);border-radius:20px;padding:8px;
-           box-shadow:0 30px 70px rgba(15,25,35,.22);position:relative}
-    .frame img{border-radius:13px}
-    /* Capture d'ecran de telephone : hauteur visee 46vh, largeur deduite du
-       ratio reel de l'image (920 x 1234). */
-    .frame.tall{width:calc(46vh * 920 / 1234)}
-    /* Capture de carte, format paysage (963 x 717), hauteur visee 40vh. */
-    .frame.flat{width:calc(40vh * 963 / 717);border-radius:15px;padding:7px}
-    .frame.flat img{border-radius:9px}
-    /* Les maquettes suivent la meme regle : dimensionnees en hauteur d'ecran,
-       elles gardent le meme poids visuel que les captures a cote d'elles. */
-    .viz .mock{width:34vh;min-width:270px;max-width:380px}
-    .viz .compare{width:34vh;min-width:270px;max-width:380px}
-    .viz .plans{width:64vh;min-width:520px;max-width:760px}
-    /* Pastille de resultat posee sur un visuel, comme dans l'app. */
-    .stamp{position:absolute;right:-16px;bottom:-15px;background:var(--surface);
-           border:1px solid rgba(22,163,74,.34);border-radius:12px;padding:10px 14px;
-           box-shadow:0 14px 32px rgba(15,25,35,.16);display:flex;align-items:center;gap:8px;
-           font-size:.78rem;font-weight:700;color:#15803d;white-space:nowrap}
-    .stamp svg{width:15px;height:15px;flex-shrink:0}
+    .bloc-shot .note{position:absolute}
+    /* Les formules occupent la largeur qu'on leur donne et passent DEVANT le
+       titre : c'est sur elles qu'on veut cliquer, pas le lire. */
+    .viz.formules{z-index:6}
+    .viz .plans{width:100%}
 
-    /* ══ MAQUETTES D'INTERFACE ═════════════════════════════════════════════════
-       Fragments d'ecran ATEQO reconstitues en HTML, la ou une capture figee ne
-       montrerait pas le mecanisme (le reordonnancement, le chargement inverse).
-       Nets a toute taille, traduits, et animes a l'arrivee du volet. */
-    .mock{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-          padding:15px;box-shadow:0 20px 50px rgba(15,25,35,.13);width:100%}
-    .mock-head{display:flex;align-items:center;justify-content:space-between;
-               font-size:.66rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-               color:var(--muted2);margin-bottom:11px}
-    .mock-head .mh-state{color:var(--tone)}
-    .stops{display:flex;flex-direction:column;gap:7px}
-    .stop{display:flex;align-items:center;gap:9px;background:var(--surface2);
-          border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:.79rem}
-    .stop .st-num{width:21px;height:21px;border-radius:7px;flex-shrink:0;color:#fff;
-                  display:flex;align-items:center;justify-content:center;
-                  font-size:.68rem;font-weight:800;background:var(--muted2);transition:background .45s ease}
-    .stop .st-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
-    .stop .st-far{font-size:.68rem;color:var(--muted2);font-variant-numeric:tabular-nums;flex-shrink:0}
-    .stop.s1 .st-num{background:var(--s1)}
-    .stop.s2 .st-num{background:var(--s2)}
-    .stop.s3 .st-num{background:var(--s3)}
-    .stop.reco{border-color:var(--gold);background:rgba(200,162,75,.09)}
-    .stop.reco .st-label{font-weight:700}
-    .stop .st-star{color:var(--gold);font-size:.66rem;font-weight:800;flex-shrink:0}
 
-    .counter{display:flex;align-items:baseline;gap:10px}
-    .counter .ct-num{font-size:clamp(2.8rem,5.6vw,4.6rem);font-weight:800;letter-spacing:-3px;
-                     color:var(--tone);line-height:1;font-variant-numeric:tabular-nums}
-    .counter .ct-unit{font-size:.94rem;font-weight:600;color:var(--muted)}
-
-    .compare{display:flex;flex-direction:column;gap:13px;width:100%}
-    .cmp-line{display:flex;align-items:center;gap:11px;font-size:.8rem;color:var(--muted)}
-    .cmp-line>span:first-child{min-width:98px}
-    .cmp-track{flex:1;height:11px;border-radius:6px;background:var(--border);overflow:hidden}
-    .cmp-fill{height:100%;border-radius:6px;background:var(--muted2);width:0}
-    .cmp-line.after{color:var(--ink);font-weight:700}
-    .cmp-line.after .cmp-fill{background:var(--tone)}
-    .cmp-val{min-width:54px;text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
-
-    .check{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);
-           border-radius:10px;padding:10px 12px;font-size:.79rem}
-    .check .ck-box{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--border);
-                   flex-shrink:0;background:var(--surface);transition:background .3s,border-color .3s}
-    .check.done .ck-box{background:var(--green);border-color:var(--green);
-                        background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-                        background-size:11px;background-position:center;background-repeat:no-repeat}
-    .check .ck-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .check .ck-tag{font-size:.6rem;font-weight:700;color:#fff;background:var(--tone);
-                   border-radius:4px;padding:3px 7px;flex-shrink:0}
-    .check .ck-tag.last{background:var(--muted2)}
-
-    /* ── Tarifs, en fin de theme « gagnez plus » ────────────────────────────── */
-    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;width:100%}
+    /* ── Tarifs ─────────────────────────────────────────────────────────────── */
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(13px,1.1vw,20px);width:100%}
     .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-          padding:18px 16px;position:relative;display:flex;flex-direction:column;
+          padding:clamp(19px,1.5vw,28px) clamp(17px,1.3vw,24px);
+          position:relative;display:flex;flex-direction:column;
           box-shadow:0 12px 34px rgba(15,25,35,.09)}
     .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 16px 44px rgba(200,162,75,.18)}
     .plan-ribbon{position:absolute;top:-11px;left:50%;transform:translateX(-50%);
-                 background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;font-size:.58rem;
+                 background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;
+                 font-size:clamp(.58rem,.62vw,.68rem);
                  font-weight:700;padding:4px 12px;border-radius:50px;white-space:nowrap;
                  letter-spacing:.5px;text-transform:uppercase;box-shadow:0 4px 12px rgba(200,162,75,.4)}
-    .plan-name{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-               color:var(--muted);margin-bottom:8px}
-    .plan-price{font-size:1.6rem;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
-    .plan-price .per{font-size:.66rem;font-weight:500;color:var(--muted)}
-    .plan-features{list-style:none;display:flex;flex-direction:column;gap:6px;margin:13px 0 16px}
-    .plan-features li{font-size:.74rem;display:flex;align-items:flex-start;gap:7px;line-height:1.35}
-    .plan-features li::before{content:"";width:13px;height:13px;flex-shrink:0;margin-top:1px;
+    .plan-name{font-size:clamp(.65rem,.7vw,.76rem);font-weight:700;letter-spacing:1px;text-transform:uppercase;
+               color:var(--muted);margin-bottom:9px}
+    .plan-price{font-size:clamp(1.6rem,1.9vw,2.3rem);font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
+    .plan-price .per{font-size:clamp(.66rem,.72vw,.8rem);font-weight:500;color:var(--muted)}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:clamp(6px,.5vw,9px);margin:15px 0 18px}
+    .plan-features li{font-size:clamp(.74rem,.85vw,.92rem);display:flex;align-items:flex-start;gap:8px;line-height:1.35}
+    .plan-features li::before{content:"";width:14px;height:14px;flex-shrink:0;margin-top:1px;
       background-repeat:no-repeat;background-position:center;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")}
     .plan-features li.no{color:var(--muted2)}
     .plan-features li.no::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238896a7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")}
-    .plan-btn{display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;
-              border-radius:10px;font-size:.78rem;font-weight:700;margin-top:auto;transition:transform .15s}
+    .plan-btn{display:flex;align-items:center;justify-content:center;text-align:center;
+              padding:clamp(10px,.85vw,14px);
+              border-radius:10px;font-size:clamp(.78rem,.88vw,.95rem);font-weight:700;
+              margin-top:auto;transition:transform .15s}
     .plan-btn:hover{transform:translateY(-1px)}
     .plan-btn.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--border)}
     .plan-btn.primary{background:var(--ink);color:#fff}
@@ -276,9 +316,12 @@
     .site-footer{left:50%;bottom:clamp(28px,5vh,54px);transform:translateX(-50%);
                  width:min(880px,86vw);text-align:center;
                  border-top:1px solid var(--border);padding-top:20px}
-    .site-footer .fnote{font-size:.76rem;color:var(--muted)}
+    /* Le pied de page se lit posement : le texte gagne en presence, la ligne
+       qui le separe reste aussi fine qu'elle l'etait. */
+    .site-footer .fnote{font-size:.76rem;color:var(--ink);opacity:.72}
     .site-footer .flinks{margin-top:10px;display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
-    .site-footer .flinks a{font-size:.76rem;color:var(--muted);font-weight:600}
+    .site-footer .flinks a{font-size:.76rem;color:var(--ink);opacity:.82;font-weight:600}
+    .site-footer .flinks a:hover{opacity:1}
     .site-footer .flinks a:hover{color:var(--accent)}
 
     /* ══ MOBILE ════════════════════════════════════════════════════════════════
@@ -293,25 +336,41 @@
       .stage,.slide.end .stage{width:auto;height:auto;position:static;
              display:flex;flex-direction:column;align-items:flex-start;
              gap:26px;padding:clamp(84px,12vh,120px) 20px clamp(48px,8vh,72px)}
-      .stage>*{position:static!important;left:auto!important;top:auto!important;
-               bottom:auto!important;transform:none!important;width:auto}
+      /* La composition libre vit dans .field : c'est lui, et pas seulement la
+         scene, qui doit redevenir un flux, sinon ses enfants absolus se
+         superposeraient tous en haut de la pile. La bulle, elle, passe sous le
+         visuel qu'elle commente au lieu de mordre dessus. */
+      .field{position:static;width:auto;height:auto;display:flex;flex-direction:column;
+             align-items:flex-start;gap:26px}
+      .stage>*,.field>*,.viz .note{position:static!important;left:auto!important;top:auto!important;
+               bottom:auto!important;right:auto!important;transform:none!important;width:auto}
+      /* Le decor est une bande tres large : il n'a pas de sens sur une pile
+         verticale, les degrades de scene reprennent la main. */
+      .scenery{display:none}
       .giant{font-size:clamp(3rem,15vw,5.2rem);line-height:.9;text-align:left;white-space:normal}
       .giant .ltr{transform:none!important}
-      .lead,.note{width:auto}
-      .note{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;margin:0}
-      .viz{width:100%;justify-content:flex-start;display:flex}
-      .frame.tall{width:min(280px,72vw)}
-      .frame.flat{width:min(420px,100%)}
-      .viz .mock,.viz .compare{width:min(400px,100%);min-width:0;max-width:none}
+      .note{width:auto}
+      /* La bulle garde sa couleur, elle perd son relief : sur une pile, l'ombre
+         et le flou d'arriere-plan n'ont plus rien a detacher. */
+      .note{background:rgb(var(--bub));backdrop-filter:none;-webkit-backdrop-filter:none;
+            padding:13px 15px;margin:0}
+      .viz{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+      /* Le bloc prend la largeur de la colonne, sans jamais depasser la
+         definition de sa capture : au-dela, elle deviendrait floue. Le decalage
+         de la maquette n'a plus lieu d'etre dans une pile, et un titre peut
+         enfin passer a la ligne. */
+      .viz.bloc{width:min(100%,540px)!important}
+      .bloc.decale .bloc-shot{margin-left:0}
+      .bloc-titre{white-space:normal}
       .viz .plans{width:100%;min-width:0;max-width:400px;grid-template-columns:1fr}
       .hint{display:none}
       .end-block{align-items:flex-start;text-align:left}
       .site-footer{text-align:left;width:100%}
       .site-footer .flinks{justify-content:flex-start}
-      .top{padding:16px 20px;background:linear-gradient(180deg,var(--bg) 55%,transparent)}
-      .wordmark{width:132px}
-      .gplay img{height:36px}
-      .sig{width:44px;height:44px;border-radius:13px}
+      .top{height:54px;padding:0 16px}
+      .wordmark{width:108px}
+      .sig{width:25px}
+      .gplay-fixe img{height:34px}
     }
     @media(max-width:480px){
       .top-right{gap:12px}
@@ -319,9 +378,21 @@
     }
     @media(prefers-reduced-motion:reduce){
       .hint svg{animation:none}
-      .sig::after,.sig,.mock-head .mh-state{transition:none}
+      .sig::after,.sig{transition:none}
     }
   </style>
+
+  <!-- ── Apparition en nuage : autorisation, avant le premier rendu ────────────
+       La classe doit etre posee ici et nulle part ailleurs : depuis le script de
+       fin de page, les blocs seraient peints puis effaces, et le visiteur verrait
+       la page clignoter. Sans observateur d'intersection, ou si les animations
+       sont refusees, elle n'est pas posee : tout reste visible, simplement pose. -->
+  <script>
+    if ('IntersectionObserver' in window &&
+        !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      document.documentElement.className += ' cloud-ready';
+    }
+  </script>
 
   <!-- ── Mesure d'audience (GA4) + conversions Google Ads ──────────────────────
        Chargement conditionne au consentement, banniere incluse. Le module reste
@@ -331,6 +402,13 @@
 </head>
 
 <body>
+
+  <!-- Decor : la ville et le trace des tournees, en une seule bande derriere
+       toute la piste. Purement decoratif, donc invisible aux lecteurs d'ecran.
+       Tant que l'image n'est pas fournie, la couche se retire d'elle-meme. -->
+  <div class="scenery" aria-hidden="true">
+    <img src="./img/scene_bg.jpg" alt="" decoding="async" />
+  </div>
 
   <!-- Reperes flottants : rien qui coupe la page. -->
   <header class="top">
@@ -343,15 +421,17 @@
         <span class="sep">/</span>
         <button type="button" data-lang-btn="en">EN</button>
       </div>
-      <a class="gplay" data-track-position="entete" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-        <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
+      <!-- Signature de marque, a droite dans le bandeau. -->
+      <a class="sig" href="#top" data-scroll-top data-i18n-aria="brand.aria" aria-label="ATEQO · retour au début">
+        <img src="./img/logo_ateqo.png" alt="" />
       </a>
     </div>
   </header>
 
-  <!-- Signature de marque, fixe en bas a droite. -->
-  <a class="sig" href="#top" data-scroll-top data-i18n-aria="brand.aria" aria-label="ATEQO · retour au début">
-    <img src="./img/logo_ateqo.png" alt="" />
+  <!-- L'appel au telechargement ne defile pas : il reste sous la main, en bas a
+       droite, du premier ecran au dernier. -->
+  <a class="gplay gplay-fixe" data-track-position="entete" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+    <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
   </a>
 
   <div class="hint" data-hint>
@@ -366,53 +446,35 @@
       <div class="stage">
        <div class="field">
         <h2 class="giant" data-i18n-html="t1.title">Livrez <em>plus.</em></h2>
-        <p class="lead" data-i18n="t1.lead">Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.</p>
 
-        <figure class="viz" style="left:60vw;top:3%" data-speed="1.16">
-          <div class="frame flat">
-            <img src="./img/map_sectors_zoom.jpg" width="963" height="717" data-i18n-alt="t1.imgA.alt" alt="Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire" />
-            <div class="stamp">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-              <span data-i18n="t1.stamp">28 arrêts · ~21 min gagnées</span>
-            </div>
-          </div>
-          <div class="note" style="left:-17%;bottom:-16%">
-            <p class="eyebrow" data-i18n="t1.n1.eyebrow">Secteurs</p>
-            <h3 data-i18n="t1.n1.h3">Ta zone, découpée</h3>
-            <p data-i18n="t1.n1.p">Regroupe tes adresses par zone. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.</p>
+        <figure class="viz bloc" style="left:11%;top:22%;width:min(247px,12.9vw)" data-speed="1.06">
+          <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Adapte ton trajet</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/navigation.png" width="247" height="469"
+                 data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
+            <!-- A cheval sur le bord droit du telephone, un peu plus dedans que
+                 dehors : elle s'y accroche au lieu de flotter a cote. -->
+            <p class="note h1" style="left:42%;top:44%" data-i18n="bloc.navigation.bulle">Ne subis plus les aléas de tes tournées. ATEQO optimise, tu choisis.</p>
           </div>
         </figure>
 
-        <figure class="viz" style="left:106vw;top:34%" data-speed="1.22">
-          <!-- Les arrets se replacent sous les yeux du visiteur : c'est le
-               mecanisme central de l'app, une capture figee ne le montre pas. -->
-          <div class="mock" data-reorder>
-            <div class="mock-head">
-              <span data-i18n="mock.tour">Ma tournée</span>
-              <span class="mh-state" data-reorder-state data-i18n="mock.before">Ordre de saisie</span>
-            </div>
-            <div class="stops">
-              <div class="stop" data-slot="0" data-to="2"><span class="st-num">1</span><span class="st-label" data-i18n="addr.1">12 rue des Lilas</span><span class="st-far">6,2 km</span></div>
-              <div class="stop" data-slot="1" data-to="0"><span class="st-num">2</span><span class="st-label" data-i18n="addr.2">8 avenue Gambetta</span><span class="st-far">1,4 km</span></div>
-              <div class="stop" data-slot="2" data-to="3"><span class="st-num">3</span><span class="st-label" data-i18n="addr.3">44 boulevard Victor Hugo</span><span class="st-far">9,8 km</span></div>
-              <div class="stop" data-slot="3" data-to="1"><span class="st-num">4</span><span class="st-label" data-i18n="addr.4">3 place du Marché</span><span class="st-far">3,1 km</span></div>
-            </div>
-          </div>
-          <div class="note" style="left:34%;top:-27%">
-            <p class="eyebrow" data-i18n="t1.n2.eyebrow">Optimisation</p>
-            <h3 data-i18n="t1.n2.h3">Un clic, et l'ordre change</h3>
-            <p data-i18n="t1.n2.p">Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite.</p>
+        <figure class="viz bloc" style="left:54%;top:58.5%;width:min(388px,20.2vw)" data-speed="1.1">
+          <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Organise ta journée</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/secteurs.png" width="518" height="360"
+                 data-i18n-alt="bloc.secteurs.alt" alt="Carte ATEQO : les arrêts groupés en secteurs de couleur, avec l'itinéraire de chacun" />
+            <p class="note h2" style="left:76%;top:46%" data-i18n="bloc.secteurs.bulle">Les secteurs te permettent d'organiser facilement des dizaines de points de livraison.</p>
           </div>
         </figure>
 
-        <figure class="viz" style="left:152vw;top:8%" data-speed="1.1">
-          <div class="frame tall">
-            <img src="./img/nav_adaptative.png" width="920" height="1234" data-i18n-alt="t1.imgB.alt" alt="Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches" loading="lazy" />
-          </div>
-          <div class="note" style="left:-24%;bottom:-11%">
-            <p class="eyebrow" data-i18n="t1.n3.eyebrow">Navigation</p>
-            <h3 data-i18n="t1.n3.h3">Le prochain arrêt, jamais imposé</h3>
-            <p data-i18n="t1.n3.p">À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.</p>
+        <figure class="viz bloc" style="left:55%;top:8%;width:min(477px,24.8vw);--vide:-1.05%" data-speed="1.14">
+          <h3 class="bloc-titre" data-i18n="bloc.temps.titre">Moins de temps sur la route</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/temps.png" width="477" height="48"
+                 data-i18n-alt="bloc.temps.alt" alt="Bandeau ATEQO : tournée optimisée, 36 minutes gagnées" />
+            <!-- Le bandeau ne fait que 48px de haut : la bulle remonte dessus
+                 pour s'y souder, au lieu de se poser dessous. -->
+            <p class="note h3" style="left:34%;top:62%" data-i18n="bloc.temps.bulle">Booste ta productivité et réduis tes kilomètres.</p>
           </div>
         </figure>
        </div>
@@ -421,36 +483,80 @@
 
     <!-- ══ GAGNEZ PLUS ═══════════════════════════════════════════════════════ -->
     <section class="slide t2" data-theme="1">
-      <div class="stage" style="width:172vw">
+      <div class="stage">
        <div class="field">
         <h2 class="giant" data-i18n-html="t2.title">Gagnez <em>plus.</em></h2>
-        <p class="lead" data-i18n="t2.lead">Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.</p>
 
-        <figure class="viz" style="left:62vw;top:22%" data-speed="1.18">
-          <div class="compare" data-compare>
-            <div class="cmp-line"><span data-i18n="cmp.before">Ordre de saisie</span><span class="cmp-track"><span class="cmp-fill" data-fill="100"></span></span><span class="cmp-val">42 km</span></div>
-            <div class="cmp-line after"><span data-i18n="cmp.after">Ordre optimisé</span><span class="cmp-track"><span class="cmp-fill" data-fill="74"></span></span><span class="cmp-val">31 km</span></div>
-          </div>
-          <div class="note" style="left:12%;top:78%">
-            <p class="eyebrow" data-i18n="t2.n1.eyebrow">Kilomètres</p>
-            <h3 data-i18n="t2.n1.h3">Moins de route, même tournée</h3>
-            <p data-i18n="t2.n1.p">Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours.</p>
+        <!-- Ce bloc passe SOUS le titre geant (z-index 1 contre 2) : en
+             traversant l'ecran il glisse derriere le mot au lieu de le
+             recouvrir, ce qui creuse la profondeur entre le decor et le titre.
+             Le sous-titre et la bulle suivent : ils appartiennent au meme plan,
+             et au repos aucun des deux ne croise le titre. -->
+        <figure class="viz bloc decale" style="left:5%;top:6%;width:min(523px,27.2vw);--decale:min(124px,6.5vw);z-index:1" data-speed="1.08">
+          <h3 class="bloc-titre" data-i18n="bloc.optimisation.titre">Optimisation en un clic</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/optimisation.png" width="399" height="278"
+                 data-i18n-alt="bloc.optimisation.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés dans l'ordre de passage" loading="lazy" />
+            <!-- Posee sur le coin bas gauche, elle court jusqu'au milieu de la
+                 carte : le trace reste lisible sur la moitie droite. -->
+            <p class="note h4" style="left:-33%;top:72%" data-i18n="bloc.optimisation.bulle">Concentre-toi sur la route, ATEQO s'occupe du reste.</p>
           </div>
         </figure>
 
-        <figure class="viz" style="left:104vw;top:56%" data-speed="1.24">
-          <div class="counter" data-count="7">
-            <span class="ct-num">0</span>
-            <span class="ct-unit" data-i18n="t2.unit">tournées sans limite</span>
+        <figure class="viz bloc decale" style="left:50%;top:58.5%;width:min(531px,27.7vw);--decale:min(300px,15.6vw)" data-speed="1.12">
+          <h3 class="bloc-titre" data-i18n="bloc.carte.titre">Carte interactive</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/carte.png" width="307" height="399"
+                 data-i18n-alt="bloc.carte.alt" alt="Écran ATEQO : l'arrêt en cours sur la carte, avec ses actions" loading="lazy" />
+            <p class="note h5" style="left:72%;top:26%" data-i18n="bloc.carte.bulle">Gère tes points d'arrêt directement sur la carte.</p>
           </div>
-          <div class="note" style="left:6%;top:74%">
-            <p class="eyebrow" data-i18n="t2.n2.eyebrow">Essai</p>
-            <h3 data-i18n="t2.n2.h3">Juge sur ta propre tournée</h3>
-            <p data-i18n="t2.n2.p">Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.</p>
+        </figure>
+       </div>
+      </div>
+    </section>
+
+    <!-- ══ GEREZ MIEUX ═══════════════════════════════════════════════════════ -->
+    <section class="slide t3" data-theme="2">
+      <div class="stage">
+       <div class="field">
+        <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
+
+        <figure class="viz bloc" style="left:13%;top:58.5%;width:min(372px,19.4vw)" data-speed="1.07">
+          <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Enregistre tes tournées</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/carnet.png" width="529" height="456"
+                 data-i18n-alt="bloc.carnet.alt" alt="Écran ATEQO : le carnet d'adresses et l'enregistrement dans un circuit" loading="lazy" />
+            <p class="note h1" style="left:41%;top:7%" data-i18n="bloc.carnet.bulle">Crée tes tournées, enregistre tes adresses favorites et ajoute-les en un clic.</p>
           </div>
         </figure>
 
-        <div class="viz" style="left:128vw;top:14%" data-speed="1.08">
+        <figure class="viz bloc" style="left:58%;top:10%;width:min(238px,12.4vw);--vide:-3.33%" data-speed="1.12">
+          <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/voix.png" width="300" height="189"
+                 data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" loading="lazy" />
+            <!-- Calee sur la ligne d'adresse (77-83% de la hauteur de la
+                 capture) : elle en recouvre la moitie droite, on comprend que
+                 l'adresse vient d'etre dictee sans avoir a la lire en entier. -->
+            <p class="note h2" style="left:50%;top:63%" data-i18n="bloc.voix.bulle">Gagne du temps : ajoute une adresse simplement avec ta voix.</p>
+          </div>
+        </figure>
+       </div>
+      </div>
+    </section>
+
+    <!-- ══ TARIFS ════════════════════════════════════════════════════════════
+         Cet ecran ne figure pas sur la maquette, mais les prix et l'essai
+         doivent bien vivre quelque part : ils ont leur ecran, juste avant
+         l'appel final. -->
+    <section class="slide t2" data-theme="1">
+      <div class="stage">
+       <div class="field">
+        <!-- Le seul titre qui ne tient pas la ligne des autres : trois formules
+             de sept lignes ne passent pas sous un titre reste au centre. -->
+        <h2 class="giant" data-i18n-html="plans.title" style="top:26%">Choisis ton <em>plan.</em></h2>
+
+        <div class="viz formules" style="left:18%;top:38%;width:64%" data-speed="1.06">
           <div class="plans">
             <div class="plan">
               <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
@@ -459,6 +565,9 @@
                 <li data-i18n="plan.free.f1">5 tournées par mois</li>
                 <li data-i18n="plan.f.addr">Adresses illimitées</li>
                 <li data-i18n="plan.free.f2">3 secteurs actifs</li>
+                <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
+                <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
+                <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
                 <li class="no" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
               </ul>
               <a class="plan-btn secondary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.free.cta">Télécharger</a>
@@ -470,6 +579,9 @@
                 <li data-i18n="plan.f.tours">Tournées illimitées</li>
                 <li data-i18n="plan.f.addr">Adresses illimitées</li>
                 <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
+                <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
+                <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
+                <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
                 <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
               </ul>
               <a class="plan-btn secondary" data-track-position="tarifs-mensuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
@@ -482,85 +594,15 @@
                 <li data-i18n="plan.f.tours">Tournées illimitées</li>
                 <li data-i18n="plan.f.addr">Adresses illimitées</li>
                 <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
+                <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
+                <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
+                <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
                 <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
               </ul>
               <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Essayer 14 jours</a>
             </div>
           </div>
-          <div class="note" style="left:-14%;top:-24%">
-            <p class="eyebrow" data-i18n="t2.n3.eyebrow">Tarifs</p>
-            <h3 data-i18n="t2.n3.h3">Premium quand tu roules tous les jours</h3>
-          </div>
         </div>
-       </div>
-      </div>
-    </section>
-
-    <!-- ══ GEREZ MIEUX ═══════════════════════════════════════════════════════ -->
-    <section class="slide t3" data-theme="2">
-      <div class="stage">
-       <div class="field">
-        <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
-        <p class="lead" data-i18n="t3.lead">Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.</p>
-
-        <figure class="viz" style="left:61vw;top:9%" data-speed="1.18">
-          <!-- Les cases se cochent du dernier livre au premier : la logique
-               inversee se comprend en la regardant se faire. -->
-          <div class="mock" data-checklist>
-            <div class="mock-head">
-              <span data-i18n="t3.mock.head">Check-list de chargement</span>
-              <span class="mh-state" data-check-count>0 / 3</span>
-            </div>
-            <div class="stops">
-              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.3">44 boulevard Victor Hugo</span><span class="ck-tag" data-i18n="t3.first">1er chargé</span></div>
-              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.1">12 rue des Lilas</span></div>
-              <div class="check"><span class="ck-box"></span><span class="ck-label" data-i18n="addr.2">8 avenue Gambetta</span><span class="ck-tag last" data-i18n="t3.last">1er livré</span></div>
-            </div>
-          </div>
-          <div class="note" style="left:-20%;bottom:-19%">
-            <p class="eyebrow" data-i18n="t3.n1.eyebrow">Chargement</p>
-            <h3 data-i18n="t3.n1.h3">Charge dans l'ordre inverse</h3>
-            <p data-i18n="t3.n1.p">Le dernier colis livré est le premier chargé. Plus de colis à déterrer au fond du véhicule.</p>
-          </div>
-        </figure>
-
-        <figure class="viz" style="left:106vw;top:48%" data-speed="1.24">
-          <div class="mock">
-            <div class="mock-head">
-              <span data-i18n="t3.book.head">Carnet d'adresses</span>
-              <span class="mh-state" data-i18n="t3.book.count">18 enregistrées</span>
-            </div>
-            <div class="stops">
-              <div class="stop s1"><span class="st-num">★</span><span class="st-label" data-i18n="addr.5">Clinique Saint-Joseph</span></div>
-              <div class="stop s2"><span class="st-num">★</span><span class="st-label" data-i18n="addr.6">Pharmacie du Centre</span></div>
-              <div class="stop s3"><span class="st-num">★</span><span class="st-label" data-i18n="addr.7">Zone artisanale des Chênes</span></div>
-            </div>
-          </div>
-          <div class="note" style="left:28%;top:-46%">
-            <p class="eyebrow"><span data-i18n="t3.n2.eyebrow">Carnet</span> <span class="tag-premium">Premium</span></p>
-            <h3 data-i18n="t3.n2.h3">Tes adresses, une fois pour toutes</h3>
-            <p data-i18n="t3.n2.p">Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.</p>
-          </div>
-        </figure>
-
-        <figure class="viz" style="left:150vw;top:12%" data-speed="1.12">
-          <div class="mock">
-            <div class="mock-head">
-              <span data-i18n="mock.tour">Ma tournée</span>
-              <span class="mh-state" data-i18n="t3.day.state">Arrêt 4 sur 18</span>
-            </div>
-            <div class="stops">
-              <div class="stop reco"><span class="st-star">★</span><span class="st-label" data-i18n="addr.5">Clinique Saint-Joseph</span><span class="st-far">1,2 km</span></div>
-              <div class="stop"><span class="st-num" style="background:var(--muted2)">!</span><span class="st-label" data-i18n="t3.day.note">Code 4512B · 3e étage</span></div>
-              <div class="stop s2"><span class="st-num">↺</span><span class="st-label" data-i18n="t3.day.history">Tournée du 12 mars · 24 arrêts</span></div>
-            </div>
-          </div>
-          <div class="note" style="left:-22%;bottom:-21%">
-            <p class="eyebrow" data-i18n="t3.n3.eyebrow">Au quotidien</p>
-            <h3 data-i18n="t3.n3.h3">Dicte, note, retrouve</h3>
-            <p data-i18n="t3.n3.p">Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.</p>
-          </div>
-        </figure>
        </div>
       </div>
     </section>
@@ -604,47 +646,22 @@
         'badge.alt': 'Disponible sur Google Play',
         'hint.scroll': 'Fais défiler',
         // Adresses d'exemple, partagees par les maquettes.
-        'addr.1': '12 rue des Lilas',
-        'addr.2': '8 avenue Gambetta',
-        'addr.3': '44 boulevard Victor Hugo',
-        'addr.4': '3 place du Marché',
-        'addr.5': 'Clinique Saint-Joseph',
-        'addr.6': 'Pharmacie du Centre',
-        'addr.7': 'Zone artisanale des Chênes',
-        'mock.tour': 'Ma tournée',
-        'mock.before': 'Ordre de saisie',
-        'mock.after': 'Ordre optimisé',
-        'cmp.before': 'Ordre de saisie',
-        'cmp.after': 'Ordre optimisé',
-        // ── Livrez plus ──
-        
+        // ── Livre plus ──
         't1.title': 'Livrez <em>plus.</em>',
-        't1.lead': "Le même temps de travail, plus d'arrêts dedans. ATEQO calcule l'ordre de passage le plus court sur routes réelles, secteur par secteur, et te laisse le dernier mot à chaque arrêt.",
-        't1.imgA.alt': "Carte ATEQO : arrêts numérotés et colorés par secteur, avec le tracé de l'itinéraire",
-        't1.imgB.alt': 'Écran ATEQO : prochaine destination recommandée, avec les adresses les plus proches',
-        't1.stamp': '28 arrêts · ~21 min gagnées',
-        't1.n1.eyebrow': 'Secteurs',
-        't1.n1.h3': 'Ta zone, découpée',
-        't1.n1.p': 'Regroupe tes adresses par zone géographique. Chaque secteur a sa couleur et son ordre de passage, optimisé séparément.',
-        't1.n2.eyebrow': 'Optimisation',
-        't1.n2.h3': "Un clic, et l'ordre change",
-        't1.n2.p': "Saisis dans n'importe quel ordre. ATEQO replace tout selon les distances réelles de conduite, pas à vol d'oiseau.",
-        't1.n3.eyebrow': 'Navigation',
-        't1.n3.h3': 'Le prochain arrêt, jamais imposé',
-        't1.n3.p': 'À chaque livraison, la destination recommandée et les arrêts les plus proches. Tu choisis, Google Maps suit.',
-        // ── Gagnez plus ──
-        
+        'bloc.secteurs.titre': 'Organise ta journée',
+        'bloc.secteurs.bulle': "Les secteurs te permettent d'organiser facilement des dizaines de points de livraison.",
+        'bloc.secteurs.alt': "Carte ATEQO : les arrêts groupés en secteurs de couleur, avec l'itinéraire de chacun",
+        'bloc.optimisation.titre': 'Optimisation en un clic',
+        'bloc.optimisation.bulle': "Concentre-toi sur la route, ATEQO s'occupe du reste.",
+        'bloc.optimisation.alt': 'Carte ATEQO : la tournée optimisée, arrêts numérotés dans l’ordre de passage',
+        'bloc.navigation.titre': 'Adapte ton trajet',
+        'bloc.navigation.bulle': 'Ne subis plus les aléas de tes tournées. ATEQO optimise, tu choisis.',
+        'bloc.navigation.alt': 'Écran ATEQO : la destination recommandée, puis les adresses les plus proches',
+        // ── Gagne plus ──
         't2.title': 'Gagnez <em>plus.</em>',
-        't2.lead': "Chaque kilomètre évité est du carburant en moins et de la marge en plus. Et rien ne t'engage : tes sept premières tournées sont sans aucune limite.",
-        't2.n1.eyebrow': 'Kilomètres',
-        't2.n1.h3': 'Moins de route, même tournée',
-        't2.n1.p': "Sur cette tournée d'exemple, l'ordre optimisé retire onze kilomètres. Un gain qui roule tous les jours, pas seulement le premier.",
-        't2.unit': 'tournées sans limite',
-        't2.n2.eyebrow': 'Essai',
-        't2.n2.h3': 'Juge sur ta propre tournée',
-        't2.n2.p': 'Sans moyen de paiement à renseigner. Ensuite, le plan gratuit suffit à beaucoup : 5 tournées par mois, adresses illimitées.',
-        't2.n3.eyebrow': 'Tarifs',
-        't2.n3.h3': 'Premium quand tu roules tous les jours',
+        'bloc.temps.titre': 'Moins de temps sur la route',
+        'bloc.temps.bulle': 'Booste ta productivité et réduis tes kilomètres.',
+        'bloc.temps.alt': 'Bandeau ATEQO : tournée optimisée, 36 minutes gagnées',
         'plan.free.name': 'Gratuit',
         'plan.free.f1': '5 tournées par mois',
         'plan.free.f2': '3 secteurs actifs',
@@ -652,6 +669,9 @@
         'plan.f.addr': 'Adresses illimitées',
         'plan.f.tours': 'Tournées illimitées',
         'plan.f.sectors': '5 secteurs actifs',
+        'plan.f.optim': 'Optimisation sur routes réelles',
+        'plan.f.voice': 'Saisie vocale des adresses',
+        'plan.f.nav': 'Carte et navigation adaptative',
         'plan.f.book': 'Carnet et circuits récurrents',
         'plan.monthly.name': 'Premium mensuel',
         'plan.monthly.price': '16,99 <span class="per">€ / mois</span>',
@@ -659,27 +679,18 @@
         'plan.annual.price': '169,99 <span class="per">€ / an</span>',
         'plan.annual.ribbon': '2 mois offerts',
         'plan.cta': 'Essayer 14 jours',
-        // ── Gérez mieux ──
-        
+        // ── Gère mieux ──
         't3.title': 'Gérez <em>mieux.</em>',
-        't3.lead': "Préparer, charger, noter, retrouver. C'est là que les minutes se perdent, et c'est là qu'ATEQO travaille pendant que tu conduis.",
-        't3.mock.head': 'Check-list de chargement',
-        't3.first': '1er chargé',
-        't3.last': '1er livré',
-        't3.n1.eyebrow': 'Chargement',
-        't3.n1.h3': "Charge dans l'ordre inverse",
-        't3.n1.p': 'Le dernier colis livré est le premier chargé. ATEQO retourne la liste pour toi. Plus de colis à déterrer au fond du véhicule.',
-        't3.book.head': "Carnet d'adresses",
-        't3.book.count': '18 enregistrées',
-        't3.n2.eyebrow': 'Carnet',
-        't3.n2.h3': 'Tes adresses, une fois pour toutes',
-        't3.n2.p': 'Enregistre tes adresses et tes circuits habituels. Tu les retrouves au matin et tu les réoptimises en un tap.',
-        't3.day.state': 'Arrêt 4 sur 18',
-        't3.day.note': 'Code 4512B · 3e étage',
-        't3.day.history': 'Tournée du 12 mars · 24 arrêts',
-        't3.n3.eyebrow': 'Au quotidien',
-        't3.n3.h3': 'Dicte, note, retrouve',
-        't3.n3.p': "Ajoute une adresse à la voix, les mains dans les colis. Garde le code d'accès sous les yeux. Rejoue une tournée passée.",
+        'bloc.carte.titre': 'Carte interactive',
+        'bloc.carte.bulle': "Gère tes points d'arrêt directement sur la carte.",
+        'bloc.carte.alt': "Écran ATEQO : l'arrêt en cours sur la carte, avec ses actions",
+        'bloc.carnet.titre': 'Enregistre tes tournées',
+        'bloc.carnet.bulle': 'Crée tes tournées, enregistre tes adresses favorites et ajoute-les en un clic.',
+        'bloc.carnet.alt': "Écran ATEQO : le carnet d'adresses et l'enregistrement dans un circuit",
+        'bloc.voix.titre': 'Saisie vocale',
+        'bloc.voix.bulle': 'Gagne du temps : ajoute une adresse simplement avec ta voix.',
+        'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
+        'plans.title': 'Choisis ton <em>plan.</em>',
         'end.title': 'Prêt à optimiser ta tournée ?',
         'end.sub': "Ta première tournée optimisée en moins d'une minute.",
         'footer.note': "© 2026 ATEQO · L'itinéraire qui te suit",
@@ -699,45 +710,22 @@
         'brand.alt': 'ATEQO · The route that follows you',
         'badge.alt': 'Get it on Google Play',
         'hint.scroll': 'Scroll',
-        'addr.1': '12 Maple Street',
-        'addr.2': '8 Gambetta Avenue',
-        'addr.3': '44 Victor Hugo Boulevard',
-        'addr.4': '3 Market Square',
-        'addr.5': 'Saint-Joseph Clinic',
-        'addr.6': 'Central Pharmacy',
-        'addr.7': 'Oakwood Business Park',
-        'mock.tour': 'My route',
-        'mock.before': 'Order entered',
-        'mock.after': 'Optimized order',
-        'cmp.before': 'Order entered',
-        'cmp.after': 'Optimized order',
         
         't1.title': 'Deliver <em>more.</em>',
-        't1.lead': 'The same working day, with more stops in it. ATEQO calculates the shortest visiting order on real roads, sector by sector, and leaves you the final say at every stop.',
-        't1.imgA.alt': 'ATEQO map: stops numbered and colored by sector, with the route drawn',
-        't1.imgB.alt': 'ATEQO screen: recommended next destination, with the closest addresses',
-        't1.stamp': '28 stops · ~21 min saved',
-        't1.n1.eyebrow': 'Sectors',
-        't1.n1.h3': 'Your area, carved up',
-        't1.n1.p': 'Group your addresses by geographic zone. Each sector has its own color and visiting order, optimized separately.',
-        't1.n2.eyebrow': 'Optimization',
-        't1.n2.h3': 'One click, and the order changes',
-        't1.n2.p': 'Enter them in any order. ATEQO reorders everything using real driving distances, not straight lines.',
-        't1.n3.eyebrow': 'Navigation',
-        't1.n3.h3': 'The next stop, never imposed',
-        't1.n3.p': 'After every delivery, the recommended destination and the closest stops. You choose, Google Maps follows.',
+        'bloc.secteurs.titre': 'Plan your day',
+        'bloc.secteurs.bulle': 'Sectors let you organize dozens of delivery points with ease.',
+        'bloc.secteurs.alt': 'ATEQO map: stops grouped into colored sectors, each with its own route',
+        'bloc.optimisation.titre': 'One-click optimization',
+        'bloc.optimisation.bulle': 'Focus on the road, ATEQO handles the rest.',
+        'bloc.optimisation.alt': 'ATEQO map: the optimized route, stops numbered in visiting order',
+        'bloc.navigation.titre': 'Adapt your route',
+        'bloc.navigation.bulle': 'Stop putting up with whatever your day throws at you. ATEQO optimizes, you choose.',
+        'bloc.navigation.alt': 'ATEQO screen: the recommended destination, then the closest addresses',
         
         't2.title': 'Earn <em>more.</em>',
-        't2.lead': 'Every mile avoided is fuel saved and margin kept. And nothing ties you down: your first seven routes have no limit at all.',
-        't2.n1.eyebrow': 'Distance',
-        't2.n1.h3': 'Less road, same route',
-        't2.n1.p': 'On this example route, the optimized order cuts eleven kilometres. A saving that happens every day, not just the first one.',
-        't2.unit': 'routes with no limit',
-        't2.n2.eyebrow': 'Free trial',
-        't2.n2.h3': 'Judge it on your own route',
-        't2.n2.p': 'With no payment method to enter. After that, the free plan is enough for many: 5 routes per month, unlimited addresses.',
-        't2.n3.eyebrow': 'Pricing',
-        't2.n3.h3': "Premium once you're on the road every day",
+        'bloc.temps.titre': 'Less time on the road',
+        'bloc.temps.bulle': 'Boost your productivity and cut your mileage.',
+        'bloc.temps.alt': 'ATEQO banner: optimized route, 36 minutes saved',
         'plan.free.name': 'Free',
         'plan.free.f1': '5 routes per month',
         'plan.free.f2': '3 active sectors',
@@ -745,6 +733,9 @@
         'plan.f.addr': 'Unlimited addresses',
         'plan.f.tours': 'Unlimited routes',
         'plan.f.sectors': '5 active sectors',
+        'plan.f.optim': 'Optimization on real roads',
+        'plan.f.voice': 'Voice address entry',
+        'plan.f.nav': 'Interactive map and adaptive navigation',
         'plan.f.book': 'Address book and saved lists',
         'plan.monthly.name': 'Monthly Premium',
         'plan.monthly.price': '€16.99 <span class="per">/ month</span>',
@@ -754,24 +745,16 @@
         'plan.cta': 'Try free for 14 days',
         
         't3.title': 'Manage <em>better.</em>',
-        't3.lead': 'Preparing, loading, noting, finding again. That is where the minutes go, and that is where ATEQO works while you drive.',
-        't3.mock.head': 'Loading checklist',
-        't3.first': 'Loaded 1st',
-        't3.last': 'Delivered 1st',
-        't3.n1.eyebrow': 'Loading',
-        't3.n1.h3': 'Load in reverse order',
-        't3.n1.p': 'The last parcel delivered is the first one loaded. ATEQO flips the list for you. No more digging at the back of the van.',
-        't3.book.head': 'Address book',
-        't3.book.count': '18 saved',
-        't3.n2.eyebrow': 'Address book',
-        't3.n2.h3': 'Your addresses, once and for all',
-        't3.n2.p': 'Save your usual addresses and lists. You find them again in the morning and optimize them afresh in one tap.',
-        't3.day.state': 'Stop 4 of 18',
-        't3.day.note': 'Code 4512B · 3rd floor',
-        't3.day.history': 'Route of 12 March · 24 stops',
-        't3.n3.eyebrow': 'Day to day',
-        't3.n3.h3': 'Speak it, note it, find it',
-        't3.n3.p': 'Add an address by voice, hands full of parcels. Keep the access code in sight. Replay a past route.',
+        'bloc.carte.titre': 'Interactive map',
+        'bloc.carte.bulle': 'Manage your stops straight from the map.',
+        'bloc.carte.alt': 'ATEQO screen: the current stop on the map, with its actions',
+        'bloc.carnet.titre': 'Save your routes',
+        'bloc.carnet.bulle': 'Build your routes, save your favorite addresses and add them in one tap.',
+        'bloc.carnet.alt': 'ATEQO screen: the address book and saving into a circuit',
+        'bloc.voix.titre': 'Voice input',
+        'bloc.voix.bulle': 'Save time: add an address simply with your voice.',
+        'bloc.voix.alt': 'ATEQO screen: dictating an address, "I’m listening"',
+        'plans.title': 'Pick your <em>plan.</em>',
         'end.title': 'Ready to optimize your route?',
         'end.sub': 'Your first optimized route in under a minute.',
         'footer.note': '© 2026 ATEQO · The route that follows you',
@@ -856,7 +839,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
   <script>
     /* ── Mise en scene ─────────────────────────────────────────────────────────
        Deux dispositions, une seule source de contenu :
@@ -868,7 +850,6 @@
        lisible : les demonstrations affichent directement leur etat final. */
     (function () {
       var THEME_COLORS = ['var(--s1)', 'var(--s2)', 'var(--s3)'];
-      var SECTOR_CLASS = ['s1', 's1', 's2', 's3'];
 
       var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
       var hint = document.querySelector('[data-hint]');
@@ -901,11 +882,58 @@
         });
       }
 
+      // ── Apparition en nuage ─────────────────────────────────────────────────
+      // Chaque bloc se condense quand il entre dans l'ecran, et ne se defait
+      // plus ensuite : on ne repasse pas sur ce qu'on a deja lu. Le meme
+      // observateur sert aux deux dispositions, la piste poussee lateralement
+      // faisant bien entrer les elements dans le champ de vision.
+      // Tout est porte par CSS : ni GSAP ni le defilement inertiel ne sont
+      // necessaires pour que la page se forme.
+      (function revealClouds() {
+        if (!document.documentElement.classList.contains('cloud-ready')) return;
+        var blocks = document.querySelectorAll('.viz, .giant, .end-block, .site-footer');
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-in');
+            observer.unobserve(entry.target);
+          });
+        }, { rootMargin: '-6% -4%' });
+        Array.prototype.forEach.call(blocks, function (block) { observer.observe(block); });
+      })();
+
+      // ── Decor ───────────────────────────────────────────────────────────────
+      // L'image est large et lourde : la page ne l'attend pas. Elle se montre en
+      // fondu une fois prete, et la couche se retire sans bruit si le fichier
+      // manque, plutot que de laisser une icone d'image cassee sur le fond.
+      (function loadScenery() {
+        var layer = document.querySelector('.scenery');
+        if (!layer) return;
+        var image = layer.querySelector('img');
+        function drop() { if (layer.parentNode) layer.parentNode.removeChild(layer); }
+        // Sur une pile verticale le decor n'est pas affiche : il est retire du
+        // document plutot que masque, sinon le navigateur telechargerait quand
+        // meme la bande entiere sur un forfait mobile.
+        if (matchMedia('(max-width: 980px), (pointer: coarse)').matches) return drop();
+        if (!image) return drop();
+        if (image.complete) return image.naturalWidth ? layer.classList.add('ready') : drop();
+        image.addEventListener('load', function () { layer.classList.add('ready'); });
+        image.addEventListener('error', drop);
+      })();
+
       var currentTheme = -1;
       function showTheme(themeIndex) {
         if (themeIndex === currentTheme) return;
         currentTheme = themeIndex;
         document.documentElement.style.setProperty('--tone', THEME_COLORS[themeIndex] || THEME_COLORS[0]);
+      }
+
+      // Le bouton fixe cede la place a celui du dernier ecran, et revient si le
+      // visiteur remonte. La bascule est la meme dans les deux dispositions,
+      // seul le declencheur change.
+      var badgeFixe = document.querySelector('.gplay-fixe');
+      function rangerBadge(range) {
+        if (badgeFixe) badgeFixe.classList.toggle('range', range);
       }
 
       // L'indice de defilement a fait son travail des le premier geste.
@@ -915,92 +943,9 @@
         hint.style.pointerEvents = 'none';
       }
 
-      // ── Demonstrations ──────────────────────────────────────────────────────
-      function playReorder(mock) {
-        if (mock.dataset.played) return;
-        mock.dataset.played = '1';
-        var stops = Array.prototype.slice.call(mock.querySelectorAll('.stop'));
-        var tops = stops.map(function (stop) { return stop.offsetTop; });
-        var state = mock.querySelector('[data-reorder-state]');
-        stops.forEach(function (stop) {
-          var from = parseInt(stop.getAttribute('data-slot'), 10);
-          var to = parseInt(stop.getAttribute('data-to'), 10);
-          gsap.to(stop, {
-            y: tops[to] - tops[from],
-            duration: 0.85,
-            delay: 0.25,
-            ease: 'power2.inOut',
-            onStart: function () {
-              stop.querySelector('.st-num').textContent = String(to + 1);
-              stop.classList.add(SECTOR_CLASS[to]);
-            }
-          });
-        });
-        if (state) {
-          gsap.delayedCall(0.95, function () {
-            var dict = I18N[document.documentElement.lang] || I18N.fr;
-            state.setAttribute('data-i18n', 'mock.after');
-            state.textContent = dict['mock.after'];
-          });
-        }
-      }
-
-      function playCompare(block) {
-        if (block.dataset.played) return;
-        block.dataset.played = '1';
-        block.querySelectorAll('.cmp-fill').forEach(function (fill, i) {
-          gsap.fromTo(fill, { width: '0%' },
-            { width: fill.getAttribute('data-fill') + '%', duration: 0.9, delay: 0.2 + i * 0.22, ease: 'power2.out' });
-        });
-      }
-
-      function playCounter(block) {
-        if (block.dataset.played) return;
-        block.dataset.played = '1';
-        var target = parseInt(block.getAttribute('data-count'), 10);
-        var out = block.querySelector('.ct-num');
-        var value = { n: 0 };
-        gsap.to(value, {
-          n: target, duration: 1.1, delay: 0.15, ease: 'power2.out',
-          onUpdate: function () { out.textContent = String(Math.round(value.n)); }
-        });
-      }
-
-      function playChecklist(mock) {
-        if (mock.dataset.played) return;
-        mock.dataset.played = '1';
-        var lines = Array.prototype.slice.call(mock.querySelectorAll('.check'));
-        var counter = mock.querySelector('[data-check-count]');
-        lines.forEach(function (line, i) {
-          gsap.delayedCall(0.35 + i * 0.4, function () {
-            line.classList.add('done');
-            if (counter) counter.textContent = (i + 1) + ' / ' + lines.length;
-          });
-        });
-      }
-
-      function playDemosIn(slide) {
-        slide.querySelectorAll('[data-reorder]').forEach(playReorder);
-        slide.querySelectorAll('[data-compare]').forEach(playCompare);
-        slide.querySelectorAll('[data-count]').forEach(playCounter);
-        slide.querySelectorAll('[data-checklist]').forEach(playChecklist);
-      }
-
-      // ── Repli : sans GSAP ou animations refusees, etat final immediat ───────
+      // ── Repli : sans GSAP ou animations refusees, la page reste lisible ─────
       var animationsAllowed = !!window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!animationsAllowed) {
-        document.querySelectorAll('[data-count]').forEach(function (block) {
-          block.querySelector('.ct-num').textContent = block.getAttribute('data-count');
-        });
-        document.querySelectorAll('.cmp-fill').forEach(function (fill) {
-          fill.style.width = fill.getAttribute('data-fill') + '%';
-        });
-        document.querySelectorAll('[data-checklist] .check').forEach(function (line) { line.classList.add('done'); });
-        document.querySelectorAll('[data-reorder] .stop').forEach(function (stop) {
-          var to = parseInt(stop.getAttribute('data-to'), 10);
-          stop.querySelector('.st-num').textContent = String(to + 1);
-          stop.classList.add(SECTOR_CLASS[to]);
-        });
         if ('IntersectionObserver' in window) {
           var basicObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
@@ -1014,14 +959,9 @@
 
       gsap.registerPlugin(ScrollTrigger);
 
-      // Defilement inertiel : il donne son elan d'une scene a l'autre.
-      // syncTouch reste false, le tactile garde le defilement du systeme.
-      if (window.Lenis) {
-        var lenis = new window.Lenis({ duration: 1.05, smoothWheel: true, syncTouch: false });
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-        gsap.ticker.lagSmoothing(0);
-      }
+      // Le navigateur ne doit pas restaurer une position de defilement au
+      // rechargement : elle tomberait entre deux ecrans.
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
       var media = gsap.matchMedia();
 
@@ -1031,21 +971,71 @@
 
         function distance() { return Math.max(0, track.scrollWidth - track.clientWidth); }
 
+        // ── Decor ─────────────────────────────────────────────────────────────
+        // Le decor est plus court que la piste : il ne peut pas la suivre au
+        // meme rythme sans se terminer trop tot. Il parcourt donc sa propre
+        // etendue sur la meme course, et le bout du trace tombe avec la fin du
+        // site. Sa largeur est relevee au calage, jamais dans la boucle : une
+        // lecture de mise en page par image coute plus cher que l'effet.
+        var scenery = document.querySelector('.scenery img');
+        var setScenery = scenery ? gsap.quickSetter(scenery, 'x', 'px') : null;
+        var sceneryRun = 0;
+        function measureScenery() {
+          sceneryRun = scenery ? Math.max(0, scenery.offsetWidth - window.innerWidth) : 0;
+        }
+
         // ── Derive ────────────────────────────────────────────────────────────
-        // Chaque element porte une vitesse propre : au-dessus de 1 il file vers
-        // la gauche plus vite que la scene, en dessous il traine derriere. Rien
-        // ne se deplace donc du meme mouvement, et la scene se defait comme des
-        // nuages qui s'en vont. L'amplitude est calee sur la largeur de l'ecran
-        // plutot que sur la course totale, sinon les ecarts partiraient loin.
+        // Une scene ne se pose pas d'un bloc : le titre arrive le premier, puis
+        // chaque argument a son tour, et la bulle juste derriere le visuel
+        // qu'elle commente. Deux reglages font ce ballet :
+        //   · l'ampleur, de combien un element vient de loin sur la droite ;
+        //   · le retard, quelle part du trajet il passe encore immobile avant
+        //     de se mettre en marche.
+        // Le retard est une part de TRAJET, jamais une duree : quel que soit le
+        // rythme du visiteur, ou meme s'il s'arrete en chemin, tout est arrive
+        // exactement quand l'ecran est centre, et la composition est alors
+        // celle de la maquette au pixel pres.
+        // L'ecart se mesure par rapport a SA scene, pas au debut du site, sinon
+        // la mise en place serait juste sur le premier ecran seulement.
         var drifters = [];
         function collectDrifters() {
-          drifters = Array.prototype.slice.call(document.querySelectorAll('[data-speed]'))
-            .map(function (element) {
-              return {
+          drifters = [];
+          slides.forEach(function (scene, index) {
+            var field = scene.querySelector('.field') || scene;
+
+            function pousser(element, rang, vitesse, elan) {
+              drifters.push({
                 apply: gsap.quickSetter(element, 'x', 'px'),
-                speed: parseFloat(element.getAttribute('data-speed')) || 1
-              };
+                ampleur: (vitesse - 1) * elan,
+                // Au-dela de six elements le dernier n'aurait plus le temps
+                // d'arriver : le retard plafonne.
+                retard: Math.min(0.62, rang * 0.13),
+                index: index
+              });
+            }
+
+            // Les LETTRES du titre, jamais le titre lui-meme : il est centre par
+            // un transform, et poser x dessus ferait perdre son -50%, donc son
+            // centrage. Leur elan reste faible, sinon le mot se dechirerait.
+            field.querySelectorAll('.giant .ltr').forEach(function (lettre) {
+              pousser(lettre, 0, parseFloat(lettre.getAttribute('data-speed')) || 1, 1);
             });
+
+            Array.prototype.slice.call(field.querySelectorAll('.viz')).forEach(function (bloc, i) {
+              var vitesse = parseFloat(bloc.getAttribute('data-speed')) || 1.1;
+              // Les blocs viennent de loin : c'est ce qui rend leur mise en
+              // place lisible, la ou un ecart de quelques dizaines de pixels
+              // passait inapercu.
+              pousser(bloc, 1 + i, vitesse, 2.8);
+              // La bulle est DANS le bloc : sa translation s'ajoute a celle de
+              // son parent. Son ampleur est donc un simple supplement, fixe et
+              // modeste, et non un multiple de la vitesse du bloc, sinon elle
+              // partirait deux fois plus loin que lui.
+              bloc.querySelectorAll('.note').forEach(function (note) {
+                pousser(note, 1.5 + i, 1.1, 1);
+              });
+            });
+          });
         }
         splitGiants();
         collectDrifters();
@@ -1053,8 +1043,10 @@
         // alors de nouveaux elements, a redecouper et a recollecter.
         window.ATEQO_afterLang = function () { splitGiants(); collectDrifters(); };
 
-        // Pas de recalage force : les scenes sont larges et le visiteur doit
-        // pouvoir s'arreter n'importe ou pour regarder un visuel.
+        // Positions de defilement, une par ecran. Declarees avant la piste :
+        // ScrollTrigger appelle onRefresh des sa creation.
+        var stops = [];
+
         var slide = gsap.to(track, {
           x: function () { return -distance(); },
           ease: 'none',
@@ -1063,27 +1055,112 @@
             start: 'top top',
             end: function () { return '+=' + distance(); },
             pin: true,
-            scrub: 0.7,
+            // La piste colle au defilement sans retard : le mouvement doux
+            // vient de l'animation de saut ci-dessous, pas d'un amortissement
+            // qui rendrait chaque arrivee molle.
+            scrub: true,
             invalidateOnRefresh: true,
+            onRefresh: function () { measureScenery(); measureStops(); },
             onUpdate: function (self) {
               if (self.progress > 0.02) dismissHint();
-              var drift = self.progress * window.innerWidth;
+              var travelled = self.progress * distance();
+              var screen = window.innerWidth;
               for (var i = 0; i < drifters.length; i++) {
-                drifters[i].apply(-drift * (drifters[i].speed - 1));
+                var d = drifters[i];
+                // Part du trajet restant avant que la scene soit centree :
+                // 1 = un ecran plus loin, 0 = en place, negatif = deja passee.
+                var reste = (d.index * screen - travelled) / screen;
+                // Le retard mange le debut du trajet : tant qu'on n'a pas
+                // depasse ce seuil, l'element reste a son point de depart.
+                var part = Math.min(1, Math.abs(reste) / (1 - d.retard));
+                // Courbe en S : depart et arrivee en douceur, sans a-coup au
+                // moment ou l'element se met en marche ni ou il se pose.
+                var lisse = part * part * (3 - 2 * part);
+                d.apply((reste < 0 ? -lisse : lisse) * d.ampleur * screen);
               }
+              if (setScenery) setScenery(-self.progress * sceneryRun);
             }
           }
         });
 
-        slides.forEach(function (element) {
-          // Les demonstrations vivent DANS le defilement horizontal : sans
-          // containerAnimation, ScrollTrigger les croirait toutes deja passees.
-          ScrollTrigger.create({
-            trigger: element,
-            containerAnimation: slide,
-            start: 'left 62%',
-            onEnter: function () { playDemosIn(element); }
+        // ── Un geste, un ecran ────────────────────────────────────────────────
+        // Le defilement libre laissait le visiteur entre deux compositions, et
+        // le calage automatique de ScrollTrigger ne faisait que le rattraper
+        // apres coup. Ici, chaque impulsion (molette, pave tactile, clavier)
+        // amene a l'ecran voisin et rien d'autre : on ne s'arrete jamais au
+        // milieu. Le defilement natif est neutralise le temps de la piste, qui
+        // occupe de toute facon tout l'ecran.
+        function measureStops() {
+          var st = slide && slide.scrollTrigger;
+          if (!st) return;
+          var span = st.end - st.start;
+          var last = Math.max(1, slides.length - 1);
+          stops = slides.map(function (_, i) { return st.start + span * (i / last); });
+        }
+        measureStops();
+
+        var glide = { y: 0 };
+        var moving = false;
+        var settled = 0;      // date de fin du dernier saut, pour absorber l'elan
+
+        function nearestStop() {
+          var y = window.pageYOffset, best = 0, gap = Infinity;
+          for (var i = 0; i < stops.length; i++) {
+            var d = Math.abs(stops[i] - y);
+            if (d < gap) { gap = d; best = i; }
+          }
+          return best;
+        }
+
+        function goTo(index) {
+          if (!stops.length) return;
+          index = Math.max(0, Math.min(stops.length - 1, index));
+          var target = stops[index];
+          if (Math.abs(target - window.pageYOffset) < 2) return;
+          moving = true;
+          glide.y = window.pageYOffset;
+          gsap.to(glide, {
+            // Assez long pour qu'on voie les elements se poser un par un :
+            // avec les retards, le dernier arrive sur le tout dernier tiers.
+            y: target,
+            duration: 0.85,
+            ease: 'power2.inOut',
+            overwrite: true,
+            onUpdate: function () { window.scrollTo(0, glide.y); },
+            onComplete: function () { moving = false; settled = Date.now(); }
           });
+        }
+        window.ATEQO_goTo = goTo;
+
+        function step(direction) {
+          // Un pave tactile envoie une trainee d'evenements apres le geste :
+          // sans ce delai de garde, une seule impulsion sauterait deux ecrans.
+          if (moving || Date.now() - settled < 260) return;
+          goTo(nearestStop() + direction);
+        }
+
+        function onWheel(event) {
+          event.preventDefault();
+          if (Math.abs(event.deltaY) < 4) return;
+          step(event.deltaY > 0 ? 1 : -1);
+        }
+        window.addEventListener('wheel', onWheel, { passive: false });
+
+        var KEYS = { ArrowDown: 1, ArrowRight: 1, PageDown: 1, ' ': 1, ArrowUp: -1, ArrowLeft: -1, PageUp: -1 };
+        function onKey(event) {
+          if (event.key === 'Home') { event.preventDefault(); return goTo(0); }
+          if (event.key === 'End') { event.preventDefault(); return goTo(stops.length - 1); }
+          var direction = KEYS[event.key];
+          if (!direction) return;
+          event.preventDefault();
+          step(direction);
+        }
+        window.addEventListener('keydown', onKey);
+
+        slides.forEach(function (element) {
+          // La teinte du theme suit la scene a l'ecran. Sans containerAnimation,
+          // ScrollTrigger croirait toutes les scenes deja passees : elles sont
+          // poussees lateralement, pas parcourues verticalement.
           ScrollTrigger.create({
             trigger: element,
             containerAnimation: slide,
@@ -1094,16 +1171,27 @@
             }
           });
         });
+
+        ScrollTrigger.create({
+          trigger: slides[slides.length - 1],
+          containerAnimation: slide,
+          start: 'left 72%',
+          onEnter: function () { rangerBadge(true); },
+          onLeaveBack: function () { rangerBadge(false); }
+        });
+
+        // Bascule vers la pile verticale : la piste disparait, ses ecouteurs
+        // doivent partir avec elle, sinon le defilement resterait confisque.
+        return function () {
+          window.removeEventListener('wheel', onWheel);
+          window.removeEventListener('keydown', onKey);
+          window.ATEQO_goTo = null;
+        };
       });
 
       // ── Disposition verticale (tactile, petits ecrans) ──────────────────────
       media.add('(max-width: 980px), (pointer: coarse)', function () {
         slides.forEach(function (element) {
-          ScrollTrigger.create({
-            trigger: element,
-            start: 'top 72%',
-            onEnter: function () { playDemosIn(element); }
-          });
           ScrollTrigger.create({
             trigger: element,
             start: 'top 55%',
@@ -1118,6 +1206,14 @@
           start: '80px top',
           onEnter: dismissHint
         });
+        ScrollTrigger.create({
+          trigger: slides[slides.length - 1],
+          start: 'top 78%',
+          onEnter: function () { rangerBadge(true); },
+          onLeaveBack: function () { rangerBadge(false); }
+        });
+        // La piste horizontale a pu ranger le bouton avant la bascule.
+        return function () { rangerBadge(false); };
       });
 
       // Les captures arrivent apres le premier calcul et changent les largeurs :
@@ -1127,7 +1223,10 @@
       document.querySelectorAll('[data-scroll-top]').forEach(function (link) {
         link.addEventListener('click', function (e) {
           e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          // Sur la piste epinglee, le retour passe par le meme mouvement que
+          // les sauts d'ecran ; ailleurs, le defilement du navigateur suffit.
+          if (typeof window.ATEQO_goTo === 'function') window.ATEQO_goTo(0);
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       });
     })();

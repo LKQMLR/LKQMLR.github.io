@@ -72,10 +72,12 @@
          padding:0 clamp(16px,2.2vw,34px);
          background:var(--surface);border-bottom:1px solid var(--border);
          box-shadow:0 1px 12px rgba(15,25,35,.05)}
-    /* Le logo porte sa signature en tout petit : sous 170px de large, elle
-       n'est plus qu'une trainee grise. Le bandeau garde sa hauteur (--header),
-       seul le logo se resserre un peu, sans redescendre sous ce seuil. */
-    .wordmark{display:block;width:clamp(126px,10.2vw,176px)}
+    /* Le logo est cale sur la HAUTEUR du losange de droite : les deux marques
+       du bandeau pesent alors le meme poids, et la place gagnee revient au fil
+       d'Ariane. La baseline gravee dans l'image n'est plus lisible a cette
+       taille, ce qui est assume : le bandeau y gagne en sobriete, et la
+       signature reste lisible sur l'image de partage et les pages annexes. */
+    .wordmark{display:block;width:auto;height:clamp(26px,2.1vw,34px)}
     .top-right{display:flex;align-items:center;gap:clamp(12px,1.4vw,22px)}
     .lang-switch{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:600;letter-spacing:.2px}
     .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:inherit;
@@ -102,57 +104,74 @@
     .sig img{width:100%;height:auto;display:block}
 
     /* ── Fil d'Ariane ─────────────────────────────────────────────────────────
-       Quatre reperes tendus sur toute la largeur libre du bandeau, un par ecran
-       d'argument plus les tarifs. Le dernier ecran n'en a pas : il ne porte
-       qu'un appel au telechargement, deja fixe a l'ecran en permanence.
-       Le nav prend le reste de la ligne (flex:1) : les reperes s'ecartent donc
-       d'eux-memes quand la fenetre s'elargit, et le trait qui les relie devient
-       la mesure du chemin parcouru. */
-    .fil{--taille-etape:clamp(32px,2.7vw,40px);
+       Cinq reperes tendus sur toute la largeur libre du bandeau, un par ecran de
+       la piste. Le nav prend le reste de la ligne (flex:1) : les reperes
+       s'ecartent donc d'eux-memes quand la fenetre s'elargit, et le trait qui
+       les relie devient la mesure du chemin parcouru. */
+    /* Les cinq couleurs de la marque en composantes, dans l'ordre du logo :
+       A bleu, T vert, E orange, Q rose, O violet. Elles doublent --s1..--s5,
+       qui sont en hexadecimal et ne peuvent donc pas servir a composer les
+       transparences des filets et des halos. */
+    .fil{--c1:59,130,246;--c2:13,148,136;--c3:217,119,6;--c4:219,39,119;--c5:124,58,237;
+         --taille-etape:clamp(32px,2.7vw,40px);
+         /* Un seul motif de tirets, partage par le trait gris et le trait
+            colore : les deux se superposent au pixel pres, donc la couleur
+            recouvre exactement les tirets qu'elle depasse. */
+         --tirets:repeating-linear-gradient(90deg,#000 0 6px,transparent 6px 12px);
          position:relative;flex:1;display:flex;align-items:center;
-         justify-content:space-between;
-         margin:0 clamp(20px,3.4vw,58px)}
-    /* Le rail relie les CENTRES des reperes, pas les bords du bandeau : il part
-       donc en retrait d'un demi-repere de chaque cote, sinon il depasserait du
-       premier et du dernier. */
-    .fil-rail{position:absolute;top:50%;margin-top:-1px;height:2px;
-              left:calc(var(--taille-etape) / 2);right:calc(var(--taille-etape) / 2);
-              background:var(--border);border-radius:2px}
-    /* Le trait colore ne grandit pas : il se DEVOILE. Une largeur ou un scaleX
-       animes comprimeraient le degrade, et le bleu du depart glisserait vers la
-       gauche a chaque cran. Le decoupage laisse chaque couleur a sa place, sous
-       le repere dont elle porte la teinte : le trait arrive vert exactement sur
-       le repere vert. La valeur vient du defilement (avancerFil). */
-    .fil-rail-plein{position:absolute;inset:0;border-radius:2px;
-                    background:linear-gradient(90deg,var(--s1),var(--s2) 33.33%,var(--s3) 66.66%,var(--s4));
-                    clip-path:inset(0 calc(100% - var(--fil-avance,0%)) 0 0)}
-    /* Chaque etape porte la couleur de son ecran, la meme que le theme qui
-       s'allume en y arrivant : A bleu, T vert, E orange, Q rose. La teinte est
-       designee par l'ecran vise et non par le rang dans le bandeau : le rail
-       est lui aussi un enfant du nav, un selecteur de rang se decalerait. */
-    .fil-etape[data-ecran="0"]{--etape:59,130,246}
-    .fil-etape[data-ecran="1"]{--etape:13,148,136}
-    .fil-etape[data-ecran="2"]{--etape:217,119,6}
-    .fil-etape[data-ecran="3"]{--etape:219,39,119}
-    /* Le repere est opaque et passe DEVANT le rail : le trait gris le traverse
-       sans se voir, et parait s'arreter a chaque etape. */
-    .fil-etape{position:relative;z-index:1;
+         margin:0 clamp(16px,2.6vw,44px)}
+    /* Le chemin est fait de segments poses ENTRE les reperes, et non d'un rail
+       unique qui passerait derriere eux : c'est la seule facon d'obtenir un vrai
+       vide autour de chaque icone, qu'un trait masque par un fond opaque ne
+       donne pas. Chaque segment prend sa part de la largeur restante. */
+    .fil-segment{position:relative;flex:1;height:2px;
+                 margin:0 clamp(7px,.85vw,14px);
+                 background:repeating-linear-gradient(90deg,var(--border) 0 6px,transparent 6px 12px)}
+    /* Le trait colore ne grandit pas : il se DEVOILE, tiret apres tiret. Une
+       largeur animee comprimerait le motif et le degrade, et les tirets
+       glisseraient au lieu de se remplir. Chaque segment va de la couleur du
+       repere qu'il quitte a celle du repere qu'il rejoint. */
+    .fil-segment::after{content:"";position:absolute;inset:0;
+                        background:linear-gradient(90deg,rgb(var(--de)),rgb(var(--vers)));
+                        -webkit-mask:var(--tirets);mask:var(--tirets);
+                        clip-path:inset(0 calc(100% - var(--fil-segment,0%)) 0 0)}
+    .fil-segment:nth-of-type(1){--de:var(--c1);--vers:var(--c2)}
+    .fil-segment:nth-of-type(2){--de:var(--c2);--vers:var(--c3)}
+    .fil-segment:nth-of-type(3){--de:var(--c3);--vers:var(--c4)}
+    .fil-segment:nth-of-type(4){--de:var(--c4);--vers:var(--c5)}
+    /* La teinte du repere est designee par l'ecran vise et non par son rang :
+       les segments sont eux aussi des enfants du nav, un selecteur de rang se
+       decalerait. */
+    .fil-etape[data-ecran="0"]{--etape:var(--c1)}
+    .fil-etape[data-ecran="1"]{--etape:var(--c2)}
+    .fil-etape[data-ecran="2"]{--etape:var(--c3)}
+    .fil-etape[data-ecran="3"]{--etape:var(--c4)}
+    .fil-etape[data-ecran="4"]{--etape:var(--c5)}
+    /* Le repere ne rentre ni ne s'etire : ce sont les segments qui absorbent la
+       largeur de la fenetre. Son filet est un navy tres dilue plutot qu'un gris
+       franc, et l'ombre reste a peine perceptible : le cercle doit se lire comme
+       une gravure dans le bandeau, pas comme un bouton pose dessus. */
+    .fil-etape{position:relative;z-index:1;flex:none;
                display:flex;align-items:center;justify-content:center;
                width:var(--taille-etape);height:var(--taille-etape);
-               padding:0;border:1.5px solid var(--border);border-radius:50%;
+               padding:0;border:1px solid rgba(23,53,107,.12);border-radius:50%;
                background:var(--surface);color:var(--muted2);cursor:pointer;
-               transition:color .22s,border-color .22s,background-color .22s,transform .22s}
+               box-shadow:0 1px 3px rgba(15,25,35,.05);
+               transition:color .22s,border-color .22s,background-color .22s,
+                          box-shadow .22s,transform .22s}
     .fil-etape svg{width:52%;height:52%}
     /* Une etape que le trait a depassee garde sa couleur : un fil colore jusqu'au
        troisieme repere, avec les deux premiers restes gris, se lirait comme une
-       erreur d'affichage. Elle reste plus sobre que l'etape courante, qui seule
-       recoit un fond. */
-    .fil-etape.franchie{color:rgb(var(--etape));border-color:rgb(var(--etape))}
+       erreur d'affichage. Son filet reste en filigrane, l'etape courante etant
+       la seule a recevoir un fond et un halo. */
+    .fil-etape.franchie{color:rgb(var(--etape));border-color:rgba(var(--etape),.4)}
     /* Survol et etape courante partagent le meme habillage : on reconnait a
-       l'avance l'etat dans lequel le clic va laisser le repere. */
+       l'avance l'etat dans lequel le clic va laisser le repere. Le halo est un
+       cercle diffus de la couleur, pas un trait de plus. */
     .fil-etape:hover,.fil-etape:focus-visible,.fil-etape.active{
-      color:rgb(var(--etape));border-color:rgb(var(--etape));
-      background:rgba(var(--etape),.1)}
+      color:rgb(var(--etape));border-color:rgba(var(--etape),.8);
+      background:rgba(var(--etape),.07);
+      box-shadow:0 0 0 4px rgba(var(--etape),.1),0 2px 8px rgba(var(--etape),.16)}
     .fil-etape:hover{transform:translateY(-2px)}
     .fil-etape:focus-visible{outline:2px solid rgb(var(--etape));outline-offset:3px}
     /* Le nom de l'ecran, sous le repere : une icone seule ne dit pas ou elle
@@ -495,7 +514,9 @@
          verticale il n'a ni la place ni le meme geste de saut. A traiter a
          part, une fois la version bureau arretee. */
       .fil{display:none}
-      .wordmark{width:98px}
+      /* Toujours cale sur la hauteur, comme sur la version bureau : une largeur
+         imposee ici ecraserait l'image, la hauteur restant reglee plus haut. */
+      .wordmark{height:26px}
       .sig{width:25px}
       .gplay-fixe img{height:34px}
     }
@@ -549,36 +570,48 @@
          le bouton, pas en aria-label : il se lit au survol ET donne son nom
          accessible au repere, sans dire deux choses differentes. -->
     <nav class="fil" data-i18n-aria="fil.aria" aria-label="Sections du site">
-      <!-- Le chemin parcouru, purement visuel : les reperes disent deja tout ce
-           qu'un lecteur d'ecran a besoin d'entendre. -->
-      <div class="fil-rail" aria-hidden="true"><span class="fil-rail-plein"></span></div>
+      <!-- Les segments du chemin sont purement visuels : les reperes disent deja
+           tout ce qu'un lecteur d'ecran a besoin d'entendre. Ils sont dans le
+           flux, entre deux reperes, pour menager un vrai vide autour des
+           icones. -->
       <button type="button" class="fil-etape" data-ecran="0">
-        <!-- Un colis : ce que la tournee transporte. -->
+        <!-- Colis avec un plus : livrer davantage. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 8h18v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8z"/><path d="M3 8l2-4h14l2 4"/><path d="M12 4v16"/>
+          <path d="M12 22V12"/><path d="M16 17h6"/><path d="M19 14v6"/><path d="M21 10.535V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.675-.955"/><path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 8.997 5.148"/>
         </svg>
         <span class="fil-nom" data-i18n="fil.t1">Livrer plus</span>
       </button>
+      <span class="fil-segment" aria-hidden="true"></span>
       <button type="button" class="fil-etape" data-ecran="1">
-        <!-- Un euro : le gain, sans detour par une metaphore. -->
+        <!-- Tirelire : ce que la tournee rapporte. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M18 6.5A7.5 7.5 0 1 0 18 17.5"/><path d="M4 10h9"/><path d="M4 14h9"/>
+          <path d="M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z"/><path d="M16 10h.01"/><path d="M2 8v1a2 2 0 0 0 2 2h1"/>
         </svg>
         <span class="fil-nom" data-i18n="fil.t2">Gagner plus</span>
       </button>
+      <span class="fil-segment" aria-hidden="true"></span>
       <button type="button" class="fil-etape" data-ecran="2">
-        <!-- Un carnet : les tournees et les adresses qu'on garde. -->
+        <!-- Feuille de route : les tournees et les adresses qu'on garde. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 3h13v18H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M9 8h7"/><path d="M9 12h7"/>
+          <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>
         </svg>
         <span class="fil-nom" data-i18n="fil.t3">Gérer mieux</span>
       </button>
+      <span class="fil-segment" aria-hidden="true"></span>
       <button type="button" class="fil-etape" data-ecran="3">
-        <!-- Une etiquette de prix. -->
+        <!-- Gemme : la formule qu'on choisit. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/>
+          <path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/>
         </svg>
         <span class="fil-nom" data-i18n="fil.t4">Tarifs</span>
+      </button>
+      <span class="fil-segment" aria-hidden="true"></span>
+      <button type="button" class="fil-etape" data-ecran="4">
+        <!-- Camion : le depart en tournee, ecran d'appel au telechargement. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
+        </svg>
+        <span class="fil-nom" data-i18n="fil.t5">Télécharger</span>
       </button>
     </nav>
 
@@ -843,6 +876,7 @@
         'fil.t2': 'Gagner plus',
         'fil.t3': 'Gérer mieux',
         'fil.t4': 'Tarifs',
+        'fil.t5': 'Télécharger',
         // Adresses d'exemple, partagees par les maquettes.
         // ── Livre plus ──
         't1.title': 'Livrez <em>plus.</em>',
@@ -917,6 +951,7 @@
         'fil.t2': 'Earn more',
         'fil.t3': 'Manage better',
         'fil.t4': 'Pricing',
+        'fil.t5': 'Download',
         
         't1.title': 'Deliver <em>more.</em>',
         'bloc.secteurs.titre': 'Plan your day',
@@ -1167,8 +1202,6 @@
       // ensuite de suivre l'ecran a l'affiche. Le repli par scrollIntoView sert
       // au navigateur qui refuse les animations : la piste n'existe pas, mais
       // les sections restent atteignables.
-      // Le dernier ecran n'a volontairement pas de repere : arrive sur lui,
-      // aucune etape n'est allumee, ce qui est l'etat juste.
       var etapesFil = Array.prototype.slice.call(document.querySelectorAll('.fil-etape'));
 
       function marquerEtape(indexEcran) {
@@ -1181,23 +1214,27 @@
       }
 
       // Le trait suit le defilement, pas les sauts d'ecran : il avance sans
-      // a-coup pendant tout le glissement. Le rail va du PREMIER au DERNIER
-      // repere, alors que la piste compte un ecran de plus : sur les tarifs
-      // (dernier repere) il doit etre plein, et le rester sur l'ecran final,
-      // qui n'a volontairement pas de repere. D'ou la mise a l'echelle par le
-      // nombre d'intervalles de chaque cote.
-      var filAriane = document.querySelector('.fil');
+      // a-coup pendant tout le glissement. Le chemin va du PREMIER au DERNIER
+      // repere ; la mise a l'echelle par le nombre d'intervalles de chaque cote
+      // le garde juste si un ecran ou un repere venait a s'ajouter.
+      var segmentsFil = Array.prototype.slice.call(document.querySelectorAll('.fil-segment'));
 
       function avancerFil(avanceDeLaPiste) {
         var dernierRepere = etapesFil.length - 1;
         if (dernierRepere < 1) return;
         var avance = avanceDeLaPiste * (slides.length - 1) / dernierRepere;
         avance = Math.max(0, Math.min(1, avance));
-        if (filAriane) filAriane.style.setProperty('--fil-avance', (avance * 100).toFixed(2) + '%');
         etapesFil.forEach(function (etape, rang) {
           // La tolerance absorbe l'arrondi du calcul : sans elle, un repere
           // atteint pile poil resterait gris sous un trait deja colore.
           etape.classList.toggle('franchie', avance >= rang / dernierRepere - 0.002);
+        });
+        segmentsFil.forEach(function (segment, rang) {
+          // Chaque segment ne connait que sa propre portion du chemin : le
+          // premier se remplit du repere 1 au 2, le suivant du 2 au 3, et ainsi
+          // de suite. Un seul est donc en cours de remplissage a la fois.
+          var part = Math.max(0, Math.min(1, avance * segmentsFil.length - rang));
+          segment.style.setProperty('--fil-segment', (part * 100).toFixed(2) + '%');
         });
       }
 

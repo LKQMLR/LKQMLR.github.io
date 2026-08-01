@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow">
+<title>ATEQO · Advertising and Google Ads API</title>
+<meta name="description" content="How ATEQO advertises and how the Google Ads API is used: a single advertiser account, an internal tool, no third-party clients.">
+<link rel="canonical" href="https://ateqo.fr/ads-api/index.en.html">
+<link rel="alternate" hreflang="fr" href="index.html">
+<link rel="alternate" hreflang="en" href="index.en.html">
+<link rel="icon" href="../img/logo_ateqo.png">
+<style>
+  :root {
+    /* ATEQO palette, aligned with the other secondary pages (see /mentions-legales). */
+    --bg: #f1f4f7;
+    --surface: #ffffff;
+    --surface2: #f6f8fb;
+    --text: #0f1923;
+    --text2: #515151;
+    --text3: #8a929b;
+    --accent: #2563eb;
+    --border: #e3e7ec;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(160deg, #ffffff, #eef2f7) no-repeat fixed;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 32px 16px 64px;
+    min-height: 100vh;
+  }
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(15,25,35,.06);
+    padding: 40px 36px;
+  }
+  h1 { font-size: 1.6rem; line-height: 1.25; margin-bottom: 8px; color: var(--text); }
+  .logo {
+    display: inline-block;
+    margin-bottom: 18px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .logo span:nth-child(1) { color: #3b82f6; }
+  .logo span:nth-child(2) { color: #0d9488; }
+  .logo span:nth-child(3) { color: #d97706; }
+  .logo span:nth-child(4) { color: #db2777; }
+  .logo span:nth-child(5) { color: #7c3aed; }
+  .lang-switch {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+  }
+  .lang-switch a {
+    padding: 3px 11px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text2);
+  }
+  .lang-switch a.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .lang-switch a.active:hover { text-decoration: none; }
+  .version { color: var(--text2); font-size: 0.86rem; margin-bottom: 28px; }
+  h2 {
+    font-size: 1.18rem;
+    margin: 32px 0 12px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  p, ul, ol { margin-bottom: 14px; color: var(--text); font-size: 0.95rem; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--text2); }
+  .encadre {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .encadre p:last-child { margin-bottom: 0; }
+  footer {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<main>
+
+<div class="lang-switch">
+  <a href="index.html" data-lang="fr">FR</a>
+  <a href="index.en.html" class="active" data-lang="en">EN</a>
+</div>
+
+<a href="/" style="text-decoration:none;"><div class="logo"><span>A</span><span>T</span><span>E</span><span>Q</span><span>O</span></div></a>
+
+<h1>Advertising and Google Ads API</h1>
+<p class="version">Published on 1 August 2026.</p>
+
+<p>This page states who publishes ATEQO, how the service is funded, and exactly how the Google Ads API is used. It is published so that this information can be verified publicly, without having to ask us for it.</p>
+
+<h2>1. Who we are</h2>
+<p>ATEQO is a mobile application that optimizes delivery routes for professional drivers. It is distributed on Google Play under the package name <em>com.lkqmlr.cargo</em>.</p>
+<p>It is published by a natural person acting in an individual capacity, an independent developer and working professional delivery driver. The publisher's full identity and contact details are given in the <a href="/mentions-legales/index.en.html">legal notice</a>.</p>
+
+<h2>2. Our business model</h2>
+<p>The service is sold directly to the end user, on a subscription basis:</p>
+<ul>
+  <li>a <strong>free tier</strong> with usage limits;</li>
+  <li>a <strong>paid tier</strong> preceded by a 14-day free trial, billed monthly or annually.</li>
+</ul>
+<p>Subscriptions are purchased, billed and managed through Google Play. We do not resell any data, we display no advertising inside the application, and we invoice no service to third parties. Current pricing is shown on the <a href="/">home page</a>.</p>
+
+<h2>3. Why we advertise</h2>
+<p>Our users are professional delivery drivers, an audience that organic search alone reaches poorly. We therefore buy online advertising, Google Ads in particular, to make the application known and to measure the cost of acquiring a subscriber.</p>
+<p>We are <strong>the publisher of the application and the sole advertiser</strong> involved. We are not an agency, not a reseller, and we have no clients.</p>
+
+<h2>4. How we use the Google Ads API</h2>
+<p>The tool we are building is a <strong>small internal command-line utility</strong>. It authenticates with a single OAuth refresh token and operates exclusively on our own advertiser account, linked to our own manager account. It performs four things:</p>
+<ol>
+  <li><strong>Campaign management</strong>: creating and updating our own campaigns, ad groups, ads and keywords from version-controlled definitions, so that our account structure is reproducible rather than hand-edited.</li>
+  <li><strong>Budget and bidding</strong>: adjusting daily budgets and bidding strategy targets based on measured performance.</li>
+  <li><strong>Reporting</strong>: pulling cost, conversion and CPA metrics through <em>GoogleAdsService.search</em> queries, to reconcile advertising spend with our internal product analytics and compute the true return on ad spend of our subscription.</li>
+  <li><strong>Negative optimization</strong>: automatically pausing keywords, placements and search terms that consume budget without converting.</li>
+</ol>
+
+<h2>5. What the tool does not do</h2>
+<div class="encadre">
+  <p>It has no user interface, no multi-tenancy and no notion of accounts other than our own. It is operated by one person, and runs locally and on a scheduler.</p>
+  <p>It is not sold, not distributed and not offered under any white label. It processes no data belonging to a third party, retrieves no data from an account we do not own, and exposes no Google Ads data outside our own internal use.</p>
+</div>
+
+<h2>6. Compliance</h2>
+<p>The usage described above complies with the <a href="https://developers.google.com/google-ads/api/docs/policy" target="_blank" rel="noopener">Google Ads API Policies</a> and the Google Ads Terms of Service. The performance data we retrieve is used solely to steer our own campaigns, and is neither shared nor resold.</p>
+<p>The processing of our users' personal data is described in our <a href="/policy/index.en.html">privacy policy</a>. Website analytics, including the measurement of our advertising campaigns, is enabled only after explicit consent, as stated in the <a href="/mentions-legales/index.en.html">legal notice</a>.</p>
+
+<h2>7. Contact</h2>
+<p>For any question about this page or about our use of the API: <a href="mailto:cargo.app.admin@gmail.com">cargo.app.admin@gmail.com</a></p>
+
+<footer>
+  Information page on the use of the Google Ads API by the publisher of ATEQO.
+  <div style="margin-top:12px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="/" style="color:var(--accent);">← Back to ATEQO</a>
+    <a href="/mentions-legales/index.en.html" style="color:var(--accent);">Legal notice</a>
+    <a href="/policy/index.en.html" style="color:var(--accent);">Privacy</a>
+    <a href="mailto:cargo.app.admin@gmail.com" style="color:var(--accent);">Contact</a>
+  </div>
+</footer>
+
+</main>
+
+<script>
+  /* The language switch on secondary pages writes the same key as the home page
+     (see index.html), so that navigation stays in a single language. */
+  document.querySelectorAll('.lang-switch a[data-lang]').forEach(function (languageLink) {
+    languageLink.addEventListener('click', function () {
+      try { localStorage.setItem('ateqo_site_lang', languageLink.getAttribute('data-lang')); }
+      catch (e) { /* storage unavailable */ }
+    });
+  });
+</script>
+
+</body>
+</html>

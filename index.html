@@ -101,6 +101,45 @@
     .sig:hover{transform:translateY(-2px)}
     .sig img{width:100%;height:auto;display:block}
 
+    /* ── Fil d'Ariane ─────────────────────────────────────────────────────────
+       Quatre reperes au centre du bandeau, un par ecran d'argument plus les
+       tarifs. Le dernier ecran n'en a pas : il ne porte qu'un appel au
+       telechargement, deja fixe a l'ecran en permanence.
+       Le centrage passe par un positionnement absolu et non par le flux du
+       bandeau : en flux, le milieu se decalerait a chaque fois que le logo ou
+       le bloc de droite change de largeur (langue, palier de taille). */
+    .fil{position:absolute;left:50%;transform:translateX(-50%);
+         display:flex;align-items:center;gap:clamp(10px,1.3vw,20px)}
+    /* Chaque etape porte la couleur de son ecran, la meme que le theme qui
+       s'allume en y arrivant : A bleu, T vert, E orange, Q rose. */
+    .fil-etape:nth-child(1){--etape:59,130,246}
+    .fil-etape:nth-child(2){--etape:13,148,136}
+    .fil-etape:nth-child(3){--etape:217,119,6}
+    .fil-etape:nth-child(4){--etape:219,39,119}
+    .fil-etape{position:relative;display:flex;align-items:center;justify-content:center;
+               width:clamp(34px,2.8vw,40px);height:clamp(34px,2.8vw,40px);
+               padding:0;border:1.5px solid var(--border);border-radius:50%;
+               background:var(--surface);color:var(--muted2);cursor:pointer;
+               transition:color .22s,border-color .22s,background-color .22s,transform .22s}
+    .fil-etape svg{width:52%;height:52%}
+    /* Survol et etape courante partagent le meme habillage : on reconnait a
+       l'avance l'etat dans lequel le clic va laisser le repere. */
+    .fil-etape:hover,.fil-etape:focus-visible,.fil-etape.active{
+      color:rgb(var(--etape));border-color:rgb(var(--etape));
+      background:rgba(var(--etape),.1)}
+    .fil-etape:hover{transform:translateY(-2px)}
+    .fil-etape:focus-visible{outline:2px solid rgb(var(--etape));outline-offset:3px}
+    /* Le nom de l'ecran, sous le repere : une icone seule ne dit pas ou elle
+       mene. Il n'est pas masque mais transparent, pour rester le nom du bouton
+       aux lecteurs d'ecran. Il deborde sous le bandeau, qui ne rogne rien. */
+    .fil-nom{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);
+             white-space:nowrap;font-size:.72rem;font-weight:600;letter-spacing:.2px;
+             color:var(--ink);background:var(--surface);
+             border:1px solid var(--border);border-radius:4px;padding:4px 9px;
+             box-shadow:0 4px 4px rgba(0,0,0,.08);
+             opacity:0;pointer-events:none;transition:opacity .18s}
+    .fil-etape:hover .fil-nom,.fil-etape:focus-visible .fil-nom{opacity:1}
+
     /* Indice de defilement, sur la premiere section seulement. */
     .hint{position:fixed;left:clamp(20px,3vw,44px);bottom:clamp(18px,2.4vw,32px);z-index:58;
           display:flex;align-items:center;gap:10px;font-size:.74rem;font-weight:600;
@@ -426,6 +465,10 @@
       /* Le bandeau reste la mesure de la page, simplement plus court ici. */
       :root{--header:54px}
       .top{padding:0 16px}
+      /* Le fil d'Ariane est regle pour la piste horizontale : sur la pile
+         verticale il n'a ni la place ni le meme geste de saut. A traiter a
+         part, une fois la version bureau arretee. */
+      .fil{display:none}
       .wordmark{width:98px}
       .sig{width:25px}
       .gplay-fixe img{height:34px}
@@ -473,6 +516,43 @@
     <a href="#top" data-scroll-top data-i18n-aria="brand.aria" aria-label="ATEQO · retour au début">
       <img class="wordmark" src="./img/logo_hero.png" data-i18n-alt="brand.alt" alt="ATEQO · L'itinéraire qui te suit" />
     </a>
+
+    <!-- Fil d'Ariane : un repere par ecran, pour passer de l'un a l'autre sans
+         derouler toute la piste. data-ecran est l'index de la section dans
+         .track, celui-la meme qu'attend ATEQO_goTo. Le nom de l'ecran est dans
+         le bouton, pas en aria-label : il se lit au survol ET donne son nom
+         accessible au repere, sans dire deux choses differentes. -->
+    <nav class="fil" data-i18n-aria="fil.aria" aria-label="Sections du site">
+      <button type="button" class="fil-etape" data-ecran="0">
+        <!-- Un colis : ce que la tournee transporte. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 8h18v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8z"/><path d="M3 8l2-4h14l2 4"/><path d="M12 4v16"/>
+        </svg>
+        <span class="fil-nom" data-i18n="fil.t1">Livrer plus</span>
+      </button>
+      <button type="button" class="fil-etape" data-ecran="1">
+        <!-- Un euro : le gain, sans detour par une metaphore. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6.5A7.5 7.5 0 1 0 18 17.5"/><path d="M4 10h9"/><path d="M4 14h9"/>
+        </svg>
+        <span class="fil-nom" data-i18n="fil.t2">Gagner plus</span>
+      </button>
+      <button type="button" class="fil-etape" data-ecran="2">
+        <!-- Un carnet : les tournees et les adresses qu'on garde. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 3h13v18H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M9 8h7"/><path d="M9 12h7"/>
+        </svg>
+        <span class="fil-nom" data-i18n="fil.t3">Gérer mieux</span>
+      </button>
+      <button type="button" class="fil-etape" data-ecran="3">
+        <!-- Une etiquette de prix. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M7.5 7.5h.01"/>
+        </svg>
+        <span class="fil-nom" data-i18n="fil.t4">Tarifs</span>
+      </button>
+    </nav>
+
     <div class="top-right">
       <div class="lang-switch">
         <button type="button" data-lang-btn="fr">FR</button>
@@ -583,7 +663,11 @@
        <div class="field">
         <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
 
-        <figure class="viz bloc" style="left:25%;bottom:0%;width:min(510px,26.6vw,33vh)">
+        <!-- A cette taille, la capture n'a plus la place de rester a gauche du
+             titre sans le toucher : elle passe DERRIERE lui (z-index 1 contre
+             2, comme optimisation en un clic) plutot que de l'entamer. Le
+             titre reste net par-dessus, l'image lisible en dessous. -->
+        <figure class="viz bloc" style="left:4%;bottom:0%;width:min(680px,35.4vw,44vh);z-index:1">
           <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Enregistre tes tournées</h3>
           <div class="bloc-shot">
             <img src="./img/captures/carnet.png" width="529" height="456"
@@ -724,6 +808,12 @@
         'brand.alt': "ATEQO · L'itinéraire qui te suit",
         'badge.alt': 'Disponible sur Google Play',
         'hint.scroll': 'Fais défiler',
+        // ── Fil d'Ariane du bandeau ──
+        'fil.aria': 'Sections du site',
+        'fil.t1': 'Livrer plus',
+        'fil.t2': 'Gagner plus',
+        'fil.t3': 'Gérer mieux',
+        'fil.t4': 'Tarifs',
         // Adresses d'exemple, partagees par les maquettes.
         // ── Livre plus ──
         't1.title': 'Livrez <em>plus.</em>',
@@ -792,6 +882,12 @@
         'brand.alt': 'ATEQO · The route that follows you',
         'badge.alt': 'Get it on Google Play',
         'hint.scroll': 'Scroll',
+        // ── Fil d'Ariane du bandeau ──
+        'fil.aria': 'Site sections',
+        'fil.t1': 'Deliver more',
+        'fil.t2': 'Earn more',
+        'fil.t3': 'Manage better',
+        'fil.t4': 'Pricing',
         
         't1.title': 'Deliver <em>more.</em>',
         'bloc.secteurs.titre': 'Plan your day',
@@ -1036,13 +1132,44 @@
         hint.style.pointerEvents = 'none';
       }
 
+      // ── Fil d'Ariane du bandeau ─────────────────────────────────────────────
+      // Les reperes n'ont aucune mecanique a eux : ils declenchent le saut deja
+      // utilise par la molette et le clavier (ATEQO_goTo), et se contentent
+      // ensuite de suivre l'ecran a l'affiche. Le repli par scrollIntoView sert
+      // au navigateur qui refuse les animations : la piste n'existe pas, mais
+      // les sections restent atteignables.
+      // Le dernier ecran n'a volontairement pas de repere : arrive sur lui,
+      // aucune etape n'est allumee, ce qui est l'etat juste.
+      var etapesFil = Array.prototype.slice.call(document.querySelectorAll('.fil-etape'));
+
+      function marquerEtape(indexEcran) {
+        etapesFil.forEach(function (etape) {
+          var estCourante = parseInt(etape.getAttribute('data-ecran'), 10) === indexEcran;
+          etape.classList.toggle('active', estCourante);
+          if (estCourante) etape.setAttribute('aria-current', 'true');
+          else etape.removeAttribute('aria-current');
+        });
+      }
+
+      etapesFil.forEach(function (etape) {
+        etape.addEventListener('click', function () {
+          var indexEcran = parseInt(etape.getAttribute('data-ecran'), 10);
+          if (typeof window.ATEQO_goTo === 'function') window.ATEQO_goTo(indexEcran);
+          else if (slides[indexEcran]) slides[indexEcran].scrollIntoView({ behavior: 'smooth' });
+          marquerEtape(indexEcran);
+        });
+      });
+      marquerEtape(0);
+
       // ── Repli : sans GSAP ou animations refusees, la page reste lisible ─────
       var animationsAllowed = !!window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!animationsAllowed) {
         if ('IntersectionObserver' in window) {
           var basicObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
-              if (entry.isIntersecting) showTheme(parseInt(entry.target.getAttribute('data-theme'), 10));
+              if (!entry.isIntersecting) return;
+              showTheme(parseInt(entry.target.getAttribute('data-theme'), 10));
+              marquerEtape(slides.indexOf(entry.target));
             });
           }, { threshold: 0.4 });
           slides.forEach(function (slide) { basicObserver.observe(slide); });
@@ -1296,7 +1423,13 @@
             start: 'left 55%',
             end: 'right 45%',
             onToggle: function (self) {
-              if (self.isActive) showTheme(parseInt(element.getAttribute('data-theme'), 10));
+              if (!self.isActive) return;
+              showTheme(parseInt(element.getAttribute('data-theme'), 10));
+              // Le fil d'Ariane bascule au meme moment que la teinte : c'est le
+              // seul endroit qui sait quel ecran occupe vraiment la fenetre,
+              // quelle que soit la maniere d'y etre arrive (molette, clavier,
+              // clic sur un repere).
+              marquerEtape(index);
             }
           });
           // Le montage ne peut pas dependre du seul geste : un ecran atteint

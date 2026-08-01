@@ -832,7 +832,11 @@
     </section>
 
     <!-- ══ FIN ═══════════════════════════════════════════════════════════════ -->
-    <section class="slide end t1" data-theme="0">
+    <!-- Le violet du O ferme la traversee, et la marque a donne ses cinq
+         couleurs dans l'ordre de ses lettres. Cet ecran ne porte donc aucune
+         classe de theme : son fond violet vient de .slide.end .stage, et une
+         classe t1 y aurait superpose un halo bleu. -->
+    <section class="slide end" data-theme="4">
       <div class="stage">
         <div class="end-block">
           <h2 data-i18n="end.title">Prêt à optimiser ta tournée ?</h2>
@@ -1095,7 +1099,9 @@
        lisible : les demonstrations affichent directement leur etat final. */
     (function () {
       // Les cinq couleurs de secteur, dans l'ordre des lettres A-T-E-Q-O.
-      // L'ecran des tarifs prend celle du Q, les trois themes gardent les leurs.
+      // Les trois themes gardent les leurs, l'ecran des tarifs prend celle du Q
+      // et l'ecran final celle du O : un ecran, une lettre, et le fil d'Ariane
+      // du bandeau porte les memes teintes dans le meme ordre.
       var THEME_COLORS = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)'];
 
       var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));

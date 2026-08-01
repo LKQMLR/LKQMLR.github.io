@@ -73,8 +73,9 @@
          background:var(--surface);border-bottom:1px solid var(--border);
          box-shadow:0 1px 12px rgba(15,25,35,.05)}
     /* Le logo porte sa signature en tout petit : sous 170px de large, elle
-       n'est plus qu'une trainee grise. Le bandeau est dimensionne pour elle. */
-    .wordmark{display:block;width:clamp(140px,11.4vw,196px)}
+       n'est plus qu'une trainee grise. Le bandeau garde sa hauteur (--header),
+       seul le logo se resserre un peu, sans redescendre sous ce seuil. */
+    .wordmark{display:block;width:clamp(126px,10.2vw,176px)}
     .top-right{display:flex;align-items:center;gap:clamp(12px,1.4vw,22px)}
     .lang-switch{display:flex;align-items:center;gap:7px;font-size:.76rem;font-weight:600;letter-spacing:.2px}
     .lang-switch button{border:none;background:transparent;font-family:inherit;font-size:inherit;
@@ -238,6 +239,12 @@
     .note.h3{--bub:245,221,192;--bub-ink:#b45309}   /* orange     */
     .note.h4{--bub:246,201,221;--bub-ink:#be185d}   /* rose       */
     .note.h5{--bub:222,205,250;--bub-ink:#6d28d9}   /* violet     */
+    /* Seule bulle a porter un avantage chiffre plutot qu'un commentaire : elle
+       reprend le meme cadre que les cartes de formule juste en dessous (fond
+       blanc, filet, coins, ombre deja communs) plutot que l'aplat pastel des
+       commentaires, pour se lire comme faisant partie de l'offre. */
+    .note-avantage{background:var(--surface);border:1px solid var(--border);
+                   border-radius:var(--radius);color:var(--ink);font-weight:700}
     /* La marque garde ses cinq couleurs de secteur partout ou elle est ecrite,
        comme le logo et comme sur la maquette. D'une seule encre au milieu d'une
        phrase, elle passait pour un mot ordinaire. */
@@ -265,6 +272,10 @@
        L'ombre est deja dans la capture, il n'y en a pas a ajouter ici. */
     .viz{z-index:2;position:absolute}
     .viz img{display:block;width:100%;height:auto}
+    /* La saisie vocale vient d'un export different des six autres captures :
+       seule celle-ci n'a pas son ombre incrustee. Meme valeur que partout
+       ailleurs sur le site (0 4 4, noir a 25%), posee cette fois en filtre. */
+    .viz img.sans-ombre{filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
     /* Le sous-titre est colle a sa capture : c'est l'ecart de la saisie vocale,
        retenu comme norme pour tous les blocs. Plus large, le titre et l'image se
        lisaient comme deux elements distincts au lieu d'un seul encart. */
@@ -415,7 +426,7 @@
       /* Le bandeau reste la mesure de la page, simplement plus court ici. */
       :root{--header:54px}
       .top{padding:0 16px}
-      .wordmark{width:108px}
+      .wordmark{width:98px}
       .sig{width:25px}
       .gplay-fixe img{height:34px}
     }
@@ -505,7 +516,7 @@
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:54%;bottom:4%;width:min(470px,24.5vw,38.5vh)">
+        <figure class="viz bloc" style="left:52%;bottom:2%;width:min(510px,26.6vw,40vh)">
           <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Organise ta journée</h3>
           <div class="bloc-shot">
             <img src="./img/captures/secteurs.png" width="518" height="360"
@@ -554,12 +565,12 @@
              capture, or elle est passee a droite. Le supprimer rend au bloc les
              300px qu'il reservait, et la borne de hauteur porte enfin sur la
              capture seule au lieu de la capture plus son vide. -->
-        <figure class="viz bloc" style="left:67.5%;bottom:2%;width:min(307px,16vw,22vh)">
+        <figure class="viz bloc" style="left:75.5%;bottom:12%;width:min(280px,14.6vw,20vh)">
           <h3 class="bloc-titre" data-i18n="bloc.carte.titre">Carte interactive</h3>
           <div class="bloc-shot">
             <img src="./img/captures/carte.png" width="307" height="399"
                  data-i18n-alt="bloc.carte.alt" alt="Écran ATEQO : l'arrêt en cours sur la carte, avec ses actions" loading="lazy" />
-            <p class="note h5" style="left:72%;top:26%" data-i18n="bloc.carte.bulle">Gère tes points d'arrêt directement sur la carte.</p>
+            <p class="note h5" style="left:-118%;top:26%" data-i18n="bloc.carte.bulle">Gère tes points d'arrêt directement sur la carte.</p>
           </div>
         </figure>
        </div>
@@ -572,7 +583,7 @@
        <div class="field">
         <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
 
-        <figure class="viz bloc" style="left:13%;bottom:2%;width:min(440px,22.9vw,33vh)">
+        <figure class="viz bloc" style="left:25%;bottom:0%;width:min(510px,26.6vw,33vh)">
           <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Enregistre tes tournées</h3>
           <div class="bloc-shot">
             <img src="./img/captures/carnet.png" width="529" height="456"
@@ -581,10 +592,12 @@
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:59%;top:6%;width:min(300px,15.6vw)">
+        <figure class="viz bloc" style="left:59%;top:8%;width:min(300px,15.6vw)">
           <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/voix.png" width="300" height="189"
+            <!-- Seule capture sans ombre deja incrustee (export different des
+                 six autres) : elle recoit la meme (0,4,4) par CSS. -->
+            <img class="sans-ombre" src="./img/captures/voix.png" width="300" height="189"
                  data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" loading="lazy" />
             <!-- Calee sur la ligne d'adresse (77-83% de la hauteur de la
                  capture) : elle en recouvre la moitie droite, on comprend que
@@ -617,8 +630,8 @@
              et rappelle ce que l'inscription donne avant tout paiement. Elle
              vit dans un .viz pour heriter de l'arrivee et du flottement des
              autres bulles, et redevient statique dans son cadre. -->
-        <figure class="viz" style="left:62%;top:8%">
-          <p class="note h2" style="position:static" data-i18n="plans.bulle">7 tournées offertes à l'inscription</p>
+        <figure class="viz" style="left:14%;top:5%">
+          <p class="note h2 note-avantage" style="position:static" data-i18n="plans.bulle">7 tournées offertes à l'inscription</p>
         </figure>
 
         <div class="viz formules" style="left:18%;top:38%;width:64%">

@@ -21,7 +21,7 @@
   var CONFIG = {
     // GA4 : Administration > Flux de donnees > flux Web > « ID de mesure ».
     // Format G-XXXXXXXXXX.
-    GA4_ID: '',
+    GA4_ID: 'G-76H13RYB1T',
 
     // Google Ads : Objectifs > Conversions > action « Clic vers Google Play » >
     // « Installer la balise ». L'extrait affiche send_to: 'AW-000000000/AbC_dEf' :
@@ -73,6 +73,25 @@
   function writeConsent(state) {
     writeStore(STATE_KEY, state);
     writeStore(DATE_KEY, String(Date.now()));
+  }
+
+  // ── Notification d'etat ─────────────────────────────────────────────────────
+  // Certaines pages doivent adapter leur comportement a la banniere : les pages
+  // relais suspendent leur redirection automatique tant qu'une reponse est
+  // attendue. Le module leur annonce donc son etat, 'pending' pendant l'attente
+  // puis 'granted' ou 'denied' une fois le choix fait. Une page qui n'ecoute pas
+  // cet evenement n'est pas concernee, et une page dont le module est absent
+  // (identifiants vides, bloqueur de publicite) n'en recoit simplement aucun.
+  var CONSENT_EVENT_NAME = 'ateqo:consent';
+
+  function notifyConsentState(state) {
+    var notification;
+    try {
+      notification = new CustomEvent(CONSENT_EVENT_NAME, { detail: { state: state } });
+    } catch (e) {
+      return; // navigateur sans CustomEvent : la page garde son comportement par defaut
+    }
+    document.dispatchEvent(notification);
   }
 
   function detectLang() {
@@ -135,6 +154,17 @@
         send_to: CONFIG.ADS_ID + '/' + CONFIG.ADS_LABEL,
       });
     }
+  }
+
+  // Les pages relais (/download, /ateqo) partent seules vers Google Play au bout
+  // de quelques secondes. Ce depart n'est pas un clic : aucun ecouteur ne le
+  // voit. On le compte dans GA4 pour connaitre le volume reel de ces pages, mais
+  // PAS comme conversion Google Ads : une redirection automatique n'est pas un
+  // acte volontaire, la compter gonflerait artificiellement les campagnes.
+  function trackAutoRedirect() {
+    if (!tagLoaded || typeof window.gtag !== 'function') return;
+    if (!CONFIG.GA4_ID) return;
+    window.gtag('event', 'click_play_store', { link_position: 'redirection_auto' });
   }
 
   document.addEventListener('click', function (ev) {
@@ -243,7 +273,11 @@
     deny.type = 'button';
     deny.className = 'ac-deny';
     deny.textContent = txt.deny;
-    deny.addEventListener('click', function () { writeConsent('denied'); hideBanner(); });
+    deny.addEventListener('click', function () {
+      writeConsent('denied');
+      hideBanner();
+      notifyConsentState('denied');
+    });
 
     var accept = document.createElement('button');
     accept.type = 'button';
@@ -253,6 +287,7 @@
       writeConsent('granted');
       hideBanner();
       loadGoogleTag();
+      notifyConsentState('granted');
     });
 
     btns.appendChild(deny);
@@ -291,6 +326,15 @@
     showBanner();
   });
 
+  // ── API publique ────────────────────────────────────────────────────────────
+  // Definie avant le demarrage : init() previent les pages qui l'ecoutent, et
+  // celles-ci doivent pouvoir repondre sans attendre la fin de ce fichier.
+  window.ateqoConsent = {
+    open: showBanner,
+    state: readConsent,
+    trackAutoRedirect: trackAutoRedirect,
+  };
+
   // ── Demarrage ───────────────────────────────────────────────────────────────
   function init() {
     // Le lien « Cookies » du pied de page est masque dans le HTML : on ne le
@@ -299,9 +343,10 @@
     for (var i = 0; i < openers.length; i++) openers[i].removeAttribute('hidden');
 
     var state = readConsent();
-    if (state === 'granted') { loadGoogleTag(); return; }
-    if (state === 'denied') return;
+    if (state === 'granted') { loadGoogleTag(); notifyConsentState('granted'); return; }
+    if (state === 'denied') { notifyConsentState('denied'); return; }
     showBanner();
+    notifyConsentState('pending');
   }
 
   if (document.readyState === 'loading') {
@@ -309,8 +354,6 @@
   } else {
     init();
   }
-
-  window.ateqoConsent = { open: showBanner, state: readConsent };
 })();
 
 /* ── Note importante sur la lecture des chiffres ───────────────────────────────

@@ -106,6 +106,10 @@
     text-align: center;
   }
 </style>
+
+<!-- Mesure d'audience : meme module que l'accueil, rien n'est depose avant le
+     consentement du visiteur. -->
+<script src="/assets/analytics.js?v=2" defer></script>
 </head>
 <body>
 <main>
@@ -167,6 +171,9 @@
     <a href="/mentions-legales/index.en.html" style="color:var(--accent);">Legal notice</a>
     <a href="/policy/index.en.html" style="color:var(--accent);">Privacy</a>
     <a href="mailto:cargo.app.admin@gmail.com" style="color:var(--accent);">Contact</a>
+    <!-- Retrait du consentement : revele par assets/analytics.js quand une
+         mesure est active. -->
+    <a href="#" data-consent-open style="color:var(--accent);" hidden>Cookies</a>
   </div>
 </footer>
 

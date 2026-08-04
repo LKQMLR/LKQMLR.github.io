@@ -98,6 +98,10 @@
     text-align: center;
   }
 </style>
+
+<!-- Mesure d'audience : meme module que l'accueil, rien n'est depose avant le
+     consentement du visiteur. -->
+<script src="/assets/analytics.js?v=2" defer></script>
 </head>
 <body>
 <main>
@@ -156,7 +160,7 @@
 
 <h2>6. Cookies et mesure d'audience</h2>
 <p>Le présent site peut déposer des cookies de mesure d'audience destinés à analyser sa fréquentation et à évaluer ses campagnes publicitaires. Ces cookies ne sont déposés qu'après votre consentement explicite, recueilli au moyen d'une bannière lors de votre première visite.</p>
-<p>Vous pouvez modifier ou retirer votre choix à tout moment via le lien <strong>Cookies</strong> situé en bas de la page d'accueil. Un refus n'altère en rien l'accès au site ni le fonctionnement de l'application.</p>
+<p>Vous pouvez modifier ou retirer votre choix à tout moment via le lien <strong>Cookies</strong> situé en bas de page. Un refus n'altère en rien l'accès au site ni le fonctionnement de l'application.</p>
 <p>Aucun cookie n'est utilisé à des fins de profilage publicitaire individuel, et aucune donnée n'est revendue à des tiers.</p>
 
 <h2>7. Responsabilité</h2>
@@ -174,6 +178,9 @@
     <a href="/policy/" style="color:var(--accent);">Confidentialité</a>
     <a href="/policy/terms.html" style="color:var(--accent);">Conditions</a>
     <a href="mailto:cargo.app.admin@gmail.com" style="color:var(--accent);">Contact</a>
+    <!-- Retrait du consentement : revele par assets/analytics.js quand une
+         mesure est active. -->
+    <a href="#" data-consent-open style="color:var(--accent);" hidden>Cookies</a>
   </div>
 </footer>
 

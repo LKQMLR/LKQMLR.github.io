@@ -86,6 +86,12 @@
     footer .flinks a{font-size:.76rem;color:var(--muted2);font-weight:600;text-decoration:none}
     footer .flinks a:hover{color:var(--accent)}
   </style>
+
+  <!-- ── Mesure d'audience (GA4) ───────────────────────────────────────────────
+       Meme module que l'accueil : rien n'est depose avant le consentement. Sur
+       cette page, la banniere suspend en plus la redirection automatique (cf. le
+       script en bas de page). -->
+  <script src="/assets/analytics.js?v=2" defer></script>
 </head>
 <body>
   <main class="card">
@@ -117,15 +123,59 @@
       <a href="/policy/">Confidentialité</a>
       <a href="/policy/terms.html">Conditions</a>
       <a href="mailto:cargo.app.admin@gmail.com">Contact</a>
+      <!-- Retrait du consentement : obligation RGPD. Masque par defaut et revele
+           par assets/analytics.js seulement si une mesure est reellement active. -->
+      <a href="#" data-consent-open hidden>Cookies</a>
     </div>
   </footer>
 
   <script>
     (function () {
-      var url = 'https://play.google.com/store/apps/details?id=com.lkqmlr.cargo';
-      setTimeout(function () {
-        window.location.href = url;
-      }, 3000);
+      var GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.lkqmlr.cargo';
+      var REDIRECT_DELAY_MS = 3000;
+
+      var NOTE_COUNTDOWN = 'Redirection automatique vers Google Play dans 3 secondes…';
+      var NOTE_WAITING_FOR_CONSENT = 'Redirection en pause le temps de votre choix sur les cookies. Le bouton ci-dessus reste disponible.';
+
+      var redirectNote = document.getElementById('redirect-note');
+      var pendingRedirect = null;
+
+      function goToGooglePlay() {
+        // Le depart automatique n'est pas un clic : c'est au module de mesure de
+        // le compter, et seulement s'il est charge et accepte.
+        if (window.ateqoConsent && typeof window.ateqoConsent.trackAutoRedirect === 'function') {
+          window.ateqoConsent.trackAutoRedirect();
+        }
+        window.location.href = GOOGLE_PLAY_URL;
+      }
+
+      function startRedirectCountdown() {
+        if (pendingRedirect) return;
+        if (redirectNote) redirectNote.textContent = NOTE_COUNTDOWN;
+        pendingRedirect = setTimeout(goToGooglePlay, REDIRECT_DELAY_MS);
+      }
+
+      function suspendRedirectCountdownUntilConsent() {
+        if (pendingRedirect) {
+          clearTimeout(pendingRedirect);
+          pendingRedirect = null;
+        }
+        if (redirectNote) redirectNote.textContent = NOTE_WAITING_FOR_CONSENT;
+      }
+
+      // Partir vers Google Play pendant que la banniere de consentement est
+      // affichee ne laisserait pas le temps d'y repondre. On suspend donc le
+      // compte a rebours, et on le relance une fois le choix fait : ce delai
+      // laisse aussi a la balise le temps d'envoyer la vue de page.
+      // Sans module de mesure (identifiants vides, bloqueur de publicite), aucun
+      // evenement n'arrive et le minuteur lance ci-dessous s'applique tel quel.
+      document.addEventListener('ateqo:consent', function (consentEvent) {
+        var state = consentEvent.detail && consentEvent.detail.state;
+        if (state === 'pending') suspendRedirectCountdownUntilConsent();
+        else startRedirectCountdown();
+      });
+
+      startRedirectCountdown();
     })();
   </script>
 </body>

@@ -181,14 +181,14 @@
   var TEXT = {
     fr: {
       aria:    'Gestion des cookies',
-      body:    "Ce site dépose des cookies de mesure d'audience afin d'analyser son trafic et d'évaluer ses campagnes publicitaires. Rien n'est déposé sans votre accord.",
+      body:    "ATEQO utilise des cookies pour mesurer l'audience de ce site et évaluer ses campagnes publicitaires.",
       more:    'Politique de confidentialité',
       deny:    'Refuser',
       accept:  'Accepter',
     },
     en: {
       aria:    'Cookie settings',
-      body:    'This site uses analytics cookies to measure its traffic and evaluate its advertising campaigns. Nothing is stored without your consent.',
+      body:    "ATEQO uses cookies to measure this website's audience and evaluate its advertising campaigns.",
       more:    'Privacy Policy',
       deny:    'Decline',
       accept:  'Accept',
@@ -223,13 +223,43 @@
   var banner = null;
   var stylesInjected = false;
 
+  // La banniere est en position fixe : sur une page courte (les pages relais, par
+  // exemple) elle recouvrirait le pied de page. On repousse donc le contenu de sa
+  // hauteur exacte, et on rend cette place des qu'elle disparait.
+  var bodyPaddingBottomBeforeBanner = null;
+
+  function reserveSpaceForBanner() {
+    if (!banner) return;
+    if (bodyPaddingBottomBeforeBanner === null) {
+      bodyPaddingBottomBeforeBanner = document.body.style.paddingBottom;
+    }
+    document.body.style.paddingBottom = banner.offsetHeight + 'px';
+  }
+
+  function releaseSpaceForBanner() {
+    if (bodyPaddingBottomBeforeBanner === null) return;
+    document.body.style.paddingBottom = bodyPaddingBottomBeforeBanner;
+    bodyPaddingBottomBeforeBanner = null;
+  }
+
+  // Le texte peut passer sur une ligne de plus en tournant l'ecran : la reserve
+  // suit la hauteur reelle.
+  window.addEventListener('resize', function () { reserveSpaceForBanner(); });
+
   function removeBanner(animated) {
     if (!banner) return;
     var node = banner;
     banner = null;
-    if (!animated) { if (node.parentNode) node.parentNode.removeChild(node); return; }
+    if (!animated) {
+      releaseSpaceForBanner();
+      if (node.parentNode) node.parentNode.removeChild(node);
+      return;
+    }
     node.classList.remove('in');
-    setTimeout(function () { if (node.parentNode) node.parentNode.removeChild(node); }, 320);
+    setTimeout(function () {
+      releaseSpaceForBanner();
+      if (node.parentNode) node.parentNode.removeChild(node);
+    }, 320);
   }
 
   function hideBanner() { removeBanner(true); }
@@ -296,6 +326,7 @@
     wrap.appendChild(btns);
     banner.appendChild(wrap);
     document.body.appendChild(banner);
+    reserveSpaceForBanner();
 
     // Deux images successives pour que la transition d'entree soit jouee.
     requestAnimationFrame(function () {

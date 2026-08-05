@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATEQO</title>
+
+  <!-- ── Lien court de la bio TikTok ────────────────────────────────────────────
+       Raison d'etre : le champ "Site web" de TikTok affiche l'URL telle quelle.
+       Une adresse chargee de parametres utm_* y est illisible, et souvent non
+       cliquable selon le type de compte, donc retapee a la main. On expose
+       ateqo.fr/tt, court et tapable, et on garde le marquage ici.
+
+       Consequence a retenir : pour changer de campagne, on modifie la constante
+       ci-dessous, jamais la bio TikTok. Le lien publie reste stable a vie.
+
+       Aucune mesure sur cette page, volontairement : charger GA4 ici
+       enregistrerait une vue de page sur /tt avant la redirection, ce qui
+       couperait la session en deux et attribuerait l'arrivee a un renvoi interne
+       plutot qu'a TikTok. Sans balise, aucun cookie n'est depose, donc pas de
+       banniere de consentement a afficher non plus. -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Sans JS (navigateurs in-app restreints, bloqueurs) la redirection passe
+       quand meme par le meta refresh. -->
+  <meta http-equiv="refresh" content="0;url=https://ateqo.fr/?utm_source=tiktok&amp;utm_medium=social&amp;utm_campaign=bio" />
+
+  <link rel="icon" href="/img/logo_ateqo.png" />
+
+  <script>
+    (function () {
+      // Un seul endroit a modifier pour changer de campagne.
+      var DESTINATION = 'https://ateqo.fr/?utm_source=tiktok&utm_medium=social&utm_campaign=bio';
+      // replace() plutot que href : /tt ne reste pas dans l'historique, le retour
+      // arriere depuis l'accueil renvoie a TikTok et non dans une boucle.
+      window.location.replace(DESTINATION);
+    })();
+  </script>
+
+  <style>
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:#f1f4f7;color:#17356B;
+      display:flex;align-items:center;justify-content:center;
+      min-height:100vh;margin:0;padding:24px;text-align:center;
+    }
+    a{color:#2563eb;font-weight:600}
+  </style>
+</head>
+<body>
+  <!-- Visible uniquement si les deux redirections ont echoue. -->
+  <p>
+    Redirection vers ATEQO…<br />
+    <a href="https://ateqo.fr/?utm_source=tiktok&amp;utm_medium=social&amp;utm_campaign=bio">Continuer vers ateqo.fr</a>
+  </p>
+</body>
+</html>

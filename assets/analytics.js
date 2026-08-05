@@ -161,10 +161,17 @@
   // voit. On le compte dans GA4 pour connaitre le volume reel de ces pages, mais
   // PAS comme conversion Google Ads : une redirection automatique n'est pas un
   // acte volontaire, la compter gonflerait artificiellement les campagnes.
+  //
+  // Nom d'evenement distinct de click_play_store, et c'est le point important :
+  // click_play_store est marque comme evenement cle dans GA4. Reutiliser ce nom
+  // ici ferait compter une conversion a chaque arrivee sur une page relais, sans
+  // que personne n'ait rien decide, et le taux de conversion de ces pages
+  // tendrait vers 100 %. Ne jamais marquer auto_redirect_play_store comme
+  // evenement cle.
   function trackAutoRedirect() {
     if (!tagLoaded || typeof window.gtag !== 'function') return;
     if (!CONFIG.GA4_ID) return;
-    window.gtag('event', 'click_play_store', { link_position: 'redirection_auto' });
+    window.gtag('event', 'auto_redirect_play_store', { link_position: 'redirection_auto' });
   }
 
   document.addEventListener('click', function (ev) {

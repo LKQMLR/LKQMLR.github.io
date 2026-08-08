@@ -469,15 +469,23 @@
       .slide{flex:none;height:auto;overflow:visible}
       /* La composition libre n'a plus lieu d'etre : tout revient dans le flux,
          dans l'ordre du document, et les placements en pourcentage sautent. */
+      /* Une seule mesure commande tout l'espacement de la pile : la marge
+         laterale, le vide entre deux blocs (--gap) et la respiration en tete
+         et en pied de scene (--gap x 2). Deux scenes voisines sont donc
+         separees de 4 x --gap, partout la meme distance. */
+      :root{--pad-x:20px;--gap:22px}
       .stage,.slide.end .stage{width:auto;height:auto;position:static;
              display:flex;flex-direction:column;align-items:flex-start;
-             gap:26px;padding:clamp(84px,12vh,120px) 20px clamp(48px,8vh,72px)}
+             gap:var(--gap);padding:calc(var(--gap) * 2) var(--pad-x)}
+      /* Seule la premiere scene passe sous le bandeau fixe : elle seule
+         reserve sa hauteur, les suivantes gardent le rythme commun. */
+      .track>.slide:first-of-type .stage{padding-top:calc(var(--header) + var(--gap) * 2)}
       /* La composition libre vit dans .field : c'est lui, et pas seulement la
          scene, qui doit redevenir un flux, sinon ses enfants absolus se
          superposeraient tous en haut de la pile. La bulle, elle, passe sous le
          visuel qu'elle commente au lieu de mordre dessus. */
       .field{position:static;width:auto;height:auto;display:flex;flex-direction:column;
-             align-items:flex-start;gap:26px}
+             align-items:flex-start;gap:var(--gap)}
       .stage>*,.field>*,.viz .note{position:static!important;left:auto!important;top:auto!important;
                bottom:auto!important;right:auto!important;width:auto}
       /* Seuls ces trois-la se centraient par transform et doivent le perdre
@@ -488,7 +496,17 @@
       /* Le decor est une bande tres large : il n'a pas de sens sur une pile
          verticale, les degrades de scene reprennent la main. */
       .scenery{display:none}
-      .giant{font-size:clamp(3rem,15vw,5.2rem);line-height:.9;text-align:left;white-space:normal}
+      /* width:100% corrige un piege flexbox : en colonne avec align-items
+         autre que stretch, un enfant sans largeur explicite se dimensionne a
+         son contenu (max-content) et ignore la largeur du conteneur, donc ne
+         retombe jamais a la ligne. Sans elle, "Choisis ton plan." debordait
+         du viewport au lieu de passer sous le mot le plus long.
+         14vw est la mesure du titre le plus long ("Gerez mieux.") : au-dela
+         il passe sur deux lignes sur un ecran de 320px. */
+      .giant{width:100%;font-size:clamp(2.4rem,14vw,5.2rem);line-height:.9;text-align:left;white-space:normal}
+      /* Seul titre plus long que les autres (3 mots contre 2) : il garde son
+         propre gabarit pour tenir sur une seule ligne comme le reste. */
+      .slide.t4 .giant{font-size:clamp(2rem,9.2vw,3.4rem);white-space:nowrap}
       .note{width:auto}
       /* La bulle garde sa couleur, elle perd son relief : sur une pile, l'ombre
          et le flou d'arriere-plan n'ont plus rien a detacher. */
@@ -502,9 +520,27 @@
       .viz.bloc{width:min(100%,540px)!important}
       .bloc.decale .bloc-shot{margin-left:0}
       .bloc-titre{white-space:normal}
+      /* La bulle passe SOUS le sous-titre, avant l'image : elle rejoint le
+         texte qu'elle commente au lieu de rester collee sous la capture. */
+      .bloc-shot{display:flex;flex-direction:column;gap:14px}
+      .bloc-shot .note{order:-1}
+      /* Les formules portent une largeur figee en ligne (heritee de la mise
+         en scene bureau) que la regle generale width:auto n'ecrase pas, faute
+         de !important : sans ce correctif, les tarifs restaient a 64% de la
+         largeur, plaques a gauche avec du vide a droite. */
+      .viz.formules{width:100%!important}
+      /* Les deux encarts de l'ecran tarifs (l'avantage chiffre et les
+         formules) se centrent, contrairement aux blocs illustres des autres
+         ecrans qui restent volontairement colles a gauche. */
+      .slide.t4 .viz{align-items:center}
       .viz .plans{width:100%;min-width:0;max-width:400px;grid-template-columns:1fr}
       .hint{display:none}
-      .end-block{align-items:flex-start;text-align:left}
+      /* L'appel final se centre, comme sur la version bureau : le titre tient
+         sur une ligne et le badge Google Play n'est plus plaque a gauche. */
+      .end-block{align-items:center;text-align:center}
+      .end-block h2{width:100%;font-size:clamp(1.25rem,6.6vw,2rem);white-space:nowrap}
+      .end-block p{width:100%}
+      .end-block .gplay img{height:54px}
       .site-footer{text-align:left;width:100%}
       .site-footer .flinks{justify-content:flex-start}
       /* Le bandeau reste la mesure de la page, simplement plus court ici. */

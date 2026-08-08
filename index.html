@@ -488,6 +488,14 @@
              align-items:flex-start;gap:var(--gap)}
       .stage>*,.field>*,.viz .note{position:static!important;left:auto!important;top:auto!important;
                bottom:auto!important;right:auto!important;width:auto}
+      /* .field est lui-meme un .stage>* : la regle ci-dessus vient de lui
+         rendre width:auto, et comme il est enfant d'une colonne alignee sur
+         flex-start, il se dimensionne alors sur son contenu. L'ecran des
+         tarifs, dont le titre est en nowrap, devenait ainsi plus etroit que la
+         colonne et tout son contenu se retrouvait plaque a gauche. Il faut une
+         specificite superieure pour reprendre la main, la cascade seule ne
+         suffit pas : les deux selecteurs pesent une classe. */
+      .stage>.field{width:100%}
       /* Seuls ces trois-la se centraient par transform et doivent le perdre
          ici. Et SANS !important : cette regle vient apres celles du bureau,
          la cascade suffit a les annuler, tandis qu'un !important interdirait

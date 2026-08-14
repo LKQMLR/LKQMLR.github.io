@@ -386,7 +386,11 @@
     .note-avantage{background:var(--surface);border:1px solid var(--border);
                    border-radius:var(--radius);color:var(--ink);font-weight:700;
                    width:auto;white-space:nowrap;text-align:center;
-                   padding:13px 19px;box-shadow:var(--ombre-levee)}
+                   /* Plus compacte que les bulles de commentaire : elle vit
+                      dans la bande etroite entre le bandeau et le titre, et
+                      chaque pixel gagne sur sa hauteur est un pixel de marge
+                      de plus sur les fenetres basses. */
+                   padding:10px 17px;box-shadow:var(--ombre-levee)}
     /* La marque garde ses cinq couleurs de secteur partout ou elle est ecrite,
        comme le logo et comme sur la maquette. D'une seule encre au milieu d'une
        phrase, elle passait pour un mot ordinaire. */
@@ -554,6 +558,15 @@
     /* Plus bas encore : un portable 1080 affiche a 125% ne laisse que ~730px. */
     @media(min-width:981px) and (max-height:760px){
       .giant{font-size:clamp(2.1rem,5.3vw,5.6rem)}
+    }
+    /* L'ecran des tarifs est le plus contraint en hauteur de toute la piste :
+       seul a porter une pastille AU-DESSUS de son titre et trois cartes de sept
+       lignes EN DESSOUS. Son titre cede donc plus tot que les autres, faute de
+       quoi il vient toucher la pastille sur une fenetre basse et large, ou il
+       est a la fois le plus grand (dimensionne sur la largeur) et le plus a
+       l'etroit (la hauteur, elle, a fondu). */
+    @media(min-width:981px) and (max-height:880px){
+      .slide.t4 .giant{font-size:clamp(1.9rem,4.6vw,4.6rem)}
     }
 
     /* ══ MOBILE ════════════════════════════════════════════════════════════════
@@ -934,8 +947,15 @@
              autres bulles, et redevient statique dans son cadre. -->
         <!-- Calee sur le bord gauche des formules (18 %), et non a 14 % : sans
              cet alignement, l'argument le plus fort de l'ecran flottait seul,
-             sans rapport visible avec les cartes qu'il sert. -->
-        <figure class="viz" style="left:18%;top:7%">
+             sans rapport visible avec les cartes qu'il sert.
+             Le retrait vertical est en PIXELS et non en pourcentage. Le titre
+             geant est centre sur top:26 %, donc son bord haut remonte a mesure
+             que la fenetre raccourcit, tandis qu'un retrait en pourcentage fait
+             remonter la pastille moins vite : les deux se rejoignaient, et a
+             1920x700 la pastille mordait sur le « C » de Choisis. Ancree en
+             pixels, elle reste collee au bandeau et laisse au titre toute la
+             place que la fenetre lui donne. -->
+        <figure class="viz" style="left:18%;top:26px">
           <p class="note h2 note-avantage" style="position:static" data-i18n="plans.bulle">7 tournées offertes à l'inscription</p>
         </figure>
 

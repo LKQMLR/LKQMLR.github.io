@@ -40,7 +40,22 @@
       /* Secteurs A-T-E-Q-O = 1-2-3-4-5. Les trois premieres portent les trois
          themes du site : livrer, gagner, gerer. */
       --s1:#3b82f6;--s2:#0d9488;--s3:#d97706;--s4:#db2777;--s5:#7c3aed;
-      --radius:16px;
+      /* ── Ombres ───────────────────────────────────────────────────────────
+         Deux couches par ombre : un contact court qui POSE l'objet, et une
+         diffusion large qui l'ECARTE du fond. Teintees navy et non noires,
+         sinon elles grisent un fond deja tres clair au lieu de creuser.
+         Elles remplacent la valeur unique 0 4px 4px noir 25%, repetee partout :
+         dure, sans etalement et strictement verticale, c'etait le detail qui
+         datait le plus la page. Les captures, elles, gardent l'ombre incrustee
+         a l'export : ne pas chercher a la reproduire ici. */
+      --ombre-posee:0 1px 2px rgba(15,32,60,.07),0 4px 12px -3px rgba(15,32,60,.13);
+      --ombre-levee:0 2px 4px rgba(15,32,60,.06),0 14px 30px -10px rgba(15,32,60,.2);
+      /* ── Rayons ───────────────────────────────────────────────────────────
+         Deux valeurs, plus la pilule du ruban. Les SURFACES (cartes, bulles)
+         portent le grand rayon, les COMMANDES portent le 4 px de la marque,
+         deja la regle de l'application. La page en comptait cinq (16, 12, 10,
+         4, 50) poses au fil des ajouts, sans echelle. */
+      --radius:12px;--radius-commande:4px;
       /* Le bandeau donne sa mesure a toute la page : la bande libre sous lui et
          celle du bas valent sa propre hauteur. Une seule valeur a regler, et
          les marges hautes et basses restent egales par construction. */
@@ -92,8 +107,13 @@
     /* Fixe en bas a droite, sous la main pendant toute la traversee. Il
        s'efface en arrivant sur le dernier ecran : celui-ci porte deja son
        propre bouton, et deux appels identiques a l'ecran s'annulent. */
+    /* Le badge est un aplat noir fourni par Google, qu'on n'a pas le droit de
+       retoucher : sur un fond aussi clair, c'est deja l'objet le plus lourd de
+       la page. Son ombre reste donc discrete, sinon elle ajoute du poids a ce
+       qui en a deja trop et devient le premier point d'accroche du regard,
+       avant le propos. */
     .gplay-fixe{position:fixed;right:clamp(16px,2.2vw,34px);bottom:clamp(16px,2.2vw,30px);z-index:60;
-                filter:drop-shadow(0 4px 4px rgba(0,0,0,.25));
+                filter:drop-shadow(0 6px 14px rgba(15,32,60,.22));
                 transition:opacity .55s ease,translate .55s cubic-bezier(.16,.72,.24,1)}
     .gplay-fixe.range{opacity:0;translate:0 26px;pointer-events:none}
 
@@ -155,7 +175,11 @@
                display:flex;align-items:center;justify-content:center;
                width:var(--taille-etape);height:var(--taille-etape);
                padding:0;border:1px solid rgba(23,53,107,.12);border-radius:50%;
-               background:var(--surface);color:var(--muted2);cursor:pointer;
+               /* Encre du repere au repos : --muted et non --muted2. Le gris le
+                  plus clair passait sous le seuil de contraste sur blanc, et
+                  cinq pastilles a peine visibles ne se lisaient plus comme des
+                  boutons. */
+               background:var(--surface);color:var(--muted);cursor:pointer;
                box-shadow:0 1px 3px rgba(15,25,35,.05);
                transition:color .22s,border-color .22s,background-color .22s,
                           box-shadow .22s,transform .22s}
@@ -180,10 +204,29 @@
     .fil-nom{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);
              white-space:nowrap;font-size:.72rem;font-weight:600;letter-spacing:.2px;
              color:var(--ink);background:var(--surface);
-             border:1px solid var(--border);border-radius:4px;padding:4px 9px;
-             box-shadow:0 4px 4px rgba(0,0,0,.08);
+             border:1px solid var(--border);border-radius:var(--radius-commande);padding:4px 9px;
+             box-shadow:var(--ombre-posee);
              opacity:0;pointer-events:none;transition:opacity .18s}
     .fil-etape:hover .fil-nom,.fil-etape:focus-visible .fil-nom{opacity:1}
+    /* ── Le nom de l'ecran, affiche en permanence quand le bandeau a la place ──
+       Cinq pastilles muettes ne disent pas ou elles menent : il fallait survoler
+       chacune pour l'apprendre, ce qu'un visiteur ne fait pas. Au-dela de
+       1250 px, le bandeau est assez haut pour porter le nom SOUS le repere sans
+       deborder : la bulle perd alors tout son habillage et redevient une simple
+       legende. En dessous, l'infobulle au survol reprend la main.
+       La hauteur disponible sous le repere vaut (--header - --taille-etape) / 2,
+       soit 20 px au plus etroit de cette plage : le decalage et le corps du
+       texte doivent tenir dedans. */
+    @media(min-width:1250px){
+      .fil-nom{top:calc(100% + 3px);font-size:.66rem;font-weight:600;letter-spacing:.3px;
+               color:var(--muted);background:none;border:none;box-shadow:none;padding:0;
+               opacity:1;transition:color .22s}
+      /* Le nom suit l'etat de son repere, comme l'icone et le filet. */
+      .fil-etape.franchie .fil-nom{color:rgb(var(--etape))}
+      .fil-etape:hover .fil-nom,.fil-etape:focus-visible .fil-nom,
+      .fil-etape.active .fil-nom{color:rgb(var(--etape))}
+      .fil-etape.active .fil-nom{font-weight:700}
+    }
 
     /* Indice de defilement, sur la premiere section seulement. */
     .hint{position:fixed;left:clamp(20px,3vw,44px);bottom:clamp(18px,2.4vw,32px);z-index:58;
@@ -313,11 +356,20 @@
        bloc a l'autre, sans suivre le theme : une scene monochrome s'aplatirait. */
     .note{--bub:206,223,252;--bub-ink:var(--tone);
           z-index:4;width:min(330px,17.2vw);background:rgb(var(--bub));
-          border-radius:12px;padding:13px 15px;
-          /* La meme ombre que les captures de la maquette : 0 4 4, noir a 25%. */
-          box-shadow:0 4px 4px rgba(0,0,0,.25);
-          text-align:center;color:var(--ink);
+          border-radius:var(--radius);padding:13px 15px;
+          box-shadow:var(--ombre-posee);
+          /* Le texte s'aligne a gauche. Centre, un commentaire de trois lignes
+             donne trois debuts de ligne differents : l'oeil recherche l'entree
+             a chaque retour et la lecture bute. Le centrage ne tenait que tant
+             que les bulles faisaient une ligne. */
+          text-align:left;color:var(--ink);
           font-size:clamp(.8rem,.92vw,.9rem);line-height:1.45}
+    /* REGLE DE TEINTE : chaque ecran porte au moins une bulle de SA couleur, et
+       une seule autre pour ne pas s'aplatir. Les cinq teintes tournaient
+       auparavant sans rapport avec l'ecran, si bien que « Gagnez plus », dont
+       le theme est vert, n'affichait que du rose et du violet : le code couleur
+       des secteurs, qui veut dire quelque chose dans l'application, se lisait
+       ici comme une decoration. Une bulle est donc du theme, l'autre non. */
     .note.h1{--bub:206,223,252;--bub-ink:#1d4ed8}   /* bleu       */
     .note.h2{--bub:194,228,225;--bub-ink:#0f766e}   /* vert d'eau */
     .note.h3{--bub:245,221,192;--bub-ink:#b45309}   /* orange     */
@@ -327,8 +379,14 @@
        reprend le meme cadre que les cartes de formule juste en dessous (fond
        blanc, filet, coins, ombre deja communs) plutot que l'aplat pastel des
        commentaires, pour se lire comme faisant partie de l'offre. */
+    /* Elle tient sur une seule ligne : c'est l'argument le plus fort de l'ecran
+       et il se lisait sur deux lignes dans une pastille etroite, ce qui le
+       faisait passer pour une note de bas de page. Sa largeur suit donc son
+       texte au lieu du gabarit commun des bulles. */
     .note-avantage{background:var(--surface);border:1px solid var(--border);
-                   border-radius:var(--radius);color:var(--ink);font-weight:700}
+                   border-radius:var(--radius);color:var(--ink);font-weight:700;
+                   width:auto;white-space:nowrap;text-align:center;
+                   padding:13px 19px;box-shadow:var(--ombre-levee)}
     /* La marque garde ses cinq couleurs de secteur partout ou elle est ecrite,
        comme le logo et comme sur la maquette. D'une seule encre au milieu d'une
        phrase, elle passait pour un mot ordinaire. */
@@ -363,7 +421,11 @@
     /* Le sous-titre est colle a sa capture : c'est l'ecart de la saisie vocale,
        retenu comme norme pour tous les blocs. Plus large, le titre et l'image se
        lisaient comme deux elements distincts au lieu d'un seul encart. */
-    .bloc-titre{font-size:clamp(.98rem,1.28vw,1.45rem);font-weight:800;letter-spacing:-.5px;
+    /* Le sous-titre passe de 800 a 700 : le titre geant est le seul a porter le
+       poids maximal. Tant que les deux etaient au meme gras, la page n'avait
+       qu'une seule voix typographique et la hierarchie ne tenait qu'a la
+       taille. */
+    .bloc-titre{font-size:clamp(.98rem,1.28vw,1.45rem);font-weight:700;letter-spacing:-.4px;
                 color:var(--ink);margin-bottom:0;white-space:nowrap}
     /* La bulle se place par rapport a la capture seule, jamais par rapport au
        titre : sinon elle glisserait des qu'un titre passe sur deux lignes. */
@@ -396,19 +458,33 @@
     .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
           padding:clamp(19px,1.5vw,28px) clamp(17px,1.3vw,24px);
           position:relative;display:flex;flex-direction:column;
-          box-shadow:0 4px 4px rgba(0,0,0,.25)}
-    .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:0 4px 4px rgba(0,0,0,.25)}
+          box-shadow:var(--ombre-posee)}
+    /* La formule mise en avant se detache par l'ombre autant que par le filet
+       dore : trois cartes a la meme elevation se lisent comme trois options
+       equivalentes, et le regard n'a plus de point d'entree. */
+    .plan.featured{border-color:rgba(200,162,75,.55);box-shadow:var(--ombre-levee)}
     .plan-ribbon{position:absolute;top:-11px;left:50%;transform:translateX(-50%);
                  background:linear-gradient(135deg,#d4b25e,#b8912f);color:#fff;
                  font-size:clamp(.58rem,.62vw,.68rem);
                  font-weight:700;padding:4px 12px;border-radius:50px;white-space:nowrap;
-                 letter-spacing:.5px;text-transform:uppercase;box-shadow:0 4px 4px rgba(0,0,0,.25)}
+                 letter-spacing:.5px;text-transform:uppercase;box-shadow:var(--ombre-posee)}
     .plan-name{font-size:clamp(.65rem,.7vw,.76rem);font-weight:700;letter-spacing:1px;text-transform:uppercase;
                color:var(--muted);margin-bottom:9px}
-    .plan-price{font-size:clamp(1.6rem,1.9vw,2.3rem);font-weight:800;letter-spacing:-1px;line-height:1;color:var(--ink)}
+    /* Les trois prix sont lus en colonne, l'un sous l'autre : en chiffres a
+       chasse fixe, la virgule et les decimales tombent au meme endroit d'une
+       carte a l'autre et les montants se comparent d'un coup d'oeil. */
+    .plan-price{font-size:clamp(1.6rem,1.9vw,2.3rem);font-weight:800;letter-spacing:-1px;line-height:1;
+                color:var(--ink);font-variant-numeric:tabular-nums}
     .plan-price .per{font-size:clamp(.66rem,.72vw,.8rem);font-weight:500;color:var(--muted)}
     .plan-features{list-style:none;display:flex;flex-direction:column;gap:clamp(6px,.5vw,9px);margin:15px 0 18px}
     .plan-features li{font-size:clamp(.74rem,.85vw,.92rem);display:flex;align-items:flex-start;gap:8px;line-height:1.35}
+    /* Sur sept lignes par carte, quatre sont identiques d'une formule a
+       l'autre : ce sont les trois autres qui decident de l'achat. Elles seules
+       portent le gras, et la comparaison se fait alors en lisant une diagonale
+       au lieu de relire vingt et une lignes. Les lignes communes restent
+       ecrites en entier : elles disent ce que la formule gratuite contient
+       DEJA, ce qu'un tableau de differences seules effacerait. */
+    .plan-features li.difference{font-weight:600}
     .plan-features li::before{content:"";width:14px;height:14px;flex-shrink:0;margin-top:1px;
       background-repeat:no-repeat;background-position:center;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")}
@@ -416,11 +492,20 @@
     .plan-features li.no::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238896a7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")}
     .plan-btn{display:flex;align-items:center;justify-content:center;text-align:center;
               padding:clamp(10px,.85vw,14px);
-              border-radius:10px;font-size:clamp(.78rem,.88vw,.95rem);font-weight:700;
-              margin-top:auto;transition:transform .15s}
+              border-radius:var(--radius-commande);font-size:clamp(.78rem,.88vw,.95rem);font-weight:700;
+              margin-top:auto;transition:transform .15s,background-color .15s,border-color .15s}
     .plan-btn:hover{transform:translateY(-1px)}
+    .plan-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    /* Trois formules, trois poids de bouton. Le gratuit et le mensuel portaient
+       le meme habillage : deux appels identiques cote a cote ne disent pas
+       lequel est recommande, et l'annuel perdait l'avantage que son ruban
+       venait d'annoncer. */
+    .plan-btn.tertiary{background:transparent;color:var(--muted);border:1px solid var(--border)}
+    .plan-btn.tertiary:hover{color:var(--ink);border-color:rgba(15,25,35,.22)}
     .plan-btn.secondary{background:var(--surface2);color:var(--ink);border:1px solid var(--border)}
-    .plan-btn.primary{background:var(--ink);color:#fff}
+    .plan-btn.secondary:hover{background:#eef2f7}
+    .plan-btn.primary{background:var(--ink);color:#fff;border:1px solid var(--ink)}
+    .plan-btn.primary:hover{background:#1d4180}
 
     /* ── Section finale ────────────────────────────────────────────────────── */
     .slide.end .stage{width:100vw;
@@ -430,9 +515,20 @@
     .end-block,.slide.end .site-footer{position:absolute}
     .end-block{left:50%;top:44%;transform:translate(-50%,-50%);width:min(680px,80vw);
                display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
-    .end-block h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;letter-spacing:-1.6px;line-height:1.06}
+    /* balance repartit les lignes a poids egal au lieu de remplir la premiere :
+       sans lui, le titre francais laisse tomber son point d'interrogation seul
+       sur la deuxieme ligne des que la fenetre se resserre. L'espace insecable
+       pose dans le texte traite la cause, ceci traite le reste des coupures. */
+    .end-block h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;letter-spacing:-1.6px;line-height:1.06;
+                  text-wrap:balance}
     .end-block p{color:var(--muted);font-size:clamp(.96rem,1.15vw,1.08rem)}
     .end-block .gplay{margin-top:8px}
+    /* L'ecran qui doit convertir etait le plus vide de la traversee : sous le
+       badge, plus rien jusqu'au pied de page. La promesse de l'ecran des tarifs
+       y est reprise, la ou la decision se prend. */
+    .end-rassurance{display:flex;align-items:center;gap:8px;
+                    font-size:clamp(.8rem,.95vw,.9rem);font-weight:600;color:var(--muted)}
+    .end-rassurance svg{width:17px;height:17px;flex-shrink:0;color:var(--green)}
     /* Le pied de page s'arrete sur la meme ligne que tout le reste : la bande
        basse vaut la hauteur du bandeau, comme la bande haute. */
     .site-footer{left:50%;bottom:var(--safe);transform:translateX(-50%);
@@ -516,6 +612,11 @@
          propre gabarit pour tenir sur une seule ligne comme le reste. */
       .slide.t4 .giant{font-size:clamp(2rem,9.2vw,3.4rem);white-space:nowrap}
       .note{width:auto}
+      /* La ligne unique tient sur la piste horizontale, ou la bulle prend la
+         largeur qu'elle demande. Dans une colonne de 350 px, et moins encore
+         sur un ecran de 320, elle deborderait : elle retrouve donc le droit de
+         passer a la ligne. */
+      .note-avantage{white-space:normal}
       /* La bulle garde sa couleur, elle perd son relief : sur une pile, l'ombre
          et le flou d'arriere-plan n'ont plus rien a detacher. */
       .note{background:rgb(var(--bub));backdrop-filter:none;-webkit-backdrop-filter:none;
@@ -697,8 +798,15 @@
             <img src="./img/captures/navigation.png" width="247" height="469"
                  data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
             <!-- A cheval sur le bord droit du telephone, un peu plus dedans que
-                 dehors : elle s'y accroche au lieu de flotter a cote. -->
-            <p class="note h1" style="left:42%;top:44%" data-i18n-html="bloc.navigation.bulle">Ne subis plus les aléas de tes tournées. <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> optimise, tu choisis.</p>
+                 dehors : elle s'y accroche au lieu de flotter a cote.
+                 Elle est calee BAS sur la capture, et non a mi-hauteur : le
+                 titre geant grandit en 7.8vw alors que ce bloc est dimensionne
+                 en 12.9vw, si bien qu'au-dela de ~1500 px le titre descendait
+                 dans la bande de la bulle et le mot se lisait « L ivrez plus. »
+                 sur un ecran 1920. Le placer bas l'ecarte de la bande du titre
+                 a toutes les largeurs, et il recouvre la fin de la liste
+                 d'adresses plutot que l'en-tete, qui porte l'explication. -->
+            <p class="note h1" style="left:42%;top:56%" data-i18n-html="bloc.navigation.bulle">Ne subis plus les aléas de tes tournées. <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> optimise, tu choisis.</p>
           </div>
         </figure>
 
@@ -716,9 +824,13 @@
           <div class="bloc-shot">
             <img src="./img/captures/temps.png" width="477" height="48"
                  data-i18n-alt="bloc.temps.alt" alt="Bandeau ATEQO : tournée optimisée, 36 minutes gagnées" />
-            <!-- Le bandeau ne fait que 48px de haut : la bulle remonte dessus
-                 pour s'y souder, au lieu de se poser dessous. -->
-            <p class="note h3" style="left:34%;top:62%" data-i18n="bloc.temps.bulle">Booste ta productivité et réduis tes kilomètres.</p>
+            <!-- Le bandeau ne fait que 48 px de haut : une bulle posee a 62 % de
+                 cette hauteur retombait SUR le texte et coupait « 36 min
+                 gagnees », le seul chiffre de la page. Elle se pose donc juste
+                 sous le bandeau, assez pres pour rester soudee a lui, et assez
+                 loin pour que le flottement (7 px vers le haut) ne vienne pas
+                 la remettre dessus. -->
+            <p class="note h3" style="left:34%;top:calc(100% + 12px)" data-i18n="bloc.temps.bulle">Booste ta productivité et réduis tes kilomètres.</p>
           </div>
         </figure>
        </div>
@@ -743,7 +855,7 @@
                  data-i18n-alt="bloc.optimisation.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés dans l'ordre de passage" loading="lazy" />
             <!-- Posee sur le coin bas gauche, elle court jusqu'au milieu de la
                  carte : le trace reste lisible sur la moitie droite. -->
-            <p class="note h4" style="left:-33%;top:72%" data-i18n-html="bloc.optimisation.bulle">Concentre-toi sur la route, <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> s'occupe du reste.</p>
+            <p class="note h2" style="left:-33%;top:72%" data-i18n-html="bloc.optimisation.bulle">Concentre-toi sur la route, <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> s'occupe du reste.</p>
           </div>
         </figure>
 
@@ -778,7 +890,7 @@
           <div class="bloc-shot">
             <img src="./img/captures/carnet.png" width="529" height="456"
                  data-i18n-alt="bloc.carnet.alt" alt="Écran ATEQO : le carnet d'adresses et l'enregistrement dans un circuit" loading="lazy" />
-            <p class="note h1" style="left:41%;top:7%" data-i18n="bloc.carnet.bulle">Crée tes tournées, enregistre tes adresses favorites et ajoute-les en un clic.</p>
+            <p class="note h3" style="left:41%;top:7%" data-i18n="bloc.carnet.bulle">Crée tes tournées, enregistre tes adresses favorites et ajoute-les en un clic.</p>
           </div>
         </figure>
 
@@ -820,7 +932,10 @@
              et rappelle ce que l'inscription donne avant tout paiement. Elle
              vit dans un .viz pour heriter de l'arrivee et du flottement des
              autres bulles, et redevient statique dans son cadre. -->
-        <figure class="viz" style="left:14%;top:5%">
+        <!-- Calee sur le bord gauche des formules (18 %), et non a 14 % : sans
+             cet alignement, l'argument le plus fort de l'ecran flottait seul,
+             sans rapport visible avec les cartes qu'il sert. -->
+        <figure class="viz" style="left:18%;top:7%">
           <p class="note h2 note-avantage" style="position:static" data-i18n="plans.bulle">7 tournées offertes à l'inscription</p>
         </figure>
 
@@ -829,28 +944,32 @@
             <div class="plan">
               <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
               <div class="plan-price">0 <span class="per">€</span></div>
+              <!-- Les trois lignes qui separent reellement les formules (les
+                   tournees, les secteurs, le carnet) portent la classe
+                   difference, aux MEMES rangs dans les trois cartes : la
+                   comparaison se lit alors en diagonale. -->
               <ul class="plan-features">
-                <li data-i18n="plan.free.f1">5 tournées par mois</li>
+                <li class="difference" data-i18n="plan.free.f1">5 tournées par mois</li>
                 <li data-i18n="plan.f.addr">Adresses illimitées</li>
-                <li data-i18n="plan.free.f2">3 secteurs actifs</li>
+                <li class="difference" data-i18n="plan.free.f2">3 secteurs actifs</li>
                 <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
                 <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
                 <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
-                <li class="no" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
+                <li class="no difference" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
               </ul>
-              <a class="plan-btn secondary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.free.cta">Télécharger</a>
+              <a class="plan-btn tertiary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.free.cta">Télécharger</a>
             </div>
             <div class="plan">
               <div class="plan-name" data-i18n="plan.monthly.name">Pro</div>
               <div class="plan-price" data-i18n-html="plan.monthly.price">16,99 <span class="per">€ / mois</span></div>
               <ul class="plan-features">
-                <li data-i18n="plan.f.tours">Tournées illimitées</li>
+                <li class="difference" data-i18n="plan.f.tours">Tournées illimitées</li>
                 <li data-i18n="plan.f.addr">Adresses illimitées</li>
-                <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
+                <li class="difference" data-i18n="plan.f.sectors">5 secteurs actifs</li>
                 <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
                 <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
                 <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
-                <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
+                <li class="difference" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
               </ul>
               <a class="plan-btn secondary" data-track-position="tarifs-mensuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Commencer</a>
             </div>
@@ -859,13 +978,13 @@
               <div class="plan-name" data-i18n="plan.annual.name">Pro annuel</div>
               <div class="plan-price" data-i18n-html="plan.annual.price">169,99 <span class="per">€ / an</span></div>
               <ul class="plan-features">
-                <li data-i18n="plan.f.tours">Tournées illimitées</li>
+                <li class="difference" data-i18n="plan.f.tours">Tournées illimitées</li>
                 <li data-i18n="plan.f.addr">Adresses illimitées</li>
-                <li data-i18n="plan.f.sectors">5 secteurs actifs</li>
+                <li class="difference" data-i18n="plan.f.sectors">5 secteurs actifs</li>
                 <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
                 <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
                 <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
-                <li data-i18n="plan.f.book">Carnet et circuits récurrents</li>
+                <li class="difference" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
               </ul>
               <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Commencer</a>
             </div>
@@ -883,11 +1002,19 @@
     <section class="slide end" data-theme="4">
       <div class="stage">
         <div class="end-block">
-          <h2 data-i18n="end.title">Prêt à optimiser ta tournée ?</h2>
+          <!-- L'espace avant le point d'interrogation est INSECABLE (U+00A0) :
+               la typographie francaise l'impose, et sans lui le « ? » tombait
+               seul sur la deuxieme ligne du titre, sur l'ecran meme qui doit
+               convertir. Meme caractere dans le dictionnaire FR. -->
+          <h2 data-i18n="end.title">Prêt à optimiser ta tournée&nbsp;?</h2>
           <p data-i18n="end.sub">Ta première tournée optimisée en moins d'une minute.</p>
           <a class="gplay" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
             <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
           </a>
+          <p class="end-rassurance">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span data-i18n="end.rassurance">7 tournées offertes à l'inscription</span>
+          </p>
         </div>
         <footer class="site-footer">
           <p class="fnote" data-i18n="footer.note">© 2026 ATEQO · L'itinéraire qui te suit</p>
@@ -972,8 +1099,9 @@
         'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
         'plans.title': 'Choisis ton <em>plan.</em>',
         'plans.bulle': "7 tournées offertes à l'inscription",
-        'end.title': 'Prêt à optimiser ta tournée ?',
+        'end.title': 'Prêt à optimiser ta tournée ?',
         'end.sub': "Ta première tournée optimisée en moins d'une minute.",
+        'end.rassurance': "7 tournées offertes à l'inscription",
         'footer.note': "© 2026 ATEQO · L'itinéraire qui te suit",
         'footer.support': 'Support',
         'footer.support.href': '/policy/support.html',
@@ -1048,6 +1176,7 @@
         'plans.bulle': '7 free routes when you sign up',
         'end.title': 'Ready to optimize your route?',
         'end.sub': 'Your first optimized route in under a minute.',
+        'end.rassurance': '7 free routes when you sign up',
         'footer.note': '© 2026 ATEQO · The route that follows you',
         'footer.support': 'Support',
         'footer.support.href': '/policy/support.en.html',

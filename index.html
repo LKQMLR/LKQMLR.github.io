@@ -160,6 +160,11 @@
          a l'export : ne pas chercher a la reproduire ici. */
       --ombre-posee:0 1px 2px rgba(15,32,60,.07),0 4px 12px -3px rgba(15,32,60,.13);
       --ombre-levee:0 2px 4px rgba(15,32,60,.06),0 14px 30px -10px rgba(15,32,60,.2);
+      /* Ombre des captures, la meme pour toutes. Les fichiers portaient jusqu'ici
+         leur ombre INCRUSTEE, differente d'un export a l'autre ; les captures
+         detourees n'en ont plus aucune, elle est posee ici une fois pour toutes,
+         calee sur le rendu de l'ecran de navigation qui servait de reference. */
+      --ombre-capture:0 2px 6px rgba(15,32,60,.09),0 14px 32px -10px rgba(15,32,60,.24);
       /* ── Rayons ───────────────────────────────────────────────────────────
          Deux valeurs, plus la pilule du ruban. Les SURFACES (cartes, bulles)
          portent le grand rayon, les COMMANDES portent le 4 px de la marque,
@@ -473,10 +478,15 @@
        capitales), si bien qu'un gap de 20 px se voyait comme 30 et detachait la
        phrase de son titre. La ligne doit se lire comme la suite du mot, pas
        comme un paragraphe a part. */
+    /* align-items en flex-start, et non center : le sous-titre demarre alors a
+       l'aplomb de la premiere lettre du mot geant. Deux lignes qui commencent au
+       meme endroit se lisent comme un seul bloc, la ou un sous-titre centre sous
+       un mot de 150 px flottait sans attache. Le bloc, lui, reste centre dans la
+       scene : c'est son CONTENU qui s'aligne a gauche. */
     .titre-bloc{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
-                display:flex;flex-direction:column;align-items:center;
+                display:flex;flex-direction:column;align-items:flex-start;
                 gap:clamp(0px,.35vw,7px)}
-    .giant{text-align:center;white-space:nowrap;
+    .giant{text-align:left;white-space:nowrap;
            font-size:clamp(2.6rem,7.8vw,9.6rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
     .giant em{font-style:normal;color:var(--tone)}
     /* Les lettres sont detachees pour partir a des vitesses legerement
@@ -489,8 +499,11 @@
        une largeur figee se decalerait d'une fenetre a l'autre. Le chiffre porte
        l'encre pleine, le reste de la phrase est en gris : c'est lui qu'on doit
        retenir d'un coup d'oeil. */
-    .argument{max-width:min(760px,52vw);text-align:center;text-wrap:balance;
-              font-size:clamp(.92rem,1.18vw,1.3rem);line-height:1.45;color:var(--muted)}
+    /* Corps releve de 1.18 a 1.55vw : sous un mot de 150 px, une ligne de 20 px
+       donnait un rapport de 7 pour 1, ou le sous-titre se lisait comme une note
+       de bas de page. A 4 pour 1, les deux appartiennent a la meme phrase. */
+    .argument{max-width:min(760px,52vw);text-align:left;text-wrap:balance;
+              font-size:clamp(.98rem,1.55vw,1.7rem);line-height:1.4;color:var(--muted)}
     .argument strong{color:var(--ink);font-weight:700}
     /* La ligne d'argument est une bande de texte au milieu de la scene, juste
        sous le titre : tout bloc pose a cette hauteur vient s'y superposer, et
@@ -551,10 +564,9 @@
                   background:var(--surface2);border:1px solid var(--border)}
     .etape-visuel img{width:100%;height:100%;object-fit:cover;object-position:center;
                       display:block}
-    /* Le seul portrait du lot : cadre sur son premier tiers, la ou se lisent la
-       destination recommandee et les arrets les plus proches. Centre, on n'y
-       verrait que le milieu d'une liste d'adresses. */
-    .etape-visuel img.cadre-haut{object-position:center 14%}
+    /* Le seul portrait du lot. Cadre tout en HAUT : on ne veut y voir que
+       « Prochaine destination », pas le milieu d'une liste d'adresses. */
+    .etape-visuel img.cadre-haut{object-position:center top}
     /* Le numero est la seule piece coloree de la carte, et il prend la teinte de
        l'ecran : les trois etapes se lisent alors comme une progression et non
        comme trois options au choix. */
@@ -574,18 +586,21 @@
     /* Six colonnes plutot que trois, chaque question en occupant deux : les
        cinq questions se rangent alors 3 + 2 avec la seconde rangee CENTREE
        (elle demarre a la colonne 2), au lieu de laisser un trou a droite. */
-    .faq{display:grid;grid-template-columns:repeat(6,1fr);
-         gap:clamp(9px,.85vw,16px);width:100%}
-    .faq-item{grid-column:span 2}
-    .faq-item:nth-child(4){grid-column:2/span 2}
+    /* Deux colonnes de texte, sans cartes ni ombres : cinq encadres blancs
+       occupaient la moitie du dernier ecran et donnaient a de simples reponses
+       le poids d'une offre. Un filet suffit a separer, et la hauteur est
+       divisee par deux. */
+    .faq{display:grid;grid-template-columns:1fr 1fr;
+         column-gap:clamp(24px,3vw,64px);row-gap:0;width:100%}
+    .faq-item{padding:clamp(11px,1vw,17px) 0;border-top:1px solid var(--border)}
+    /* Les deux premieres coiffent leur colonne : leur filet ferait doublon avec
+       celui qui separe l'appel des questions. */
+    .faq-item:nth-child(1),.faq-item:nth-child(2){border-top:none;padding-top:0}
     .faq-titre{font-size:clamp(.72rem,.82vw,.9rem);font-weight:700;letter-spacing:1.4px;
-               text-transform:uppercase;color:var(--muted);text-align:center}
-    .faq-item{background:var(--surface);border:1px solid var(--border);
-              border-radius:var(--radius);padding:clamp(12px,1.05vw,18px) clamp(14px,1.2vw,22px);
-              box-shadow:var(--ombre-posee)}
-    .faq-item h3{font-size:clamp(.84rem,.98vw,1.05rem);font-weight:700;color:var(--ink);
-                 margin-bottom:4px}
-    .faq-item p{font-size:clamp(.75rem,.87vw,.94rem);line-height:1.45;color:var(--muted)}
+               text-transform:uppercase;color:var(--muted2);text-align:center}
+    .faq-item h3{font-size:clamp(.84rem,.96vw,1.02rem);font-weight:700;color:var(--ink);
+                 margin-bottom:3px}
+    .faq-item p{font-size:clamp(.74rem,.85vw,.92rem);line-height:1.45;color:var(--muted)}
 
     /* ── Bulles ───────────────────────────────────────────────────────────────
        Le commentaire est pose sur la capture qu'il commente, quitte a mordre
@@ -673,42 +688,26 @@
        capture (la valeur en px de son style) autant qu'a la hauteur d'ecran :
        au-dela de sa definition il deviendrait flou, en deca il perdrait sa
        presence d'une scene a l'autre.
-       L'ombre est deja dans la capture, il n'y en a pas a ajouter ici. */
+       Les captures sont DETOUREES a la prise : ni ombre incrustee, ni marge
+       parasite. L'ombre vient du CSS, la meme pour toutes. */
     .viz{z-index:2;position:absolute}
     .viz img{display:block;width:100%;height:auto}
-    /* La saisie vocale vient d'un export different des six autres captures :
-       seule celle-ci n'a pas son ombre incrustee. Meme valeur que partout
-       ailleurs sur le site (0 4 4, noir a 25%), posee cette fois en filtre. */
-    .viz img.sans-ombre{filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
-    /* Le sous-titre est colle a sa capture : c'est l'ecart de la saisie vocale,
-       retenu comme norme pour tous les blocs. Plus large, le titre et l'image se
-       lisaient comme deux elements distincts au lieu d'un seul encart. */
-    /* Le sous-titre passe de 800 a 700 : le titre geant est le seul a porter le
-       poids maximal. Tant que les deux etaient au meme gras, la page n'avait
-       qu'une seule voix typographique et la hierarchie ne tenait qu'a la
-       taille. */
+
+    /* ── Un bloc illustre : titre, capture, description ────────────────────────
+       Trois elements empiles, dans cet ordre, sur tous les ecrans. Le texte ne
+       flotte plus SUR la capture : c'est ce chevauchement qui rendait la page
+       brouillonne. Chaque commentaire se posait a une hauteur differente, si
+       bien qu'aucune ligne de lecture ne se dessinait d'un bloc a l'autre. */
+    .viz.bloc{display:flex;flex-direction:column;gap:clamp(7px,.7vw,13px)}
     .bloc-titre{font-size:clamp(.98rem,1.28vw,1.45rem);font-weight:700;letter-spacing:-.4px;
-                color:var(--ink);margin-bottom:0;white-space:nowrap}
-    /* La bulle se place par rapport a la capture seule, jamais par rapport au
-       titre : sinon elle glisserait des qu'un titre passe sur deux lignes. */
-    .bloc-shot{position:relative}
-    /* Seul le bandeau de temps porte du vide en haut de son image (4px), et il
-       est compense ici. Mesure faite contre le fond du site (#f1f4f7) et non
-       contre du blanc : une ligne presque blanche reste bien VISIBLE sur ce
-       fond gris, donc elle ne doit surtout pas etre rattrapee. La valeur est un
-       pourcentage de la LARGEUR, comme toute marge en pourcentage, et suit donc
-       l'echelle de la capture. */
-    .bloc-shot img{margin-top:var(--vide,0)}
-    /* Deux blocs ont leur capture decalee a droite, la bulle restant a gauche.
-       Le sous-titre suit la capture et non le bord du bloc : un sous-titre se
-       lit comme l'en-tete de l'image qu'il annonce, il doit donc commencer la
-       ou elle commence. */
-    .bloc.decale .bloc-shot,
-    .bloc.decale .bloc-titre{margin-left:var(--decale)}
-    /* Le commentaire est enfant du visuel qu'il commente : il le suit dans la
-       derive et se pose dessus, en debordant volontairement d'un coin. */
-    .viz .note{position:absolute}
-    .bloc-shot .note{position:absolute}
+                color:var(--ink);white-space:nowrap}
+    .bloc-shot{position:relative;line-height:0}
+    .bloc-shot img{border-radius:10px;box-shadow:var(--ombre-capture)}
+    /* La description dit l'EFFET, jamais la methode : elle se lit d'un coup
+       d'oeil et n'a donc pas besoin du corps d'un paragraphe. La borne en ch
+       l'empeche de s'etirer sur toute la largeur d'une grande capture. */
+    .bloc-texte{font-size:clamp(.8rem,.94vw,1rem);line-height:1.5;color:var(--muted);
+                max-width:40ch}
     /* Les formules occupent la largeur qu'on leur donne et passent DEVANT le
        titre : c'est sur elles qu'on veut cliquer, pas le lire. */
     .viz.formules{z-index:6}
@@ -949,12 +948,15 @@
          le liseré de couleur, eux, restent : c'est le meme objet des deux
          cotes. */
       .note{box-shadow:none;padding:12px 14px;margin:0}
-      /* Une seule colonne : trois questions cote a cote dans 350 px ne
-         laisseraient que trois mots par ligne. Le placement de la quatrieme
-         carte doit sauter avec la grille, sinon elle reste decalee d'un cran. */
+      /* Une seule colonne : deux questions cote a cote dans 350 px ne
+         laisseraient que trois mots par ligne. La deuxieme retrouve alors son
+         filet, qu'elle perdait en tant que tete de colonne. */
       .faq{grid-template-columns:1fr;max-width:540px}
-      .faq-item,.faq-item:nth-child(4){grid-column:auto}
+      .faq-item:nth-child(2){border-top:1px solid var(--border);padding-top:clamp(11px,1vw,17px)}
       .faq-titre{text-align:left}
+      /* La description suit la largeur de la colonne : la borne en ch n'a de
+         sens qu'a cote d'une capture large. */
+      .bloc-texte{max-width:none}
       /* !important parce que plusieurs encarts portent une largeur figee EN
          LIGNE, heritee de la composition de bureau (width:64% pour les gestes
          comme pour les formules) : une regle sans !important ne peut pas
@@ -1171,30 +1173,26 @@
         <figure class="viz bloc" style="left:5%;top:24%;width:min(385px,21vw)">
           <h3 class="bloc-titre" data-i18n="bloc.semaine.titre">Sur une semaine de tournées</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/cumul.png" width="385" height="125"
-                 data-i18n-alt="bloc.semaine.alt" alt="Écran ATEQO : 7 h 59 gagnées, 211 km et 26 € de carburant économisés sur 5 tournées" />
-            <!-- Le bandeau est bas (125 px pour 385 de large) : la bulle se pose
-                 SOUS lui, comme l'ancien bandeau de temps, sinon elle recouvre
-                 les trois chiffres qui sont tout l'interet de la capture. -->
-            <p class="note h3" style="left:14%;top:calc(100% + 12px)" data-i18n="bloc.semaine.bulle">Les compteurs se remplissent tournée après tournée.</p>
+            <img src="./img/captures/cumul.png" data-src-i18n="./img/captures/cumul.png"
+                 width="1074" height="318"
+                 data-i18n-alt="bloc.semaine.alt" alt="Écran ATEQO : 7 h 59 gagnées, 240 km et 29 € de carburant économisés sur 5 tournées" />
           </div>
+          <p class="bloc-texte" data-i18n="bloc.semaine.bulle">Presque une journée récupérée chaque semaine.</p>
         </figure>
 
         <!-- La piece maitresse : une tournee prete a partir, avec son gain
-             annonce. Bornee en HAUTEUR d'ecran (34vh) et pas seulement en
-             largeur : c'est la capture la plus haute du site (718 px pour 392
-             de large), a 20vw elle depassait la scene sur une fenetre courte. -->
-        <figure class="viz bloc" style="left:67%;top:3%;width:min(392px,20vw,34vh);z-index:1">
+             annonce. Bornee en HAUTEUR d'ecran et pas seulement en largeur :
+             c'est la capture la plus haute du site, deux fois plus haute que
+             large. La borne descend de 34 a 26vh depuis qu'une description
+             prend place sous elle et reclame sa cinquantaine de pixels. -->
+        <figure class="viz bloc" style="left:67%;top:3%;width:min(392px,20vw,26vh);z-index:1">
           <h3 class="bloc-titre" data-i18n="bloc.jour.titre">Ta tournée du jour</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/tournee_prete.png" width="392" height="718"
-                 data-i18n-alt="bloc.jour.alt" alt="Écran ATEQO : tournée optimisée, 1 h 32 gagnée, 110 colis pour 67 adresses" />
-            <!-- REGLE DE PLACEMENT DES BULLES : une bulle deborde vers
-                 l'EXTERIEUR de la scene, jamais vers son centre, ou vit le
-                 titre geant. Posee a gauche de cette capture, elle recouvrait
-                 la fin de « Livre plus. » des que la fenetre se resserrait. -->
-            <p class="note h1" style="left:66%;top:30%" data-i18n="bloc.jour.bulle">Le gain est calculé sur ta tournée, pas estimé sur une moyenne.</p>
+            <img src="./img/captures/tournee_prete.png" data-src-i18n="./img/captures/tournee_prete.png"
+                 width="1200" height="2454"
+                 data-i18n-alt="bloc.jour.alt" alt="Écran ATEQO : tournée optimisée, 1 h 32 gagnée, 133 colis pour 67 adresses" />
           </div>
+          <p class="bloc-texte" data-i18n="bloc.jour.bulle">1 h 32 de route en moins, dès la première tournée.</p>
         </figure>
 
         <figure class="viz centre-bande" style="top:70%">
@@ -1230,32 +1228,39 @@
 
         <div class="viz" style="left:9%;top:26%;width:82%">
           <ol class="etapes">
+            <!-- Numero et titre EN TETE, la vignette ensuite, la description
+                 pour finir : on annonce le geste avant de le montrer. -->
             <li class="etape">
-              <div class="etape-visuel">
-                <img src="./img/captures/voix.png" width="300" height="189"
-                     data-i18n-alt="etape.1.alt" alt="Écran ATEQO : dictée d'une adresse" />
-              </div>
               <span class="etape-num" aria-hidden="true">1</span>
               <h3 data-i18n="etape.1.titre">Ajoute tes adresses</h3>
+              <div class="etape-visuel">
+                <img src="./img/captures/voix.png" data-src-i18n="./img/captures/voix.png"
+                     width="900" height="474"
+                     data-i18n-alt="etape.1.alt" alt="Écran ATEQO : dictée d'une adresse" />
+              </div>
               <p data-i18n="etape.1.texte">À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.</p>
             </li>
             <li class="etape">
-              <div class="etape-visuel">
-                <img src="./img/captures/optimisation.png" width="399" height="278"
-                     data-i18n-alt="etape.2.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés" loading="lazy" />
-              </div>
               <span class="etape-num" aria-hidden="true">2</span>
               <h3 data-i18n="etape.2.titre">Optimise</h3>
+              <div class="etape-visuel">
+                <!-- La carte entiere, comme demande : c'est la vue que le
+                     visiteur retrouvera en grand deux ecrans plus loin. Pas de
+                     version anglaise, elle ne porte aucun texte d'interface. -->
+                <img src="./img/captures/itineraire_optimise.jpg" width="2040" height="1292"
+                     data-i18n-alt="etape.2.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés" loading="lazy" />
+              </div>
               <p data-i18n="etape.2.texte">L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.</p>
             </li>
             <li class="etape">
-              <div class="etape-visuel">
-                <img class="cadre-haut" src="./img/captures/navigation.png" width="247" height="469"
-                     data-i18n-alt="etape.3.alt" alt="Écran ATEQO : la destination recommandée et les arrêts les plus proches" loading="lazy" />
-              </div>
               <span class="etape-num" aria-hidden="true">3</span>
               <h3 data-i18n="etape.3.titre">Livre</h3>
-              <p data-i18n="etape.3.texte">Navigation adaptative : à chaque arrêt, la destination recommandée et les plus proches.</p>
+              <div class="etape-visuel">
+                <img class="cadre-haut" src="./img/captures/navigation.png" data-src-i18n="./img/captures/navigation.png"
+                     width="750" height="1534"
+                     data-i18n-alt="etape.3.alt" alt="Écran ATEQO : la destination recommandée et les arrêts les plus proches" loading="lazy" />
+              </div>
+              <p data-i18n="etape.3.texte">Navigation adaptative : la destination recommandée à chaque arrêt, ou celui que tu choisis sur la carte.</p>
             </li>
           </ol>
         </div>
@@ -1275,24 +1280,21 @@
         <figure class="viz bloc" style="left:9%;top:24%;width:min(300px,16vw)">
           <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
           <div class="bloc-shot">
-            <!-- Seule capture sans ombre deja incrustee (export different des
-                 autres) : elle recoit la meme par CSS. -->
-            <img class="sans-ombre" src="./img/captures/voix.png" width="300" height="189"
+            <img src="./img/captures/voix.png" data-src-i18n="./img/captures/voix.png"
+                 width="900" height="474"
                  data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" />
-            <!-- Calee sur la ligne d'adresse : elle en recouvre la moitie
-                 droite, on comprend que l'adresse vient d'etre dictee sans
-                 avoir a la lire en entier. -->
-            <p class="note h2 etroite" style="left:30%;top:84%" data-i18n="bloc.voix.bulle">Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.voix.bulle">Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.</p>
         </figure>
 
         <figure class="viz bloc" style="left:66%;top:11%;width:min(378px,20vw,32vh);z-index:1">
           <h3 class="bloc-titre" data-i18n="bloc.circuits.titre">Carnet et circuits récurrents</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/circuits.png" width="378" height="400"
+            <img src="./img/captures/circuits.png" data-src-i18n="./img/captures/circuits.png"
+                 width="1074" height="1485"
                  data-i18n-alt="bloc.circuits.alt" alt="Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains" loading="lazy" />
-            <p class="note h5" style="left:32%;top:66%" data-i18n="bloc.circuits.bulle">Tes tournées habituelles rechargées en un clic le lendemain.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.circuits.bulle">Ta tournée d'hier, rechargée en un clic.</p>
         </figure>
 
         <!-- L'argument le plus fort de l'ecran face aux concurrents, dont les
@@ -1327,19 +1329,19 @@
         <figure class="viz bloc" style="left:4%;top:24%;width:min(680px,42vw,72vh)">
           <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Optimisation par secteurs</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/secteurs_avant.png" width="1060" height="714"
+            <img src="./img/captures/secteurs_avant.jpg" width="2040" height="1172"
                  data-i18n-alt="bloc.secteurs.alt" alt="Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur" />
-            <p class="note h2" style="left:52%;top:66%" data-i18n="bloc.secteurs.bulle">Découpe ta zone. ATEQO optimise chaque secteur, dans l'ordre où tu veux les faire.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.secteurs.bulle">Ta zone découpée comme tu la fais vraiment.</p>
         </figure>
 
         <figure class="viz bloc" style="left:52%;top:24%;width:min(680px,42vw,72vh)">
           <h3 class="bloc-titre" data-i18n="bloc.reel.titre">Des rues, pas des lignes droites</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/itineraire_optimise.png" width="998" height="689"
+            <img src="./img/captures/itineraire_optimise.jpg" width="2040" height="1292"
                  data-i18n-alt="bloc.reel.alt" alt="Carte ATEQO : l'itinéraire optimisé tracé sur les routes réelles" loading="lazy" />
-            <p class="note h1" style="left:44%;top:70%" data-i18n="bloc.reel.bulle">Le calcul suit la voirie et les sens de circulation, pas la distance à vol d'oiseau.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.reel.bulle">L'ordre qui te fait vraiment gagner du temps.</p>
         </figure>
 
         <!-- Remontee en tete d'ecran, a l'oppose du titre : en bas, elle
@@ -1364,24 +1366,22 @@
         <figure class="viz bloc" style="left:7%;top:10%;width:min(247px,13vw,26vh)">
           <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Navigation adaptative</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/navigation.png" width="247" height="469"
+            <img src="./img/captures/navigation.png" data-src-i18n="./img/captures/navigation.png"
+                 width="750" height="1534"
                  data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
-            <p class="note h3" style="left:58%;top:74%" data-i18n="bloc.navigation.bulle">La destination recommandée, et les arrêts les plus proches si tu changes d'avis.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.navigation.bulle">Tu changes d'avis, l'ordre suit.</p>
         </figure>
 
-        <!-- Le passage en z-index 1 avait un effet non voulu : ce n'est pas
-             seulement la capture qui passait derriere le titre geant, mais
-             AUSSI son sous-titre, devenu illisible. Un bloc ne passe derriere
-             que si son texte reste, lui, hors de la bande du titre. Ici il
-             descend sous l'argument et retrouve le plan normal. -->
+        <!-- Le bloc descend sous la ligne d'argument : un bloc pose dans la
+             bande du titre geant y perd son sous-titre, illisible par-dessous. -->
         <figure class="viz bloc" style="left:68%;bottom:1%;width:min(620px,32vw,41vh)">
           <h3 class="bloc-titre" data-i18n="bloc.statuts.titre">Tout se pilote sur la carte</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/navigation_statuts.png" width="1228" height="805"
-                 data-i18n-alt="bloc.statuts.alt" alt="Carte ATEQO en cours de tournée : arrêts livrés, arrêt en cours et retours dépôt" loading="lazy" />
-            <p class="note h1" style="left:38%;top:70%" data-i18n="bloc.statuts.bulle">Statut d'un arrêt, ajout d'une adresse en cours de tournée, ordre de passage.</p>
+            <img src="./img/captures/navigation_statuts.jpg" width="1860" height="1089"
+                 data-i18n-alt="bloc.statuts.alt" alt="Carte ATEQO en cours de tournée : l'arrêt à livrer et le reste du trajet" loading="lazy" />
           </div>
+          <p class="bloc-texte" data-i18n="bloc.statuts.bulle">Tout se pilote sur la carte, sans quitter la route.</p>
         </figure>
 
         <!-- Descendue de 14 a 8 % : la bulle du bloc de navigation, plus haute
@@ -1413,31 +1413,33 @@
         <figure class="viz bloc" style="left:5%;top:26%;width:min(374px,22vw,38vh)">
           <h3 class="bloc-titre" data-i18n="bloc.replanif.titre">Colis non livrés</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/replanifier.png" width="374" height="451"
+            <img src="./img/captures/replanifier.png" data-src-i18n="./img/captures/replanifier.png"
+                 width="1062" height="1356"
                  data-i18n-alt="bloc.replanif.alt" alt="Écran ATEQO : les livraisons à replanifier, avec leur date de report" />
-            <p class="note h3 etroite" style="left:30%;top:78%" data-i18n="bloc.replanif.bulle">Client absent, accès impossible : reprogramme à une date choisie, le rappel arrive le jour venu.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.replanif.bulle">Client absent ? Reprogrammé, et rappelé le jour venu.</p>
         </figure>
 
         <figure class="viz bloc" style="left:37%;top:26%;width:min(363px,22vw,38vh)">
           <h3 class="bloc-titre" data-i18n="bloc.bilan.titre">Bilan de tournée</h3>
           <div class="bloc-shot">
+            <!-- Seule capture encore en definition d'origine : l'ecran de
+                 synthese ne s'affiche qu'un instant a la fin d'une tournee, et
+                 il n'a pas pu etre repris a la densite des autres. -->
             <img src="./img/captures/bilan_tournee.png" width="363" height="433"
                  data-i18n-alt="bloc.bilan.alt" alt="Écran ATEQO : tournée terminée, 58 livrés, 2 reprogrammés, 1 retour dépôt" loading="lazy" />
-            <p class="note h4 etroite" style="left:52%;top:72%" data-i18n="bloc.bilan.bulle">Livrés, reprogrammés, retours dépôt : la journée en un écran.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.bilan.bulle">Ta journée entière en un écran.</p>
         </figure>
 
         <figure class="viz bloc" style="left:69%;top:26%;width:min(371px,22vw,38vh)">
           <h3 class="bloc-titre" data-i18n="bloc.historique.titre">Historique</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/historique.png" width="371" height="311"
+            <img src="./img/captures/historique.png" data-src-i18n="./img/captures/historique.png"
+                 width="1074" height="915"
                  data-i18n-alt="bloc.historique.alt" alt="Écran ATEQO : l'historique du mois, tournée par tournée" loading="lazy" />
-            <!-- Sous la capture, et non dessus : posee au milieu, elle
-                 recouvrait « 87 min gagnees, 41,3 km gagnes », c'est-a-dire
-                 exactement le gain dont elle parle. -->
-            <p class="note h2 etroite" style="left:14%;top:calc(100% - 26px)" data-i18n="bloc.historique.bulle">Chaque tournée conserve son détail et son gain.</p>
           </div>
+          <p class="bloc-texte" data-i18n="bloc.historique.bulle">Tout est gardé, tournée après tournée.</p>
         </figure>
        </div>
       </div>
@@ -1637,11 +1639,11 @@
         't1.argument': "<strong>67 arrêts optimisés en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.",
         't1.rassurance': "7 tournées offertes à l'inscription, sans carte bancaire",
         'bloc.jour.titre': 'Ta tournée du jour',
-        'bloc.jour.bulle': 'Le gain est calculé sur ta tournée, pas estimé sur une moyenne.',
-        'bloc.jour.alt': 'Écran ATEQO : tournée optimisée, 1 h 32 gagnée, 110 colis pour 67 adresses',
+        'bloc.jour.bulle': '1 h 32 de route en moins, dès la première tournée.',
+        'bloc.jour.alt': 'Écran ATEQO : tournée optimisée, 1 h 32 gagnée, 133 colis pour 67 adresses',
         'bloc.semaine.titre': 'Sur une semaine de tournées',
-        'bloc.semaine.bulle': 'Les compteurs se remplissent tournée après tournée.',
-        'bloc.semaine.alt': 'Écran ATEQO : 7 h 59 gagnées, 211 km et 26 € de carburant économisés sur 5 tournées',
+        'bloc.semaine.bulle': 'Presque une journée récupérée chaque semaine.',
+        'bloc.semaine.alt': 'Écran ATEQO : 7 h 59 gagnées, 240 km et 29 € de carburant économisés sur 5 tournées',
         'metier.1': 'Messagerie et colis',
         'metier.2': 'Coursier urbain',
         'metier.3': 'Livraison de repas',
@@ -1657,7 +1659,7 @@
         'etape.2.texte': "L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.",
         'etape.2.alt': 'Carte ATEQO : la tournée optimisée, arrêts numérotés',
         'etape.3.titre': 'Livre',
-        'etape.3.texte': 'Navigation adaptative : à chaque arrêt, la destination recommandée et les plus proches.',
+        'etape.3.texte': 'Navigation adaptative : la destination recommandée à chaque arrêt, ou celui que tu choisis sur la carte.',
         'etape.3.alt': 'Écran ATEQO : la destination recommandée et les arrêts les plus proches',
         // ── 3. Prépare vite ──
         't3.title': 'Prépare <em>vite.</em>',
@@ -1667,39 +1669,39 @@
         'bloc.voix.bulle': "Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.",
         'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
         'bloc.circuits.titre': 'Carnet et circuits récurrents',
-        'bloc.circuits.bulle': 'Tes tournées habituelles rechargées en un clic le lendemain.',
+        'bloc.circuits.bulle': "Ta tournée d'hier, rechargée en un clic.",
         'bloc.circuits.alt': 'Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains',
         // ── 4. Moins de route ──
         't4.title': 'Moins de <em>route.</em>',
         't4.argument': "<strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.",
         't4.chargement': 'Chargement guidé : le dernier chargé est le premier livré',
         'bloc.secteurs.titre': 'Optimisation par secteurs',
-        'bloc.secteurs.bulle': 'Découpe ta zone. ATEQO optimise chaque secteur, dans l’ordre où tu veux les faire.',
+        'bloc.secteurs.bulle': 'Ta zone découpée comme tu la fais vraiment.',
         'bloc.secteurs.alt': 'Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur',
         'bloc.reel.titre': 'Des rues, pas des lignes droites',
-        'bloc.reel.bulle': 'Le calcul suit la voirie et les sens de circulation, pas la distance à vol d’oiseau.',
+        'bloc.reel.bulle': 'L’ordre qui te fait vraiment gagner du temps.',
         'bloc.reel.alt': 'Carte ATEQO : l’itinéraire optimisé tracé sur les routes réelles',
         // ── 5. Garde la main ──
         't5.title': 'Garde la <em>main.</em>',
         't5.argument': 'ATEQO optimise, tu choisis. À chaque arrêt.',
         't5.gps': 'Ton GPS habituel prend le relais : la destination part dans Google Maps',
         'bloc.navigation.titre': 'Navigation adaptative',
-        'bloc.navigation.bulle': 'La destination recommandée, et les arrêts les plus proches si tu changes d’avis.',
+        'bloc.navigation.bulle': 'Tu changes d’avis, l’ordre suit.',
         'bloc.navigation.alt': 'Écran ATEQO : la destination recommandée, puis les adresses les plus proches',
         'bloc.statuts.titre': 'Tout se pilote sur la carte',
-        'bloc.statuts.bulle': "Statut d'un arrêt, ajout d'une adresse en cours de tournée, ordre de passage.",
-        'bloc.statuts.alt': 'Carte ATEQO en cours de tournée : arrêts livrés, arrêt en cours et retours dépôt',
+        'bloc.statuts.bulle': 'Tout se pilote sur la carte, sans quitter la route.',
+        'bloc.statuts.alt': 'Carte ATEQO en cours de tournée : l’arrêt à livrer et le reste du trajet',
         // ── 6. Rien ne se perd ──
         't6.title': 'Rien ne se <em>perd.</em>',
         't6.argument': "Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.",
         'bloc.replanif.titre': 'Colis non livrés',
-        'bloc.replanif.bulle': 'Client absent, accès impossible : reprogramme à une date choisie, le rappel arrive le jour venu.',
+        'bloc.replanif.bulle': 'Client absent ? Reprogrammé, et rappelé le jour venu.',
         'bloc.replanif.alt': 'Écran ATEQO : les livraisons à replanifier, avec leur date de report',
         'bloc.bilan.titre': 'Bilan de tournée',
-        'bloc.bilan.bulle': 'Livrés, reprogrammés, retours dépôt : la journée en un écran.',
+        'bloc.bilan.bulle': 'Ta journée entière en un écran.',
         'bloc.bilan.alt': 'Écran ATEQO : tournée terminée, 58 livrés, 2 reprogrammés, 1 retour dépôt',
         'bloc.historique.titre': 'Historique',
-        'bloc.historique.bulle': 'Chaque tournée conserve son détail et son gain.',
+        'bloc.historique.bulle': 'Tout est gardé, tournée après tournée.',
         'bloc.historique.alt': 'Écran ATEQO : l’historique du mois, tournée par tournée',
         'plan.free.name': 'Gratuit',
         'plan.free.f1': '5 tournées par mois',
@@ -1771,11 +1773,11 @@
         't1.argument': '<strong>67 stops optimized in under a minute.</strong> 92 minutes less driving on the day’s route.',
         't1.rassurance': '7 free routes when you sign up, no card required',
         'bloc.jour.titre': 'Your route for today',
-        'bloc.jour.bulle': 'The saving is computed on your own route, not estimated from an average.',
-        'bloc.jour.alt': 'ATEQO screen: optimized route, 1 h 32 saved, 110 parcels across 67 addresses',
+        'bloc.jour.bulle': '1 h 32 less driving, from the very first route.',
+        'bloc.jour.alt': 'ATEQO screen: optimized route, 1 h 32 saved, 133 parcels across 67 addresses',
         'bloc.semaine.titre': 'Over a week of routes',
-        'bloc.semaine.bulle': 'The counters fill up route after route.',
-        'bloc.semaine.alt': 'ATEQO screen: 7 h 59 saved, 211 km and €26 of fuel saved across 5 routes',
+        'bloc.semaine.bulle': 'Almost a full day back, every week.',
+        'bloc.semaine.alt': 'ATEQO screen: 7 h 59 saved, 240 km and €29 of fuel saved across 5 routes',
         'metier.1': 'Parcel delivery',
         'metier.2': 'Urban courier',
         'metier.3': 'Food delivery',
@@ -1791,7 +1793,7 @@
         'etape.2.texte': 'The shortest order on real roads. One tap, a few seconds.',
         'etape.2.alt': 'ATEQO map: the optimized route, numbered stops',
         'etape.3.titre': 'Deliver',
-        'etape.3.texte': 'Adaptive navigation: at every stop, the recommended destination and the closest ones.',
+        'etape.3.texte': 'Adaptive navigation: the recommended destination at every stop, or the one you pick on the map.',
         'etape.3.alt': 'ATEQO screen: the recommended destination and the closest stops',
         // ── 3. Get ready fast ──
         't3.title': 'Get ready <em>fast.</em>',
@@ -1801,39 +1803,39 @@
         'bloc.voix.bulle': 'Say the address, it is added. No stopping, no typing.',
         'bloc.voix.alt': 'ATEQO screen: dictating an address, “I’m listening”',
         'bloc.circuits.titre': 'Address book and saved lists',
-        'bloc.circuits.bulle': 'Your usual routes reloaded in one tap the next morning.',
+        'bloc.circuits.bulle': "Yesterday's route, reloaded in one tap.",
         'bloc.circuits.alt': 'ATEQO screen: two saved routes, with their sectors and their savings',
         // ── 4. Less driving ──
         't4.title': 'Less <em>driving.</em>',
         't4.argument': '<strong>The shortest order on real roads</strong>, sector by sector.',
         't4.chargement': 'Guided loading: the last one loaded is the first one delivered',
         'bloc.secteurs.titre': 'Sector optimization',
-        'bloc.secteurs.bulle': 'Split your area. ATEQO optimizes each sector, in the order you want to run them.',
+        'bloc.secteurs.bulle': 'Your area split the way you actually run it.',
         'bloc.secteurs.alt': 'ATEQO map: 67 stops split into 5 colored sectors',
         'bloc.reel.titre': 'Streets, not straight lines',
-        'bloc.reel.bulle': 'The calculation follows the road network and one-way streets, not the straight-line distance.',
+        'bloc.reel.bulle': 'The order that really saves you time.',
         'bloc.reel.alt': 'ATEQO map: the optimized route drawn on real roads',
         // ── 5. Stay in control ──
         't5.title': 'Stay in <em>control.</em>',
         't5.argument': 'ATEQO optimizes, you decide. At every stop.',
         't5.gps': 'Your usual GPS takes over: the destination opens in Google Maps',
         'bloc.navigation.titre': 'Adaptive navigation',
-        'bloc.navigation.bulle': 'The recommended destination, plus the closest stops if you change your mind.',
+        'bloc.navigation.bulle': 'Change your mind, the order follows.',
         'bloc.navigation.alt': 'ATEQO screen: the recommended destination, then the closest addresses',
         'bloc.statuts.titre': 'Everything runs from the map',
-        'bloc.statuts.bulle': 'Stop status, adding an address mid-route, order of passage.',
-        'bloc.statuts.alt': 'ATEQO map during a route: delivered stops, current stop and depot returns',
+        'bloc.statuts.bulle': 'Everything runs from the map, without leaving the road.',
+        'bloc.statuts.alt': 'ATEQO map during a route: the stop to deliver and the rest of the trip',
         // ── 6. Nothing gets lost ──
         't6.title': 'Nothing gets <em>lost.</em>',
         't6.argument': 'What is not delivered comes back tomorrow, and every day leaves a summary.',
         'bloc.replanif.titre': 'Failed deliveries',
-        'bloc.replanif.bulle': 'Customer away, no access: reschedule for a date you choose, the reminder comes on the day.',
+        'bloc.replanif.bulle': 'Customer away? Rescheduled, and reminded on the day.',
         'bloc.replanif.alt': 'ATEQO screen: deliveries to reschedule, with their new date',
         'bloc.bilan.titre': 'Route summary',
-        'bloc.bilan.bulle': 'Delivered, rescheduled, returned to depot: the day on one screen.',
+        'bloc.bilan.bulle': 'Your whole day on one screen.',
         'bloc.bilan.alt': 'ATEQO screen: route finished, 58 delivered, 2 rescheduled, 1 depot return',
         'bloc.historique.titre': 'History',
-        'bloc.historique.bulle': 'Every route keeps its detail and its saving.',
+        'bloc.historique.bulle': 'Everything is kept, route after route.',
         'bloc.historique.alt': 'ATEQO screen: the month’s history, route by route',
         'plan.free.name': 'Free',
         'plan.free.f1': '5 routes per month',
@@ -1918,6 +1920,16 @@
       document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
         var key = el.getAttribute('data-i18n-alt');
         if (dict[key] != null) el.setAttribute('alt', dict[key]);
+      });
+      // Les captures montrent l'interface de l'application, donc du texte : il
+      // en existe une version par langue, distinguee par le suffixe _en. Une
+      // convention de nommage plutot qu'une cle par image, qui alourdirait les
+      // deux dictionnaires de dix entrees sans rien apprendre a personne.
+      // Les cartes, elles, ne portent que des numeros : communes aux deux
+      // langues, elles ne reçoivent pas cet attribut.
+      document.querySelectorAll('[data-src-i18n]').forEach(function (el) {
+        var base = el.getAttribute('data-src-i18n');
+        el.setAttribute('src', lang === 'en' ? base.replace(/(\.[a-z]+)$/, '_en$1') : base);
       });
       document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
         var key = el.getAttribute('data-i18n-aria');

@@ -483,11 +483,19 @@
        meme endroit se lisent comme un seul bloc, la ou un sous-titre centre sous
        un mot de 150 px flottait sans attache. Le bloc, lui, reste centre dans la
        scene : c'est son CONTENU qui s'aligne a gauche. */
-    .titre-bloc{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+    /* ETAT DE REPOS, et non etat d'arrivee : le titre vit en haut a gauche,
+       petit, et c'est la chorégraphie qui le montre d'abord grand au centre
+       (cf. jouerTitre). Le CSS decrit donc la page TELLE QU'ON LA LIT une fois
+       la scene posee ; sans JavaScript, elle est juste, simplement sans
+       l'annonce. Le centre appartient desormais aux captures. */
+    .titre-bloc{left:5%;top:7%;z-index:2;width:min(52vw,860px);
                 display:flex;flex-direction:column;align-items:flex-start;
-                gap:clamp(0px,.35vw,7px)}
+                gap:clamp(6px,.6vw,12px);
+                /* transform appartient a la chorégraphie (deplacement et
+                   echelle) : aucun centrage ne doit s'en servir. */
+                transform-origin:left top}
     .giant{text-align:left;white-space:nowrap;
-           font-size:clamp(2.6rem,7.8vw,9.6rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
+           font-size:clamp(1.9rem,4.5vw,5.6rem);font-weight:800;letter-spacing:-.05em;line-height:.9}
     .giant em{font-style:normal;color:var(--tone)}
     /* Les lettres sont detachees pour partir a des vitesses legerement
        differentes : elles s'etirent au defilement au lieu de bouger d'un bloc. */
@@ -502,9 +510,19 @@
     /* Corps releve de 1.18 a 1.55vw : sous un mot de 150 px, une ligne de 20 px
        donnait un rapport de 7 pour 1, ou le sous-titre se lisait comme une note
        de bas de page. A 4 pour 1, les deux appartiennent a la meme phrase. */
-    .argument{max-width:min(760px,52vw);text-align:left;text-wrap:balance;
-              font-size:clamp(.98rem,1.55vw,1.7rem);line-height:1.4;color:var(--muted)}
+    /* La promesse de l'ecran, en BULLE : meme carte blanche a liseré que les
+       commentaires de bloc, en plus grand. Elle est le sous-titre du mot geant
+       et le suit dans son repli, d'ou sa place dans le bloc de titre. */
+    .argument{max-width:min(560px,38vw);text-align:left;text-wrap:balance;
+              background:var(--surface);border:1px solid var(--border);
+              border-left:3px solid var(--tone);border-radius:var(--radius);
+              padding:clamp(9px,.75vw,14px) clamp(12px,1vw,18px);
+              box-shadow:var(--ombre-levee);
+              font-size:clamp(.85rem,1.02vw,1.12rem);line-height:1.45;color:var(--ink)}
     .argument strong{color:var(--ink);font-weight:700}
+    /* Elle respire, comme les commentaires de bloc, mais sur son propre cycle
+       et seulement une fois posee. */
+    .giant.is-in ~ .argument{animation:flotte-bulle 6.8s ease-in-out 1.9s infinite}
     /* La ligne d'argument est une bande de texte au milieu de la scene, juste
        sous le titre : tout bloc pose a cette hauteur vient s'y superposer, et
        deux textes l'un sur l'autre ne se lisent plus ni l'un ni l'autre. Sur
@@ -539,9 +557,16 @@
     .titre-section{font-size:clamp(1.45rem,2.7vw,2.7rem);font-weight:800;
                    letter-spacing:-1.1px;line-height:1.05;color:var(--ink);white-space:nowrap}
     .titre-section em{font-style:normal;color:var(--tone)}
-    /* Une ligne de contexte sous le titre de section, quand il en faut une. */
-    .titre-section+.sous-titre{margin-top:6px;color:var(--muted);
-                               font-size:clamp(.86rem,1.02vw,1.08rem);line-height:1.45}
+    /* Une ligne de contexte sous le titre de section, quand il en faut une.
+       Meme bulle que sous les mots geants : les huit ecrans se lisent alors
+       de la meme facon, un titre puis sa promesse dans une carte. */
+    .titre-section+.sous-titre{margin-top:clamp(6px,.6vw,12px);color:var(--ink);
+                               max-width:min(560px,38vw);
+                               background:var(--surface);border:1px solid var(--border);
+                               border-left:3px solid var(--tone);border-radius:var(--radius);
+                               padding:clamp(9px,.75vw,14px) clamp(12px,1vw,18px);
+                               box-shadow:var(--ombre-levee);
+                               font-size:clamp(.85rem,1.02vw,1.12rem);line-height:1.45}
 
     /* ── Cartes d'etape ───────────────────────────────────────────────────────
        Les trois gestes de la prise en main. Chacune porte sa vignette : trois
@@ -664,6 +689,10 @@
                       chaque pixel gagne sur sa hauteur est un pixel de marge
                       de plus sur les fenetres basses. */
                    padding:10px 17px;box-shadow:var(--ombre-levee)}
+    /* Variante pour les pastilles longues posees dans une colonne etroite :
+       elles reviennent a la ligne au lieu de traverser la scene et d'aller
+       toucher la capture voisine. */
+    .note-avantage.souple{white-space:normal;width:min(330px,21vw);text-align:left}
     /* La marque garde ses cinq couleurs de secteur partout ou elle est ecrite,
        comme le logo et comme sur la maquette. D'une seule encre au milieu d'une
        phrase, elle passait pour un mot ordinaire. */
@@ -1164,13 +1193,13 @@
           <!-- Resserree comme sur les ecrans a grande capture : a pleine
                largeur, elle venait mordre sur la capture de droite des que la
                fenetre descendait sous 1600 px. -->
-          <p class="argument court" data-i18n-html="t1.argument"><strong>67 arrêts optimisés en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.</p>
+          <p class="argument court" data-i18n-html="t1.argument"><strong>Une tournée entière optimisée en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.</p>
         </div>
 
         <!-- Le bandeau des compteurs cumules, a gauche : il dit ce que
              l'application rapporte sur la duree, la ou la capture de droite ne
              montre qu'une seule journee. -->
-        <figure class="viz bloc" style="left:5%;top:24%;width:min(385px,21vw)">
+        <figure class="viz bloc" style="left:6%;top:36%;width:min(385px,21vw)">
           <h3 class="bloc-titre" data-i18n="bloc.semaine.titre">Sur une semaine de tournées</h3>
           <div class="bloc-shot">
             <img src="./img/captures/cumul.png" data-src-i18n="./img/captures/cumul.png"
@@ -1185,7 +1214,7 @@
              c'est la capture la plus haute du site, deux fois plus haute que
              large. La borne descend de 34 a 26vh depuis qu'une description
              prend place sous elle et reclame sa cinquantaine de pixels. -->
-        <figure class="viz bloc" style="left:67%;top:3%;width:min(392px,20vw,26vh);z-index:1">
+        <figure class="viz bloc" style="left:42%;top:8%;width:min(392px,20vw,26vh);z-index:1">
           <h3 class="bloc-titre" data-i18n="bloc.jour.titre">Ta tournée du jour</h3>
           <div class="bloc-shot">
             <img src="./img/captures/tournee_prete.png" data-src-i18n="./img/captures/tournee_prete.png"
@@ -1195,7 +1224,7 @@
           <p class="bloc-texte" data-i18n="bloc.jour.bulle">1 h 32 de route en moins, dès la première tournée.</p>
         </figure>
 
-        <figure class="viz centre-bande" style="top:70%">
+        <figure class="viz" style="left:70%;top:38%">
           <p class="note h1 note-avantage" style="position:static" data-i18n="t1.rassurance">7 tournées offertes à l'inscription, sans carte bancaire</p>
         </figure>
 
@@ -1238,7 +1267,7 @@
                      width="900" height="474"
                      data-i18n-alt="etape.1.alt" alt="Écran ATEQO : dictée d'une adresse" />
               </div>
-              <p data-i18n="etape.1.texte">À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.</p>
+              <p data-i18n="etape.1.texte">À la voix ou depuis ton carnet, autant d'arrêts que la tournée en demande.</p>
             </li>
             <li class="etape">
               <span class="etape-num" aria-hidden="true">2</span>
@@ -1250,7 +1279,7 @@
                 <img src="./img/captures/itineraire_optimise.jpg" width="2040" height="1404"
                      data-i18n-alt="etape.2.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés" loading="lazy" />
               </div>
-              <p data-i18n="etape.2.texte">L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.</p>
+              <p data-i18n="etape.2.texte">Un appui suffit : 67 arrêts remis dans l'ordre qui te fait rentrer plus tôt.</p>
             </li>
             <li class="etape">
               <span class="etape-num" aria-hidden="true">3</span>
@@ -1262,7 +1291,7 @@
                      width="1200" height="828"
                      data-i18n-alt="etape.3.alt" alt="Écran ATEQO : la destination recommandée et les arrêts les plus proches" loading="lazy" />
               </div>
-              <p data-i18n="etape.3.texte">Navigation adaptative : la destination recommandée à chaque arrêt, ou celui que tu choisis sur la carte.</p>
+              <p data-i18n="etape.3.texte">ATEQO annonce le prochain arrêt. Tu en préfères un autre, la suite se recalcule.</p>
             </li>
           </ol>
         </div>
@@ -1276,33 +1305,33 @@
        <div class="field">
         <div class="titre-bloc">
           <h2 class="giant" data-i18n-html="t3.title">Prépare <em>vite.</em></h2>
-          <p class="argument" data-i18n="t3.argument">Soixante arrêts saisis sans lâcher les colis.</p>
+          <p class="argument" data-i18n-html="t3.argument"><strong>Ta tournée est prête avant que le moteur ne tourne.</strong></p>
         </div>
 
-        <figure class="viz bloc" style="left:9%;top:24%;width:min(300px,16vw)">
+        <figure class="viz bloc" style="left:6%;top:38%;width:min(300px,16vw)">
           <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
           <div class="bloc-shot">
             <img src="./img/captures/voix.png" data-src-i18n="./img/captures/voix.png"
                  width="900" height="474"
                  data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" />
           </div>
-          <p class="bloc-texte" data-i18n="bloc.voix.bulle">Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.</p>
+          <p class="bloc-texte" data-i18n="bloc.voix.bulle">Dicte l'adresse, elle entre dans la tournée. Tes mains restent sur les colis.</p>
         </figure>
 
-        <figure class="viz bloc" style="left:66%;top:11%;width:min(378px,20vw,32vh);z-index:1">
+        <figure class="viz bloc" style="left:41%;top:9%;width:min(378px,20vw,32vh);z-index:1">
           <h3 class="bloc-titre" data-i18n="bloc.circuits.titre">Carnet et circuits récurrents</h3>
           <div class="bloc-shot">
             <img src="./img/captures/circuits.png" data-src-i18n="./img/captures/circuits.png"
                  width="1194" height="1851"
                  data-i18n-alt="bloc.circuits.alt" alt="Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains" loading="lazy" />
           </div>
-          <p class="bloc-texte" data-i18n="bloc.circuits.bulle">Ta tournée d'hier, rechargée en un clic.</p>
+          <p class="bloc-texte" data-i18n="bloc.circuits.bulle">Les tournées que tu refais chaque semaine sont déjà là.</p>
         </figure>
 
         <!-- L'argument le plus fort de l'ecran face aux concurrents, dont les
              formules gratuites s'arretent en general a dix arrets. Il n'a pas
              de capture : il ne se demontre pas, il s'annonce. -->
-        <figure class="viz" style="left:9%;bottom:14%">
+        <figure class="viz" style="left:68%;top:40%">
           <p class="note h2 note-avantage" style="position:static" data-i18n="t3.illimite">Adresses illimitées par tournée, y compris sur le plan gratuit</p>
         </figure>
        </div>
@@ -1321,7 +1350,7 @@
              a droite comme un avant / apres. -->
         <div class="viz" style="left:4%;top:4%">
           <h2 class="titre-section" data-i18n-html="t4.title">Moins de <em>route.</em></h2>
-          <p class="sous-titre" data-i18n-html="t4.argument"><strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.</p>
+          <p class="sous-titre" data-i18n-html="t4.argument"><strong>43 km de moins sur une tournée de 67 arrêts.</strong> Ta zone reste découpée comme tu la connais.</p>
         </div>
 
         <!-- Les deux cartes partagent la meme largeur et la meme ligne : c'est
@@ -1331,7 +1360,7 @@
         <figure class="viz bloc" style="left:4%;top:24%;width:min(680px,42vw,72vh)">
           <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Optimisation par secteurs</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/secteurs_avant.jpg" width="2040" height="1172"
+            <img src="./img/captures/secteurs_avant.jpg" width="2040" height="1404"
                  data-i18n-alt="bloc.secteurs.alt" alt="Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur" />
           </div>
           <p class="bloc-texte" data-i18n="bloc.secteurs.bulle">Ta zone découpée comme tu la fais vraiment.</p>
@@ -1343,7 +1372,7 @@
             <img src="./img/captures/itineraire_optimise.jpg" width="2040" height="1404"
                  data-i18n-alt="bloc.reel.alt" alt="Carte ATEQO : l'itinéraire optimisé tracé sur les routes réelles" loading="lazy" />
           </div>
-          <p class="bloc-texte" data-i18n="bloc.reel.bulle">L'ordre qui te fait vraiment gagner du temps.</p>
+          <p class="bloc-texte" data-i18n="bloc.reel.bulle">43 km et 92 minutes de moins que l'ordre d'arrivée des colis.</p>
         </figure>
 
         <!-- Remontee en tete d'ecran, a l'oppose du titre : en bas, elle
@@ -1365,7 +1394,10 @@
           <p class="argument court" data-i18n="t5.argument">ATEQO optimise, tu choisis. À chaque arrêt.</p>
         </div>
 
-        <figure class="viz bloc" style="left:7%;top:10%;width:min(247px,13vw,26vh)">
+        <!-- « Garde la main. » est le plus long des mots geants : la capture
+             part de 45 % et non de 38 %, sinon elle mord sur sa derniere
+             syllabe des que la fenetre descend a 1366 px. -->
+        <figure class="viz bloc" style="left:45%;top:8%;width:min(247px,13vw,26vh)">
           <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Navigation adaptative</h3>
           <div class="bloc-shot">
             <img src="./img/captures/navigation.png" data-src-i18n="./img/captures/navigation.png"
@@ -1375,22 +1407,22 @@
           <p class="bloc-texte" data-i18n="bloc.navigation.bulle">Tu changes d'avis, l'ordre suit.</p>
         </figure>
 
-        <!-- Le bloc descend sous la ligne d'argument : un bloc pose dans la
-             bande du titre geant y perd son sous-titre, illisible par-dessous. -->
-        <figure class="viz bloc" style="left:68%;bottom:1%;width:min(620px,32vw,41vh)">
+        <!-- La carte, piece large de l'ecran, tient la droite a hauteur des
+             yeux : le titre ayant quitte le centre, elle n'a plus a descendre
+             pour l'eviter. -->
+        <figure class="viz bloc" style="left:64%;top:34%;width:min(620px,32vw,41vh)">
           <h3 class="bloc-titre" data-i18n="bloc.statuts.titre">Tout se pilote sur la carte</h3>
           <div class="bloc-shot">
             <img src="./img/captures/navigation_statuts.jpg" width="1860" height="1089"
                  data-i18n-alt="bloc.statuts.alt" alt="Carte ATEQO en cours de tournée : l'arrêt à livrer et le reste du trajet" loading="lazy" />
           </div>
-          <p class="bloc-texte" data-i18n="bloc.statuts.bulle">Tout se pilote sur la carte, sans quitter la route.</p>
+          <p class="bloc-texte" data-i18n="bloc.statuts.bulle">Un arrêt livré, une adresse ajoutée : deux secondes, sans quitter la carte.</p>
         </figure>
 
-        <!-- Descendue de 14 a 8 % : la bulle du bloc de navigation, plus haute
-             quand elle passe sur quatre lignes, venait la toucher sur une
-             fenetre courte. -->
-        <figure class="viz" style="left:8%;bottom:8%">
-          <p class="note h3 note-avantage" style="position:static" data-i18n="t5.gps">Ton GPS habituel prend le relais : la destination part dans Google Maps</p>
+        <!-- Sous le titre, dans la colonne de gauche qu'il laisse libre une
+             fois replie. -->
+        <figure class="viz" style="left:6%;top:44%">
+          <p class="note h3 note-avantage souple" style="position:static" data-i18n="t5.gps">Ton GPS habituel prend le relais : la destination part dans Google Maps</p>
         </figure>
        </div>
       </div>
@@ -1406,7 +1438,7 @@
              de section libere justement la hauteur qu'il leur faut. -->
         <div class="viz" style="left:5%;top:4%">
           <h2 class="titre-section" data-i18n-html="t6.title">Rien ne se <em>perd.</em></h2>
-          <p class="sous-titre" data-i18n="t6.argument">Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.</p>
+          <p class="sous-titre" data-i18n-html="t6.argument"><strong>Aucun colis oublié, aucune tournée perdue.</strong> Ce qui n'a pas pu être livré revient au bon moment.</p>
         </div>
 
         <!-- Les trois se posent sur la meme ligne et partagent la meme borne de
@@ -1455,14 +1487,15 @@
     <section class="slide t4" data-theme="3">
       <div class="stage">
        <div class="field">
-        <!-- Le seul titre qui ne tient pas la ligne des autres : trois formules
-             de sept lignes ne passent pas sous un titre reste au centre.
+        <!-- Ce titre tient la meme ligne que les autres depuis que tous se
+             replient en haut a gauche ; seul son corps reste compact, pour
+             laisser passer trois formules de sept lignes.
              La couleur d'accent est redefinie SUR le bloc de titre : splitGiants
              decoupe le mot en lettres et pose var(--tone) sur chacune en style
              inline, or un style inline bat toute regle CSS. En changeant la
              variable ici, les lettres heritent du rose du Q sans qu'on ait a
              leur forcer une couleur, et sans dependre du theme de l'ecran. -->
-        <div class="titre-bloc compact" style="top:27%;--tone:var(--s4)">
+        <div class="titre-bloc compact" style="--tone:var(--s4)">
           <h2 class="giant" data-i18n-html="plans.title">Choisis ton <em>plan.</em></h2>
           <p class="argument" data-i18n="plans.argument">Sans engagement. Tu changes de formule ou tu arrêtes quand tu veux, depuis Google Play.</p>
         </div>
@@ -1471,17 +1504,9 @@
              et rappelle ce que l'inscription donne avant tout paiement. Elle
              vit dans un .viz pour heriter de l'arrivee et du flottement des
              autres bulles, et redevient statique dans son cadre. -->
-        <!-- Calee sur le bord gauche des formules (18 %), et non a 14 % : sans
-             cet alignement, l'argument le plus fort de l'ecran flottait seul,
-             sans rapport visible avec les cartes qu'il sert.
-             Le retrait vertical est en PIXELS et non en pourcentage. Le titre
-             geant est centre sur top:27 %, donc son bord haut remonte a mesure
-             que la fenetre raccourcit, tandis qu'un retrait en pourcentage fait
-             remonter la pastille moins vite : les deux se rejoignaient, et a
-             1920x700 la pastille mordait sur le « C » de Choisis. Ancree en
-             pixels, elle reste collee au bandeau et laisse au titre toute la
-             place que la fenetre lui donne. -->
-        <figure class="viz" style="left:18%;top:20px">
+        <!-- A droite du titre, sur sa ligne : c'est la contrepartie du prix
+             affiche juste dessous, et elle doit se lire avant lui. -->
+        <figure class="viz" style="right:6%;top:11%">
           <p class="note h2 note-avantage" style="position:static" data-i18n="plans.bulle">7 tournées offertes à l'inscription</p>
         </figure>
 
@@ -1638,7 +1663,7 @@
         // jamais se couper en fin de ligne, c'est le chiffre qui porte toute la
         // promesse de l'ecran.
         't1.title': 'Livre <em>plus.</em>',
-        't1.argument': "<strong>67 arrêts optimisés en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.",
+        't1.argument': "<strong>Une tournée entière optimisée en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.",
         't1.rassurance': "7 tournées offertes à l'inscription, sans carte bancaire",
         'bloc.jour.titre': 'Ta tournée du jour',
         'bloc.jour.bulle': '1 h 32 de route en moins, dès la première tournée.',
@@ -1655,33 +1680,33 @@
         // ── 2. Trois gestes ──
         't2.title': 'Trois <em>gestes.</em>',
         'etape.1.titre': 'Ajoute tes adresses',
-        'etape.1.texte': "À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.",
+        'etape.1.texte': "À la voix ou depuis ton carnet, autant d'arrêts que la tournée en demande.",
         'etape.1.alt': "Écran ATEQO : dictée d'une adresse",
         'etape.2.titre': 'Optimise',
-        'etape.2.texte': "L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.",
+        'etape.2.texte': "Un appui suffit : 67 arrêts remis dans l'ordre qui te fait rentrer plus tôt.",
         'etape.2.alt': 'Carte ATEQO : la tournée optimisée, arrêts numérotés',
         'etape.3.titre': 'Livre',
-        'etape.3.texte': 'Navigation adaptative : la destination recommandée à chaque arrêt, ou celui que tu choisis sur la carte.',
+        'etape.3.texte': 'ATEQO annonce le prochain arrêt. Tu en préfères un autre, la suite se recalcule.',
         'etape.3.alt': 'Écran ATEQO : la destination recommandée et les arrêts les plus proches',
         // ── 3. Prépare vite ──
         't3.title': 'Prépare <em>vite.</em>',
-        't3.argument': 'Soixante arrêts saisis sans lâcher les colis.',
+        't3.argument': '<strong>Ta tournée est prête avant que le moteur ne tourne.</strong>',
         't3.illimite': 'Adresses illimitées par tournée, y compris sur le plan gratuit',
         'bloc.voix.titre': 'Saisie vocale',
-        'bloc.voix.bulle': "Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.",
+        'bloc.voix.bulle': "Dicte l'adresse, elle entre dans la tournée. Tes mains restent sur les colis.",
         'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
         'bloc.circuits.titre': 'Carnet et circuits récurrents',
-        'bloc.circuits.bulle': "Ta tournée d'hier, rechargée en un clic.",
+        'bloc.circuits.bulle': 'Les tournées que tu refais chaque semaine sont déjà là.',
         'bloc.circuits.alt': 'Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains',
         // ── 4. Moins de route ──
         't4.title': 'Moins de <em>route.</em>',
-        't4.argument': "<strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.",
+        't4.argument': "<strong>43 km de moins sur une tournée de 67 arrêts.</strong> Ta zone reste découpée comme tu la connais.",
         't4.chargement': 'Chargement guidé : le dernier chargé est le premier livré',
         'bloc.secteurs.titre': 'Optimisation par secteurs',
         'bloc.secteurs.bulle': 'Ta zone découpée comme tu la fais vraiment.',
         'bloc.secteurs.alt': 'Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur',
         'bloc.reel.titre': 'Des rues, pas des lignes droites',
-        'bloc.reel.bulle': 'L’ordre qui te fait vraiment gagner du temps.',
+        'bloc.reel.bulle': '43 km et 92 minutes de moins que l’ordre d’arrivée des colis.',
         'bloc.reel.alt': 'Carte ATEQO : l’itinéraire optimisé tracé sur les routes réelles',
         // ── 5. Garde la main ──
         't5.title': 'Garde la <em>main.</em>',
@@ -1691,11 +1716,11 @@
         'bloc.navigation.bulle': 'Tu changes d’avis, l’ordre suit.',
         'bloc.navigation.alt': 'Écran ATEQO : la destination recommandée, puis les adresses les plus proches',
         'bloc.statuts.titre': 'Tout se pilote sur la carte',
-        'bloc.statuts.bulle': 'Tout se pilote sur la carte, sans quitter la route.',
+        'bloc.statuts.bulle': 'Un arrêt livré, une adresse ajoutée : deux secondes, sans quitter la carte.',
         'bloc.statuts.alt': 'Carte ATEQO en cours de tournée : l’arrêt à livrer et le reste du trajet',
         // ── 6. Rien ne se perd ──
         't6.title': 'Rien ne se <em>perd.</em>',
-        't6.argument': "Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.",
+        't6.argument': "<strong>Aucun colis oublié, aucune tournée perdue.</strong> Ce qui n'a pas pu être livré revient au bon moment.",
         'bloc.replanif.titre': 'Colis non livrés',
         'bloc.replanif.bulle': 'Client absent ? Reprogrammé, et rappelé le jour venu.',
         'bloc.replanif.alt': 'Écran ATEQO : les livraisons à replanifier, avec leur date de report',
@@ -1772,7 +1797,7 @@
         'fil.t5': 'Download',
         // ── 1. Deliver more ──
         't1.title': 'Deliver <em>more.</em>',
-        't1.argument': '<strong>67 stops optimized in under a minute.</strong> 92 minutes less driving on the day’s route.',
+        't1.argument': '<strong>A whole route optimized in under a minute.</strong> 92 minutes less driving on the day’s route.',
         't1.rassurance': '7 free routes when you sign up, no card required',
         'bloc.jour.titre': 'Your route for today',
         'bloc.jour.bulle': '1 h 32 less driving, from the very first route.',
@@ -1789,33 +1814,33 @@
         // ── 2. Three steps ──
         't2.title': 'Three <em>steps.</em>',
         'etape.1.titre': 'Add your addresses',
-        'etape.1.texte': 'By voice or from your address book. As many stops as you need.',
+        'etape.1.texte': 'By voice or from your address book, as many stops as the route calls for.',
         'etape.1.alt': 'ATEQO screen: dictating an address',
         'etape.2.titre': 'Optimize',
-        'etape.2.texte': 'The shortest order on real roads. One tap, a few seconds.',
+        'etape.2.texte': 'One tap is enough: 67 stops put back in the order that gets you home earlier.',
         'etape.2.alt': 'ATEQO map: the optimized route, numbered stops',
         'etape.3.titre': 'Deliver',
-        'etape.3.texte': 'Adaptive navigation: the recommended destination at every stop, or the one you pick on the map.',
+        'etape.3.texte': 'ATEQO calls out the next stop. Prefer another one, and the rest is recalculated.',
         'etape.3.alt': 'ATEQO screen: the recommended destination and the closest stops',
         // ── 3. Get ready fast ──
         't3.title': 'Get ready <em>fast.</em>',
-        't3.argument': 'Sixty stops entered without putting the parcels down.',
+        't3.argument': '<strong>Your route is ready before the engine is running.</strong>',
         't3.illimite': 'Unlimited addresses per route, including on the free plan',
         'bloc.voix.titre': 'Voice input',
-        'bloc.voix.bulle': 'Say the address, it is added. No stopping, no typing.',
+        'bloc.voix.bulle': 'Say the address, it joins the route. Your hands stay on the parcels.',
         'bloc.voix.alt': 'ATEQO screen: dictating an address, “I’m listening”',
         'bloc.circuits.titre': 'Address book and saved lists',
-        'bloc.circuits.bulle': "Yesterday's route, reloaded in one tap.",
+        'bloc.circuits.bulle': 'The routes you run every week are already there.',
         'bloc.circuits.alt': 'ATEQO screen: two saved routes, with their sectors and their savings',
         // ── 4. Less driving ──
         't4.title': 'Less <em>driving.</em>',
-        't4.argument': '<strong>The shortest order on real roads</strong>, sector by sector.',
+        't4.argument': '<strong>43 km less on a 67-stop route.</strong> Your area stays split the way you know it.',
         't4.chargement': 'Guided loading: the last one loaded is the first one delivered',
         'bloc.secteurs.titre': 'Sector optimization',
         'bloc.secteurs.bulle': 'Your area split the way you actually run it.',
         'bloc.secteurs.alt': 'ATEQO map: 67 stops split into 5 colored sectors',
         'bloc.reel.titre': 'Streets, not straight lines',
-        'bloc.reel.bulle': 'The order that really saves you time.',
+        'bloc.reel.bulle': '43 km and 92 minutes less than the order the parcels arrived in.',
         'bloc.reel.alt': 'ATEQO map: the optimized route drawn on real roads',
         // ── 5. Stay in control ──
         't5.title': 'Stay in <em>control.</em>',
@@ -1825,11 +1850,11 @@
         'bloc.navigation.bulle': 'Change your mind, the order follows.',
         'bloc.navigation.alt': 'ATEQO screen: the recommended destination, then the closest addresses',
         'bloc.statuts.titre': 'Everything runs from the map',
-        'bloc.statuts.bulle': 'Everything runs from the map, without leaving the road.',
+        'bloc.statuts.bulle': 'A stop delivered, an address added: two seconds, without leaving the map.',
         'bloc.statuts.alt': 'ATEQO map during a route: the stop to deliver and the rest of the trip',
         // ── 6. Nothing gets lost ──
         't6.title': 'Nothing gets <em>lost.</em>',
-        't6.argument': 'What is not delivered comes back tomorrow, and every day leaves a summary.',
+        't6.argument': '<strong>No parcel forgotten, no route lost.</strong> Whatever could not be delivered comes back at the right time.',
         'bloc.replanif.titre': 'Failed deliveries',
         'bloc.replanif.bulle': 'Customer away? Rescheduled, and reminded on the day.',
         'bloc.replanif.alt': 'ATEQO screen: deliveries to reschedule, with their new date',
@@ -2210,14 +2235,24 @@
       // Placee AVANT les deux media.add : GSAP les execute immediatement s'ils
       // correspondent deja a l'ecran, et jouerScene/jouerTitre en ont besoin
       // des cette premiere execution.
+      // Les durees sont serrees par rapport au premier jet : le mot doit etre
+      // lu, pas contemple, et l'ecran entier se pose en une seconde et demie.
       var RYTHME = {
-        debut:   0.16,   // avant que la premiere lettre ne parte
-        lettre:  0.075,  // d'une lettre a la suivante
-        titre:   1.15,   // course d'une lettre
-        premier: 0.38,   // avant le premier encart
-        entre:   0.3,    // d'un encart au suivant
-        encart:  1.2     // course d'un encart
+        debut:       0.12,  // avant que la premiere lettre ne parte
+        lettre:      0.045, // d'une lettre a la suivante
+        titre:       0.72,  // course d'une lettre
+        avantRepli:  0.62,  // le mot reste grand, le temps d'etre lu
+        repli:       0.78,  // il rapetisse et rejoint le coin haut gauche
+        ampleurTitre: 1.72, // rapport entre l'annonce et le repos (4,5vw → 7,7vw)
+        premier:     0.72,  // avant le premier encart : le repli a commence
+        entre:       0.16,  // d'un encart au suivant
+        encart:      0.9    // course d'un encart
       };
+
+      // La chorégraphie du titre n'a de sens que sur la piste horizontale : la
+      // pile mobile empile ses blocs en flux normal, sans centre a liberer.
+      // Le drapeau est pose par le media.add correspondant.
+      var CHOREGRAPHIE = false;
 
       // ── Lettres et encarts, les briques communes aux deux dispositions ──────
       // jouerScene (bureau) les enchaine sur l'horloge de RYTHME, un ecran
@@ -2232,6 +2267,13 @@
         if (!document.querySelector('.giant .ltr')) splitGiants();
       }
 
+      // ── Le titre annonce, puis s'efface ─────────────────────────────────────
+      // Le mot se forme GRAND au centre de l'ecran, le temps qu'on le lise,
+      // puis il rapetisse et glisse a sa place de repos, en haut a gauche,
+      // pendant que les captures montent occuper le centre qu'il libere.
+      // Le CSS decrit l'etat de REPOS : la chorégraphie part donc de l'etat
+      // d'annonce (calcule ici) et revient a zero. Une page sans JavaScript
+      // reste juste, elle n'a simplement pas l'annonce.
       function jouerTitre(giant) {
         if (!giant || giant.classList.contains('is-in')) return;
         assurerLettres();
@@ -2243,6 +2285,22 @@
             stagger: RYTHME.lettre, delay: RYTHME.debut
           });
         }
+
+        var bloc = giant.closest('.titre-bloc');
+        if (!bloc || !CHOREGRAPHIE) return;
+
+        // Etat d'annonce : le bloc entier agrandi, son centre sur celui de
+        // l'ecran. La mesure est prise a l'etat de repos, ou aucune transform
+        // n'est encore posee, donc elle donne bien la geometrie de reference.
+        var boite = bloc.getBoundingClientRect();
+        var vw = window.innerWidth, vh = window.innerHeight;
+        var ampleur = RYTHME.ampleurTitre;
+        gsap.fromTo(bloc,
+          { x: (vw - boite.width * ampleur) / 2 - boite.left,
+            y: (vh - boite.height * ampleur) / 2 - boite.top,
+            scale: ampleur },
+          { x: 0, y: 0, scale: 1,
+            duration: RYTHME.repli, ease: 'power2.inOut', delay: RYTHME.avantRepli });
       }
 
       // L'ordre compte : is-in D'ABORD, le glissement ENSUITE. Un `from` vise
@@ -2250,10 +2308,15 @@
       // opacity 0, un from sur l'opacite irait de 0 vers 0 et il ne
       // paraitrait jamais. L'opacite et le flou restent donc au CSS, qui les
       // fait basculer avec is-in, et GSAP ne s'occupe que du deplacement.
+      // Les encarts MONTENT vers leur place, ils n'arrivent plus par le cote :
+      // le mouvement repond a celui du titre qui se replie vers le haut, et
+      // c'est ce croisement qui donne l'impression que les captures prennent
+      // le centre de la scene. La derive laterale reste reservee au
+      // defilement, la ou elle a du sens.
       function jouerEncart(bloc, distance) {
         if (!bloc || bloc.classList.contains('is-in')) return;
         bloc.classList.add('is-in');
-        gsap.from(bloc, { x: distance, duration: RYTHME.encart, ease: 'power2.out' });
+        gsap.from(bloc, { y: distance, duration: RYTHME.encart, ease: 'power2.out' });
       }
 
       // ── Mise en scene d'un ecran (bureau) ────────────────────────────────────
@@ -2274,16 +2337,16 @@
 
         jouerTitre(scene.querySelector('.giant'));
 
-        // Les encarts s'echelonnent sur la duree de formation du mot, de
-        // sorte que le dernier se pose quand la derniere lettre arrive.
+        // Les encarts entrent PENDANT le repli du titre : le premier part
+        // quand le mot commence a rapetisser, le dernier se pose avec lui.
         Array.prototype.slice.call(scene.querySelectorAll('.viz')).forEach(function (encart, rang) {
-          gsap.delayedCall(RYTHME.premier + rang * RYTHME.entre, function () { jouerEncart(encart, 280); });
+          gsap.delayedCall(RYTHME.premier + rang * RYTHME.entre, function () { jouerEncart(encart, 90); });
         });
 
         // Le dernier ecran n'a ni titre geant ni encart : son appel et son
         // pied de page prennent les deux premieres places du meme rythme.
         var fin = scene.querySelector('.end-block');
-        if (fin) gsap.delayedCall(RYTHME.premier, function () { jouerEncart(fin, 240); });
+        if (fin) gsap.delayedCall(RYTHME.premier, function () { jouerEncart(fin, 80); });
         var pied = scene.querySelector('.site-footer');
         if (pied) gsap.delayedCall(RYTHME.premier + RYTHME.entre, function () { pied.classList.add('is-in'); });
       }
@@ -2291,6 +2354,8 @@
       // ── Disposition horizontale (desktop, pointeur fin) ─────────────────────
       media.add('(min-width: 981px) and (hover: hover) and (pointer: fine)', function () {
         var track = document.querySelector('.track');
+        // Seule cette disposition a un centre d'ecran a offrir au titre.
+        CHOREGRAPHIE = true;
 
         function distance() { return Math.max(0, track.scrollWidth - track.clientWidth); }
 

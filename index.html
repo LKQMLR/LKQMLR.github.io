@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="ATEQO optimise tes tournées de livraison en quelques secondes. Moins de kilomètres, plus de livraisons. Disponible sur Google Play." />
+  <meta name="description" content="Optimiseur de tournée de livraison pour livreurs, coursiers et messagers. Adresses illimitées, optimisation par secteurs, navigation adaptative. 7 tournées offertes à l'inscription, sans carte bancaire." />
   <meta name="theme-color" content="#f1f4f7" />
   <title>ATEQO · L'itinéraire qui te suit</title>
 
@@ -24,6 +24,116 @@
   <meta name="twitter:title" content="ATEQO · L'itinéraire qui te suit" />
   <meta name="twitter:description" content="Optimise tes tournées en quelques secondes. Gagne du temps, réduis tes kilomètres, livre plus." />
   <meta name="twitter:image" content="https://ateqo.fr/img/banner.png" />
+
+  <!-- ── Donnees structurees ───────────────────────────────────────────────────
+       Deux fiches : l'application elle-meme avec ses deux formules, et les
+       questions frequentes de l'ecran final. Les questions doivent rester le
+       COPIE CONFORME du texte visible sur la page : Google compare les deux et
+       ignore le balisage des reponses qui n'apparaissent pas a l'ecran. Toute
+       modification de la FAQ visible se reporte donc ici.
+       Volontairement PAS d'aggregateRating : la fiche Play compte 6 avis, un
+       balisage de note sur un echantillon aussi mince est vu comme
+       auto-declaratif et peut couter l'affichage des extraits enrichis. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "ATEQO",
+    "alternateName": "ATEQO - Optimiseur de tournée",
+    "operatingSystem": "Android",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Optimiseur de tournée de livraison",
+    "inLanguage": ["fr", "en"],
+    "url": "https://ateqo.fr/",
+    "downloadUrl": "https://play.google.com/store/apps/details?id=com.lkqmlr.cargo",
+    "installUrl": "https://play.google.com/store/apps/details?id=com.lkqmlr.cargo",
+    "image": "https://ateqo.fr/img/banner.png",
+    "description": "Optimiseur de tournée pour livreurs, coursiers et messagers. Adresses illimitées par tournée, optimisation par secteurs sur routes réelles, navigation adaptative, carnet et circuits récurrents, reprogrammation des colis non livrés et bilan de tournée.",
+    "featureList": [
+      "Optimisation de tournée sur routes réelles",
+      "Optimisation par secteurs géographiques",
+      "Adresses illimitées par tournée",
+      "Saisie vocale des adresses",
+      "Navigation adaptative, arrêt par arrêt",
+      "Carnet d'adresses et circuits récurrents",
+      "Chargement guidé du véhicule",
+      "Reprogrammation des colis non livrés",
+      "Bilan de tournée et historique"
+    ],
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Gratuit",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "description": "5 tournées optimisées par mois, adresses illimitées, 3 secteurs actifs."
+      },
+      {
+        "@type": "Offer",
+        "name": "Pro",
+        "price": "16.99",
+        "priceCurrency": "EUR",
+        "description": "Tournées illimitées, 5 secteurs actifs, carnet et circuits récurrents. Facturation mensuelle."
+      },
+      {
+        "@type": "Offer",
+        "name": "Pro annuel",
+        "price": "169.99",
+        "priceCurrency": "EUR",
+        "description": "Tournées illimitées, 5 secteurs actifs, carnet et circuits récurrents. Facturation annuelle."
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Combien d'arrêts par tournée ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Autant que tu veux, y compris sur le plan gratuit. La limite du gratuit porte sur le nombre de tournées optimisées par mois, pas sur le nombre d'adresses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Ça marche avec quel transporteur ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Avec tous. ATEQO est indépendant : tu saisis tes adresses, il optimise. Aucun accord préalable n'est nécessaire."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Est-ce que ça remplace mon GPS ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. ATEQO calcule l'ordre de passage, puis lance la destination dans Google Maps pour la conduite."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Disponible sur iPhone ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ATEQO est disponible sur Android. La version iPhone n'est pas encore ouverte."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mes adresses sont-elles conservées ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Tes tournées et ton carnet sont rattachés à ton compte et ne sont jamais revendus. Le détail figure dans la politique de confidentialité."
+        }
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -144,7 +254,10 @@
        unique qui passerait derriere eux : c'est la seule facon d'obtenir un vrai
        vide autour de chaque icone, qu'un trait masque par un fond opaque ne
        donne pas. Chaque segment prend sa part de la largeur restante. */
-    .fil-segment{position:relative;flex:1;height:2px;
+    /* La largeur d'un segment suit le nombre d'ecrans qu'il enjambe (--portee),
+       pas le nombre de segments : le trait avance alors a vitesse constante d'un
+       bout a l'autre de la piste, quel que soit le decoupage en reperes. */
+    .fil-segment{position:relative;flex:var(--portee,1);height:2px;
                  margin:0 clamp(7px,.85vw,14px);
                  background:repeating-linear-gradient(90deg,var(--border) 0 6px,transparent 6px 12px)}
     /* Le trait colore ne grandit pas : il se DEVOILE, tiret apres tiret. Une
@@ -159,14 +272,17 @@
     .fil-segment:nth-of-type(2){--de:var(--c2);--vers:var(--c3)}
     .fil-segment:nth-of-type(3){--de:var(--c3);--vers:var(--c4)}
     .fil-segment:nth-of-type(4){--de:var(--c4);--vers:var(--c5)}
-    /* La teinte du repere est designee par l'ecran vise et non par son rang :
-       les segments sont eux aussi des enfants du nav, un selecteur de rang se
-       decalerait. */
-    .fil-etape[data-ecran="0"]{--etape:var(--c1)}
-    .fil-etape[data-ecran="1"]{--etape:var(--c2)}
-    .fil-etape[data-ecran="2"]{--etape:var(--c3)}
-    .fil-etape[data-ecran="3"]{--etape:var(--c4)}
-    .fil-etape[data-ecran="4"]{--etape:var(--c5)}
+    /* La teinte suit le RANG du repere, qui porte la Nieme couleur de la
+       marque, et non le numero de l'ecran vise : depuis qu'un repere peut
+       couvrir deux ecrans, les deux ne coincident plus. Indexer sur data-ecran
+       laissait « Livrer » en violet et les deux derniers reperes sans couleur
+       du tout. nth-of-type compte par TYPE d'element : les segments sont des
+       span, ils ne decalent pas le compte des boutons. */
+    .fil-etape:nth-of-type(1){--etape:var(--c1)}
+    .fil-etape:nth-of-type(2){--etape:var(--c2)}
+    .fil-etape:nth-of-type(3){--etape:var(--c3)}
+    .fil-etape:nth-of-type(4){--etape:var(--c4)}
+    .fil-etape:nth-of-type(5){--etape:var(--c5)}
     /* Le repere ne rentre ni ne s'etire : ce sont les segments qui absorbent la
        largeur de la fenetre. Son filet est un navy tres dilue plutot qu'un gris
        franc, et l'ombre reste a peine perceptible : le cercle doit se lire comme
@@ -268,8 +384,15 @@
     .cloud-ready .end-block,
     .cloud-ready .site-footer{opacity:0;filter:blur(14px);translate:0 30px}
     .cloud-ready .viz .note{opacity:0;filter:blur(12px);translate:0 22px}
+    /* La ligne d'argument suit son titre : elle n'a pas d'etat is-in a elle,
+       elle se declenche sur celui du geant qui la precede. Un cran plus tard,
+       le temps que le mot ait fini de se former. */
+    .cloud-ready .argument{opacity:0;filter:blur(12px);translate:0 22px}
     .cloud-ready .is-in{opacity:1;filter:blur(0px);translate:0 0;
       transition:opacity .95s ease,filter 1.05s ease,translate 1.05s cubic-bezier(.16,.72,.24,1)}
+    .cloud-ready .giant.is-in ~ .argument{opacity:1;filter:blur(0px);translate:0 0;
+      transition:opacity .95s ease .34s,filter 1.05s ease .34s,
+                 translate 1.05s cubic-bezier(.16,.72,.24,1) .34s}
     /* La bulle se forme juste apres le visuel qu'elle commente. */
     .cloud-ready .viz.is-in .note{opacity:1;filter:blur(0px);translate:0 0;
       transition:opacity .95s ease .18s,filter 1.05s ease .18s,
@@ -339,14 +462,90 @@
     /* Le titre occupe le centre de l'ecran, les blocs se posent autour et
        dessus. Sa taille suit la largeur de l'ecran (7.8vw = la mesure de la
        maquette sur un ecran de 1920), bornee pour ne pas devenir enorme sur un
-       tres grand moniteur. */
-    .giant{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
-           text-align:center;white-space:nowrap;
+       tres grand moniteur.
+       Le titre ne vit plus seul : il est desormais accompagne d'une ligne
+       d'argument, et c'est leur ENVELOPPE qui porte le centrage. Un mot geant
+       ne dit rien de ce que fait l'application ; il reste la signature de
+       l'ecran, la ligne en dessous porte l'information. Les deux doivent
+       bouger ensemble, d'ou le bloc commun. */
+    .titre-bloc{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+                display:flex;flex-direction:column;align-items:center;
+                gap:clamp(10px,1.1vw,20px)}
+    .giant{text-align:center;white-space:nowrap;
            font-size:clamp(2.6rem,7.8vw,9.6rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
     .giant em{font-style:normal;color:var(--tone)}
     /* Les lettres sont detachees pour partir a des vitesses legerement
        differentes : elles s'etirent au defilement au lieu de bouger d'un bloc. */
     .giant .ltr{display:inline-block;will-change:transform}
+
+    /* ── Ligne d'argument ─────────────────────────────────────────────────────
+       Une phrase sous le titre, qui dit ce que l'ecran demontre. Elle est bornee
+       en largeur d'ECRAN et non en pixels : sous un mot dimensionne en 7.8vw,
+       une largeur figee se decalerait d'une fenetre a l'autre. Le chiffre porte
+       l'encre pleine, le reste de la phrase est en gris : c'est lui qu'on doit
+       retenir d'un coup d'oeil. */
+    .argument{max-width:min(760px,52vw);text-align:center;text-wrap:balance;
+              font-size:clamp(.92rem,1.18vw,1.3rem);line-height:1.45;color:var(--muted)}
+    .argument strong{color:var(--ink);font-weight:700}
+    /* La ligne d'argument est une bande de texte au milieu de la scene, juste
+       sous le titre : tout bloc pose a cette hauteur vient s'y superposer, et
+       deux textes l'un sur l'autre ne se lisent plus ni l'un ni l'autre. Sur
+       les ecrans qui portent une grande capture a droite, elle se resserre
+       pour laisser passer le bloc. Regle a retenir : la bande centrale, du
+       haut du titre au bas de l'argument, n'appartient qu'a eux. */
+    .argument.court{max-width:min(500px,32vw)}
+
+    /* ── Bande des metiers ────────────────────────────────────────────────────
+       Posee au pied du premier ecran : un visiteur doit se reconnaitre avant de
+       lire quoi que ce soit d'autre. Elle sert aussi de texte indexable la ou la
+       page n'en a presque pas. Centree par left/right et non par transform,
+       deja pris par le centrage des blocs de titre. */
+    .metiers{left:0;right:0;bottom:0;z-index:3;
+             display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+             gap:clamp(8px,.9vw,16px);
+             font-size:clamp(.68rem,.78vw,.84rem);font-weight:600;letter-spacing:.2px;
+             color:var(--muted2)}
+    .metiers li{list-style:none;display:flex;align-items:center;gap:clamp(8px,.9vw,16px)}
+    /* Le point separateur appartient a la presentation, pas au texte : il est
+       pose en CSS pour qu'un lecteur d'ecran enonce une liste et non une suite
+       de mots colles par des puces. */
+    .metiers li+li::before{content:"·";color:var(--border)}
+
+    /* ── Cartes d'etape ───────────────────────────────────────────────────────
+       Les trois gestes de la prise en main. Volontairement SANS capture : les
+       memes ecrans sont montres en detail juste apres, et trois vignettes
+       repetees affaibliraient les deux passages. Un numero, un pictogramme,
+       une phrase. */
+    .etapes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.3vw,24px);width:100%}
+    .etape{position:relative;background:var(--surface);border:1px solid var(--border);
+           border-radius:var(--radius);padding:clamp(18px,1.6vw,30px);
+           box-shadow:var(--ombre-posee);display:flex;flex-direction:column;
+           gap:clamp(7px,.7vw,12px)}
+    /* Le numero est la seule piece coloree de la carte, et il prend la teinte de
+       l'ecran : les trois etapes se lisent alors comme une progression et non
+       comme trois options au choix. */
+    .etape-num{display:flex;align-items:center;justify-content:center;
+               width:clamp(30px,2.3vw,38px);height:clamp(30px,2.3vw,38px);
+               border-radius:50%;background:var(--surface2);border:1px solid var(--border);
+               color:var(--tone);font-size:clamp(.82rem,.95vw,1rem);font-weight:800}
+    .etape h3{font-size:clamp(.95rem,1.15vw,1.28rem);font-weight:700;letter-spacing:-.4px;
+              color:var(--ink)}
+    .etape p{font-size:clamp(.78rem,.9vw,.96rem);line-height:1.5;color:var(--muted)}
+
+    /* ── Questions frequentes ─────────────────────────────────────────────────
+       Les cinq objections qui reviennent avant un telechargement. Elles sont
+       toutes DEPLIEES : un accordeon economiserait de la hauteur, mais une
+       reponse repliee n'est lue par personne et compte moins pour le
+       referencement. La reponse doit donc tenir en deux lignes. */
+    .faq{display:flex;flex-direction:column;gap:clamp(9px,.85vw,15px)}
+    .faq-titre{font-size:clamp(1rem,1.35vw,1.55rem);font-weight:800;letter-spacing:-.6px;
+               color:var(--ink);margin-bottom:clamp(2px,.3vw,6px)}
+    .faq-item{background:var(--surface);border:1px solid var(--border);
+              border-radius:var(--radius);padding:clamp(12px,1.05vw,18px) clamp(14px,1.2vw,22px);
+              box-shadow:var(--ombre-posee)}
+    .faq-item h3{font-size:clamp(.84rem,.98vw,1.05rem);font-weight:700;color:var(--ink);
+                 margin-bottom:4px}
+    .faq-item p{font-size:clamp(.75rem,.87vw,.94rem);line-height:1.45;color:var(--muted)}
 
     /* ── Bulles ───────────────────────────────────────────────────────────────
        Le commentaire est pose sur la capture qu'il commente, quitte a mordre
@@ -375,6 +574,11 @@
     .note.h3{--bub:245,221,192;--bub-ink:#b45309}   /* orange     */
     .note.h4{--bub:246,201,221;--bub-ink:#be185d}   /* rose       */
     .note.h5{--bub:222,205,250;--bub-ink:#6d28d9}   /* violet     */
+    /* Les bulles des blocs poses a GAUCHE de la scene debordent vers la droite,
+       donc vers le titre. Sur un ecran large, ou le mot occupe la moitie de la
+       largeur, une bulle au gabarit commun finit dessus : celles-la sont plus
+       etroites, ce qui suffit a les tenir a l'ecart sans les deplacer. */
+    .note.etroite{width:min(240px,13vw)}
     /* Seule bulle a porter un avantage chiffre plutot qu'un commentaire : elle
        reprend le meme cadre que les cartes de formule juste en dessous (fond
        blanc, filet, coins, ombre deja communs) plutot que l'aplat pastel des
@@ -454,6 +658,10 @@
     /* Les formules occupent la largeur qu'on leur donne et passent DEVANT le
        titre : c'est sur elles qu'on veut cliquer, pas le lire. */
     .viz.formules{z-index:6}
+    /* Une pastille qui doit se centrer sous le titre ne peut pas le faire par
+       transform : la mise en scene s'en sert deja pour l'arrivee laterale. Elle
+       s'etale donc d'un bord a l'autre et centre son contenu. */
+    .viz.centre-bande{left:0;right:0;display:flex;justify-content:center}
     .viz .plans{width:100%}
 
 
@@ -514,16 +722,25 @@
     /* ── Section finale ────────────────────────────────────────────────────── */
     .slide.end .stage{width:100vw;
                       background:radial-gradient(80% 70% at 50% 30%,rgba(124,58,237,.13),transparent 62%)}
-    /* La section finale n'a pas de .field : ses deux blocs se positionnent
+    /* La section finale n'a pas de .field : ses blocs se positionnent
        directement dans la scene, marges de securite comprises. */
-    .end-block,.slide.end .site-footer{position:absolute}
-    .end-block{left:50%;top:44%;transform:translate(-50%,-50%);width:min(680px,80vw);
+    .end-block,.slide.end .site-footer,.slide.end .viz{position:absolute}
+    /* Le dernier ecran porte desormais DEUX choses : les objections a lever, a
+       gauche, et l'appel a telecharger, a droite. L'appel n'est plus centre sur
+       l'ecran mais sur sa colonne : il garde tout son poids sans laisser la
+       moitie gauche vide, comme c'etait le cas quand il etait seul. */
+    /* Le retrait vertical s'ajoute a la marge du bandeau : cale pile sur
+       --safe, le titre de la FAQ se retrouvait colle sous la barre blanche. */
+    .slide.end .faq-bloc{left:5%;top:calc(var(--safe) + 2.5%);width:min(660px,46vw);z-index:3}
+    .end-block{left:auto;right:5%;top:44%;transform:translateY(-50%);width:min(430px,31vw);
                display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
     /* balance repartit les lignes a poids egal au lieu de remplir la premiere :
        sans lui, le titre francais laisse tomber son point d'interrogation seul
        sur la deuxieme ligne des que la fenetre se resserre. L'espace insecable
        pose dans le texte traite la cause, ceci traite le reste des coupures. */
-    .end-block h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;letter-spacing:-1.6px;line-height:1.06;
+    /* Dimensionne pour sa COLONNE et non plus pour l'ecran entier : a 4.6vw le
+       titre debordait des 31vw qui lui restent une fois la FAQ posee a gauche. */
+    .end-block h2{font-size:clamp(1.5rem,2.7vw,2.5rem);font-weight:800;letter-spacing:-1.1px;line-height:1.08;
                   text-wrap:balance}
     .end-block p{color:var(--muted);font-size:clamp(.96rem,1.15vw,1.08rem)}
     .end-block .gplay{margin-top:8px}
@@ -559,14 +776,21 @@
     @media(min-width:981px) and (max-height:760px){
       .giant{font-size:clamp(2.1rem,5.3vw,5.6rem)}
     }
-    /* L'ecran des tarifs est le plus contraint en hauteur de toute la piste :
-       seul a porter une pastille AU-DESSUS de son titre et trois cartes de sept
-       lignes EN DESSOUS. Son titre cede donc plus tot que les autres, faute de
-       quoi il vient toucher la pastille sur une fenetre basse et large, ou il
-       est a la fois le plus grand (dimensionne sur la largeur) et le plus a
-       l'etroit (la hauteur, elle, a fondu). */
+    /* Les ecrans dont le titre est ancre EN HAUT avec un pave de contenu en
+       dessous (les trois gestes, les tarifs) sont les plus contraints en
+       hauteur de toute la piste. Leur titre cede donc plus tot que les autres,
+       faute de quoi il vient toucher le contenu sur une fenetre basse et large,
+       ou il est a la fois le plus grand (dimensionne sur la largeur) et le plus
+       a l'etroit (la hauteur, elle, a fondu). */
     @media(min-width:981px) and (max-height:880px){
-      .slide.t4 .giant{font-size:clamp(1.9rem,4.6vw,4.6rem)}
+      .titre-bloc.compact .giant{font-size:clamp(1.9rem,4.6vw,4.6rem)}
+      .titre-bloc.compact .argument{font-size:clamp(.86rem,1.02vw,1.06rem)}
+    }
+    /* Le dernier ecran porte cinq questions, un appel et un pied de page : sur
+       une fenetre courte, c'est la FAQ qui doit maigrir, pas l'appel. */
+    @media(min-width:981px) and (max-height:820px){
+      .faq{gap:clamp(6px,.6vw,10px)}
+      .faq-item{padding:clamp(9px,.8vw,13px) clamp(12px,1vw,18px)}
     }
 
     /* ══ MOBILE ════════════════════════════════════════════════════════════════
@@ -609,7 +833,18 @@
          ici. Et SANS !important : cette regle vient apres celles du bureau,
          la cascade suffit a les annuler, tandis qu'un !important interdirait
          a GSAP de poser son propre transform et tuerait l'arrivee. */
-      .giant,.end-block,.site-footer{transform:none}
+      .titre-bloc,.end-block,.site-footer{transform:none}
+      /* Le bloc de titre subit le meme piege que .field : rendu a width:auto
+         dans une colonne alignee a gauche, il se dimensionne sur son contenu
+         et son argument ne retombe jamais a la ligne. */
+      .field>.titre-bloc{width:100%;align-items:flex-start;gap:12px}
+      /* Le resserrement de .court ne sert qu'a laisser passer une capture sur
+         la piste horizontale. Dans une colonne, ses 32vw valent 125 px sur un
+         telephone et hachent la phrase en cinq lignes. Il faut nommer les deux
+         selecteurs : .argument.court pese une classe de plus, la cascade seule
+         ne le rattrape pas. */
+      .argument,.argument.court{max-width:100%;text-align:left;
+                font-size:clamp(.92rem,4vw,1.05rem)}
       /* Le decor est une bande tres large : il n'a pas de sens sur une pile
          verticale, les degrades de scene reprennent la main. */
       .scenery{display:none}
@@ -625,6 +860,11 @@
          propre gabarit pour tenir sur une seule ligne comme le reste. */
       .slide.t4 .giant{font-size:clamp(2rem,9.2vw,3.4rem);white-space:nowrap}
       .note{width:auto}
+      /* Le retrecissement ne sert qu'a eviter le titre geant sur la piste
+         horizontale : dans une colonne, il ne ferait que rendre la bulle
+         etroite pour rien. Il faut la meme specificite que la regle d'origine
+         pour reprendre la main. */
+      .note.etroite{width:auto}
       /* La ligne unique tient sur la piste horizontale, ou la bulle prend la
          largeur qu'elle demande. Dans une colonne de 350 px, et moins encore
          sur un ecran de 320, elle deborderait : elle retrouve donc le droit de
@@ -634,7 +874,12 @@
          et le flou d'arriere-plan n'ont plus rien a detacher. */
       .note{background:rgb(var(--bub));backdrop-filter:none;-webkit-backdrop-filter:none;
             padding:13px 15px;margin:0}
-      .viz{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+      /* !important parce que plusieurs encarts portent une largeur figee EN
+         LIGNE, heritee de la composition de bureau (width:64% pour les gestes
+         comme pour les formules) : une regle sans !important ne peut pas
+         reprendre la main sur un style inline, et le bloc restait a 64 % de la
+         colonne, soit 224 px sur un telephone. */
+      .viz{width:100%!important;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
       /* Le bloc prend la largeur de la colonne, sans jamais depasser la
          definition de sa capture : au-dela, elle deviendrait floue. Le decalage
          de la maquette n'a plus lieu d'etre dans une pile, et un titre peut
@@ -656,6 +901,17 @@
          ecrans qui restent volontairement colles a gauche. */
       .slide.t4 .viz{align-items:center}
       .viz .plans{width:100%;min-width:0;max-width:400px;grid-template-columns:1fr}
+      /* Les trois gestes s'empilent : cote a cote dans une colonne de 350 px,
+         chaque carte ne ferait plus que 100 px de large. Le width:100% est le
+         meme piege flexbox que pour .field et .titre-bloc : sans lui, la
+         grille se dimensionne sur son contenu et les cartes s'arretent au
+         milieu de l'ecran. */
+      .viz .etapes{grid-template-columns:1fr;width:100%;max-width:540px}
+      /* La bande des metiers redevient une phrase qui se replie, sans centrage :
+         tout le reste de la pile est aligne a gauche. */
+      .metiers{justify-content:flex-start;width:100%}
+      .slide.end .faq-bloc{width:100%}
+      .faq{width:100%;max-width:540px}
       .hint{display:none}
       /* L'appel final se centre, comme sur la version bureau : le titre tient
          sur une ligne et le badge Google Play n'est plus plaque a gauche. */
@@ -732,42 +988,48 @@
            tout ce qu'un lecteur d'ecran a besoin d'entendre. Ils sont dans le
            flux, entre deux reperes, pour menager un vrai vide autour des
            icones. -->
+      <!-- Cinq reperes pour huit ecrans : certains en couvrent deux. Le nombre
+           de reperes ne suit pas le nombre d'ecrans mais les cinq moments du
+           parcours, et les cinq couleurs de la marque. Chaque segment porte sa
+           PORTEE, c'est-a-dire le nombre d'ecrans qu'il enjambe : sans elle,
+           quatre segments de largeur egale feraient avancer le trait deux fois
+           plus vite sur le dernier, qui n'enjambe qu'un seul ecran. -->
       <button type="button" class="fil-etape" data-ecran="0">
         <!-- Colis avec un plus : livrer davantage. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 22V12"/><path d="M16 17h6"/><path d="M19 14v6"/><path d="M21 10.535V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.675-.955"/><path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 8.997 5.148"/>
         </svg>
-        <span class="fil-nom" data-i18n="fil.t1">Livrer plus</span>
+        <span class="fil-nom" data-i18n="fil.t1">Découvrir</span>
       </button>
-      <span class="fil-segment" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="1">
-        <!-- Tirelire : ce que la tournee rapporte. -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z"/><path d="M16 10h.01"/><path d="M2 8v1a2 2 0 0 0 2 2h1"/>
-        </svg>
-        <span class="fil-nom" data-i18n="fil.t2">Gagner plus</span>
-      </button>
-      <span class="fil-segment" aria-hidden="true"></span>
+      <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
       <button type="button" class="fil-etape" data-ecran="2">
-        <!-- Feuille de route : les tournees et les adresses qu'on garde. -->
+        <!-- Feuille de route : les adresses qu'on rassemble avant de partir. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>
         </svg>
-        <span class="fil-nom" data-i18n="fil.t3">Gérer mieux</span>
+        <span class="fil-nom" data-i18n="fil.t2">Préparer</span>
       </button>
-      <span class="fil-segment" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="3">
+      <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
+      <button type="button" class="fil-etape" data-ecran="4">
+        <!-- Camion : la tournee elle-meme, et ce qu'elle laisse derriere. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
+        </svg>
+        <span class="fil-nom" data-i18n="fil.t3">Livrer</span>
+      </button>
+      <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
+      <button type="button" class="fil-etape" data-ecran="6">
         <!-- Gemme : la formule qu'on choisit. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/>
         </svg>
         <span class="fil-nom" data-i18n="fil.t4">Tarifs</span>
       </button>
-      <span class="fil-segment" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="4">
-        <!-- Camion : le depart en tournee, ecran d'appel au telechargement. -->
+      <span class="fil-segment" style="--portee:1" aria-hidden="true"></span>
+      <button type="button" class="fil-etape" data-ecran="7">
+        <!-- Fleche vers un support : le telechargement. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
         </svg>
         <span class="fil-nom" data-i18n="fil.t5">Télécharger</span>
       </button>
@@ -799,125 +1061,272 @@
 
   <main class="track" id="top">
 
-    <!-- ══ LIVREZ PLUS ═══════════════════════════════════════════════════════ -->
+    <!-- ══ 1. LIVRE PLUS ═════════════════════════════════════════════════════
+         L'ecran d'accueil porte la promesse chiffree, la preuve du jour et le
+         cumul de la semaine. Il se termine par la bande des metiers : un
+         visiteur doit pouvoir se reconnaitre avant d'avoir a lire quoi que ce
+         soit d'autre. -->
     <section class="slide t1" data-theme="0">
       <div class="stage">
        <div class="field">
-        <h2 class="giant" data-i18n-html="t1.title">Livrez <em>plus.</em></h2>
+        <div class="titre-bloc">
+          <h2 class="giant" data-i18n-html="t1.title">Livre <em>plus.</em></h2>
+          <!-- Resserree comme sur les ecrans a grande capture : a pleine
+               largeur, elle venait mordre sur la capture de droite des que la
+               fenetre descendait sous 1600 px. -->
+          <p class="argument court" data-i18n-html="t1.argument"><strong>67 arrêts optimisés en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.</p>
+        </div>
 
-        <figure class="viz bloc" style="left:15%;top:22%;width:min(247px,12.9vw)">
-          <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Adapte ton trajet</h3>
+        <!-- Le bandeau des compteurs cumules, a gauche : il dit ce que
+             l'application rapporte sur la duree, la ou la capture de droite ne
+             montre qu'une seule journee. -->
+        <figure class="viz bloc" style="left:5%;top:24%;width:min(385px,21vw)">
+          <h3 class="bloc-titre" data-i18n="bloc.semaine.titre">Sur une semaine de tournées</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/navigation.png" width="247" height="469"
-                 data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
-            <!-- A cheval sur le bord droit du telephone, un peu plus dedans que
-                 dehors : elle s'y accroche au lieu de flotter a cote.
-                 Elle est calee BAS sur la capture, et non a mi-hauteur : le
-                 titre geant grandit en 7.8vw alors que ce bloc est dimensionne
-                 en 12.9vw, si bien qu'au-dela de ~1500 px le titre descendait
-                 dans la bande de la bulle et le mot se lisait « L ivrez plus. »
-                 sur un ecran 1920. Le placer bas l'ecarte de la bande du titre
-                 a toutes les largeurs, et il recouvre la fin de la liste
-                 d'adresses plutot que l'en-tete, qui porte l'explication. -->
-            <p class="note h1" style="left:42%;top:56%" data-i18n-html="bloc.navigation.bulle">Ne subis plus les aléas de tes tournées. <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> optimise, tu choisis.</p>
+            <img src="./img/captures/cumul.png" width="385" height="125"
+                 data-i18n-alt="bloc.semaine.alt" alt="Écran ATEQO : 7 h 59 gagnées, 211 km et 26 € de carburant économisés sur 5 tournées" />
+            <!-- Le bandeau est bas (125 px pour 385 de large) : la bulle se pose
+                 SOUS lui, comme l'ancien bandeau de temps, sinon elle recouvre
+                 les trois chiffres qui sont tout l'interet de la capture. -->
+            <p class="note h3" style="left:14%;top:calc(100% + 12px)" data-i18n="bloc.semaine.bulle">Les compteurs se remplissent tournée après tournée.</p>
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:52%;bottom:2%;width:min(518px,27vw,40.6vh)">
-          <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Organise ta journée</h3>
+        <!-- La piece maitresse : une tournee prete a partir, avec son gain
+             annonce. Bornee en HAUTEUR d'ecran (34vh) et pas seulement en
+             largeur : c'est la capture la plus haute du site (718 px pour 392
+             de large), a 20vw elle depassait la scene sur une fenetre courte. -->
+        <figure class="viz bloc" style="left:67%;top:3%;width:min(392px,20vw,34vh);z-index:1">
+          <h3 class="bloc-titre" data-i18n="bloc.jour.titre">Ta tournée du jour</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/secteurs.png" width="518" height="360"
-                 data-i18n-alt="bloc.secteurs.alt" alt="Carte ATEQO : les arrêts groupés en secteurs de couleur, avec l'itinéraire de chacun" />
-            <p class="note h2" style="left:76%;top:46%" data-i18n="bloc.secteurs.bulle">Organise très simplement tes points d'arrêt par secteur, même dans les quartiers les plus denses.</p>
+            <img src="./img/captures/tournee_prete.png" width="392" height="718"
+                 data-i18n-alt="bloc.jour.alt" alt="Écran ATEQO : tournée optimisée, 1 h 32 gagnée, 110 colis pour 67 adresses" />
+            <!-- REGLE DE PLACEMENT DES BULLES : une bulle deborde vers
+                 l'EXTERIEUR de la scene, jamais vers son centre, ou vit le
+                 titre geant. Posee a gauche de cette capture, elle recouvrait
+                 la fin de « Livre plus. » des que la fenetre se resserrait. -->
+            <p class="note h1" style="left:66%;top:30%" data-i18n="bloc.jour.bulle">Le gain est calculé sur ta tournée, pas estimé sur une moyenne.</p>
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:55%;top:17%;width:min(477px,24.8vw);--vide:-0.84%">
-          <h3 class="bloc-titre" data-i18n="bloc.temps.titre">Moins de temps sur la route</h3>
-          <div class="bloc-shot">
-            <img src="./img/captures/temps.png" width="477" height="48"
-                 data-i18n-alt="bloc.temps.alt" alt="Bandeau ATEQO : tournée optimisée, 36 minutes gagnées" />
-            <!-- Le bandeau ne fait que 48 px de haut : une bulle posee a 62 % de
-                 cette hauteur retombait SUR le texte et coupait « 36 min
-                 gagnees », le seul chiffre de la page. Elle se pose donc juste
-                 sous le bandeau, assez pres pour rester soudee a lui, et assez
-                 loin pour que le flottement (7 px vers le haut) ne vienne pas
-                 la remettre dessus. -->
-            <p class="note h3" style="left:34%;top:calc(100% + 12px)" data-i18n="bloc.temps.bulle">Booste ta productivité et réduis tes kilomètres.</p>
-          </div>
+        <figure class="viz centre-bande" style="top:70%">
+          <p class="note h1 note-avantage" style="position:static" data-i18n="t1.rassurance">7 tournées offertes à l'inscription, sans carte bancaire</p>
         </figure>
+
+        <ul class="viz metiers">
+          <li data-i18n="metier.1">Messagerie et colis</li>
+          <li data-i18n="metier.2">Coursier urbain</li>
+          <li data-i18n="metier.3">Livraison de repas</li>
+          <li data-i18n="metier.4">Commandes e-commerce</li>
+          <li data-i18n="metier.5">Distribution</li>
+          <li data-i18n="metier.6">Interventions multi-sites</li>
+        </ul>
        </div>
       </div>
     </section>
 
-    <!-- ══ GAGNEZ PLUS ═══════════════════════════════════════════════════════ -->
+    <!-- ══ 2. TROIS GESTES ═══════════════════════════════════════════════════
+         La prise en main, que le site ne disait nulle part. Trois cartes sans
+         capture : les memes ecrans sont montres en grand juste apres, et les
+         repeter en vignette affaiblirait les deux passages. -->
+    <section class="slide t1" data-theme="0">
+      <div class="stage">
+       <div class="field">
+        <div class="titre-bloc compact" style="top:24%">
+          <h2 class="giant" data-i18n-html="t2.title">Trois <em>gestes.</em></h2>
+          <p class="argument" data-i18n="t2.argument">De la liste d'adresses au départ en tournée.</p>
+        </div>
+
+        <div class="viz" style="left:18%;top:47%;width:64%">
+          <ol class="etapes">
+            <li class="etape">
+              <span class="etape-num" aria-hidden="true">1</span>
+              <h3 data-i18n="etape.1.titre">Ajoute tes adresses</h3>
+              <p data-i18n="etape.1.texte">À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.</p>
+            </li>
+            <li class="etape">
+              <span class="etape-num" aria-hidden="true">2</span>
+              <h3 data-i18n="etape.2.titre">Optimise</h3>
+              <p data-i18n="etape.2.texte">L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.</p>
+            </li>
+            <li class="etape">
+              <span class="etape-num" aria-hidden="true">3</span>
+              <h3 data-i18n="etape.3.titre">Pars livrer</h3>
+              <p data-i18n="etape.3.texte">La destination recommandée à chaque arrêt, et ton GPS habituel pour y aller.</p>
+            </li>
+          </ol>
+        </div>
+       </div>
+      </div>
+    </section>
+
+    <!-- ══ 3. PREPARE VITE ═══════════════════════════════════════════════════ -->
     <section class="slide t2" data-theme="1">
       <div class="stage">
        <div class="field">
-        <h2 class="giant" data-i18n-html="t2.title">Gagnez <em>plus.</em></h2>
+        <div class="titre-bloc">
+          <h2 class="giant" data-i18n-html="t3.title">Prépare <em>vite.</em></h2>
+          <p class="argument" data-i18n="t3.argument">Soixante arrêts saisis sans lâcher les colis.</p>
+        </div>
 
-        <!-- Ce bloc passe SOUS le titre geant (z-index 1 contre 2) : en
-             traversant l'ecran il glisse derriere le mot au lieu de le
-             recouvrir, ce qui creuse la profondeur entre le decor et le titre.
-             Le sous-titre et la bulle suivent : ils appartiennent au meme plan,
-             et au repos aucun des deux ne croise le titre. -->
-        <figure class="viz bloc decale" style="left:8%;top:6%;width:min(523px,27.2vw);--decale:min(124px,6.5vw);z-index:1">
-          <h3 class="bloc-titre" data-i18n="bloc.optimisation.titre">Optimisation en un clic</h3>
+        <figure class="viz bloc" style="left:9%;top:24%;width:min(300px,16vw)">
+          <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/optimisation.png" width="399" height="278"
-                 data-i18n-alt="bloc.optimisation.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés dans l'ordre de passage" loading="lazy" />
-            <!-- Posee sur le coin bas gauche, elle court jusqu'au milieu de la
-                 carte : le trace reste lisible sur la moitie droite. -->
-            <p class="note h2" style="left:-33%;top:72%" data-i18n-html="bloc.optimisation.bulle">Concentre-toi sur la route, <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> s'occupe du reste.</p>
+            <!-- Seule capture sans ombre deja incrustee (export different des
+                 autres) : elle recoit la meme par CSS. -->
+            <img class="sans-ombre" src="./img/captures/voix.png" width="300" height="189"
+                 data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" />
+            <!-- Calee sur la ligne d'adresse : elle en recouvre la moitie
+                 droite, on comprend que l'adresse vient d'etre dictee sans
+                 avoir a la lire en entier. -->
+            <p class="note h2 etroite" style="left:30%;top:84%" data-i18n="bloc.voix.bulle">Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.</p>
           </div>
         </figure>
 
-        <!-- Plus de decalage : il servait a poser la bulle a gauche de la
-             capture, or elle est passee a droite. Le supprimer rend au bloc les
-             300px qu'il reservait, et la borne de hauteur porte enfin sur la
-             capture seule au lieu de la capture plus son vide. -->
-        <figure class="viz bloc" style="left:75.5%;bottom:12%;width:min(307px,16vw,22vh)">
-          <h3 class="bloc-titre" data-i18n="bloc.carte.titre">Carte interactive</h3>
+        <figure class="viz bloc" style="left:66%;top:11%;width:min(378px,20vw,32vh);z-index:1">
+          <h3 class="bloc-titre" data-i18n="bloc.circuits.titre">Carnet et circuits récurrents</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/carte.png" width="307" height="399"
-                 data-i18n-alt="bloc.carte.alt" alt="Écran ATEQO : l'arrêt en cours sur la carte, avec ses actions" loading="lazy" />
-            <p class="note h5" style="left:-118%;top:26%" data-i18n="bloc.carte.bulle">Gère tes points d'arrêt directement sur la carte.</p>
+            <img src="./img/captures/circuits.png" width="378" height="400"
+                 data-i18n-alt="bloc.circuits.alt" alt="Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains" loading="lazy" />
+            <p class="note h5" style="left:32%;top:66%" data-i18n="bloc.circuits.bulle">Tes tournées habituelles rechargées en un clic le lendemain.</p>
           </div>
+        </figure>
+
+        <!-- L'argument le plus fort de l'ecran face aux concurrents, dont les
+             formules gratuites s'arretent en general a dix arrets. Il n'a pas
+             de capture : il ne se demontre pas, il s'annonce. -->
+        <figure class="viz" style="left:9%;bottom:14%">
+          <p class="note h2 note-avantage" style="position:static" data-i18n="t3.illimite">Adresses illimitées par tournée, y compris sur le plan gratuit</p>
         </figure>
        </div>
       </div>
     </section>
 
-    <!-- ══ GEREZ MIEUX ═══════════════════════════════════════════════════════ -->
-    <section class="slide t3" data-theme="2">
+    <!-- ══ 4. MOINS DE ROUTE ═════════════════════════════════════════════════
+         Les deux cartes se repondent : la meme tournee avant et apres le
+         calcul. Elles sont posees en diagonale pour qu'on les lise dans cet
+         ordre, et pour laisser le titre respirer entre les deux. -->
+    <section class="slide t2" data-theme="1">
       <div class="stage">
        <div class="field">
-        <h2 class="giant" data-i18n-html="t3.title">Gérez <em>mieux.</em></h2>
+        <div class="titre-bloc">
+          <h2 class="giant" data-i18n-html="t4.title">Moins de <em>route.</em></h2>
+          <p class="argument court" data-i18n-html="t4.argument"><strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.</p>
+        </div>
 
-        <!-- A cette taille, la capture n'a plus la place de rester a gauche du
-             titre sans le toucher : elle passe DERRIERE lui (z-index 1 contre
-             2, comme optimisation en un clic) plutot que de l'entamer. Le
-             titre reste net par-dessus, l'image lisible en dessous. -->
-        <figure class="viz bloc" style="left:10%;bottom:0%;width:min(680px,35.4vw,44vh);z-index:1">
-          <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Enregistre tes tournées</h3>
+        <figure class="viz bloc" style="left:3%;top:8%;width:min(560px,29vw,40vh);z-index:1">
+          <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Optimisation par secteurs</h3>
           <div class="bloc-shot">
-            <img src="./img/captures/carnet.png" width="529" height="456"
-                 data-i18n-alt="bloc.carnet.alt" alt="Écran ATEQO : le carnet d'adresses et l'enregistrement dans un circuit" loading="lazy" />
-            <p class="note h3" style="left:41%;top:7%" data-i18n="bloc.carnet.bulle">Crée tes tournées, enregistre tes adresses favorites et ajoute-les en un clic.</p>
+            <img src="./img/captures/secteurs_avant.png" width="1060" height="714"
+                 data-i18n-alt="bloc.secteurs.alt" alt="Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur" />
+            <p class="note h2" style="left:56%;top:12%" data-i18n="bloc.secteurs.bulle">Découpe ta zone. ATEQO optimise chaque secteur, dans l'ordre où tu veux les faire.</p>
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:59%;top:8%;width:min(300px,15.6vw)">
-          <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
+        <!-- Ecarte a 68 % et descendu : a 53 %, son sous-titre tombait
+             exactement sur la ligne d'argument, deux textes l'un sur l'autre.
+             Un bloc pose sous la bande du titre doit commencer SOUS
+             l'argument, jamais dedans. -->
+        <figure class="viz bloc" style="left:68%;bottom:2%;width:min(560px,29vw,38vh)">
+          <h3 class="bloc-titre" data-i18n="bloc.reel.titre">Des rues, pas des lignes droites</h3>
           <div class="bloc-shot">
-            <!-- Seule capture sans ombre deja incrustee (export different des
-                 six autres) : elle recoit la meme (0,4,4) par CSS. -->
-            <img class="sans-ombre" src="./img/captures/voix.png" width="300" height="189"
-                 data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" loading="lazy" />
-            <!-- Calee sur la ligne d'adresse (77-83% de la hauteur de la
-                 capture) : elle en recouvre la moitie droite, on comprend que
-                 l'adresse vient d'etre dictee sans avoir a la lire en entier. -->
-            <p class="note h2" style="left:50%;top:68%" data-i18n="bloc.voix.bulle">Gagne du temps : ajoute une adresse simplement avec ta voix.</p>
+            <img src="./img/captures/itineraire_optimise.png" width="998" height="689"
+                 data-i18n-alt="bloc.reel.alt" alt="Carte ATEQO : l'itinéraire optimisé tracé sur les routes réelles" loading="lazy" />
+            <p class="note h1" style="left:-44%;top:8%" data-i18n="bloc.reel.bulle">Le calcul suit la voirie et les sens de circulation, pas la distance à vol d'oiseau.</p>
+          </div>
+        </figure>
+
+        <figure class="viz" style="left:4%;bottom:12%">
+          <p class="note h2 note-avantage" style="position:static" data-i18n="t4.chargement">Chargement guidé : le dernier chargé est le premier livré</p>
+        </figure>
+       </div>
+      </div>
+    </section>
+
+    <!-- ══ 5. GARDE LA MAIN ══════════════════════════════════════════════════ -->
+    <section class="slide t3" data-theme="2">
+      <div class="stage">
+       <div class="field">
+        <div class="titre-bloc">
+          <h2 class="giant" data-i18n-html="t5.title">Garde la <em>main.</em></h2>
+          <p class="argument court" data-i18n="t5.argument">ATEQO optimise, tu choisis. À chaque arrêt.</p>
+        </div>
+
+        <figure class="viz bloc" style="left:7%;top:10%;width:min(247px,13vw,26vh)">
+          <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Navigation adaptative</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/navigation.png" width="247" height="469"
+                 data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
+            <p class="note h3" style="left:58%;top:74%" data-i18n="bloc.navigation.bulle">La destination recommandée, et les arrêts les plus proches si tu changes d'avis.</p>
+          </div>
+        </figure>
+
+        <!-- Le passage en z-index 1 avait un effet non voulu : ce n'est pas
+             seulement la capture qui passait derriere le titre geant, mais
+             AUSSI son sous-titre, devenu illisible. Un bloc ne passe derriere
+             que si son texte reste, lui, hors de la bande du titre. Ici il
+             descend sous l'argument et retrouve le plan normal. -->
+        <figure class="viz bloc" style="left:68%;bottom:1%;width:min(620px,32vw,41vh)">
+          <h3 class="bloc-titre" data-i18n="bloc.statuts.titre">Tout se pilote sur la carte</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/navigation_statuts.png" width="1228" height="805"
+                 data-i18n-alt="bloc.statuts.alt" alt="Carte ATEQO en cours de tournée : arrêts livrés, arrêt en cours et retours dépôt" loading="lazy" />
+            <p class="note h1" style="left:38%;top:70%" data-i18n="bloc.statuts.bulle">Statut d'un arrêt, ajout d'une adresse en cours de tournée, ordre de passage.</p>
+          </div>
+        </figure>
+
+        <!-- Descendue de 14 a 8 % : la bulle du bloc de navigation, plus haute
+             quand elle passe sur quatre lignes, venait la toucher sur une
+             fenetre courte. -->
+        <figure class="viz" style="left:8%;bottom:8%">
+          <p class="note h3 note-avantage" style="position:static" data-i18n="t5.gps">Ton GPS habituel prend le relais : la destination part dans Google Maps</p>
+        </figure>
+       </div>
+      </div>
+    </section>
+
+    <!-- ══ 6. RIEN NE SE PERD ════════════════════════════════════════════════
+         L'apres-tournee, que personne ne montre dans cette categorie : les
+         colis a reprogrammer, le bilan du soir et l'historique. -->
+    <section class="slide t3" data-theme="2">
+      <div class="stage">
+       <div class="field">
+        <!-- Seul ecran de la piste a porter TROIS captures. Le titre monte donc
+             en haut, comme celui des tarifs : garde au centre, il aurait laisse
+             la troisieme capture sans emplacement, et le bloc pousse au milieu
+             se retrouvait a cheval sur la ligne d'argument. -->
+        <div class="titre-bloc compact" style="top:22%">
+          <h2 class="giant" data-i18n-html="t6.title">Rien ne se <em>perd.</em></h2>
+          <p class="argument" data-i18n="t6.argument">Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.</p>
+        </div>
+
+        <!-- Les trois se posent sur la meme ligne et partagent la meme borne de
+             hauteur : elles racontent une suite, du colis non livre au bilan du
+             mois, et trois hauteurs differentes casseraient la lecture. -->
+        <figure class="viz bloc" style="left:5%;top:42%;width:min(374px,19vw,29vh)">
+          <h3 class="bloc-titre" data-i18n="bloc.replanif.titre">Colis non livrés</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/replanifier.png" width="374" height="451"
+                 data-i18n-alt="bloc.replanif.alt" alt="Écran ATEQO : les livraisons à replanifier, avec leur date de report" />
+            <p class="note h3 etroite" style="left:30%;top:78%" data-i18n="bloc.replanif.bulle">Client absent, accès impossible : reprogramme à une date choisie, le rappel arrive le jour venu.</p>
+          </div>
+        </figure>
+
+        <figure class="viz bloc" style="left:38%;top:42%;width:min(363px,19vw,29vh)">
+          <h3 class="bloc-titre" data-i18n="bloc.bilan.titre">Bilan de tournée</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/bilan_tournee.png" width="363" height="433"
+                 data-i18n-alt="bloc.bilan.alt" alt="Écran ATEQO : tournée terminée, 58 livrés, 2 reprogrammés, 1 retour dépôt" loading="lazy" />
+            <p class="note h4 etroite" style="left:52%;top:72%" data-i18n="bloc.bilan.bulle">Livrés, reprogrammés, retours dépôt : la journée en un écran.</p>
+          </div>
+        </figure>
+
+        <figure class="viz bloc" style="left:70%;top:42%;width:min(371px,19vw,29vh)">
+          <h3 class="bloc-titre" data-i18n="bloc.historique.titre">Historique</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/historique.png" width="371" height="311"
+                 data-i18n-alt="bloc.historique.alt" alt="Écran ATEQO : l'historique du mois, tournée par tournée" loading="lazy" />
+            <p class="note h2 etroite" style="left:44%;top:74%" data-i18n="bloc.historique.bulle">Chaque tournée conserve son détail et son gain.</p>
           </div>
         </figure>
        </div>
@@ -934,12 +1343,15 @@
        <div class="field">
         <!-- Le seul titre qui ne tient pas la ligne des autres : trois formules
              de sept lignes ne passent pas sous un titre reste au centre.
-             La couleur d'accent est redefinie SUR le titre : splitGiants
+             La couleur d'accent est redefinie SUR le bloc de titre : splitGiants
              decoupe le mot en lettres et pose var(--tone) sur chacune en style
              inline, or un style inline bat toute regle CSS. En changeant la
              variable ici, les lettres heritent du rose du Q sans qu'on ait a
              leur forcer une couleur, et sans dependre du theme de l'ecran. -->
-        <h2 class="giant" data-i18n-html="plans.title" style="top:26%;--tone:var(--s4)">Choisis ton <em>plan.</em></h2>
+        <div class="titre-bloc compact" style="top:27%;--tone:var(--s4)">
+          <h2 class="giant" data-i18n-html="plans.title">Choisis ton <em>plan.</em></h2>
+          <p class="argument" data-i18n="plans.argument">Sans engagement. Tu changes de formule ou tu arrêtes quand tu veux, depuis Google Play.</p>
+        </div>
 
         <!-- Une bulle seule, sans capture : elle gravite au-dessus des formules
              et rappelle ce que l'inscription donne avant tout paiement. Elle
@@ -949,17 +1361,17 @@
              cet alignement, l'argument le plus fort de l'ecran flottait seul,
              sans rapport visible avec les cartes qu'il sert.
              Le retrait vertical est en PIXELS et non en pourcentage. Le titre
-             geant est centre sur top:26 %, donc son bord haut remonte a mesure
+             geant est centre sur top:27 %, donc son bord haut remonte a mesure
              que la fenetre raccourcit, tandis qu'un retrait en pourcentage fait
              remonter la pastille moins vite : les deux se rejoignaient, et a
              1920x700 la pastille mordait sur le « C » de Choisis. Ancree en
              pixels, elle reste collee au bandeau et laisse au titre toute la
              place que la fenetre lui donne. -->
-        <figure class="viz" style="left:18%;top:26px">
+        <figure class="viz" style="left:18%;top:20px">
           <p class="note h2 note-avantage" style="position:static" data-i18n="plans.bulle">7 tournées offertes à l'inscription</p>
         </figure>
 
-        <div class="viz formules" style="left:18%;top:38%;width:64%">
+        <div class="viz formules" style="left:18%;top:40%;width:64%">
           <div class="plans">
             <div class="plan">
               <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
@@ -1021,6 +1433,37 @@
          classe t1 y aurait superpose un halo bleu. -->
     <section class="slide end" data-theme="4">
       <div class="stage">
+        <!-- Les cinq objections qui reviennent avant un telechargement. Elles
+             occupent la moitie gauche du dernier ecran, qui ne portait jusqu'ici
+             qu'un titre et un bouton au milieu du vide. Le texte est le meme,
+             mot pour mot, que celui balise en FAQPage dans l'en-tete : Google
+             compare les deux et ignore un balisage sans equivalent visible. -->
+        <div class="viz faq-bloc">
+          <h2 class="faq-titre" data-i18n="faq.titre">Questions fréquentes</h2>
+          <div class="faq">
+            <div class="faq-item">
+              <h3 data-i18n="faq.q1">Combien d'arrêts par tournée ?</h3>
+              <p data-i18n="faq.r1">Autant que tu veux, y compris sur le plan gratuit. La limite du gratuit porte sur le nombre de tournées optimisées par mois, pas sur le nombre d'adresses.</p>
+            </div>
+            <div class="faq-item">
+              <h3 data-i18n="faq.q2">Ça marche avec quel transporteur ?</h3>
+              <p data-i18n="faq.r2">Avec tous. ATEQO est indépendant : tu saisis tes adresses, il optimise. Aucun accord préalable n'est nécessaire.</p>
+            </div>
+            <div class="faq-item">
+              <h3 data-i18n="faq.q3">Est-ce que ça remplace mon GPS ?</h3>
+              <p data-i18n="faq.r3">Non. ATEQO calcule l'ordre de passage, puis lance la destination dans Google Maps pour la conduite.</p>
+            </div>
+            <div class="faq-item">
+              <h3 data-i18n="faq.q4">Disponible sur iPhone ?</h3>
+              <p data-i18n="faq.r4">ATEQO est disponible sur Android. La version iPhone n'est pas encore ouverte.</p>
+            </div>
+            <div class="faq-item">
+              <h3 data-i18n="faq.q5">Mes adresses sont-elles conservées ?</h3>
+              <p data-i18n="faq.r5">Tes tournées et ton carnet sont rattachés à ton compte et ne sont jamais revendus. Le détail figure dans la politique de confidentialité.</p>
+            </div>
+          </div>
+        </div>
+
         <div class="end-block">
           <!-- L'espace avant le point d'interrogation est INSECABLE (U+00A0) :
                la typographie francaise l'impose, et sans lui le « ? » tombait
@@ -1067,28 +1510,81 @@
         'hint.scroll': 'Fais défiler',
         // ── Fil d'Ariane du bandeau ──
         'fil.aria': 'Sections du site',
-        'fil.t1': 'Livrer plus',
-        'fil.t2': 'Gagner plus',
-        'fil.t3': 'Gérer mieux',
+        'fil.t1': 'Découvrir',
+        'fil.t2': 'Préparer',
+        'fil.t3': 'Livrer',
         'fil.t4': 'Tarifs',
         'fil.t5': 'Télécharger',
-        // Adresses d'exemple, partagees par les maquettes.
-        // ── Livre plus ──
-        't1.title': 'Livrez <em>plus.</em>',
-        'bloc.secteurs.titre': 'Organise ta journée',
-        'bloc.secteurs.bulle': "Organise très simplement tes points d'arrêt par secteur, même dans les quartiers les plus denses.",
-        'bloc.secteurs.alt': "Carte ATEQO : les arrêts groupés en secteurs de couleur, avec l'itinéraire de chacun",
-        'bloc.optimisation.titre': 'Optimisation en un clic',
-        'bloc.optimisation.bulle': 'Concentre-toi sur la route, <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> s\'occupe du reste.',
-        'bloc.optimisation.alt': 'Carte ATEQO : la tournée optimisée, arrêts numérotés dans l’ordre de passage',
-        'bloc.navigation.titre': 'Adapte ton trajet',
-        'bloc.navigation.bulle': 'Ne subis plus les aléas de tes tournées. <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> optimise, tu choisis.',
+        // ── 1. Livre plus ──
+        // Les espaces des durees sont INSECABLES ( ) : « 1 h 32 » ne doit
+        // jamais se couper en fin de ligne, c'est le chiffre qui porte toute la
+        // promesse de l'ecran.
+        't1.title': 'Livre <em>plus.</em>',
+        't1.argument': "<strong>67 arrêts optimisés en moins d'une minute.</strong> 1 h 32 de route en moins sur la tournée du jour.",
+        't1.rassurance': "7 tournées offertes à l'inscription, sans carte bancaire",
+        'bloc.jour.titre': 'Ta tournée du jour',
+        'bloc.jour.bulle': 'Le gain est calculé sur ta tournée, pas estimé sur une moyenne.',
+        'bloc.jour.alt': 'Écran ATEQO : tournée optimisée, 1 h 32 gagnée, 110 colis pour 67 adresses',
+        'bloc.semaine.titre': 'Sur une semaine de tournées',
+        'bloc.semaine.bulle': 'Les compteurs se remplissent tournée après tournée.',
+        'bloc.semaine.alt': 'Écran ATEQO : 7 h 59 gagnées, 211 km et 26 € de carburant économisés sur 5 tournées',
+        'metier.1': 'Messagerie et colis',
+        'metier.2': 'Coursier urbain',
+        'metier.3': 'Livraison de repas',
+        'metier.4': 'Commandes e-commerce',
+        'metier.5': 'Distribution',
+        'metier.6': 'Interventions multi-sites',
+        // ── 2. Trois gestes ──
+        't2.title': 'Trois <em>gestes.</em>',
+        't2.argument': "De la liste d'adresses au départ en tournée.",
+        'etape.1.titre': 'Ajoute tes adresses',
+        'etape.1.texte': "À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.",
+        'etape.2.titre': 'Optimise',
+        'etape.2.texte': "L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.",
+        'etape.3.titre': 'Pars livrer',
+        'etape.3.texte': 'La destination recommandée à chaque arrêt, et ton GPS habituel pour y aller.',
+        // ── 3. Prépare vite ──
+        't3.title': 'Prépare <em>vite.</em>',
+        't3.argument': 'Soixante arrêts saisis sans lâcher les colis.',
+        't3.illimite': 'Adresses illimitées par tournée, y compris sur le plan gratuit',
+        'bloc.voix.titre': 'Saisie vocale',
+        'bloc.voix.bulle': "Dicte l'adresse, elle s'ajoute. Sans t'arrêter, sans taper.",
+        'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
+        'bloc.circuits.titre': 'Carnet et circuits récurrents',
+        'bloc.circuits.bulle': 'Tes tournées habituelles rechargées en un clic le lendemain.',
+        'bloc.circuits.alt': 'Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains',
+        // ── 4. Moins de route ──
+        't4.title': 'Moins de <em>route.</em>',
+        't4.argument': "<strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.",
+        't4.chargement': 'Chargement guidé : le dernier chargé est le premier livré',
+        'bloc.secteurs.titre': 'Optimisation par secteurs',
+        'bloc.secteurs.bulle': 'Découpe ta zone. ATEQO optimise chaque secteur, dans l’ordre où tu veux les faire.',
+        'bloc.secteurs.alt': 'Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur',
+        'bloc.reel.titre': 'Des rues, pas des lignes droites',
+        'bloc.reel.bulle': 'Le calcul suit la voirie et les sens de circulation, pas la distance à vol d’oiseau.',
+        'bloc.reel.alt': 'Carte ATEQO : l’itinéraire optimisé tracé sur les routes réelles',
+        // ── 5. Garde la main ──
+        't5.title': 'Garde la <em>main.</em>',
+        't5.argument': 'ATEQO optimise, tu choisis. À chaque arrêt.',
+        't5.gps': 'Ton GPS habituel prend le relais : la destination part dans Google Maps',
+        'bloc.navigation.titre': 'Navigation adaptative',
+        'bloc.navigation.bulle': 'La destination recommandée, et les arrêts les plus proches si tu changes d’avis.',
         'bloc.navigation.alt': 'Écran ATEQO : la destination recommandée, puis les adresses les plus proches',
-        // ── Gagne plus ──
-        't2.title': 'Gagnez <em>plus.</em>',
-        'bloc.temps.titre': 'Moins de temps sur la route',
-        'bloc.temps.bulle': 'Booste ta productivité et réduis tes kilomètres.',
-        'bloc.temps.alt': 'Bandeau ATEQO : tournée optimisée, 36 minutes gagnées',
+        'bloc.statuts.titre': 'Tout se pilote sur la carte',
+        'bloc.statuts.bulle': "Statut d'un arrêt, ajout d'une adresse en cours de tournée, ordre de passage.",
+        'bloc.statuts.alt': 'Carte ATEQO en cours de tournée : arrêts livrés, arrêt en cours et retours dépôt',
+        // ── 6. Rien ne se perd ──
+        't6.title': 'Rien ne se <em>perd.</em>',
+        't6.argument': "Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.",
+        'bloc.replanif.titre': 'Colis non livrés',
+        'bloc.replanif.bulle': 'Client absent, accès impossible : reprogramme à une date choisie, le rappel arrive le jour venu.',
+        'bloc.replanif.alt': 'Écran ATEQO : les livraisons à replanifier, avec leur date de report',
+        'bloc.bilan.titre': 'Bilan de tournée',
+        'bloc.bilan.bulle': 'Livrés, reprogrammés, retours dépôt : la journée en un écran.',
+        'bloc.bilan.alt': 'Écran ATEQO : tournée terminée, 58 livrés, 2 reprogrammés, 1 retour dépôt',
+        'bloc.historique.titre': 'Historique',
+        'bloc.historique.bulle': 'Chaque tournée conserve son détail et son gain.',
+        'bloc.historique.alt': 'Écran ATEQO : l’historique du mois, tournée par tournée',
         'plan.free.name': 'Gratuit',
         'plan.free.f1': '5 tournées par mois',
         'plan.free.f2': '3 secteurs actifs',
@@ -1106,19 +1602,25 @@
         'plan.annual.price': '169,99 <span class="per">€ / an</span>',
         'plan.annual.ribbon': '2 mois offerts',
         'plan.cta': 'Commencer',
-        // ── Gère mieux ──
-        't3.title': 'Gérez <em>mieux.</em>',
-        'bloc.carte.titre': 'Carte interactive',
-        'bloc.carte.bulle': "Gère tes points d'arrêt directement sur la carte.",
-        'bloc.carte.alt': "Écran ATEQO : l'arrêt en cours sur la carte, avec ses actions",
-        'bloc.carnet.titre': 'Enregistre tes tournées',
-        'bloc.carnet.bulle': 'Crée tes tournées, enregistre tes adresses favorites et ajoute-les en un clic.',
-        'bloc.carnet.alt': "Écran ATEQO : le carnet d'adresses et l'enregistrement dans un circuit",
-        'bloc.voix.titre': 'Saisie vocale',
-        'bloc.voix.bulle': 'Gagne du temps : ajoute une adresse simplement avec ta voix.',
-        'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
+        // ── 7. Tarifs ──
         'plans.title': 'Choisis ton <em>plan.</em>',
+        'plans.argument': 'Sans engagement. Tu changes de formule ou tu arrêtes quand tu veux, depuis Google Play.',
         'plans.bulle': "7 tournées offertes à l'inscription",
+        // ── 8. Questions et départ ──
+        // Ces cinq reponses sont recopiees a l'identique dans le balisage
+        // FAQPage de l'en-tete : toute modification ici doit s'y reporter, sans
+        // quoi Google ecarte le balisage qu'il ne retrouve pas a l'ecran.
+        'faq.titre': 'Questions fréquentes',
+        'faq.q1': "Combien d'arrêts par tournée ?",
+        'faq.r1': "Autant que tu veux, y compris sur le plan gratuit. La limite du gratuit porte sur le nombre de tournées optimisées par mois, pas sur le nombre d'adresses.",
+        'faq.q2': 'Ça marche avec quel transporteur ?',
+        'faq.r2': "Avec tous. ATEQO est indépendant : tu saisis tes adresses, il optimise. Aucun accord préalable n'est nécessaire.",
+        'faq.q3': 'Est-ce que ça remplace mon GPS ?',
+        'faq.r3': "Non. ATEQO calcule l'ordre de passage, puis lance la destination dans Google Maps pour la conduite.",
+        'faq.q4': 'Disponible sur iPhone ?',
+        'faq.r4': "ATEQO est disponible sur Android. La version iPhone n'est pas encore ouverte.",
+        'faq.q5': 'Mes adresses sont-elles conservées ?',
+        'faq.r5': 'Tes tournées et ton carnet sont rattachés à ton compte et ne sont jamais revendus. Le détail figure dans la politique de confidentialité.',
         'end.title': 'Prêt à optimiser ta tournée ?',
         'end.sub': "Ta première tournée optimisée en moins d'une minute.",
         'end.rassurance': "7 tournées offertes à l'inscription",
@@ -1143,27 +1645,78 @@
         'hint.scroll': 'Scroll',
         // ── Fil d'Ariane du bandeau ──
         'fil.aria': 'Site sections',
-        'fil.t1': 'Deliver more',
-        'fil.t2': 'Earn more',
-        'fil.t3': 'Manage better',
+        'fil.t1': 'Discover',
+        'fil.t2': 'Prepare',
+        'fil.t3': 'Deliver',
         'fil.t4': 'Pricing',
         'fil.t5': 'Download',
-        
+        // ── 1. Deliver more ──
         't1.title': 'Deliver <em>more.</em>',
-        'bloc.secteurs.titre': 'Plan your day',
-        'bloc.secteurs.bulle': 'Organize your stops by sector with ease, even in the densest neighborhoods.',
-        'bloc.secteurs.alt': 'ATEQO map: stops grouped into colored sectors, each with its own route',
-        'bloc.optimisation.titre': 'One-click optimization',
-        'bloc.optimisation.bulle': 'Focus on the road, <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> handles the rest.',
-        'bloc.optimisation.alt': 'ATEQO map: the optimized route, stops numbered in visiting order',
-        'bloc.navigation.titre': 'Adapt your route',
-        'bloc.navigation.bulle': 'Stop putting up with whatever your day throws at you. <span class="marque"><i>A</i><i>T</i><i>E</i><i>Q</i><i>O</i></span> optimizes, you choose.',
+        't1.argument': '<strong>67 stops optimized in under a minute.</strong> 92 minutes less driving on the day’s route.',
+        't1.rassurance': '7 free routes when you sign up, no card required',
+        'bloc.jour.titre': 'Your route for today',
+        'bloc.jour.bulle': 'The saving is computed on your own route, not estimated from an average.',
+        'bloc.jour.alt': 'ATEQO screen: optimized route, 1 h 32 saved, 110 parcels across 67 addresses',
+        'bloc.semaine.titre': 'Over a week of routes',
+        'bloc.semaine.bulle': 'The counters fill up route after route.',
+        'bloc.semaine.alt': 'ATEQO screen: 7 h 59 saved, 211 km and €26 of fuel saved across 5 routes',
+        'metier.1': 'Parcel delivery',
+        'metier.2': 'Urban courier',
+        'metier.3': 'Food delivery',
+        'metier.4': 'E-commerce orders',
+        'metier.5': 'Distribution rounds',
+        'metier.6': 'Multi-site field work',
+        // ── 2. Three steps ──
+        't2.title': 'Three <em>steps.</em>',
+        't2.argument': 'From your list of addresses to the road.',
+        'etape.1.titre': 'Add your addresses',
+        'etape.1.texte': 'By voice or from your address book. As many stops as you need.',
+        'etape.2.titre': 'Optimize',
+        'etape.2.texte': 'The shortest order on real roads. One tap, a few seconds.',
+        'etape.3.titre': 'Start delivering',
+        'etape.3.texte': 'The recommended destination at every stop, and your usual GPS to get there.',
+        // ── 3. Get ready fast ──
+        't3.title': 'Get ready <em>fast.</em>',
+        't3.argument': 'Sixty stops entered without putting the parcels down.',
+        't3.illimite': 'Unlimited addresses per route, including on the free plan',
+        'bloc.voix.titre': 'Voice input',
+        'bloc.voix.bulle': 'Say the address, it is added. No stopping, no typing.',
+        'bloc.voix.alt': 'ATEQO screen: dictating an address, “I’m listening”',
+        'bloc.circuits.titre': 'Address book and saved lists',
+        'bloc.circuits.bulle': 'Your usual routes reloaded in one tap the next morning.',
+        'bloc.circuits.alt': 'ATEQO screen: two saved routes, with their sectors and their savings',
+        // ── 4. Less driving ──
+        't4.title': 'Less <em>driving.</em>',
+        't4.argument': '<strong>The shortest order on real roads</strong>, sector by sector.',
+        't4.chargement': 'Guided loading: the last one loaded is the first one delivered',
+        'bloc.secteurs.titre': 'Sector optimization',
+        'bloc.secteurs.bulle': 'Split your area. ATEQO optimizes each sector, in the order you want to run them.',
+        'bloc.secteurs.alt': 'ATEQO map: 67 stops split into 5 colored sectors',
+        'bloc.reel.titre': 'Streets, not straight lines',
+        'bloc.reel.bulle': 'The calculation follows the road network and one-way streets, not the straight-line distance.',
+        'bloc.reel.alt': 'ATEQO map: the optimized route drawn on real roads',
+        // ── 5. Stay in control ──
+        't5.title': 'Stay in <em>control.</em>',
+        't5.argument': 'ATEQO optimizes, you decide. At every stop.',
+        't5.gps': 'Your usual GPS takes over: the destination opens in Google Maps',
+        'bloc.navigation.titre': 'Adaptive navigation',
+        'bloc.navigation.bulle': 'The recommended destination, plus the closest stops if you change your mind.',
         'bloc.navigation.alt': 'ATEQO screen: the recommended destination, then the closest addresses',
-        
-        't2.title': 'Earn <em>more.</em>',
-        'bloc.temps.titre': 'Less time on the road',
-        'bloc.temps.bulle': 'Boost your productivity and cut your mileage.',
-        'bloc.temps.alt': 'ATEQO banner: optimized route, 36 minutes saved',
+        'bloc.statuts.titre': 'Everything runs from the map',
+        'bloc.statuts.bulle': 'Stop status, adding an address mid-route, order of passage.',
+        'bloc.statuts.alt': 'ATEQO map during a route: delivered stops, current stop and depot returns',
+        // ── 6. Nothing gets lost ──
+        't6.title': 'Nothing gets <em>lost.</em>',
+        't6.argument': 'What is not delivered comes back tomorrow, and every day leaves a summary.',
+        'bloc.replanif.titre': 'Failed deliveries',
+        'bloc.replanif.bulle': 'Customer away, no access: reschedule for a date you choose, the reminder comes on the day.',
+        'bloc.replanif.alt': 'ATEQO screen: deliveries to reschedule, with their new date',
+        'bloc.bilan.titre': 'Route summary',
+        'bloc.bilan.bulle': 'Delivered, rescheduled, returned to depot: the day on one screen.',
+        'bloc.bilan.alt': 'ATEQO screen: route finished, 58 delivered, 2 rescheduled, 1 depot return',
+        'bloc.historique.titre': 'History',
+        'bloc.historique.bulle': 'Every route keeps its detail and its saving.',
+        'bloc.historique.alt': 'ATEQO screen: the month’s history, route by route',
         'plan.free.name': 'Free',
         'plan.free.f1': '5 routes per month',
         'plan.free.f2': '3 active sectors',
@@ -1182,18 +1735,22 @@
         'plan.annual.ribbon': '2 months free',
         'plan.cta': 'Get started',
         
-        't3.title': 'Manage <em>better.</em>',
-        'bloc.carte.titre': 'Interactive map',
-        'bloc.carte.bulle': 'Manage your stops straight from the map.',
-        'bloc.carte.alt': 'ATEQO screen: the current stop on the map, with its actions',
-        'bloc.carnet.titre': 'Save your routes',
-        'bloc.carnet.bulle': 'Build your routes, save your favorite addresses and add them in one tap.',
-        'bloc.carnet.alt': 'ATEQO screen: the address book and saving into a circuit',
-        'bloc.voix.titre': 'Voice input',
-        'bloc.voix.bulle': 'Save time: add an address simply with your voice.',
-        'bloc.voix.alt': 'ATEQO screen: dictating an address, "I’m listening"',
+        // ── 7. Pricing ──
         'plans.title': 'Pick your <em>plan.</em>',
+        'plans.argument': 'No commitment. Change plan or stop whenever you want, from Google Play.',
         'plans.bulle': '7 free routes when you sign up',
+        // ── 8. Questions and departure ──
+        'faq.titre': 'Frequently asked questions',
+        'faq.q1': 'How many stops per route?',
+        'faq.r1': 'As many as you want, including on the free plan. The free limit is on the number of optimized routes per month, not on the number of addresses.',
+        'faq.q2': 'Which carrier does it work with?',
+        'faq.r2': 'All of them. ATEQO is independent: you enter your addresses, it optimizes. No prior agreement is needed.',
+        'faq.q3': 'Does it replace my GPS?',
+        'faq.r3': 'No. ATEQO works out the order of passage, then opens the destination in Google Maps for the driving.',
+        'faq.q4': 'Is it available on iPhone?',
+        'faq.r4': 'ATEQO is available on Android. The iPhone version is not open yet.',
+        'faq.q5': 'Are my addresses kept?',
+        'faq.r5': 'Your routes and your address book are tied to your account and are never resold. The details are in the privacy policy.',
         'end.title': 'Ready to optimize your route?',
         'end.sub': 'Your first optimized route in under a minute.',
         'end.rassurance': '7 free routes when you sign up',
@@ -1402,10 +1959,34 @@
       // au navigateur qui refuse les animations : la piste n'existe pas, mais
       // les sections restent atteignables.
       var etapesFil = Array.prototype.slice.call(document.querySelectorAll('.fil-etape'));
+      var segmentsFil = Array.prototype.slice.call(document.querySelectorAll('.fil-segment'));
+
+      // Ou tombe chaque repere sur la course de la piste, en fraction de
+      // celle-ci. Un repere peut couvrir PLUSIEURS ecrans : sa place est celle
+      // de l'ecran qu'il ouvre (son data-ecran), jamais son rang dans le
+      // bandeau. C'est cette liste, et non le nombre de reperes, qui fait
+      // avancer le trait : ajouter un ecran au milieu de la piste ne demande
+      // donc rien d'autre que de renumeroter les data-ecran suivants.
+      var dernierEcran = Math.max(1, slides.length - 1);
+      var positionsFil = etapesFil.map(function (etape) {
+        return parseInt(etape.getAttribute('data-ecran'), 10) / dernierEcran;
+      });
+
+      function rangDuRepereCouvrant(indexEcran) {
+        // Le repere courant est le DERNIER dont l'ecran d'ouverture a ete
+        // atteint : les ecrans 4 et 5 appartiennent tous deux a celui qu'ouvre
+        // le 4.
+        var rangCourant = 0;
+        etapesFil.forEach(function (etape, rang) {
+          if (parseInt(etape.getAttribute('data-ecran'), 10) <= indexEcran) rangCourant = rang;
+        });
+        return rangCourant;
+      }
 
       function marquerEtape(indexEcran) {
-        etapesFil.forEach(function (etape) {
-          var estCourante = parseInt(etape.getAttribute('data-ecran'), 10) === indexEcran;
+        var rangCourant = rangDuRepereCouvrant(indexEcran);
+        etapesFil.forEach(function (etape, rang) {
+          var estCourante = rang === rangCourant;
           etape.classList.toggle('active', estCourante);
           if (estCourante) etape.setAttribute('aria-current', 'true');
           else etape.removeAttribute('aria-current');
@@ -1413,26 +1994,25 @@
       }
 
       // Le trait suit le defilement, pas les sauts d'ecran : il avance sans
-      // a-coup pendant tout le glissement. Le chemin va du PREMIER au DERNIER
-      // repere ; la mise a l'echelle par le nombre d'intervalles de chaque cote
-      // le garde juste si un ecran ou un repere venait a s'ajouter.
-      var segmentsFil = Array.prototype.slice.call(document.querySelectorAll('.fil-segment'));
-
+      // a-coup pendant tout le glissement.
       function avancerFil(avanceDeLaPiste) {
-        var dernierRepere = etapesFil.length - 1;
-        if (dernierRepere < 1) return;
-        var avance = avanceDeLaPiste * (slides.length - 1) / dernierRepere;
-        avance = Math.max(0, Math.min(1, avance));
+        if (positionsFil.length < 2) return;
+        var avance = Math.max(0, Math.min(1, avanceDeLaPiste));
         etapesFil.forEach(function (etape, rang) {
           // La tolerance absorbe l'arrondi du calcul : sans elle, un repere
           // atteint pile poil resterait gris sous un trait deja colore.
-          etape.classList.toggle('franchie', avance >= rang / dernierRepere - 0.002);
+          etape.classList.toggle('franchie', avance >= positionsFil[rang] - 0.002);
         });
         segmentsFil.forEach(function (segment, rang) {
-          // Chaque segment ne connait que sa propre portion du chemin : le
-          // premier se remplit du repere 1 au 2, le suivant du 2 au 3, et ainsi
-          // de suite. Un seul est donc en cours de remplissage a la fois.
-          var part = Math.max(0, Math.min(1, avance * segmentsFil.length - rang));
+          // Chaque segment ne connait que sa propre portion du chemin, bornee
+          // par les deux reperes qu'il relie. Un seul est donc en cours de
+          // remplissage a la fois, et un segment qui enjambe deux ecrans met
+          // deux fois plus longtemps a se remplir qu'un segment qui n'en
+          // enjambe qu'un.
+          var depart = positionsFil[rang];
+          var portee = positionsFil[rang + 1] - depart;
+          var part = portee > 0 ? (avance - depart) / portee : 0;
+          part = Math.max(0, Math.min(1, part));
           segment.style.setProperty('--fil-segment', (part * 100).toFixed(2) + '%');
         });
       }

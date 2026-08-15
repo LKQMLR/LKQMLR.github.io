@@ -468,9 +468,14 @@
        ne dit rien de ce que fait l'application ; il reste la signature de
        l'ecran, la ligne en dessous porte l'information. Les deux doivent
        bouger ensemble, d'ou le bloc commun. */
+    /* L'ecart est presque nul A DESSEIN : la boite du titre est deja plus haute
+       que ses glyphes (line-height 0.86 laisse une dizaine de pixels sous les
+       capitales), si bien qu'un gap de 20 px se voyait comme 30 et detachait la
+       phrase de son titre. La ligne doit se lire comme la suite du mot, pas
+       comme un paragraphe a part. */
     .titre-bloc{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
                 display:flex;flex-direction:column;align-items:center;
-                gap:clamp(10px,1.1vw,20px)}
+                gap:clamp(0px,.35vw,7px)}
     .giant{text-align:center;white-space:nowrap;
            font-size:clamp(2.6rem,7.8vw,9.6rem);font-weight:800;letter-spacing:-.055em;line-height:.86}
     .giant em{font-style:normal;color:var(--tone)}
@@ -511,16 +516,45 @@
        de mots colles par des puces. */
     .metiers li+li::before{content:"·";color:var(--border)}
 
+    /* ── Titre de section ─────────────────────────────────────────────────────
+       Tous les ecrans ne meritent pas un mot geant. Seuls les cinq que designe
+       le fil d'Ariane en portent un ; les ecrans intermediaires reçoivent ce
+       titre-ci, trois fois plus petit, et rendent la place gagnee aux captures
+       et a ce que le visiteur peut faire. Il vit dans un .viz, et non dans un
+       .titre-bloc : c'est le .viz qui porte l'arrivee en scene, alors que le
+       bloc de titre depend de la presence d'un .giant. */
+    .titre-section{font-size:clamp(1.45rem,2.7vw,2.7rem);font-weight:800;
+                   letter-spacing:-1.1px;line-height:1.05;color:var(--ink);white-space:nowrap}
+    .titre-section em{font-style:normal;color:var(--tone)}
+    /* Une ligne de contexte sous le titre de section, quand il en faut une. */
+    .titre-section+.sous-titre{margin-top:6px;color:var(--muted);
+                               font-size:clamp(.86rem,1.02vw,1.08rem);line-height:1.45}
+
     /* ── Cartes d'etape ───────────────────────────────────────────────────────
-       Les trois gestes de la prise en main. Volontairement SANS capture : les
-       memes ecrans sont montres en detail juste apres, et trois vignettes
-       repetees affaibliraient les deux passages. Un numero, un pictogramme,
-       une phrase. */
+       Les trois gestes de la prise en main. Chacune porte sa vignette : trois
+       cartes de texte seul ne montraient pas l'application, alors que c'est
+       precisement l'ecran ou le visiteur veut voir a quoi elle ressemble. */
     .etapes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.3vw,24px);width:100%}
     .etape{position:relative;background:var(--surface);border:1px solid var(--border);
-           border-radius:var(--radius);padding:clamp(18px,1.6vw,30px);
+           border-radius:var(--radius);padding:clamp(14px,1.2vw,22px);
            box-shadow:var(--ombre-posee);display:flex;flex-direction:column;
            gap:clamp(7px,.7vw,12px)}
+    /* Les trois captures n'ont pas le meme format : un telephone en hauteur,
+       deux vues en largeur. La vignette impose donc une hauteur commune et
+       CADRE l'image plutot que de la reduire en entier, sinon le telephone
+       deviendrait un timbre-poste illisible a cote des deux autres.
+       Le cadre est volontairement HAUT (rapport proche de 3/2) : c'est celui
+       des deux captures en largeur, qui n'y perdent alors presque rien. Un
+       cadre plus plat les amputait de la moitie de leur hauteur, au point que
+       la premiere vignette ne montrait plus qu'un micro sur du blanc. */
+    .etape-visuel{height:clamp(140px,25vh,290px);border-radius:8px;overflow:hidden;
+                  background:var(--surface2);border:1px solid var(--border)}
+    .etape-visuel img{width:100%;height:100%;object-fit:cover;object-position:center;
+                      display:block}
+    /* Le seul portrait du lot : cadre sur son premier tiers, la ou se lisent la
+       destination recommandee et les arrets les plus proches. Centre, on n'y
+       verrait que le milieu d'une liste d'adresses. */
+    .etape-visuel img.cadre-haut{object-position:center 14%}
     /* Le numero est la seule piece coloree de la carte, et il prend la teinte de
        l'ecran : les trois etapes se lisent alors comme une progression et non
        comme trois options au choix. */
@@ -537,9 +571,15 @@
        toutes DEPLIEES : un accordeon economiserait de la hauteur, mais une
        reponse repliee n'est lue par personne et compte moins pour le
        referencement. La reponse doit donc tenir en deux lignes. */
-    .faq{display:flex;flex-direction:column;gap:clamp(9px,.85vw,15px)}
-    .faq-titre{font-size:clamp(1rem,1.35vw,1.55rem);font-weight:800;letter-spacing:-.6px;
-               color:var(--ink);margin-bottom:clamp(2px,.3vw,6px)}
+    /* Six colonnes plutot que trois, chaque question en occupant deux : les
+       cinq questions se rangent alors 3 + 2 avec la seconde rangee CENTREE
+       (elle demarre a la colonne 2), au lieu de laisser un trou a droite. */
+    .faq{display:grid;grid-template-columns:repeat(6,1fr);
+         gap:clamp(9px,.85vw,16px);width:100%}
+    .faq-item{grid-column:span 2}
+    .faq-item:nth-child(4){grid-column:2/span 2}
+    .faq-titre{font-size:clamp(.72rem,.82vw,.9rem);font-weight:700;letter-spacing:1.4px;
+               text-transform:uppercase;color:var(--muted);text-align:center}
     .faq-item{background:var(--surface);border:1px solid var(--border);
               border-radius:var(--radius);padding:clamp(12px,1.05vw,18px) clamp(14px,1.2vw,22px);
               box-shadow:var(--ombre-posee)}
@@ -553,22 +593,36 @@
        pastel, du texte centre, rien d'autre.
        Les cinq teintes sont relevees une a une sur la maquette et tournent d'un
        bloc a l'autre, sans suivre le theme : une scene monochrome s'aplatirait. */
+    /* L'aplat pastel est abandonne : cinq blocs de couleur pleine posee sur des
+       captures deja colorees donnaient un air de pense-bete, et la teinte
+       pesait plus lourd que le texte qu'elle portait. La bulle devient une
+       CARTE BLANCHE, comme les formules et les questions frequentes, et ne
+       garde de sa couleur qu'un liseré a gauche. On y gagne trois choses : le
+       texte se lit sur du blanc, la carte se detache de n'importe quelle
+       capture, et le code couleur des secteurs reste lisible sans envahir. */
     .note{--bub:206,223,252;--bub-ink:var(--tone);
-          z-index:4;width:min(330px,17.2vw);background:rgb(var(--bub));
-          border-radius:var(--radius);padding:13px 15px;
-          box-shadow:var(--ombre-posee);
+          z-index:4;width:min(330px,17.2vw);
+          background:var(--surface);
+          border:1px solid var(--border);
+          border-left:3px solid var(--bub-ink);
+          border-radius:var(--radius);padding:12px 15px;
+          /* Ombre LEVEE et non posee : la carte flotte au-dessus d'une capture,
+             pas sur le fond de la page. */
+          box-shadow:var(--ombre-levee);
           /* Le texte s'aligne a gauche. Centre, un commentaire de trois lignes
              donne trois debuts de ligne differents : l'oeil recherche l'entree
              a chaque retour et la lecture bute. Le centrage ne tenait que tant
              que les bulles faisaient une ligne. */
           text-align:left;color:var(--ink);
           font-size:clamp(.8rem,.92vw,.9rem);line-height:1.45}
-    /* REGLE DE TEINTE : chaque ecran porte au moins une bulle de SA couleur, et
+    /* REGLE DE TEINTE : chaque ecran porte au moins une carte de SA couleur, et
        une seule autre pour ne pas s'aplatir. Les cinq teintes tournaient
        auparavant sans rapport avec l'ecran, si bien que « Gagnez plus », dont
        le theme est vert, n'affichait que du rose et du violet : le code couleur
        des secteurs, qui veut dire quelque chose dans l'application, se lisait
-       ici comme une decoration. Une bulle est donc du theme, l'autre non. */
+       ici comme une decoration. Une carte est donc du theme, l'autre non.
+       Depuis le passage au fond blanc, la teinte ne vit plus que dans le liseré
+       et --bub ne sert qu'au repli de la pile mobile. */
     .note.h1{--bub:206,223,252;--bub-ink:#1d4ed8}   /* bleu       */
     .note.h2{--bub:194,228,225;--bub-ink:#0f766e}   /* vert d'eau */
     .note.h3{--bub:245,221,192;--bub-ink:#b45309}   /* orange     */
@@ -725,22 +779,35 @@
     /* La section finale n'a pas de .field : ses blocs se positionnent
        directement dans la scene, marges de securite comprises. */
     .end-block,.slide.end .site-footer,.slide.end .viz{position:absolute}
-    /* Le dernier ecran porte desormais DEUX choses : les objections a lever, a
-       gauche, et l'appel a telecharger, a droite. L'appel n'est plus centre sur
-       l'ecran mais sur sa colonne : il garde tout son poids sans laisser la
-       moitie gauche vide, comme c'etait le cas quand il etait seul. */
-    /* Le retrait vertical s'ajoute a la marge du bandeau : cale pile sur
-       --safe, le titre de la FAQ se retrouvait colle sous la barre blanche. */
-    .slide.end .faq-bloc{left:5%;top:calc(var(--safe) + 2.5%);width:min(660px,46vw);z-index:3}
-    .end-block{left:auto;right:5%;top:44%;transform:translateY(-50%);width:min(430px,31vw);
-               display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+    /* Le dernier ecran empile trois choses sur toute la largeur : l'appel a
+       telecharger, les objections a lever, le pied de page. La disposition en
+       deux colonnes qui a precede laissait 650 px de vide au milieu de l'ecran
+       qui doit convertir, et l'appel s'y lisait comme une note de marge.
+       L'appel PASSE EN PREMIER, a dessein : qui est convaincu clique sans avoir
+       a descendre, qui hesite trouve ses reponses juste en dessous. */
+    .end-block{left:50%;top:calc(var(--safe) + 1.5%);transform:translateX(-50%);
+               width:min(760px,64vw);
+               display:flex;flex-direction:column;align-items:center;text-align:center;
+               gap:clamp(9px,1vw,16px)}
+    /* La ligne separe l'appel des questions : sans elle, les cartes se lisent
+       comme la suite de l'appel au lieu d'un second temps. */
+    /* 40 % et pas davantage : la bande utile va de la fin de l'appel (autour de
+       36 %) au haut du pied de page, qui est ancre a --safe du bas. A 47 %, les
+       cartes debordaient de 48 px sur le pied. Toute retouche de la hauteur de
+       l'appel ou des cartes se verifie sur ces deux bornes. */
+    .slide.end .faq-bloc{left:50%;transform:translateX(-50%);top:40%;
+                         width:min(1220px,90vw);z-index:3;
+                         display:flex;flex-direction:column;gap:clamp(10px,1.1vw,18px);
+                         border-top:1px solid var(--border);padding-top:clamp(14px,1.5vw,26px)}
     /* balance repartit les lignes a poids egal au lieu de remplir la premiere :
        sans lui, le titre francais laisse tomber son point d'interrogation seul
        sur la deuxieme ligne des que la fenetre se resserre. L'espace insecable
        pose dans le texte traite la cause, ceci traite le reste des coupures. */
-    /* Dimensionne pour sa COLONNE et non plus pour l'ecran entier : a 4.6vw le
-       titre debordait des 31vw qui lui restent une fois la FAQ posee a gauche. */
-    .end-block h2{font-size:clamp(1.5rem,2.7vw,2.5rem);font-weight:800;letter-spacing:-1.1px;line-height:1.08;
+    /* Le titre de l'appel final est l'un des cinq gros titres du site, au meme
+       titre que les quatre mots geants : c'est l'ecran que designe le dernier
+       repere du fil d'Ariane. Il reprend donc du corps maintenant qu'il occupe
+       toute la largeur. */
+    .end-block h2{font-size:clamp(1.8rem,3.7vw,3.3rem);font-weight:800;letter-spacing:-1.4px;line-height:1.06;
                   text-wrap:balance}
     .end-block p{color:var(--muted);font-size:clamp(.96rem,1.15vw,1.08rem)}
     .end-block .gplay{margin-top:8px}
@@ -833,6 +900,11 @@
          ici. Et SANS !important : cette regle vient apres celles du bureau,
          la cascade suffit a les annuler, tandis qu'un !important interdirait
          a GSAP de poser son propre transform et tuerait l'arrivee. */
+      /* Tout ce qui se centre par transform sur la piste doit le perdre ici,
+         SANS EXCEPTION : rendu au flux, un translateX(-50%) oublie decale le
+         bloc de la moitie de sa largeur vers la gauche, hors de l'ecran. Le
+         defaut ne se voit pas dans une mesure de debordement (un element
+         sorti a gauche ne cree pas de defilement), seulement a l'image. */
       .titre-bloc,.end-block,.site-footer{transform:none}
       /* Le bloc de titre subit le meme piege que .field : rendu a width:auto
          dans une colonne alignee a gauche, il se dimensionne sur son contenu
@@ -848,17 +920,19 @@
       /* Le decor est une bande tres large : il n'a pas de sens sur une pile
          verticale, les degrades de scene reprennent la main. */
       .scenery{display:none}
-      /* width:100% corrige un piege flexbox : en colonne avec align-items
-         autre que stretch, un enfant sans largeur explicite se dimensionne a
-         son contenu (max-content) et ignore la largeur du conteneur, donc ne
-         retombe jamais a la ligne. Sans elle, "Choisis ton plan." debordait
-         du viewport au lieu de passer sous le mot le plus long.
-         14vw est la mesure du titre le plus long ("Gerez mieux.") : au-dela
-         il passe sur deux lignes sur un ecran de 320px. */
-      .giant{width:100%;font-size:clamp(2.4rem,14vw,5.2rem);line-height:.9;text-align:left;white-space:normal}
-      /* Seul titre plus long que les autres (3 mots contre 2) : il garde son
-         propre gabarit pour tenir sur une seule ligne comme le reste. */
-      .slide.t4 .giant{font-size:clamp(2rem,9.2vw,3.4rem);white-space:nowrap}
+      /* Un gros titre tient sur UNE ligne, sans exception : coupe en deux, il
+         perd sa force et mange la moitie de l'ecran d'un telephone. La taille
+         est donc calee sur le plus long des titres restants (« Choisis ton
+         plan. », 17 signes ; « Stay in control. » en anglais) et partagee par
+         tous, ce qui les aligne au passage sur un meme corps. En
+         white-space:normal, « Moins de route. » et « Rien ne se perd. »
+         repassaient sur deux lignes.
+         Le width:100% traite un piege flexbox distinct : en colonne avec
+         align-items autre que stretch, un enfant sans largeur explicite se
+         dimensionne a son contenu et ignore la largeur du conteneur. */
+      .giant{width:100%;font-size:clamp(1.75rem,9.2vw,3.4rem);line-height:.95;
+             text-align:left;white-space:nowrap}
+      .titre-section{width:100%;font-size:clamp(1.3rem,6.6vw,2.1rem);white-space:nowrap}
       .note{width:auto}
       /* Le retrecissement ne sert qu'a eviter le titre geant sur la piste
          horizontale : dans une colonne, il ne ferait que rendre la bulle
@@ -870,10 +944,17 @@
          sur un ecran de 320, elle deborderait : elle retrouve donc le droit de
          passer a la ligne. */
       .note-avantage{white-space:normal}
-      /* La bulle garde sa couleur, elle perd son relief : sur une pile, l'ombre
-         et le flou d'arriere-plan n'ont plus rien a detacher. */
-      .note{background:rgb(var(--bub));backdrop-filter:none;-webkit-backdrop-filter:none;
-            padding:13px 15px;margin:0}
+      /* La carte perd son relief : sur une pile, l'ombre n'a plus de capture
+         dont se detacher, elle ne ferait que salir le fond. Le fond blanc et
+         le liseré de couleur, eux, restent : c'est le meme objet des deux
+         cotes. */
+      .note{box-shadow:none;padding:12px 14px;margin:0}
+      /* Une seule colonne : trois questions cote a cote dans 350 px ne
+         laisseraient que trois mots par ligne. Le placement de la quatrieme
+         carte doit sauter avec la grille, sinon elle reste decalee d'un cran. */
+      .faq{grid-template-columns:1fr;max-width:540px}
+      .faq-item,.faq-item:nth-child(4){grid-column:auto}
+      .faq-titre{text-align:left}
       /* !important parce que plusieurs encarts portent une largeur figee EN
          LIGNE, heritee de la composition de bureau (width:64% pour les gestes
          comme pour les formules) : une regle sans !important ne peut pas
@@ -910,8 +991,15 @@
       /* La bande des metiers redevient une phrase qui se replie, sans centrage :
          tout le reste de la pile est aligne a gauche. */
       .metiers{justify-content:flex-start;width:100%}
-      .slide.end .faq-bloc{width:100%}
-      .faq{width:100%;max-width:540px}
+      /* Le trait de separation et son retrait n'ont plus de sens dans une pile :
+         les blocs y sont deja separes par le rythme commun de la colonne.
+         Le transform DOIT etre annule ici, et pas dans la liste generique plus
+         haut : la regle de bureau pese deux classes (.slide.end .faq-bloc), une
+         regle a une seule classe ne la rattrape pas, meme placee apres. Le bloc
+         restait alors decale de la moitie de sa largeur hors de l'ecran, sans
+         qu'aucune mesure de defilement ne le signale. */
+      .slide.end .faq-bloc{width:100%;border-top:none;padding-top:0;transform:none}
+      .faq{width:100%}
       .hint{display:none}
       /* L'appel final se centre, comme sur la version bureau : le titre tient
          sur une ligne et le badge Google Play n'est plus plaque a gauche. */
@@ -1132,27 +1220,42 @@
     <section class="slide t1" data-theme="0">
       <div class="stage">
        <div class="field">
-        <div class="titre-bloc compact" style="top:24%">
-          <h2 class="giant" data-i18n-html="t2.title">Trois <em>gestes.</em></h2>
-          <p class="argument" data-i18n="t2.argument">De la liste d'adresses au départ en tournée.</p>
+        <!-- Ecran intermediaire : pas de mot geant, seuls les cinq ecrans que
+             designe le fil d'Ariane en portent un. La place ainsi rendue va
+             aux vignettes, qui montrent enfin l'application au moment ou le
+             visiteur cherche a savoir a quoi elle ressemble. -->
+        <div class="viz" style="left:9%;top:5%">
+          <h2 class="titre-section" data-i18n-html="t2.title">Trois <em>gestes.</em></h2>
         </div>
 
-        <div class="viz" style="left:18%;top:47%;width:64%">
+        <div class="viz" style="left:9%;top:26%;width:82%">
           <ol class="etapes">
             <li class="etape">
+              <div class="etape-visuel">
+                <img src="./img/captures/voix.png" width="300" height="189"
+                     data-i18n-alt="etape.1.alt" alt="Écran ATEQO : dictée d'une adresse" />
+              </div>
               <span class="etape-num" aria-hidden="true">1</span>
               <h3 data-i18n="etape.1.titre">Ajoute tes adresses</h3>
               <p data-i18n="etape.1.texte">À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.</p>
             </li>
             <li class="etape">
+              <div class="etape-visuel">
+                <img src="./img/captures/optimisation.png" width="399" height="278"
+                     data-i18n-alt="etape.2.alt" alt="Carte ATEQO : la tournée optimisée, arrêts numérotés" loading="lazy" />
+              </div>
               <span class="etape-num" aria-hidden="true">2</span>
               <h3 data-i18n="etape.2.titre">Optimise</h3>
               <p data-i18n="etape.2.texte">L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.</p>
             </li>
             <li class="etape">
+              <div class="etape-visuel">
+                <img class="cadre-haut" src="./img/captures/navigation.png" width="247" height="469"
+                     data-i18n-alt="etape.3.alt" alt="Écran ATEQO : la destination recommandée et les arrêts les plus proches" loading="lazy" />
+              </div>
               <span class="etape-num" aria-hidden="true">3</span>
-              <h3 data-i18n="etape.3.titre">Pars livrer</h3>
-              <p data-i18n="etape.3.texte">La destination recommandée à chaque arrêt, et ton GPS habituel pour y aller.</p>
+              <h3 data-i18n="etape.3.titre">Livre</h3>
+              <p data-i18n="etape.3.texte">Navigation adaptative : à chaque arrêt, la destination recommandée et les plus proches.</p>
             </li>
           </ol>
         </div>
@@ -1209,34 +1312,40 @@
     <section class="slide t2" data-theme="1">
       <div class="stage">
        <div class="field">
-        <div class="titre-bloc">
-          <h2 class="giant" data-i18n-html="t4.title">Moins de <em>route.</em></h2>
-          <p class="argument court" data-i18n-html="t4.argument"><strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.</p>
+        <!-- Ecran intermediaire : titre de section, et les deux cartes gagnent
+             la hauteur que le mot geant leur prenait. Elles se lisent de gauche
+             a droite comme un avant / apres. -->
+        <div class="viz" style="left:4%;top:4%">
+          <h2 class="titre-section" data-i18n-html="t4.title">Moins de <em>route.</em></h2>
+          <p class="sous-titre" data-i18n-html="t4.argument"><strong>L'ordre le plus court sur les routes réelles</strong>, secteur par secteur.</p>
         </div>
 
-        <figure class="viz bloc" style="left:3%;top:8%;width:min(560px,29vw,40vh);z-index:1">
+        <!-- Les deux cartes partagent la meme largeur et la meme ligne : c'est
+             un avant / apres, elles ne se comparent que si elles ont
+             exactement le meme gabarit. La borne en vh commande, la borne en vw
+             ne mord que sur les fenetres etroites. -->
+        <figure class="viz bloc" style="left:4%;top:24%;width:min(680px,42vw,72vh)">
           <h3 class="bloc-titre" data-i18n="bloc.secteurs.titre">Optimisation par secteurs</h3>
           <div class="bloc-shot">
             <img src="./img/captures/secteurs_avant.png" width="1060" height="714"
                  data-i18n-alt="bloc.secteurs.alt" alt="Carte ATEQO : 67 arrêts répartis en 5 secteurs de couleur" />
-            <p class="note h2" style="left:56%;top:12%" data-i18n="bloc.secteurs.bulle">Découpe ta zone. ATEQO optimise chaque secteur, dans l'ordre où tu veux les faire.</p>
+            <p class="note h2" style="left:52%;top:66%" data-i18n="bloc.secteurs.bulle">Découpe ta zone. ATEQO optimise chaque secteur, dans l'ordre où tu veux les faire.</p>
           </div>
         </figure>
 
-        <!-- Ecarte a 68 % et descendu : a 53 %, son sous-titre tombait
-             exactement sur la ligne d'argument, deux textes l'un sur l'autre.
-             Un bloc pose sous la bande du titre doit commencer SOUS
-             l'argument, jamais dedans. -->
-        <figure class="viz bloc" style="left:68%;bottom:2%;width:min(560px,29vw,38vh)">
+        <figure class="viz bloc" style="left:52%;top:24%;width:min(680px,42vw,72vh)">
           <h3 class="bloc-titre" data-i18n="bloc.reel.titre">Des rues, pas des lignes droites</h3>
           <div class="bloc-shot">
             <img src="./img/captures/itineraire_optimise.png" width="998" height="689"
                  data-i18n-alt="bloc.reel.alt" alt="Carte ATEQO : l'itinéraire optimisé tracé sur les routes réelles" loading="lazy" />
-            <p class="note h1" style="left:-44%;top:8%" data-i18n="bloc.reel.bulle">Le calcul suit la voirie et les sens de circulation, pas la distance à vol d'oiseau.</p>
+            <p class="note h1" style="left:44%;top:70%" data-i18n="bloc.reel.bulle">Le calcul suit la voirie et les sens de circulation, pas la distance à vol d'oiseau.</p>
           </div>
         </figure>
 
-        <figure class="viz" style="left:4%;bottom:12%">
+        <!-- Remontee en tete d'ecran, a l'oppose du titre : en bas, elle
+             disputait sa place aux deux cartes, qui ont besoin de toute la
+             hauteur pour rester lisibles. -->
+        <figure class="viz" style="right:4%;top:6%">
           <p class="note h2 note-avantage" style="position:static" data-i18n="t4.chargement">Chargement guidé : le dernier chargé est le premier livré</p>
         </figure>
        </div>
@@ -1291,19 +1400,17 @@
     <section class="slide t3" data-theme="2">
       <div class="stage">
        <div class="field">
-        <!-- Seul ecran de la piste a porter TROIS captures. Le titre monte donc
-             en haut, comme celui des tarifs : garde au centre, il aurait laisse
-             la troisieme capture sans emplacement, et le bloc pousse au milieu
-             se retrouvait a cheval sur la ligne d'argument. -->
-        <div class="titre-bloc compact" style="top:22%">
-          <h2 class="giant" data-i18n-html="t6.title">Rien ne se <em>perd.</em></h2>
-          <p class="argument" data-i18n="t6.argument">Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.</p>
+        <!-- Ecran intermediaire, et le seul a porter TROIS captures : le titre
+             de section libere justement la hauteur qu'il leur faut. -->
+        <div class="viz" style="left:5%;top:4%">
+          <h2 class="titre-section" data-i18n-html="t6.title">Rien ne se <em>perd.</em></h2>
+          <p class="sous-titre" data-i18n="t6.argument">Ce qui n'est pas livré revient demain, et chaque journée laisse un bilan.</p>
         </div>
 
         <!-- Les trois se posent sur la meme ligne et partagent la meme borne de
              hauteur : elles racontent une suite, du colis non livre au bilan du
              mois, et trois hauteurs differentes casseraient la lecture. -->
-        <figure class="viz bloc" style="left:5%;top:42%;width:min(374px,19vw,29vh)">
+        <figure class="viz bloc" style="left:5%;top:26%;width:min(374px,22vw,38vh)">
           <h3 class="bloc-titre" data-i18n="bloc.replanif.titre">Colis non livrés</h3>
           <div class="bloc-shot">
             <img src="./img/captures/replanifier.png" width="374" height="451"
@@ -1312,7 +1419,7 @@
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:38%;top:42%;width:min(363px,19vw,29vh)">
+        <figure class="viz bloc" style="left:37%;top:26%;width:min(363px,22vw,38vh)">
           <h3 class="bloc-titre" data-i18n="bloc.bilan.titre">Bilan de tournée</h3>
           <div class="bloc-shot">
             <img src="./img/captures/bilan_tournee.png" width="363" height="433"
@@ -1321,12 +1428,15 @@
           </div>
         </figure>
 
-        <figure class="viz bloc" style="left:70%;top:42%;width:min(371px,19vw,29vh)">
+        <figure class="viz bloc" style="left:69%;top:26%;width:min(371px,22vw,38vh)">
           <h3 class="bloc-titre" data-i18n="bloc.historique.titre">Historique</h3>
           <div class="bloc-shot">
             <img src="./img/captures/historique.png" width="371" height="311"
                  data-i18n-alt="bloc.historique.alt" alt="Écran ATEQO : l'historique du mois, tournée par tournée" loading="lazy" />
-            <p class="note h2 etroite" style="left:44%;top:74%" data-i18n="bloc.historique.bulle">Chaque tournée conserve son détail et son gain.</p>
+            <!-- Sous la capture, et non dessus : posee au milieu, elle
+                 recouvrait « 87 min gagnees, 41,3 km gagnes », c'est-a-dire
+                 exactement le gain dont elle parle. -->
+            <p class="note h2 etroite" style="left:14%;top:calc(100% - 26px)" data-i18n="bloc.historique.bulle">Chaque tournée conserve son détail et son gain.</p>
           </div>
         </figure>
        </div>
@@ -1433,11 +1543,30 @@
          classe t1 y aurait superpose un halo bleu. -->
     <section class="slide end" data-theme="4">
       <div class="stage">
-        <!-- Les cinq objections qui reviennent avant un telechargement. Elles
-             occupent la moitie gauche du dernier ecran, qui ne portait jusqu'ici
-             qu'un titre et un bouton au milieu du vide. Le texte est le meme,
-             mot pour mot, que celui balise en FAQPage dans l'en-tete : Google
-             compare les deux et ignore un balisage sans equivalent visible. -->
+        <!-- L'appel passe AVANT les questions, dans le document comme a
+             l'ecran : qui est convaincu clique sans avoir a descendre, qui
+             hesite trouve ses reponses juste en dessous. L'ordre vaut aussi
+             pour la pile mobile, qui suit le document. -->
+        <div class="end-block">
+          <!-- L'espace avant le point d'interrogation est INSECABLE (U+00A0) :
+               la typographie francaise l'impose, et sans lui le « ? » tombait
+               seul sur la deuxieme ligne du titre, sur l'ecran meme qui doit
+               convertir. Meme caractere dans le dictionnaire FR. -->
+          <h2 data-i18n="end.title">Prêt à optimiser ta tournée&nbsp;?</h2>
+          <p data-i18n="end.sub">Ta première tournée optimisée en moins d'une minute.</p>
+          <a class="gplay" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+            <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
+          </a>
+          <p class="end-rassurance">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span data-i18n="end.rassurance">7 tournées offertes à l'inscription</span>
+          </p>
+        </div>
+
+        <!-- Les cinq objections qui reviennent avant un telechargement. Le
+             texte est le meme, mot pour mot, que celui balise en FAQPage dans
+             l'en-tete : Google compare les deux et ignore un balisage sans
+             equivalent visible. -->
         <div class="viz faq-bloc">
           <h2 class="faq-titre" data-i18n="faq.titre">Questions fréquentes</h2>
           <div class="faq">
@@ -1464,21 +1593,6 @@
           </div>
         </div>
 
-        <div class="end-block">
-          <!-- L'espace avant le point d'interrogation est INSECABLE (U+00A0) :
-               la typographie francaise l'impose, et sans lui le « ? » tombait
-               seul sur la deuxieme ligne du titre, sur l'ecran meme qui doit
-               convertir. Meme caractere dans le dictionnaire FR. -->
-          <h2 data-i18n="end.title">Prêt à optimiser ta tournée&nbsp;?</h2>
-          <p data-i18n="end.sub">Ta première tournée optimisée en moins d'une minute.</p>
-          <a class="gplay" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-            <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
-          </a>
-          <p class="end-rassurance">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-            <span data-i18n="end.rassurance">7 tournées offertes à l'inscription</span>
-          </p>
-        </div>
         <footer class="site-footer">
           <p class="fnote" data-i18n="footer.note">© 2026 ATEQO · L'itinéraire qui te suit</p>
           <div class="flinks">
@@ -1536,13 +1650,15 @@
         'metier.6': 'Interventions multi-sites',
         // ── 2. Trois gestes ──
         't2.title': 'Trois <em>gestes.</em>',
-        't2.argument': "De la liste d'adresses au départ en tournée.",
         'etape.1.titre': 'Ajoute tes adresses',
         'etape.1.texte': "À la voix ou depuis ton carnet. Autant d'arrêts que nécessaire.",
+        'etape.1.alt': "Écran ATEQO : dictée d'une adresse",
         'etape.2.titre': 'Optimise',
         'etape.2.texte': "L'ordre le plus court sur les routes réelles. Un clic, quelques secondes.",
-        'etape.3.titre': 'Pars livrer',
-        'etape.3.texte': 'La destination recommandée à chaque arrêt, et ton GPS habituel pour y aller.',
+        'etape.2.alt': 'Carte ATEQO : la tournée optimisée, arrêts numérotés',
+        'etape.3.titre': 'Livre',
+        'etape.3.texte': 'Navigation adaptative : à chaque arrêt, la destination recommandée et les plus proches.',
+        'etape.3.alt': 'Écran ATEQO : la destination recommandée et les arrêts les plus proches',
         // ── 3. Prépare vite ──
         't3.title': 'Prépare <em>vite.</em>',
         't3.argument': 'Soixante arrêts saisis sans lâcher les colis.',
@@ -1668,13 +1784,15 @@
         'metier.6': 'Multi-site field work',
         // ── 2. Three steps ──
         't2.title': 'Three <em>steps.</em>',
-        't2.argument': 'From your list of addresses to the road.',
         'etape.1.titre': 'Add your addresses',
         'etape.1.texte': 'By voice or from your address book. As many stops as you need.',
+        'etape.1.alt': 'ATEQO screen: dictating an address',
         'etape.2.titre': 'Optimize',
         'etape.2.texte': 'The shortest order on real roads. One tap, a few seconds.',
-        'etape.3.titre': 'Start delivering',
-        'etape.3.texte': 'The recommended destination at every stop, and your usual GPS to get there.',
+        'etape.2.alt': 'ATEQO map: the optimized route, numbered stops',
+        'etape.3.titre': 'Deliver',
+        'etape.3.texte': 'Adaptive navigation: at every stop, the recommended destination and the closest ones.',
+        'etape.3.alt': 'ATEQO screen: the recommended destination and the closest stops',
         // ── 3. Get ready fast ──
         't3.title': 'Get ready <em>fast.</em>',
         't3.argument': 'Sixty stops entered without putting the parcels down.',

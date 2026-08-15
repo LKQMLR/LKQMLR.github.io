@@ -185,18 +185,23 @@
   }, true);
 
   // ── Banniere de consentement ────────────────────────────────────────────────
+  // Le texte reste court et generique, comme partout ailleurs : la finalite
+  // detaillee (dont la mesure des campagnes) est decrite dans la politique de
+  // confidentialite, vers laquelle le lien mene. Detailler la publicite dans la
+  // banniere elle-meme n'ajoute rien juridiquement et fait fuir le visiteur au
+  // moment ou on lui demande son accord.
   var TEXT = {
     fr: {
       aria:    'Gestion des cookies',
-      body:    "ATEQO utilise des cookies pour mesurer l'audience de ce site et évaluer ses campagnes publicitaires.",
-      more:    'Politique de confidentialité',
+      body:    "ATEQO utilise des cookies pour mesurer l'audience du site.",
+      more:    'En savoir plus',
       deny:    'Refuser',
       accept:  'Accepter',
     },
     en: {
       aria:    'Cookie settings',
-      body:    "ATEQO uses cookies to measure this website's audience and evaluate its advertising campaigns.",
-      more:    'Privacy Policy',
+      body:    'ATEQO uses cookies to measure the audience of this site.',
+      more:    'Learn more',
       deny:    'Decline',
       accept:  'Accept',
     },
@@ -222,8 +227,16 @@
     '#ateqo-consent .ac-deny{background:transparent;color:var(--muted,#5b6b7e)}',
     '#ateqo-consent .ac-deny:hover{background:var(--surface2,#f7f9fb);color:var(--ink,#17356B)}',
     '#ateqo-consent .ac-accept{background:var(--ink,#17356B);color:#fff;border-color:var(--ink,#17356B)}',
-    '@media(max-width:560px){#ateqo-consent .ac-w{gap:12px}',
-    '#ateqo-consent .ac-btns{width:100%}#ateqo-consent button{flex:1}}',
+    // Sur telephone, la banniere occupait pres du tiers de l'ecran et recouvrait
+    // le contenu qu'elle est censee accompagner. Tout y est resserre : le texte
+    // passe sur toute la largeur au lieu de se battre avec les boutons pour la
+    // meme ligne, et les boutons perdent leur rembourrage de bureau.
+    '@media(max-width:560px){',
+    '#ateqo-consent{padding:11px 14px calc(11px + env(safe-area-inset-bottom,0px))}',
+    '#ateqo-consent .ac-w{gap:10px}',
+    '#ateqo-consent p{flex:1 1 100%;font-size:.76rem;line-height:1.45}',
+    '#ateqo-consent .ac-btns{width:100%}',
+    '#ateqo-consent button{flex:1;padding:9px 14px;font-size:.8rem}}',
     '@media(prefers-reduced-motion:reduce){#ateqo-consent{transition:none}}',
   ].join('');
 

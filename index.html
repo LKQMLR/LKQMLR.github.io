@@ -1415,8 +1415,8 @@
         </svg>
         <span class="fil-nom" data-i18n="fil.t2">Préparer</span>
       </button>
-      <span class="fil-segment" style="--portee:3" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="5">
+      <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
+      <button type="button" class="fil-etape" data-ecran="4">
         <!-- Camion : la tournee elle-meme, et ce qu'elle laisse derriere. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
@@ -1424,7 +1424,7 @@
         <span class="fil-nom" data-i18n="fil.t3">Livrer</span>
       </button>
       <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="7">
+      <button type="button" class="fil-etape" data-ecran="6">
         <!-- Gemme : la formule qu'on choisit. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/>
@@ -1432,7 +1432,7 @@
         <span class="fil-nom" data-i18n="fil.t4">Tarifs</span>
       </button>
       <span class="fil-segment" style="--portee:1" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="8">
+      <button type="button" class="fil-etape" data-ecran="7">
         <!-- Fleche vers un support : le telechargement. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
@@ -1635,64 +1635,49 @@
           <p class="mention" data-i18n="t3.illimite">Adresses illimitées par tournée, y compris sur le plan gratuit</p>
         </div>
 
-        <figure class="viz bloc" style="left:70%;top:13%;width:min(300px,16vw)">
-          <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
-          <div class="bloc-shot">
-            <img src="./img/captures/voix.png" data-src-i18n="./img/captures/voix.png"
-                 width="900" height="474"
-                 data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" />
-          </div>
-          <p class="bloc-texte" data-i18n="bloc.voix.bulle">Ajoute tes points de livraison sans perdre de temps : tu dictes, l'adresse entre dans la tournée.</p>
-        </figure>
+        <!-- Trois blocs, donc une RANGEE et pas trois `left` : c'est la regle
+             deja posee sur « Rien ne se perd ». Le carnet a desormais sa propre
+             capture, au milieu : il partageait celle des circuits sous un titre
+             qui nommait les deux, et deux fonctions dans une meme image n'en
+             font comprendre aucune. Il reste sur CET ecran, la ou le visiteur se
+             demande comment les adresses entrent dans la tournee. -->
+        <div class="rangee trois" style="left:5%;top:30%;width:90%">
+          <figure class="viz bloc rang">
+            <h3 class="bloc-titre" data-i18n="bloc.voix.titre">Saisie vocale</h3>
+            <div class="bloc-shot">
+              <img src="./img/captures/voix.png" data-src-i18n="./img/captures/voix.png"
+                   width="900" height="474"
+                   data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" />
+            </div>
+            <p class="bloc-texte" data-i18n="bloc.voix.bulle">Ajoute tes points de livraison sans perdre de temps : tu dictes, l'adresse entre dans la tournée.</p>
+          </figure>
 
-        <figure class="viz bloc" style="left:46%;top:13%;width:min(378px,20vw,32vh);z-index:1">
-          <h3 class="bloc-titre" data-i18n="bloc.circuits.titre">Carnet et circuits récurrents</h3>
-          <div class="bloc-shot">
-            <img src="./img/captures/circuits.png" data-src-i18n="./img/captures/circuits.png"
-                 width="1194" height="1851"
-                 data-i18n-alt="bloc.circuits.alt" alt="Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains" loading="lazy" />
-          </div>
-          <p class="bloc-texte" data-i18n="bloc.circuits.bulle">Les tournées que tu refais chaque semaine sont déjà là.</p>
-        </figure>
+          <figure class="viz bloc rang">
+            <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Carnet d'adresses</h3>
+            <div class="bloc-shot">
+              <img src="./img/captures/carnet.png" data-src-i18n="./img/captures/carnet.png"
+                   width="1122" height="1964"
+                   data-i18n-alt="bloc.carnet.alt" alt="Écran ATEQO : carnet d'adresses, circuits « Tournée du lundi » et « Zone industrielle », adresses classées par secteur" loading="lazy" />
+            </div>
+            <p class="bloc-texte" data-i18n="bloc.carnet.bulle">Tes points de livraison classés par circuit et par secteur.</p>
+          </figure>
 
-       </div>
-      </div>
-    </section>
-
-    <!-- ══ 4. LE CARNET ══════════════════════════════════════════════════════
-         Le carnet partageait un bloc avec les circuits recurrents, sous un
-         titre qui nommait les deux : « Carnet et circuits recurrents ». Deux
-         fonctions dans une meme vignette, aucune n'est comprise. Le carnet est
-         pourtant ce qui distingue l'outil d'un simple optimiseur, et ce qui
-         justifie l'abonnement une fois la nouveaute passee : il lui faut son
-         ecran, son titre et sa demonstration. Les circuits recurrents restent
-         sur l'ecran precedent, ou ils sont a leur place. -->
-    <section class="slide t2" data-theme="1">
-      <div class="stage">
-       <div class="field">
-        <div class="titre-bloc">
-          <h2 class="giant" data-i18n-html="t35.title">Ton <em>carnet.</em></h2>
-          <p class="argument" data-i18n-html="t35.argument"><strong>Tes adresses habituelles, prêtes à repartir.</strong> Un client livré chaque semaine ne se saisit qu'une fois.</p>
-          <p class="mention" data-i18n="t35.mention">Carnet et circuits récurrents, sur le plan Pro</p>
+          <figure class="viz bloc rang">
+            <h3 class="bloc-titre" data-i18n="bloc.circuits.titre">Circuits récurrents</h3>
+            <div class="bloc-shot">
+              <img src="./img/captures/circuits.png" data-src-i18n="./img/captures/circuits.png"
+                   width="1194" height="1851"
+                   data-i18n-alt="bloc.circuits.alt" alt="Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains" loading="lazy" />
+            </div>
+            <p class="bloc-texte" data-i18n="bloc.circuits.bulle">Les tournées que tu refais chaque semaine sont déjà là.</p>
+          </figure>
         </div>
 
-        <!-- Meme gabarit que la capture maitresse de l'ecran precedent : les
-             deux ecrans se suivent, leurs captures doivent partager la meme
-             ligne haute et la meme largeur, sinon la piste tangue. -->
-        <figure class="viz bloc" style="left:46%;top:13%;width:min(392px,20vw,26vh);z-index:1">
-          <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Carnet d'adresses</h3>
-          <div class="bloc-shot">
-            <img src="./img/captures/carnet.png" data-src-i18n="./img/captures/carnet.png"
-                 width="1122" height="1964"
-                 data-i18n-alt="bloc.carnet.alt" alt="Écran ATEQO : carnet d'adresses, circuits « Tournée du lundi » et « Zone industrielle », adresses classées par secteur" loading="lazy" />
-          </div>
-          <p class="bloc-texte" data-i18n="bloc.carnet.bulle">Tes points de livraison classés par circuit et par secteur.</p>
-        </figure>
        </div>
       </div>
     </section>
 
-    <!-- ══ 5. MOINS DE ROUTE ═════════════════════════════════════════════════
+    <!-- ══ 4. MOINS DE ROUTE ═════════════════════════════════════════════════
          Les deux cartes se repondent : la meme tournee avant et apres le
          calcul. Elles sont posees en diagonale pour qu'on les lise dans cet
          ordre, et pour laisser le titre respirer entre les deux. -->
@@ -2034,13 +2019,10 @@
         'bloc.voix.titre': 'Saisie vocale',
         'bloc.voix.bulle': "Ajoute tes points de livraison sans perdre de temps : tu dictes, l'adresse entre dans la tournée.",
         'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
-        'bloc.circuits.titre': 'Carnet et circuits récurrents',
+        'bloc.circuits.titre': 'Circuits récurrents',
         'bloc.circuits.bulle': 'Les tournées que tu refais chaque semaine sont déjà là.',
         'bloc.circuits.alt': 'Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains',
         // ── 4. Moins de route ──
-        't35.title': 'Ton <em>carnet.</em>',
-        't35.argument': "<strong>Tes adresses habituelles, prêtes à repartir.</strong> Un client livré chaque semaine ne se saisit qu'une fois.",
-        't35.mention': 'Carnet et circuits récurrents, sur le plan Pro',
         'bloc.carnet.titre': "Carnet d'adresses",
         'bloc.carnet.bulle': 'Tes points de livraison classés par circuit et par secteur.',
         'bloc.carnet.alt': "Écran ATEQO : carnet d'adresses, circuits « Tournée du lundi » et « Zone industrielle », adresses classées par secteur",
@@ -2176,13 +2158,10 @@
         'bloc.voix.titre': 'Voice input',
         'bloc.voix.bulle': 'Add your delivery points without losing time: you speak, the address joins the route.',
         'bloc.voix.alt': 'ATEQO screen: dictating an address, “I’m listening”',
-        'bloc.circuits.titre': 'Address book and saved lists',
+        'bloc.circuits.titre': 'Recurring routes',
         'bloc.circuits.bulle': 'The routes you run every week are already there.',
         'bloc.circuits.alt': 'ATEQO screen: two saved routes, with their sectors and their savings',
         // ── 4. Less driving ──
-        't35.title': 'Your <em>address book.</em>',
-        't35.argument': '<strong>Your regular stops, ready to go again.</strong> A customer you deliver every week is typed in once and never again.',
-        't35.mention': 'Address book and recurring circuits, on the Pro plan',
         'bloc.carnet.titre': 'Address book',
         'bloc.carnet.bulle': 'Your delivery points sorted by circuit and by sector.',
         'bloc.carnet.alt': 'ATEQO screen: address book, Monday route and Industrial zone circuits, addresses sorted by sector',

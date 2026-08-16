@@ -180,6 +180,15 @@
          deja la regle de l'application. La page en comptait cinq (16, 12, 10,
          4, 50) poses au fil des ajouts, sans echelle. */
       --radius:12px;--radius-commande:4px;
+      /* ── Retrait interne des cartes ─────────────────────────────────────────
+         Chaque carte avait son propre clamp, avec des coefficients allant de
+         1 a 4,5vw : a 390 px les quatre familles se retrouvaient a 14, 11,
+         19 et 17,5 px, soit quatre reponses differentes a la meme question,
+         « combien d'air entre une bordure et son contenu ». Deux crans
+         suffisent : le standard, et un cran serre pour les listes denses ou
+         chaque ligne repaye le retrait. */
+      --pad-carte:clamp(15px,1.35vw,24px);
+      --pad-carte-serre:clamp(11px,1vw,17px);
       /* Le bandeau donne sa mesure a toute la page : la bande libre sous lui et
          celle du bas valent sa propre hauteur. Une seule valeur a regler, et
          les marges hautes et basses restent egales par construction. */
@@ -636,7 +645,7 @@
        vignettes vers le bas de la carte. */
     .etape-entete{display:flex;align-items:center;gap:clamp(9px,.8vw,14px)}
     .etape{position:relative;background:var(--surface);border:1px solid var(--border);
-           border-radius:var(--radius);padding:clamp(14px,1.2vw,22px);
+           border-radius:var(--radius);padding:var(--pad-carte);
            box-shadow:var(--ombre-posee);display:flex;flex-direction:column;
            gap:clamp(7px,.7vw,12px)}
     /* Les trois captures n'ont pas le meme format : un telephone en hauteur,
@@ -696,7 +705,7 @@
        divisee par deux. */
     .faq{display:grid;grid-template-columns:1fr 1fr;
          column-gap:clamp(24px,3vw,64px);row-gap:0;width:100%}
-    .faq-item{padding:clamp(11px,1vw,17px) 0;border-top:1px solid var(--border)}
+    .faq-item{padding:var(--pad-carte-serre) 0;border-top:1px solid var(--border)}
     /* Les deux premieres coiffent leur colonne : leur filet ferait doublon avec
        celui qui separe l'appel des questions. */
     .faq-item:nth-child(1),.faq-item:nth-child(2){border-top:none;padding-top:0}
@@ -880,7 +889,7 @@
     /* ── Tarifs ─────────────────────────────────────────────────────────────── */
     .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(13px,1.1vw,20px);width:100%}
     .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-          padding:clamp(19px,1.5vw,28px) clamp(17px,1.3vw,24px);
+          padding:calc(var(--pad-carte) * 1.15) var(--pad-carte);
           position:relative;display:flex;flex-direction:column;
           box-shadow:var(--ombre-posee)}
     /* La formule mise en avant se detache par l'ombre autant que par le filet
@@ -1031,7 +1040,11 @@
          laterale, le vide entre deux blocs (--gap) et la respiration en tete
          et en pied de scene (--gap x 2). Deux scenes voisines sont donc
          separees de 4 x --gap, partout la meme distance. */
-      :root{--pad-x:20px;--gap:22px}
+      /* Le commentaire ci-dessus annoncait une mesure unique, le code en posait
+         deux : 20 px sur les cotes contre 22 px entre les blocs. L'ecart est
+         petit mais il se voit sur une colonne, les bords respirant moins que
+         les blocs entre eux. La marge laterale DERIVE donc de l'intervalle. */
+      :root{--gap:22px;--pad-x:var(--gap)}
       .stage,.slide.end .stage{width:auto;height:auto;position:static;
              display:flex;flex-direction:column;align-items:flex-start;
              gap:var(--gap);padding:calc(var(--gap) * 2) var(--pad-x)}
@@ -1128,7 +1141,7 @@
          laisseraient que trois mots par ligne. La deuxieme retrouve alors son
          filet, qu'elle perdait en tant que tete de colonne. */
       .faq{grid-template-columns:1fr;max-width:540px}
-      .faq-item:nth-child(2){border-top:1px solid var(--border);padding-top:clamp(11px,1vw,17px)}
+      .faq-item:nth-child(2){border-top:1px solid var(--border);padding-top:var(--pad-carte-serre)}
       .faq-titre{text-align:left}
       /* La description suit la largeur de la colonne : la borne en ch n'a de
          sens qu'a cote d'une capture large. */
@@ -1277,7 +1290,7 @@
       .metiers{width:100%;display:flex;flex-direction:column;gap:9px;
                background:var(--surface);border:1px solid var(--border);
                border-radius:var(--radius);box-shadow:var(--ombre-levee);
-               padding:clamp(15px,4.5vw,22px)}
+               padding:var(--pad-carte)}
       /* Deux classes, comme la regle de bureau qui le masque : sans cela, la
          cascade laisse l'intitule invisible. */
       .metiers li.metiers-intitule{display:block;margin-bottom:3px;

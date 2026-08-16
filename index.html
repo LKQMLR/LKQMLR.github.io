@@ -151,6 +151,9 @@
       /* Palette ATEQO (thème clair, aligné sur l'app) */
       --bg:#f1f4f7;--surface:#ffffff;--surface2:#f7f9fb;
       --ink:#17356B;--muted:#5b6b7e;--muted2:#8896a7;
+      /* Un cran entre l'encre des titres et le gris de service : pour les lignes
+         qui portent un benefice et que le gris reduisait au rang de legende. */
+      --muted-fort:#42556d;
       --accent:#2563eb;--gold:#c8a24b;--green:#16a34a;
       --border:rgba(15,25,35,.09);
       /* Secteurs A-T-E-Q-O = 1-2-3-4-5. Les trois premieres portent les trois
@@ -182,6 +185,11 @@
          les marges hautes et basses restent egales par construction. */
       --header:clamp(64px,5.9vw,88px);
       --safe:var(--header);
+      /* Hauteur de la piste du camion. Nulle sur la piste horizontale, ou le
+         fil d'Ariane du bandeau dit deja ou l'on en est : le camion ne sert que
+         la pile, qui n'a pas de fil. Une seule valeur commande la bande, le
+         decalage du titre colle et la reserve en tete de premiere scene. */
+      --piste-h:0px;
       --tone:var(--s1);      /* couleur du theme courant, suit le defilement */
     }
 
@@ -237,6 +245,11 @@
        la page. Son ombre reste donc discrete, sinon elle ajoute du poids a ce
        qui en a deja trop et devient le premier point d'accroche du regard,
        avant le propos. */
+    /* La piste du camion n'existe que sur la pile : le bandeau porte deja le
+       fil d'Ariane sur la piste horizontale, et deux indicateurs de progres
+       pour un meme parcours se contrediraient. */
+    .piste-camion{display:none}
+
     .gplay-fixe{position:fixed;right:clamp(16px,2.2vw,34px);bottom:clamp(16px,2.2vw,30px);z-index:60;
                 filter:drop-shadow(0 6px 14px rgba(15,32,60,.22));
                 transition:opacity .55s ease,translate .55s cubic-bezier(.16,.72,.24,1)}
@@ -436,6 +449,22 @@
     .track{display:flex;align-items:stretch;will-change:transform}
     .slide{flex:0 0 auto;height:100vh;height:100dvh;position:relative;overflow:hidden}
 
+    /* ── La teinte appartient a la SECTION ────────────────────────────────────
+       `--tone` etait pose sur <html> et suivait l'ecran courant : une seule
+       couleur pour toute la page a un instant donne. Sur la piste on ne voit
+       qu'une scene a la fois, le defaut ne se voyait pas ; sur la pile, un titre
+       colle appartient a sa section alors que la variable avait deja bascule sur
+       la suivante, et son dernier mot changeait de couleur en cours de lecture.
+       La teinte est donc declaree ici, une fois par section : elle est vraie ou
+       que l'on regarde, sans dependre du defilement. Le JS continue de poser la
+       variable globale, qui ne sert plus qu'a ce qui vit HORS des sections
+       (bandeau, fil d'Ariane, badge). */
+    .slide[data-theme="0"]{--tone:var(--s1)}
+    .slide[data-theme="1"]{--tone:var(--s2)}
+    .slide[data-theme="2"]{--tone:var(--s3)}
+    .slide[data-theme="3"]{--tone:var(--s4)}
+    .slide[data-theme="4"]{--tone:var(--s5)}
+
     /* ── Composition d'un theme ───────────────────────────────────────────────
        Une scene tient dans UN ecran, jamais plus : c'est ce qui permet de la
        decouvrir d'un seul coup de molette, composee comme la maquette. Le titre
@@ -509,8 +538,12 @@
        cent-cinquante pixels ajoutait une boite la ou il n'y a qu'une phrase a
        lire, et la sobriete sert mieux le titre qu'elle prolonge. Seul le
        chiffre porte l'encre pleine. */
+    /* Le gris de service etait trop clair pour une ligne qui porte la promesse
+       de l'ecran : elle passait pour une legende. Elle monte d'un cran, sans
+       cadre (deja essaye et rejete a l'oeil) et sans toucher a la hierarchie,
+       le chiffre gardant seul l'encre pleine. */
     .argument{max-width:min(620px,42vw);text-align:left;text-wrap:balance;
-              font-size:clamp(.92rem,1.2vw,1.38rem);line-height:1.45;color:var(--muted)}
+              font-size:clamp(.92rem,1.2vw,1.38rem);line-height:1.45;color:var(--muted-fort)}
     .argument strong{color:var(--ink);font-weight:700}
     /* La ligne d'argument est une bande de texte au milieu de la scene, juste
        sous le titre : tout bloc pose a cette hauteur vient s'y superposer, et
@@ -588,7 +621,7 @@
     .titre-section em{font-style:normal;color:var(--tone)}
     /* Une ligne de contexte sous le titre de section : meme traitement sobre
        que sous les mots geants, pour que les huit ecrans se lisent pareil. */
-    .titre-section+.sous-titre{margin-top:clamp(6px,.6vw,12px);color:var(--muted);
+    .titre-section+.sous-titre{margin-top:clamp(6px,.6vw,12px);color:var(--muted-fort);
                                max-width:min(620px,42vw);text-wrap:balance;
                                font-size:clamp(.92rem,1.2vw,1.38rem);line-height:1.45}
     .titre-section+.sous-titre strong{color:var(--ink);font-weight:700}
@@ -625,13 +658,26 @@
        montre, et un cadrage qui en rogne le haut et le bas ne montre plus
        une tournee mais un morceau de ville. */
     .etape-visuel img.cadre-entier{object-fit:contain;background:var(--surface2)}
-    /* Le numero est la seule piece coloree de la carte, et il prend la teinte de
-       l'ecran : les trois etapes se lisent alors comme une progression et non
-       comme trois options au choix. */
-    .etape-num{display:flex;align-items:center;justify-content:center;
-               width:clamp(30px,2.3vw,38px);height:clamp(30px,2.3vw,38px);
-               border-radius:50%;background:var(--surface2);border:1px solid var(--border);
-               color:var(--tone);font-size:clamp(.82rem,.95vw,1rem);font-weight:800}
+    /* ── Le geste, pas son rang ───────────────────────────────────────────────
+       Un 1, un 2, un 3 disent l'ordre et rien d'autre : il faut lire le titre
+       pour savoir de quoi il s'agit. Les pictogrammes sont ceux de
+       l'APPLICATION (micro de la saisie vocale, eclair de l'optimisation,
+       carton coche du statut « Livre ») : le visiteur reconnait a l'ecran ce
+       qu'il retrouvera dans l'outil, et chaque etape se lit sans son titre.
+       Chacun garde AUSSI sa couleur d'origine plutot que la teinte de l'ecran :
+       c'est ce qui fait de ces trois pastilles un code couleur commun au site
+       et a l'application, au lieu d'un decor.
+       Une teinte explicite par geste, et pas un color-mix : deux valeurs lues
+       d'un coup d'oeil valent mieux qu'un calcul que le navigateur peut ne pas
+       connaitre. */
+    .etape.geste-voix {--geste:#3b82f6;--geste-voile:#e9f1fe}
+    .etape.geste-optim{--geste:#d97706;--geste-voile:#fdf0e1}
+    .etape.geste-livre{--geste:#16a34a;--geste-voile:#e6f7ed}
+    .etape-num{display:flex;align-items:center;justify-content:center;flex-shrink:0;
+               width:clamp(34px,2.6vw,44px);height:clamp(34px,2.6vw,44px);
+               border-radius:50%;background:var(--geste-voile);
+               border:1px solid var(--geste);color:var(--geste)}
+    .etape-num svg{width:56%;height:56%}
     .etape h3{font-size:clamp(.95rem,1.15vw,1.28rem);font-weight:700;letter-spacing:-.4px;
               color:var(--ink)}
     .etape p{font-size:clamp(.78rem,.9vw,.96rem);line-height:1.5;color:var(--muted)}
@@ -794,10 +840,17 @@
     .bloc.rang .bloc-shot img{width:100%;height:100%;object-fit:cover;object-position:center top;
                               border-radius:0;box-shadow:none;display:block}
     /* La description dit l'EFFET, jamais la methode : elle se lit d'un coup
-       d'oeil et n'a donc pas besoin du corps d'un paragraphe. La borne en ch
-       l'empeche de s'etirer sur toute la largeur d'une grande capture. */
-    .bloc-texte{font-size:clamp(.8rem,.94vw,1rem);line-height:1.5;color:var(--muted);
-                max-width:40ch}
+       d'oeil et n'a donc pas besoin du corps d'un paragraphe.
+       Deux bornes et non une : les 40 caracteres empechent la ligne de s'etirer
+       sur une grande capture, les 100 % l'empechent de DEPASSER une capture
+       etroite. Avec la seule borne en ch, « 1 h 32 de route en moins » sortait
+       de la colonne de sa capture et le bloc n'avait plus de bord droit.
+       La couleur monte d'un cran par rapport au gris de service : cette ligne
+       porte le benefice, c'est-a-dire la raison de regarder la capture, et elle
+       se lisait comme une legende de bas de page. */
+    .bloc-texte{font-size:clamp(.84rem,.98vw,1.06rem);line-height:1.5;
+                color:var(--muted-fort);font-weight:500;
+                max-width:min(40ch,100%)}
     /* ── Rangee de blocs ──────────────────────────────────────────────────────
        Deux ou trois blocs cote a cote etaient poses chacun a son `left`, avec
        des largeurs en min() qui ne tombaient jamais juste : la gouttiere du
@@ -984,7 +1037,7 @@
              gap:var(--gap);padding:calc(var(--gap) * 2) var(--pad-x)}
       /* Seule la premiere scene passe sous le bandeau fixe : elle seule
          reserve sa hauteur, les suivantes gardent le rythme commun. */
-      .track>.slide:first-of-type .stage{padding-top:calc(var(--header) + var(--gap) * 2)}
+      .track>.slide:first-of-type .stage{padding-top:calc(var(--header) + var(--piste-h) + var(--gap) * 2)}
       /* La composition libre vit dans .field : c'est lui, et pas seulement la
          scene, qui doit redevenir un flux, sinon ses enfants absolus se
          superposeraient tous en haut de la pile. La bulle, elle, passe sous le
@@ -1126,7 +1179,30 @@
       /* `top` porte !important comme `position` : la remise a plat des
          placements de bureau (`.field>*{top:auto!important}`) l'annulait
          sinon, et un sticky sans `top` ne colle nulle part. */
-      .titre-bloc,.titre-ecran{position:sticky!important;top:var(--header)!important;z-index:6;
+      /* ── La piste du camion ─────────────────────────────────────────────────
+         Une bande mince sous le bandeau, avec une route en pointilles et le
+         camion qui la parcourt au rythme du defilement. Elle occupe une vraie
+         hauteur plutot que de flotter au-dessus du contenu : un vehicule qui
+         passe sur du texte le rend illisible deux fois par page.
+         `--avance` (0 a 1) est pose par le JS ; sans lui le camion reste au
+         depart, ce qui est un etat juste. */
+      .piste-camion{display:block;position:fixed;left:0;right:0;top:var(--header);
+              height:var(--piste-h);z-index:9;background:var(--bg);
+              border-bottom:1px solid var(--border)}
+      .piste-route{position:absolute;left:0;right:0;top:50%;height:2px;translate:0 -50%;
+              background:repeating-linear-gradient(90deg,
+                      var(--border) 0 7px,transparent 7px 15px)}
+      /* Le camion roule sur la route, pas au-dessus : il masque le pointille
+         derriere lui grace a une pastille de fond, sinon les traits lui
+         traversent les roues. */
+      .piste-vehicule{position:absolute;top:50%;left:0;display:flex;
+              align-items:center;justify-content:center;
+              width:30px;height:var(--piste-h);color:var(--tone);
+              background:var(--bg);
+              translate:calc(var(--avance,0) * (100vw - 30px)) -50%}
+      .piste-vehicule svg{width:19px;height:19px}
+
+      .titre-bloc,.titre-ecran{position:sticky!important;top:calc(var(--header) + var(--piste-h))!important;z-index:6;
               width:100%;
               padding-top:var(--gap);padding-bottom:10px;
               transition:padding .2s ease,gap .2s ease}
@@ -1152,7 +1228,17 @@
       /* Replier ne suffit pas a rendre la place : un enfant ramene a une
          hauteur nulle garde son intervalle dans une colonne flex, et la
          promesse escamotee laissait 24 px de vide dans la barre. */
-      .titre-bloc.est-colle,.titre-ecran.est-colle{padding-bottom:9px;gap:0}
+      .titre-bloc.est-colle,.titre-ecran.est-colle{padding-bottom:9px;gap:0;
+              align-items:center}
+      /* Colle, le titre n'est plus une accroche : c'est un repere. Un repere se
+         pose au milieu de la barre et se tait. Aligne a gauche il pendait dans
+         le vide laisse par la promesse escamotee, et il continuait de respirer
+         alors qu'un element fixe qui bouge sous l'oeil est le plus sur moyen de
+         rendre une page fatigante. */
+      .titre-bloc.est-colle .giant,.titre-ecran.est-colle .titre-section{
+              text-align:center;width:100%}
+      .titre-bloc.est-colle .giant.is-in,
+      .titre-ecran.est-colle .titre-section.is-in{animation:none;translate:0 0}
       .titre-bloc.est-colle .giant,.titre-ecran.est-colle .titre-section{
               font-size:clamp(1.15rem,5.6vw,1.8rem)}
       .titre-bloc .giant,.titre-ecran .titre-section{transition:font-size .2s ease}
@@ -1227,7 +1313,7 @@
          lui, chaque scene tenant dans sa fenetre, alors qu'ici la pile defile
          dessous et le titre de la section suivante venait se poser sur le
          logo. */
-      :root{--header:54px}
+      :root{--header:54px;--piste-h:26px}
       .top{padding:0 16px;background:var(--surface);
            border-bottom:1px solid var(--border);
            box-shadow:0 1px 12px rgba(15,25,35,.05)}
@@ -1316,8 +1402,8 @@
         </svg>
         <span class="fil-nom" data-i18n="fil.t2">Préparer</span>
       </button>
-      <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="4">
+      <span class="fil-segment" style="--portee:3" aria-hidden="true"></span>
+      <button type="button" class="fil-etape" data-ecran="5">
         <!-- Camion : la tournee elle-meme, et ce qu'elle laisse derriere. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
@@ -1325,7 +1411,7 @@
         <span class="fil-nom" data-i18n="fil.t3">Livrer</span>
       </button>
       <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="6">
+      <button type="button" class="fil-etape" data-ecran="7">
         <!-- Gemme : la formule qu'on choisit. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/>
@@ -1333,7 +1419,7 @@
         <span class="fil-nom" data-i18n="fil.t4">Tarifs</span>
       </button>
       <span class="fil-segment" style="--portee:1" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="7">
+      <button type="button" class="fil-etape" data-ecran="8">
         <!-- Fleche vers un support : le telechargement. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
@@ -1354,6 +1440,23 @@
       </a>
     </div>
   </header>
+
+  <!-- ── La tournee du visiteur ────────────────────────────────────────────────
+       Sur la pile, le fil d'Ariane du bandeau n'a pas la place de vivre : le
+       visiteur descend sans savoir ou il en est ni combien il reste. Ce camion
+       est ce fil, ramene a un seul objet qui dit la meme chose sans occuper de
+       largeur : il part a gauche au premier ecran et se gare a droite au
+       dernier. C'est le camion du fil d'Ariane, repris tel quel.
+       Purement decoratif au sens de l'accessibilite (l'information de progres
+       n'est pas necessaire pour lire la page), d'ou aria-hidden. -->
+  <div class="piste-camion" aria-hidden="true">
+    <span class="piste-route"></span>
+    <span class="piste-vehicule">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>
+      </svg>
+    </span>
+  </div>
 
   <!-- L'appel au telechargement ne defile pas : il reste sous la main, en bas a
        droite, du premier ecran au dernier. -->
@@ -1454,9 +1557,11 @@
           <ol class="etapes">
             <!-- Numero et titre EN TETE, la vignette ensuite, la description
                  pour finir : on annonce le geste avant de le montrer. -->
-            <li class="etape">
+            <li class="etape geste-voix">
               <div class="etape-entete">
-                <span class="etape-num" aria-hidden="true">1</span>
+                <!-- Micro de la saisie vocale, repris tel quel de l'application
+                     (DemoShowcase.js, trace Lucide en viewBox 24). -->
+                <span class="etape-num" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg></span>
                 <h3 data-i18n="etape.1.titre">Ajoute tes adresses</h3>
               </div>
               <div class="etape-visuel">
@@ -1466,9 +1571,13 @@
               </div>
               <p data-i18n="etape.1.texte">À la voix ou depuis ton carnet, autant d'arrêts que la tournée en demande.</p>
             </li>
-            <li class="etape">
+            <li class="etape geste-optim">
               <div class="etape-entete">
-                <span class="etape-num" aria-hidden="true">2</span>
+                <!-- L'eclair de l'optimisation (InteractiveTutorial.js). Il
+                     porte l'ambre du site et non l'or #ffbe0b de l'application :
+                     le meme or sur fond blanc passe sous le seuil de lisibilite
+                     d'un trait de deux pixels. -->
+                <span class="etape-num" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>
                 <h3 data-i18n="etape.2.titre">Optimise</h3>
               </div>
               <div class="etape-visuel">
@@ -1480,9 +1589,12 @@
               </div>
               <p data-i18n="etape.2.texte">Un appui suffit : 67 arrêts remis dans l'ordre qui te fait rentrer plus tôt.</p>
             </li>
-            <li class="etape">
+            <li class="etape geste-livre">
               <div class="etape-entete">
-                <span class="etape-num" aria-hidden="true">3</span>
+                <!-- Le carton coche du statut « Livre » (stopStatusVisuals.js),
+                     dans le vert de ce meme statut : c'est le signe que le
+                     livreur verra a chaque arret remis. -->
+                <span class="etape-num" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="m16 17 2 2 4-4"/><path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753"/><path d="M3.29 7 12 12l8.71-5"/><path d="m7.5 4.27 8.997 5.148"/></svg></span>
                 <h3 data-i18n="etape.3.titre">Livre</h3>
               </div>
               <div class="etape-visuel">
@@ -1517,7 +1629,7 @@
                  width="900" height="474"
                  data-i18n-alt="bloc.voix.alt" alt="Écran ATEQO : dictée d'une adresse, « Je t'écoute »" />
           </div>
-          <p class="bloc-texte" data-i18n="bloc.voix.bulle">Dicte l'adresse, elle entre dans la tournée. Tes mains restent sur les colis.</p>
+          <p class="bloc-texte" data-i18n="bloc.voix.bulle">Ajoute tes points de livraison sans perdre de temps : tu dictes, l'adresse entre dans la tournée.</p>
         </figure>
 
         <figure class="viz bloc" style="left:46%;top:13%;width:min(378px,20vw,32vh);z-index:1">
@@ -1534,7 +1646,40 @@
       </div>
     </section>
 
-    <!-- ══ 4. MOINS DE ROUTE ═════════════════════════════════════════════════
+    <!-- ══ 4. LE CARNET ══════════════════════════════════════════════════════
+         Le carnet partageait un bloc avec les circuits recurrents, sous un
+         titre qui nommait les deux : « Carnet et circuits recurrents ». Deux
+         fonctions dans une meme vignette, aucune n'est comprise. Le carnet est
+         pourtant ce qui distingue l'outil d'un simple optimiseur, et ce qui
+         justifie l'abonnement une fois la nouveaute passee : il lui faut son
+         ecran, son titre et sa demonstration. Les circuits recurrents restent
+         sur l'ecran precedent, ou ils sont a leur place. -->
+    <section class="slide t2" data-theme="1">
+      <div class="stage">
+       <div class="field">
+        <div class="titre-bloc">
+          <h2 class="giant" data-i18n-html="t35.title">Ton <em>carnet.</em></h2>
+          <p class="argument" data-i18n-html="t35.argument"><strong>Tes adresses habituelles, prêtes à repartir.</strong> Un client livré chaque semaine ne se saisit qu'une fois.</p>
+          <p class="mention" data-i18n="t35.mention">Carnet et circuits récurrents, sur le plan Pro</p>
+        </div>
+
+        <!-- Meme gabarit que la capture maitresse de l'ecran precedent : les
+             deux ecrans se suivent, leurs captures doivent partager la meme
+             ligne haute et la meme largeur, sinon la piste tangue. -->
+        <figure class="viz bloc" style="left:46%;top:13%;width:min(392px,20vw,26vh);z-index:1">
+          <h3 class="bloc-titre" data-i18n="bloc.carnet.titre">Carnet d'adresses</h3>
+          <div class="bloc-shot">
+            <img src="./img/captures/carnet.png" data-src-i18n="./img/captures/carnet.png"
+                 width="1122" height="1964"
+                 data-i18n-alt="bloc.carnet.alt" alt="Écran ATEQO : carnet d'adresses, circuits « Tournée du lundi » et « Zone industrielle », adresses classées par secteur" loading="lazy" />
+          </div>
+          <p class="bloc-texte" data-i18n="bloc.carnet.bulle">Tes points de livraison classés par circuit et par secteur.</p>
+        </figure>
+       </div>
+      </div>
+    </section>
+
+    <!-- ══ 5. MOINS DE ROUTE ═════════════════════════════════════════════════
          Les deux cartes se repondent : la meme tournee avant et apres le
          calcul. Elles sont posees en diagonale pour qu'on les lise dans cet
          ordre, et pour laisser le titre respirer entre les deux. -->
@@ -1647,7 +1792,7 @@
           <figure class="viz bloc rang">
             <h3 class="bloc-titre" data-i18n="bloc.bilan.titre">Bilan de tournée</h3>
             <div class="bloc-shot">
-              <img src="./img/captures/bilan_tournee.png" data-src-i18n="./img/captures/bilan_tournee.png" width="1200" height="2323"
+              <img src="./img/captures/bilan_tournee.png" data-src-i18n="./img/captures/bilan_tournee.png" width="1160" height="2282"
                    data-i18n-alt="bloc.bilan.alt" alt="Écran ATEQO : tournée terminée, 58 livrés, 2 reprogrammés, 1 retour dépôt" loading="lazy" />
             </div>
             <p class="bloc-texte" data-i18n="bloc.bilan.bulle">Ta journée entière en un écran.</p>
@@ -1874,12 +2019,18 @@
         't3.argument': '<strong>Soixante adresses saisies pendant que tu charges.</strong> Sans stylo, sans papier, sans les ressaisir demain.',
         't3.illimite': 'Adresses illimitées par tournée, y compris sur le plan gratuit',
         'bloc.voix.titre': 'Saisie vocale',
-        'bloc.voix.bulle': "Dicte l'adresse, elle entre dans la tournée. Tes mains restent sur les colis.",
+        'bloc.voix.bulle': "Ajoute tes points de livraison sans perdre de temps : tu dictes, l'adresse entre dans la tournée.",
         'bloc.voix.alt': 'Écran ATEQO : dictée d’une adresse, « Je t’écoute »',
         'bloc.circuits.titre': 'Carnet et circuits récurrents',
         'bloc.circuits.bulle': 'Les tournées que tu refais chaque semaine sont déjà là.',
         'bloc.circuits.alt': 'Écran ATEQO : deux tournées enregistrées, avec leurs secteurs et leurs gains',
         // ── 4. Moins de route ──
+        't35.title': 'Ton <em>carnet.</em>',
+        't35.argument': "<strong>Tes adresses habituelles, prêtes à repartir.</strong> Un client livré chaque semaine ne se saisit qu'une fois.",
+        't35.mention': 'Carnet et circuits récurrents, sur le plan Pro',
+        'bloc.carnet.titre': "Carnet d'adresses",
+        'bloc.carnet.bulle': 'Tes points de livraison classés par circuit et par secteur.',
+        'bloc.carnet.alt': "Écran ATEQO : carnet d'adresses, circuits « Tournée du lundi » et « Zone industrielle », adresses classées par secteur",
         't4.title': 'Moins de <em>route.</em>',
         't4.argument': "<strong>43 km de moins sur une tournée de 67 arrêts.</strong> Ta zone reste découpée comme tu la connais.",
         't4.chargement': 'Chargement guidé : le dernier chargé est le premier livré',
@@ -2010,12 +2161,18 @@
         't3.argument': '<strong>Sixty addresses entered while you load.</strong> No pen, no paper, and nothing to retype tomorrow.',
         't3.illimite': 'Unlimited addresses per route, including on the free plan',
         'bloc.voix.titre': 'Voice input',
-        'bloc.voix.bulle': 'Say the address, it joins the route. Your hands stay on the parcels.',
+        'bloc.voix.bulle': 'Add your delivery points without losing time: you speak, the address joins the route.',
         'bloc.voix.alt': 'ATEQO screen: dictating an address, “I’m listening”',
         'bloc.circuits.titre': 'Address book and saved lists',
         'bloc.circuits.bulle': 'The routes you run every week are already there.',
         'bloc.circuits.alt': 'ATEQO screen: two saved routes, with their sectors and their savings',
         // ── 4. Less driving ──
+        't35.title': 'Your <em>address book.</em>',
+        't35.argument': '<strong>Your regular stops, ready to go again.</strong> A customer you deliver every week is typed in once and never again.',
+        't35.mention': 'Address book and recurring circuits, on the Pro plan',
+        'bloc.carnet.titre': 'Address book',
+        'bloc.carnet.bulle': 'Your delivery points sorted by circuit and by sector.',
+        'bloc.carnet.alt': 'ATEQO screen: address book, Monday route and Industrial zone circuits, addresses sorted by sector',
         't4.title': 'Less <em>driving.</em>',
         't4.argument': '<strong>43 km less on a 67-stop route.</strong> Your area stays split the way you know it.',
         't4.chargement': 'Guided loading: the last one loaded is the first one delivered',
@@ -2185,7 +2342,19 @@
       if (!('IntersectionObserver' in window)) return;
       var pile = window.matchMedia('(max-width: 980px)');
 
-      var hauteurBandeau = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header'), 10) || 54;
+      // Le titre s'accroche sous le bandeau ET sous la piste du camion : les
+      // deux bandes fixes comptent, sinon le repere se declare franchi une
+      // hauteur de piste trop tot et le titre se replie avant d'accrocher.
+      function lireHauteur(nom, defaut) {
+        var v = parseInt(getComputedStyle(document.documentElement).getPropertyValue(nom), 10);
+        return isNaN(v) ? defaut : v;
+      }
+      // Relue a chaque decision plutot que figee au chargement : la piste du
+      // camion n'existe pas dans les deux dispositions, et une fenetre de
+      // bureau retrecie jusqu'a la pile ferait mentir une valeur mise en cache.
+      function hauteurFixe() {
+        return lireHauteur('--header', 54) + lireHauteur('--piste-h', 0);
+      }
 
       /* Un seul juge, deux guetteurs. « Hors champ » ne suffit pas a decider :
          une sentinelle encore SOUS la fenetre ne coupe pas le cadre non plus,
@@ -2200,15 +2369,16 @@
         var repere = titre.previousElementSibling;
         var section = titre.closest('.slide');
         if (!repere || !repere.classList.contains('sentinelle') || !section) return;
+        var seuil = hauteurFixe();
         titre.classList.toggle('est-colle',
-          repere.getBoundingClientRect().top < hauteurBandeau &&
-          section.getBoundingClientRect().bottom > hauteurBandeau);
+          repere.getBoundingClientRect().top < seuil &&
+          section.getBoundingClientRect().bottom > seuil);
       }
 
       // La marge haute vaut la hauteur du bandeau : le franchissement doit etre
       // signale quand l'element passe DERRIERE lui, pas quand il quitte la
       // fenetre.
-      var cadre = { rootMargin: '-' + hauteurBandeau + 'px 0px 0px 0px', threshold: 0 };
+      var cadre = { rootMargin: '-' + hauteurFixe() + 'px 0px 0px 0px', threshold: 0 };
 
       var observateur = new IntersectionObserver(function (entrees) {
         entrees.forEach(function (e) {
@@ -2251,6 +2421,37 @@
       function suivre() { pile.matches ? poser() : retirer(); }
       suivre();
       pile.addEventListener('change', suivre);
+    })();
+
+    /* ── Le camion avance ─────────────────────────────────────────────────────
+       Une seule proprietee ecrite au defilement, `--avance` (0 au sommet, 1 en
+       bas), dont le CSS deduit la position. Ecrire une variable plutot que des
+       pixels laisse la geometrie au CSS : la largeur utile change avec la
+       fenetre, le JS n'a pas a la connaitre.
+       La lecture est repoussee a la trame suivante : `scroll` se declenche
+       bien plus souvent qu'on ne redessine, et mesurer a chaque evenement
+       ferait payer une mise en page a chaque cran de doigt. */
+    (function () {
+      var piste = document.querySelector('.piste-camion');
+      if (!piste) return;
+      var enAttente = false;
+
+      function mesurer() {
+        enAttente = false;
+        var course = document.documentElement.scrollHeight - window.innerHeight;
+        var part = course > 0 ? window.scrollY / course : 0;
+        piste.style.setProperty('--avance', Math.max(0, Math.min(1, part)).toFixed(4));
+      }
+
+      function planifier() {
+        if (enAttente) return;
+        enAttente = true;
+        requestAnimationFrame(mesurer);
+      }
+
+      window.addEventListener('scroll', planifier, { passive: true });
+      window.addEventListener('resize', planifier);
+      mesurer();
     })();
 
     /* ── Loupe ────────────────────────────────────────────────────────────────

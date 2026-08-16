@@ -529,6 +529,46 @@
        pose en CSS pour qu'un lecteur d'ecran enonce une liste et non une suite
        de mots colles par des puces. */
     .metiers li+li::before{content:"·";color:var(--border)}
+    /* L'intitule n'existe que sur la pile mobile : en bande, une ligne de six
+       metiers au pied de l'ecran se comprend sans qu'on la presente.
+       Le selecteur porte DEUX classes : `.metiers li` juste au-dessus en pese
+       deux aussi, et une regle a une seule classe ne le rattrape pas. */
+    .metiers li.metiers-intitule{display:none}
+    /* `display:none` retire de l'affichage, pas de la fratrie : le premier
+       metier restait un « li+li » et heritait d'un point separateur orphelin
+       en tete de bande. */
+    .metiers li.metiers-intitule+li::before{content:none}
+
+    /* ── Loupe ────────────────────────────────────────────────────────────────
+       Une capture reduite a la largeur d'une colonne de telephone ne se lit
+       plus : les cartes de secteurs y perdent leurs numeros, l'ecran de
+       chargement ses adresses. Un appui l'ouvre en grand, par-dessus la page.
+       Volontairement minimal : pas de galerie, pas de zoom, pas de dependance.
+       Une image, un fond, une sortie. */
+    .loupe{position:fixed;inset:0;z-index:200;display:none;
+           align-items:center;justify-content:center;padding:clamp(14px,3vw,40px);
+           background:rgba(10,20,38,.86);
+           opacity:0;transition:opacity .22s ease;
+           /* Le pointeur dit que TOUT le fond referme, pas seulement la croix. */
+           cursor:zoom-out}
+    .loupe.est-ouverte{display:flex}
+    .loupe.est-visible{opacity:1}
+    .loupe img{max-width:100%;max-height:100%;width:auto;height:auto;
+               border-radius:10px;box-shadow:0 24px 60px -12px rgba(0,0,0,.5);
+               /* L'image elle-meme ne referme pas : on la regarde. */
+               cursor:default}
+    .loupe-fermer{position:absolute;top:clamp(10px,2vw,24px);right:clamp(10px,2vw,24px);
+                  width:42px;height:42px;border:none;border-radius:50%;
+                  background:rgba(255,255,255,.14);color:#fff;
+                  font-size:1.5rem;line-height:1;cursor:pointer;
+                  display:flex;align-items:center;justify-content:center;
+                  -webkit-tap-highlight-color:transparent}
+    .loupe-fermer:hover{background:rgba(255,255,255,.24)}
+    /* Le curseur annonce l'agrandissement sur les captures qui l'offrent. */
+    .bloc-shot img,.etape-visuel img{cursor:zoom-in}
+    @media (prefers-reduced-motion: reduce){
+      .loupe{transition:none}
+    }
 
     /* ── Titre de section ─────────────────────────────────────────────────────
        Tous les ecrans ne meritent pas un mot geant. Seuls les cinq que designe
@@ -1053,9 +1093,27 @@
          grille se dimensionne sur son contenu et les cartes s'arretent au
          milieu de l'ecran. */
       .viz .etapes{grid-template-columns:1fr;width:100%;max-width:540px}
-      /* La bande des metiers redevient une phrase qui se replie, sans centrage :
-         tout le reste de la pile est aligne a gauche. */
-      .metiers{justify-content:flex-start;width:100%}
+      /* ── Metiers, version pile ──────────────────────────────────────────────
+         En bande, la liste se repliait sur trois lignes inegales separees par
+         des points : le bord droit partait dans tous les sens et rien ne
+         disait ce que ces mots faisaient la. Elle devient une GRILLE de deux
+         colonnes de pastilles, precedee de son intitule, qui ne s'affiche que
+         sur cette disposition (la bande du bureau se suffit a elle-meme). */
+      .metiers{width:100%;display:grid;grid-template-columns:1fr 1fr;
+               gap:8px;align-items:stretch}
+      .metiers-intitule{display:block;grid-column:1 / -1;margin-bottom:2px;
+                        font-size:.72rem;font-weight:700;letter-spacing:1.3px;
+                        text-transform:uppercase;color:var(--muted2)}
+      /* L'intitule est dans la meme liste, mais ce n'est pas un metier : il ne
+         prend ni cadre ni fond. */
+      .metiers li:not(.metiers-intitule){display:flex;align-items:center;justify-content:flex-start;
+                  background:var(--surface);border:1px solid var(--border);
+                  border-radius:var(--radius-commande);
+                  padding:10px 12px;gap:0;
+                  font-size:.84rem;font-weight:600;line-height:1.3;
+                  color:var(--ink);white-space:normal}
+      /* Le point separateur n'a plus lieu d'etre : chaque metier a son cadre. */
+      .metiers li+li::before{content:none}
       /* Le trait de separation et son retrait n'ont plus de sens dans une pile :
          les blocs y sont deja separes par le rythme commun de la colonne.
          Le transform DOIT etre annule ici, et pas dans la liste generique plus
@@ -1213,6 +1271,14 @@
     <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
   </a>
 
+  <!-- Loupe : une capture agrandie par-dessus la page. Vide tant qu'on n'a
+       rien ouvert, pour ne pas charger deux fois la meme image. -->
+  <div class="loupe" id="loupe" role="dialog" aria-modal="true" hidden>
+    <button type="button" class="loupe-fermer" data-loupe-fermer
+            data-i18n-aria="loupe.fermer" aria-label="Fermer l'aperçu">×</button>
+    <img alt="" />
+  </div>
+
   <div class="hint" data-hint>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     <span data-i18n="hint.scroll">Fais défiler</span>
@@ -1267,6 +1333,7 @@
         </figure>
 
         <ul class="viz metiers">
+          <li class="metiers-intitule" data-i18n="metiers.intitule">Pour tous les métiers de la livraison</li>
           <li data-i18n="metier.1">Messagerie et colis</li>
           <li data-i18n="metier.2">Coursier urbain</li>
           <li data-i18n="metier.3">Livraison de repas</li>
@@ -1670,6 +1737,7 @@
     var I18N = {
       fr: {
         'brand.aria': 'ATEQO · retour au début',
+        'loupe.fermer': 'Fermer l\'aperçu',
         'brand.alt': "ATEQO · L'itinéraire qui te suit",
         'badge.alt': 'Disponible sur Google Play',
         'hint.scroll': 'Fais défiler',
@@ -1693,6 +1761,7 @@
         'bloc.semaine.titre': 'Rentabilise ton temps et ton carburant',
         'bloc.semaine.bulle': 'Presque une journée récupérée chaque semaine.',
         'bloc.semaine.alt': 'Écran ATEQO : 7 h 59 gagnées, 240 km et 29 € de carburant économisés sur 5 tournées',
+        'metiers.intitule': 'Pour tous les métiers de la livraison',
         'metier.1': 'Messagerie et colis',
         'metier.2': 'Coursier urbain',
         'metier.3': 'Livraison de repas',
@@ -1807,6 +1876,7 @@
       },
       en: {
         'brand.aria': 'ATEQO · back to the start',
+        'loupe.fermer': 'Close preview',
         'brand.alt': 'ATEQO · The route that follows you',
         'badge.alt': 'Get it on Google Play',
         'hint.scroll': 'Scroll',
@@ -1827,6 +1897,7 @@
         'bloc.semaine.titre': 'Make your time and fuel pay off',
         'bloc.semaine.bulle': 'Almost a full day back, every week.',
         'bloc.semaine.alt': 'ATEQO screen: 7 h 59 saved, 240 km and €29 of fuel saved across 5 routes',
+        'metiers.intitule': 'For every delivery job',
         'metier.1': 'Parcel delivery',
         'metier.2': 'Urban courier',
         'metier.3': 'Food delivery',
@@ -2013,6 +2084,59 @@
     });
 
     applyLang(detectLang());
+
+    /* ── Loupe ────────────────────────────────────────────────────────────────
+       Un appui sur une capture l'ouvre en grand. Reduite a la largeur d'une
+       colonne de telephone, une carte de secteurs perd ses numeros et l'ecran
+       de chargement ses adresses : la voir en entier est la seule facon de
+       juger l'application avant de la telecharger.
+       L'ecoute est posee sur le document, pas sur chaque image : les captures
+       changent de langue en cours de route (data-src-i18n) et un ecouteur par
+       image se serait perdu. */
+    (function () {
+      var loupe   = document.getElementById('loupe');
+      if (!loupe) return;
+      var vue     = loupe.querySelector('img');
+      var rendreA = null;   // element a qui rendre le focus a la fermeture
+
+      function ouvrir(source) {
+        // src (et non currentSrc) : c'est le fichier pleine definition, pas la
+        // version que la mise en page a reduite.
+        vue.src = source.currentSrc || source.src;
+        vue.alt = source.alt || '';
+        rendreA = document.activeElement;
+        loupe.hidden = false;
+        loupe.classList.add('est-ouverte');
+        // Deux images successives : sans ce report, la transition d'opacite
+        // part de l'etat final et ne se joue pas.
+        requestAnimationFrame(function () { loupe.classList.add('est-visible'); });
+        document.body.style.overflow = 'hidden';
+        loupe.querySelector('[data-loupe-fermer]').focus();
+      }
+
+      function fermer() {
+        loupe.classList.remove('est-visible');
+        document.body.style.overflow = '';
+        window.setTimeout(function () {
+          loupe.classList.remove('est-ouverte');
+          loupe.hidden = true;
+          vue.removeAttribute('src');
+          if (rendreA && rendreA.focus) rendreA.focus();
+        }, 220);
+      }
+
+      document.addEventListener('click', function (evt) {
+        var image = evt.target.closest('.bloc-shot img, .etape-visuel img');
+        if (image) { evt.preventDefault(); ouvrir(image); return; }
+        // Tout le fond referme, l'image elle-meme non : on la regarde.
+        if (loupe.classList.contains('est-ouverte')
+            && (evt.target === loupe || evt.target.closest('[data-loupe-fermer]'))) fermer();
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (evt.key === 'Escape' && loupe.classList.contains('est-ouverte')) fermer();
+      });
+    })();
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

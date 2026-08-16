@@ -200,8 +200,12 @@
          height:var(--header);
          display:flex;align-items:center;justify-content:space-between;
          padding:0 clamp(16px,2.2vw,34px);
-         background:var(--surface);border-bottom:1px solid var(--border);
-         box-shadow:0 1px 12px rgba(15,25,35,.05)}
+         /* Sans fond : le decor passe DERRIERE le bandeau, et la page se lit
+            comme une seule surface au lieu d'une barre posee sur une image.
+            Rien ne remplace le fond, pas meme un voile : la ville du decor est
+            deja tres claire a cette hauteur, et le texte du bandeau est du
+            navy plein. */
+         background:transparent;border-bottom:none}
     /* Le logo est cale sur la HAUTEUR du losange de droite : les deux marques
        du bandeau pesent alors le meme poids, et la place gagnee revient au fil
        d'Ariane. La baseline gravee dans l'image n'est plus lisible a cette
@@ -404,19 +408,20 @@
                  translate 1.05s cubic-bezier(.16,.72,.24,1) .18s}
 
     /* ── Flottement ───────────────────────────────────────────────────────────
-       UN SEUL element respire par ecran : la bulle de promesse, sous le mot
-       geant. Tout le reste est immobile.
+       UN SEUL element respire par ecran : le titre. Tout le reste est
+       immobile.
        Les titres de bloc et les bulles de commentaire flottaient eux aussi : un
        texte qui bouge sous l'oeil se lit deux fois plus lentement, et une scene
-       ou six choses derivent chacune a son rythme n'a plus de point fixe. Le
-       mouvement ne sert que la ou il attire vers ce qui compte. */
-    @keyframes flotte-bulle{
+       ou six choses derivent chacune a son rythme n'a plus de point fixe.
+       Le mouvement passe par `translate`, jamais par `transform` : la
+       chorégraphie du titre tient deja transform sur le bloc parent, les deux
+       se marcheraient dessus. */
+    @keyframes flotte-titre{
       0%,100%{translate:0 0}
-      30%{translate:0 -6px}
-      60%{translate:0 -3px}
+      50%{translate:0 -7px}
     }
-    .giant.is-in ~ .argument,
-    .titre-section.is-in ~ .sous-titre{animation:flotte-bulle 7.2s ease-in-out 1.9s infinite}
+    .giant.is-in,
+    .titre-section.is-in{animation:flotte-titre 7.6s ease-in-out 2.1s infinite}
 
     /* ══ PISTE ═════════════════════════════════════════════════════════════════
        Sur desktop, les sections sont posees cote a cote et la piste est poussee
@@ -493,19 +498,14 @@
     /* Corps releve de 1.18 a 1.55vw : sous un mot de 150 px, une ligne de 20 px
        donnait un rapport de 7 pour 1, ou le sous-titre se lisait comme une note
        de bas de page. A 4 pour 1, les deux appartiennent a la meme phrase. */
-    /* La promesse de l'ecran, en BULLE : meme carte blanche a liseré que les
-       commentaires de bloc, en plus grand. Elle est le sous-titre du mot geant
-       et le suit dans son repli, d'ou sa place dans le bloc de titre. */
-    .argument{max-width:min(560px,38vw);text-align:left;text-wrap:balance;
-              background:var(--surface);border:1px solid var(--border);
-              border-left:3px solid var(--tone);border-radius:var(--radius);
-              padding:clamp(9px,.75vw,14px) clamp(12px,1vw,18px);
-              box-shadow:var(--ombre-levee);
-              font-size:clamp(.85rem,1.02vw,1.12rem);line-height:1.45;color:var(--ink)}
+    /* La promesse de l'ecran : du TEXTE, rien d'autre. Elle a porte un temps
+       le cadre blanc des commentaires de bloc ; une carte sous un mot de
+       cent-cinquante pixels ajoutait une boite la ou il n'y a qu'une phrase a
+       lire, et la sobriete sert mieux le titre qu'elle prolonge. Seul le
+       chiffre porte l'encre pleine. */
+    .argument{max-width:min(620px,42vw);text-align:left;text-wrap:balance;
+              font-size:clamp(.92rem,1.2vw,1.38rem);line-height:1.45;color:var(--muted)}
     .argument strong{color:var(--ink);font-weight:700}
-    /* Elle respire, comme les commentaires de bloc, mais sur son propre cycle
-       et seulement une fois posee. */
-    .giant.is-in ~ .argument{animation:flotte-bulle 6.8s ease-in-out 1.9s infinite}
     /* La ligne d'argument est une bande de texte au milieu de la scene, juste
        sous le titre : tout bloc pose a cette hauteur vient s'y superposer, et
        deux textes l'un sur l'autre ne se lisent plus ni l'un ni l'autre. Sur
@@ -540,16 +540,12 @@
     .titre-section{font-size:clamp(1.45rem,2.7vw,2.7rem);font-weight:800;
                    letter-spacing:-1.1px;line-height:1.05;color:var(--ink);white-space:nowrap}
     .titre-section em{font-style:normal;color:var(--tone)}
-    /* Une ligne de contexte sous le titre de section, quand il en faut une.
-       Meme bulle que sous les mots geants : les huit ecrans se lisent alors
-       de la meme facon, un titre puis sa promesse dans une carte. */
-    .titre-section+.sous-titre{margin-top:clamp(6px,.6vw,12px);color:var(--ink);
-                               max-width:min(560px,38vw);
-                               background:var(--surface);border:1px solid var(--border);
-                               border-left:3px solid var(--tone);border-radius:var(--radius);
-                               padding:clamp(9px,.75vw,14px) clamp(12px,1vw,18px);
-                               box-shadow:var(--ombre-levee);
-                               font-size:clamp(.85rem,1.02vw,1.12rem);line-height:1.45}
+    /* Une ligne de contexte sous le titre de section : meme traitement sobre
+       que sous les mots geants, pour que les huit ecrans se lisent pareil. */
+    .titre-section+.sous-titre{margin-top:clamp(6px,.6vw,12px);color:var(--muted);
+                               max-width:min(620px,42vw);text-wrap:balance;
+                               font-size:clamp(.92rem,1.2vw,1.38rem);line-height:1.45}
+    .titre-section+.sous-titre strong{color:var(--ink);font-weight:700}
 
     /* ── Cartes d'etape ───────────────────────────────────────────────────────
        Les trois gestes de la prise en main. Chacune porte sa vignette : trois
@@ -687,8 +683,10 @@
        une decoration et le vide autour d'elle se voit. Elle devient donc la
        TROISIEME ligne du bloc de titre, sous la promesse : le visiteur lit le
        mot, la promesse, puis la preuve, dans une seule colonne. */
+    /* Un cran d'air avant elle : c'est une preuve, pas la suite de la phrase
+       qui precede, et les deux se lisaient d'un bloc. */
     .mention{display:flex;align-items:flex-start;gap:9px;color:var(--muted);
-             max-width:min(560px,38vw);
+             max-width:min(620px,42vw);margin-top:clamp(5px,.5vw,11px);
              font-size:clamp(.78rem,.9vw,.98rem);font-weight:600;line-height:1.45}
     .mention::before{content:"✓";color:var(--tone);font-weight:800;line-height:1.3}
     /* La marque garde ses cinq couleurs de secteur partout ou elle est ecrite,
@@ -1076,9 +1074,15 @@
       .end-block .gplay img{height:54px}
       .site-footer{text-align:left;width:100%}
       .site-footer .flinks{justify-content:flex-start}
-      /* Le bandeau reste la mesure de la page, simplement plus court ici. */
+      /* Le bandeau reste la mesure de la page, simplement plus court ici.
+         Il RETROUVE son fond : sur la piste horizontale rien ne passe sous
+         lui, chaque scene tenant dans sa fenetre, alors qu'ici la pile defile
+         dessous et le titre de la section suivante venait se poser sur le
+         logo. */
       :root{--header:54px}
-      .top{padding:0 16px}
+      .top{padding:0 16px;background:var(--surface);
+           border-bottom:1px solid var(--border);
+           box-shadow:0 1px 12px rgba(15,25,35,.05)}
       /* Le fil d'Ariane est regle pour la piste horizontale : sur la pile
          verticale il n'a ni la place ni le meme geste de saut. A traiter a
          part, une fois la version bureau arretee. */

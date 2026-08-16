@@ -1,0 +1,13 @@
+{
+  "name": "ATEQO",
+  "short_name": "ATEQO",
+  "description": "L'itinéraire qui te suit : optimise ta tournée de livraison en moins d'une minute.",
+  "icons": [
+    { "src": "/img/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/img/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#17356b",
+  "background_color": "#f1f4f7",
+  "display": "browser",
+  "start_url": "/"
+}

@@ -7,9 +7,15 @@
   <meta name="theme-color" content="#f1f4f7" />
   <title>ATEQO · L'itinéraire qui te suit</title>
 
-  <!-- Favicon -->
-  <link rel="icon" href="./img/logo_ateqo.png" />
-  <link rel="apple-touch-icon" href="./img/logo_ateqo.png" />
+  <!-- Favicon. L'image d'origine n'etait ni carree (115x120) ni declaree avec
+       ses tailles : Android n'avait aucune icone a la bonne dimension et
+       tombait sur une capture de la page. Chaque taille est desormais un carre
+       avec sa marge de securite, et le manifeste donne a Chrome mobile ce
+       qu'il cherche pour l'ecran d'accueil. -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./img/favicon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/favicon-180.png" />
+  <link rel="manifest" href="./site.webmanifest" />
 
   <!-- Open Graph / partage sur les réseaux sociaux -->
   <meta property="og:type" content="website" />
@@ -985,6 +991,20 @@
          visuel qu'elle commente au lieu de mordre dessus. */
       .field{position:static;width:auto;height:auto;display:flex;flex-direction:column;
              align-items:flex-start;gap:var(--gap)}
+      /* Une rangee de deux ou trois colonnes n'a pas de sens sur 390 px : elle
+         y donnait des captures de cent-trente pixels de large, avec leurs
+         titres casses sur deux lignes. La grille redevient une colonne, et le
+         cadre a hauteur imposee saute : dans une pile, chaque capture peut
+         reprendre sa taille naturelle. */
+      /* width et margin en !important : `.field>*{width:auto}` pese autant que
+         `.rangee` et la grille se dimensionnait alors sur son contenu, decalee
+         dans la colonne par ses marges automatiques. */
+      .rangee,.rangee.deux,.rangee.trois{grid-template-columns:1fr;
+              max-width:none!important;width:100%!important;margin-inline:0!important;
+              gap:var(--gap)}
+      .bloc.rang .bloc-shot{height:auto;overflow:visible;box-shadow:none;border-radius:0}
+      .bloc.rang .bloc-shot img{height:auto;object-fit:fill;
+              border-radius:10px;box-shadow:var(--ombre-capture)}
       .stage>*,.field>*,.viz .note{position:static!important;left:auto!important;top:auto!important;
                bottom:auto!important;right:auto!important;width:auto}
       /* .field est lui-meme un .stage>* : la regle ci-dessus vient de lui
@@ -1093,27 +1113,97 @@
          grille se dimensionne sur son contenu et les cartes s'arretent au
          milieu de l'ecran. */
       .viz .etapes{grid-template-columns:1fr;width:100%;max-width:540px}
+
+      /* ── Titre colle a sa section ────────────────────────────────────────────
+         Sur la pile, une section fait plusieurs hauteurs d'ecran : passe le
+         premier defilement, plus rien ne dit ou l'on est. Le titre reste donc
+         en tete tant qu'on parcourt SA section, juste sous le bandeau.
+         Colle, il se REPLIE : la promesse et la mention disparaissent, le mot
+         rapetisse. Sans ce repli, le bloc entier occuperait un tiers de
+         l'ecran en permanence, ce qui couterait plus qu'il ne rapporte. La
+         classe est posee par un observateur ; sans JavaScript, le titre colle
+         simplement en entier, et la page reste juste. */
+      /* `top` porte !important comme `position` : la remise a plat des
+         placements de bureau (`.field>*{top:auto!important}`) l'annulait
+         sinon, et un sticky sans `top` ne colle nulle part. */
+      .titre-bloc,.titre-ecran{position:sticky!important;top:var(--header)!important;z-index:6;
+              width:100%;
+              padding-top:var(--gap);padding-bottom:10px;
+              transition:padding .2s ease,gap .2s ease}
+      /* Un element colle ne peut pas glisser : un transform le decale d'autant
+         une fois accroche. L'arrivee en scene laissait 30 px de translation sur
+         le titre d'ecran, qui s'accrochait donc 30 px trop bas et laissait le
+         contenu defiler a nu sous le bandeau. !important est ici indispensable,
+         l'animation ecrivant en style en ligne. Seul le glissement se perd :
+         le fondu porte par l'opacite reste, et l'entree se voit toujours. */
+      .titre-bloc,.titre-ecran{transform:none!important}
+      /* Le fond n'apparait QUE colle. Peint en permanence, il decoupait un
+         rectangle plus clair dans le halo de couleur de la scene, visible a
+         l'arret. Et il est porte par un calque a part, tire de --pad-x a
+         --pad-x : la bande doit couvrir les gouttieres de la colonne, sinon le
+         contenu defile a nu de chaque cote du titre. Le calque passe sous le
+         texte (z-index:-1) mais reste au-dessus de la page, le titre ayant son
+         propre plan (z-index:6). */
+      .titre-bloc::before,.titre-ecran::before{content:"";position:absolute;
+              inset:0 calc(var(--pad-x) * -1);z-index:-1;
+              background:var(--bg);opacity:0;transition:opacity .18s ease}
+      .titre-bloc.est-colle::before,.titre-ecran.est-colle::before{opacity:1;
+              box-shadow:0 10px 16px -14px rgba(15,32,60,.45)}
+      /* Replier ne suffit pas a rendre la place : un enfant ramene a une
+         hauteur nulle garde son intervalle dans une colonne flex, et la
+         promesse escamotee laissait 24 px de vide dans la barre. */
+      .titre-bloc.est-colle,.titre-ecran.est-colle{padding-bottom:9px;gap:0}
+      .titre-bloc.est-colle .giant,.titre-ecran.est-colle .titre-section{
+              font-size:clamp(1.15rem,5.6vw,1.8rem)}
+      .titre-bloc .giant,.titre-ecran .titre-section{transition:font-size .2s ease}
+      /* Repli par max-height et non display : le passage se voit au lieu de
+         sauter d'un coup. */
+      .titre-bloc.est-colle .argument,.titre-bloc.est-colle .mention,
+      .titre-ecran.est-colle .sous-titre,.titre-ecran.est-colle .mention{
+              max-height:0;opacity:0;margin:0;overflow:hidden;
+              transition:max-height .2s ease,opacity .16s ease}
+      /* Repere invisible que l'observateur guette : il sort du cadre juste
+         avant que le titre ne colle.
+         La marge negative n'est pas un ajustement a vue : enfant d'une colonne
+         flex, ce pixel se voyait accorder un intervalle plein de chaque cote et
+         creusait 23 px de vide au-dessus de chaque titre. En reprenant un
+         intervalle, il retombe a un pixel du titre : le rythme de la colonne
+         est intact et le repere declenche pile quand le titre accroche. */
+      .sentinelle{display:block;height:1px;width:100%;padding:0;
+              margin:0 0 calc(var(--gap) * -1)}
+
+      /* ── Separation entre deux scenes ────────────────────────────────────────
+         Sur la piste, chaque scene a sa fenetre : la frontiere est le geste
+         lui-meme. Dans une pile, tout s'enchaine sans rupture et le visiteur
+         ne sait plus ou finit un sujet. Un filet suffit, la respiration du
+         rythme commun fait le reste. */
+      .track>.slide+.slide{border-top:1px solid var(--border)}
+
       /* ── Metiers, version pile ──────────────────────────────────────────────
          En bande, la liste se repliait sur trois lignes inegales separees par
          des points : le bord droit partait dans tous les sens et rien ne
-         disait ce que ces mots faisaient la. Elle devient une GRILLE de deux
-         colonnes de pastilles, precedee de son intitule, qui ne s'affiche que
-         sur cette disposition (la bande du bureau se suffit a elle-meme). */
-      .metiers{width:100%;display:grid;grid-template-columns:1fr 1fr;
-               gap:8px;align-items:stretch}
-      .metiers-intitule{display:block;grid-column:1 / -1;margin-bottom:2px;
+         disait ce que ces mots faisaient la. Six pastilles separees ne valaient
+         pas mieux : elles ressemblaient a des boutons et l'oeil les comptait
+         au lieu de les lire.
+         C'est donc UNE carte, avec une coche par metier. C'est la ou le
+         visiteur doit se reconnaitre : elle se detache du reste de la pile et
+         se lit d'un trait, comme une liste de courses. */
+      .metiers{width:100%;display:flex;flex-direction:column;gap:9px;
+               background:var(--surface);border:1px solid var(--border);
+               border-radius:var(--radius);box-shadow:var(--ombre-levee);
+               padding:clamp(15px,4.5vw,22px)}
+      /* Deux classes, comme la regle de bureau qui le masque : sans cela, la
+         cascade laisse l'intitule invisible. */
+      .metiers li.metiers-intitule{display:block;margin-bottom:3px;
                         font-size:.72rem;font-weight:700;letter-spacing:1.3px;
                         text-transform:uppercase;color:var(--muted2)}
-      /* L'intitule est dans la meme liste, mais ce n'est pas un metier : il ne
-         prend ni cadre ni fond. */
-      .metiers li:not(.metiers-intitule){display:flex;align-items:center;justify-content:flex-start;
-                  background:var(--surface);border:1px solid var(--border);
-                  border-radius:var(--radius-commande);
-                  padding:10px 12px;gap:0;
-                  font-size:.84rem;font-weight:600;line-height:1.3;
+      .metiers li:not(.metiers-intitule){display:flex;align-items:flex-start;gap:10px;
+                  font-size:.92rem;font-weight:600;line-height:1.35;
                   color:var(--ink);white-space:normal}
-      /* Le point separateur n'a plus lieu d'etre : chaque metier a son cadre. */
-      .metiers li+li::before{content:none}
+      /* La coche remplace le point separateur : elle transforme une enumeration
+         en liste de ce que l'application couvre. */
+      .metiers li+li::before{content:"✓";color:var(--tone);font-weight:800;line-height:1.25}
+      .metiers li.metiers-intitule+li::before{content:"✓"}
       /* Le trait de separation et son retrait n'ont plus de sens dans une pile :
          les blocs y sont deja separes par le rythme commun de la colonne.
          Le transform DOIT etre annule ici, et pas dans la liste generique plus
@@ -1356,7 +1446,7 @@
              designe le fil d'Ariane en portent un. La place ainsi rendue va
              aux vignettes, qui montrent enfin l'application au moment ou le
              visiteur cherche a savoir a quoi elle ressemble. -->
-        <div class="viz" style="left:9%;top:5%">
+        <div class="viz titre-ecran" style="left:9%;top:5%">
           <h2 class="titre-section" data-i18n-html="t2.title">Trois <em>gestes.</em></h2>
         </div>
 
@@ -1454,7 +1544,7 @@
         <!-- Ecran intermediaire : titre de section, et les deux cartes gagnent
              la hauteur que le mot geant leur prenait. Elles se lisent de gauche
              a droite comme un avant / apres. -->
-        <div class="viz" style="left:5%;top:7%;width:90%">
+        <div class="viz titre-ecran" style="left:5%;top:7%;width:90%">
           <h2 class="titre-section" data-i18n-html="t4.title">Moins de <em>route.</em></h2>
           <p class="sous-titre" data-i18n-html="t4.argument"><strong>43 km de moins sur une tournée de 67 arrêts.</strong> Ta zone reste découpée comme tu la connais.</p>
           <p class="mention" data-i18n="t4.chargement">Chargement guidé : le dernier chargé est le premier livré</p>
@@ -1532,7 +1622,7 @@
        <div class="field">
         <!-- Ecran intermediaire, et le seul a porter TROIS captures : le titre
              de section libere justement la hauteur qu'il leur faut. -->
-        <div class="viz" style="left:5%;top:4%">
+        <div class="viz titre-ecran" style="left:5%;top:4%">
           <h2 class="titre-section" data-i18n-html="t6.title">Rien ne se <em>perd.</em></h2>
           <p class="sous-titre" data-i18n-html="t6.argument"><strong>Aucun colis oublié, aucune tournée perdue.</strong> Ce qui n'a pas pu être livré revient au bon moment.</p>
         </div>
@@ -1557,7 +1647,7 @@
           <figure class="viz bloc rang">
             <h3 class="bloc-titre" data-i18n="bloc.bilan.titre">Bilan de tournée</h3>
             <div class="bloc-shot">
-              <img src="./img/captures/bilan_tournee.png" width="363" height="433"
+              <img src="./img/captures/bilan_tournee.png" data-src-i18n="./img/captures/bilan_tournee.png" width="1200" height="2323"
                    data-i18n-alt="bloc.bilan.alt" alt="Écran ATEQO : tournée terminée, 58 livrés, 2 reprogrammés, 1 retour dépôt" loading="lazy" />
             </div>
             <p class="bloc-texte" data-i18n="bloc.bilan.bulle">Ta journée entière en un écran.</p>
@@ -2084,6 +2174,84 @@
     });
 
     applyLang(detectLang());
+
+    /* ── Titre colle : pose de la classe ──────────────────────────────────────
+       Une sentinelle d'un pixel est glissee avant chaque titre de section. Tant
+       qu'elle est visible, le titre est a sa place ; des qu'elle sort par le
+       haut, il colle, et on le replie. C'est la seule facon de connaitre
+       l'etat colle d'un `position:sticky`, que le CSS n'expose pas.
+       Ne vaut que pour la pile : sur la piste horizontale, rien ne colle. */
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
+      var pile = window.matchMedia('(max-width: 980px)');
+
+      var hauteurBandeau = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header'), 10) || 54;
+
+      /* Un seul juge, deux guetteurs. « Hors champ » ne suffit pas a decider :
+         une sentinelle encore SOUS la fenetre ne coupe pas le cadre non plus,
+         et les titres pas encore atteints se repliaient donc d'avance, promesse
+         escamotee. Deux observateurs qui posent et retirent chacun de leur cote
+         finissaient en outre par se contredire, le dernier arrive gagnant.
+         L'etat se lit donc en un seul endroit, sur la geometrie : le titre colle
+         si son repere est passe sous le bandeau ET si sa section n'est pas
+         encore remontee au-dessus. Les observateurs ne servent plus qu'a dire
+         QUAND relire, jamais QUOI conclure. */
+      function majEtat(titre) {
+        var repere = titre.previousElementSibling;
+        var section = titre.closest('.slide');
+        if (!repere || !repere.classList.contains('sentinelle') || !section) return;
+        titre.classList.toggle('est-colle',
+          repere.getBoundingClientRect().top < hauteurBandeau &&
+          section.getBoundingClientRect().bottom > hauteurBandeau);
+      }
+
+      // La marge haute vaut la hauteur du bandeau : le franchissement doit etre
+      // signale quand l'element passe DERRIERE lui, pas quand il quitte la
+      // fenetre.
+      var cadre = { rootMargin: '-' + hauteurBandeau + 'px 0px 0px 0px', threshold: 0 };
+
+      var observateur = new IntersectionObserver(function (entrees) {
+        entrees.forEach(function (e) {
+          if (e.target.nextElementSibling) majEtat(e.target.nextElementSibling);
+        });
+      }, cadre);
+
+      // Second guetteur : la fin de la section. Sans lui, rien ne signalerait
+      // qu'on a quitte une section, le repere etant hors champ depuis longtemps.
+      var suiviSections = new IntersectionObserver(function (entrees) {
+        entrees.forEach(function (e) {
+          var titre = e.target.querySelector('.titre-bloc, .titre-ecran');
+          if (titre) majEtat(titre);
+        });
+      }, cadre);
+
+      var sentinelles = [];
+
+      function poser() {
+        document.querySelectorAll('.titre-bloc, .titre-ecran').forEach(function (titre) {
+          if (titre.previousElementSibling && titre.previousElementSibling.classList.contains('sentinelle')) return;
+          var repere = document.createElement('span');
+          repere.className = 'sentinelle';
+          repere.setAttribute('aria-hidden', 'true');
+          titre.parentNode.insertBefore(repere, titre);
+          observateur.observe(repere);
+          sentinelles.push(repere);
+          var section = titre.closest('.slide');
+          if (section) suiviSections.observe(section);
+        });
+      }
+
+      function retirer() {
+        sentinelles.forEach(function (s) { observateur.unobserve(s); s.remove(); });
+        sentinelles = [];
+        suiviSections.disconnect();
+        document.querySelectorAll('.est-colle').forEach(function (t) { t.classList.remove('est-colle'); });
+      }
+
+      function suivre() { pile.matches ? poser() : retirer(); }
+      suivre();
+      pile.addEventListener('change', suivre);
+    })();
 
     /* ── Loupe ────────────────────────────────────────────────────────────────
        Un appui sur une capture l'ouvre en grand. Reduite a la largeur d'une

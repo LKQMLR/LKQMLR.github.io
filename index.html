@@ -876,6 +876,16 @@
             margin-inline:auto}
     .rangee.deux{grid-template-columns:repeat(2,1fr);max-width:min(100%,124vh)}
     .rangee.trois{grid-template-columns:repeat(3,1fr)}
+    /* ── Rangee a colonnes inegales ───────────────────────────────────────────
+       Deux captures de formats opposes, un telephone en hauteur et une carte en
+       largeur : a colonnes egales, l'une devient un timbre-poste et l'autre est
+       ecrasee. Les colonnes suivent donc leurs formats.
+       Les deux legendes se posent en BAS de colonne : a hauteurs naturelles
+       differentes, elles flottaient chacune sous sa capture et la rangee
+       n'avait aucune ligne de base. */
+    .rangee.nav{grid-template-columns:minmax(0,.4fr) minmax(0,1fr);align-items:stretch}
+    .rangee.nav>.viz.bloc{height:100%}
+    .rangee.nav .bloc-texte{margin-top:auto;padding-top:clamp(6px,.6vw,12px)}
     /* Les formules occupent la largeur qu'on leur donne et passent DEVANT le
        titre : c'est sur elles qu'on veut cliquer, pas le lire. */
     .viz.formules{z-index:6}
@@ -1003,12 +1013,19 @@
        y devient disproportionne et vole la place des encarts du bas, qui
        viennent alors mordre dessus. Le reduire ici degage ce qu'il faut sans
        toucher a la composition. */
+    /* Ces deux paliers faisaient l'INVERSE de ce que leur commentaire annonce :
+       ils portaient le mot de 4,5vw a 6,4vw puis 5,3vw, c'est-a-dire qu'ils
+       l'agrandissaient sur les fenetres qui manquent justement de place. Sur un
+       portable 1366x768, la resolution la plus repandue, « Garde la main. »
+       atteignait 87 px de corps contre 68 sur un 1500x950, et venait mordre de
+       67 px sur le titre du bloc voisin. Les valeurs descendent donc reellement
+       sous le 4,5vw de base, chaque palier plus bas que le precedent. */
     @media(min-width:981px) and (max-height:820px){
-      .giant{font-size:clamp(2.4rem,6.4vw,7rem)}
+      .giant{font-size:clamp(1.9rem,3.9vw,4.6rem)}
     }
     /* Plus bas encore : un portable 1080 affiche a 125% ne laisse que ~730px. */
     @media(min-width:981px) and (max-height:760px){
-      .giant{font-size:clamp(2.1rem,5.3vw,5.6rem)}
+      .giant{font-size:clamp(1.8rem,3.4vw,4rem)}
     }
     /* Les ecrans dont le titre est ancre EN HAUT avec un pave de contenu en
        dessous (les trois gestes, les tarifs) sont les plus contraints en
@@ -1725,33 +1742,37 @@
        <div class="field">
         <div class="titre-bloc">
           <h2 class="giant" data-i18n-html="t5.title">Garde la <em>main.</em></h2>
-          <p class="argument court" data-i18n="t5.argument">ATEQO optimise, tu choisis. À chaque arrêt.</p>
+          <p class="argument court" data-i18n-html="t5.argument"><strong>ATEQO optimise, tu choisis.</strong> À chaque arrêt.</p>
           <p class="mention" data-i18n="t5.gps">Ton GPS habituel prend le relais : la destination part dans Google Maps</p>
         </div>
 
-        <!-- « Garde la main. » est le plus long des mots geants : les captures
-             partent de 46 % et non de 38 %, sinon elles mordent sur sa
-             derniere syllabe des que la fenetre descend a 1366 px. -->
-        <figure class="viz bloc" style="left:44%;top:13%;width:min(260px,13vw,30vh)">
-          <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Navigation adaptative</h3>
-          <div class="bloc-shot">
-            <img src="./img/captures/navigation.png" data-src-i18n="./img/captures/navigation.png"
-                 width="750" height="1534"
-                 data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
-          </div>
-          <p class="bloc-texte" data-i18n="bloc.navigation.bulle">Tu changes d'avis, l'ordre suit.</p>
-        </figure>
+        <!-- Une RANGEE, et non deux `left` : les deux blocs etaient poses a la
+             main, s'arretaient a des hauteurs differentes (485 px contre 392) et
+             leurs deux legendes ne partageaient aucune ligne, tandis que le
+             tiers bas de la scene restait desert.
+             Colonnes INEGALES a dessein : un telephone en hauteur et une carte
+             en largeur mis a egalite donnent soit un timbre-poste, soit une
+             carte ecrasee. Les colonnes suivent donc leurs formats. -->
+        <div class="rangee deux nav" style="left:41%;top:12%;width:55%">
+          <figure class="viz bloc">
+            <h3 class="bloc-titre" data-i18n="bloc.navigation.titre">Navigation adaptative</h3>
+            <div class="bloc-shot">
+              <img src="./img/captures/navigation.png" data-src-i18n="./img/captures/navigation.png"
+                   width="750" height="1534"
+                   data-i18n-alt="bloc.navigation.alt" alt="Écran ATEQO : la destination recommandée, puis les adresses les plus proches" />
+            </div>
+            <p class="bloc-texte" data-i18n="bloc.navigation.bulle">Tu changes d'avis, l'ordre suit.</p>
+          </figure>
 
-        <!-- La carte partage la LIGNE HAUTE de la capture voisine : c'est ce
-             qui fait lire les deux comme une meme rangee. -->
-        <figure class="viz bloc" style="left:60%;top:13%;width:min(660px,34vw,56vh)">
-          <h3 class="bloc-titre" data-i18n="bloc.statuts.titre">Tout se pilote sur la carte</h3>
-          <div class="bloc-shot">
-            <img src="./img/captures/navigation_statuts.jpg" width="2040" height="1224"
-                 data-i18n-alt="bloc.statuts.alt" alt="Carte ATEQO en cours de tournée : l'arrêt à livrer et le reste du trajet" loading="lazy" />
-          </div>
-          <p class="bloc-texte" data-i18n="bloc.statuts.bulle">Un arrêt livré, une adresse ajoutée : deux secondes, sans quitter la carte.</p>
-        </figure>
+          <figure class="viz bloc">
+            <h3 class="bloc-titre" data-i18n="bloc.statuts.titre">Tout se pilote sur la carte</h3>
+            <div class="bloc-shot">
+              <img src="./img/captures/navigation_statuts.jpg" width="2040" height="1224"
+                   data-i18n-alt="bloc.statuts.alt" alt="Carte ATEQO en cours de tournée : l'arrêt à livrer et le reste du trajet" loading="lazy" />
+            </div>
+            <p class="bloc-texte" data-i18n="bloc.statuts.bulle">Un arrêt livré, une adresse ajoutée : deux secondes, sans quitter la carte.</p>
+          </figure>
+        </div>
 
        </div>
       </div>
@@ -2037,7 +2058,7 @@
         'bloc.reel.alt': 'Carte ATEQO : l’itinéraire optimisé tracé sur les routes réelles',
         // ── 5. Garde la main ──
         't5.title': 'Garde la <em>main.</em>',
-        't5.argument': 'ATEQO optimise, tu choisis. À chaque arrêt.',
+        't5.argument': '<strong>ATEQO optimise, tu choisis.</strong> À chaque arrêt.',
         't5.gps': 'Ton GPS habituel prend le relais : la destination part dans Google Maps',
         'bloc.navigation.titre': 'Navigation adaptative',
         'bloc.navigation.bulle': 'Tu changes d’avis, l’ordre suit.',
@@ -2176,7 +2197,7 @@
         'bloc.reel.alt': 'ATEQO map: the optimized route drawn on real roads',
         // ── 5. Stay in control ──
         't5.title': 'Stay in <em>control.</em>',
-        't5.argument': 'ATEQO optimizes, you decide. At every stop.',
+        't5.argument': '<strong>ATEQO optimizes, you decide.</strong> At every stop.',
         't5.gps': 'Your usual GPS takes over: the destination opens in Google Maps',
         'bloc.navigation.titre': 'Adaptive navigation',
         'bloc.navigation.bulle': 'Change your mind, the order follows.',

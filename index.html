@@ -1135,9 +1135,15 @@
          Le width:100% traite un piege flexbox distinct : en colonne avec
          align-items autre que stretch, un enfant sans largeur explicite se
          dimensionne a son contenu et ignore la largeur du conteneur. */
+      /* Le  protegeait le mot geant d'une coupure malheureuse sur la
+         PISTE, ou il est dimensionne en vw dans un bloc dimensionne autrement.
+         Sur une colonne de 346 px il n'a plus de sens : le texte deborde de sa
+         boite, et centre il debordait des DEUX cotes, elargissant la page a
+         448 px. Un titre qui ne tient pas sur une ligne se replie. */
       .giant{width:100%;font-size:clamp(1.75rem,9.2vw,3.4rem);line-height:.95;
-             text-align:left;white-space:nowrap}
-      .titre-section{width:100%;font-size:clamp(1.3rem,6.6vw,2.1rem);white-space:nowrap}
+             white-space:normal;text-wrap:balance}
+      .titre-section{width:100%;font-size:clamp(1.3rem,6.6vw,2.1rem);
+             white-space:normal;text-wrap:balance}
       .note{width:auto}
       /* Le retrecissement ne sert qu'a eviter le titre geant sur la piste
          horizontale : dans une colonne, il ne ferait que rendre la bulle
@@ -1258,15 +1264,14 @@
       /* Replier ne suffit pas a rendre la place : un enfant ramene a une
          hauteur nulle garde son intervalle dans une colonne flex, et la
          promesse escamotee laissait 24 px de vide dans la barre. */
-      .titre-bloc.est-colle,.titre-ecran.est-colle{padding-bottom:9px;gap:0;
-              align-items:center}
+      .titre-bloc.est-colle,.titre-ecran.est-colle{padding-bottom:9px;gap:0}
       /* Colle, le titre n'est plus une accroche : c'est un repere. Un repere se
          pose au milieu de la barre et se tait. Aligne a gauche il pendait dans
          le vide laisse par la promesse escamotee, et il continuait de respirer
          alors qu'un element fixe qui bouge sous l'oeil est le plus sur moyen de
          rendre une page fatigante. */
       .titre-bloc.est-colle .giant,.titre-ecran.est-colle .titre-section{
-              text-align:center;width:100%}
+              width:100%}
       .titre-bloc.est-colle .giant.is-in,
       .titre-ecran.est-colle .titre-section.is-in{animation:none;translate:0 0}
       .titre-bloc.est-colle .giant,.titre-ecran.est-colle .titre-section{
@@ -1295,6 +1300,25 @@
          rythme commun fait le reste. */
       .track>.slide+.slide{border-top:1px solid var(--border)}
 
+
+      /* ── Un seul axe pour toute la pile ─────────────────────────────────────
+         Le titre colle etait centre pendant que titres de bloc, promesses et
+         descriptions partaient tous du bord gauche : deux axes dans une meme
+         colonne, et le regard devait changer de point de retour a chaque bloc.
+         La pile est donc alignee a GAUCHE d'un bout a l'autre, titre colle
+         compris.
+         Le centrage integral a bien ete essaye, puis MESURE : il portait la
+         page a 448 px au lieu de 390. Un debordement transitoire pendant la
+         mise en scene du titre suffit a faire grandir le viewport mobile, qui
+         ne retrecit plus ensuite, et tout le reste (bandeau, banniere) suivait.
+         Une colonne alignee a gauche se lit de toute facon mieux : le regard
+         retrouve toujours le meme bord. Ne pas y revenir sans mesurer.
+         Les enfants prennent toute la largeur pour que leur bord gauche tombe
+         au meme endroit, quelle que soit la longueur de leur texte. */
+      .titre-bloc>*,.titre-ecran>*,.viz.bloc>*{width:100%}
+      .giant,.titre-section,.argument,.argument.court,
+      .titre-section+.sous-titre,.bloc-titre,.bloc-texte,.etape p,
+      .metiers li,.faq-item,.plan-features li{text-align:left}
       /* ── Metiers, version pile ──────────────────────────────────────────────
          En bande, la liste se repliait sur trois lignes inegales separees par
          des points : le bord droit partait dans tous les sens et rien ne
@@ -1333,7 +1357,7 @@
       /* L'appel final se centre, comme sur la version bureau : le titre tient
          sur une ligne et le badge Google Play n'est plus plaque a gauche. */
       .end-block{align-items:center;text-align:center}
-      .end-block h2{width:100%;font-size:clamp(1.25rem,6.6vw,2rem);white-space:nowrap}
+      .end-block h2{width:100%;font-size:clamp(1.25rem,6.6vw,2rem);white-space:normal;text-wrap:balance}
       .end-block p{width:100%}
       .end-block .gplay img{height:54px}
       .site-footer{text-align:left;width:100%}

@@ -658,7 +658,11 @@
        la premiere vignette ne montrait plus qu'un micro sur du blanc. */
     .etape-visuel{height:clamp(150px,30vh,340px);border-radius:8px;overflow:hidden;
                   background:var(--surface2);border:1px solid var(--border)}
-    .etape-visuel img{width:100%;height:100%;object-fit:cover;object-position:center;
+    /* La spécificité doit BATTRE  (plus bas dans le
+       fichier, donc gagnant a poids egal) : sans cela l'image gardait sa
+       hauteur naturelle, le cadre a hauteur imposee montrait son fond en
+       dessous, et chaque carte se terminait par une bande vide. */
+    .viz .etape-visuel img{width:100%;height:100%;object-fit:cover;object-position:center;
                       display:block}
     /* Le seul portrait du lot. Cadre tout en HAUT : on ne veut y voir que
        « Prochaine destination », pas le milieu d'une liste d'adresses. */
@@ -846,6 +850,14 @@
        l'information ; c'est le meme parti que les vignettes des trois gestes. */
     .bloc.rang .bloc-shot{height:var(--h-shot,clamp(210px,34vh,400px));overflow:hidden;
                           border-radius:10px;box-shadow:var(--ombre-capture)}
+    /* Une capture haute rognee par le cadre se coupe en pleine ligne, et la
+       coupure nette se lit comme un defaut d'affichage. Un fondu sur les
+       derniers pixels la transforme en fin de page : on comprend que la liste
+       continue au lieu de croire que l'image est cassee. */
+    .bloc.rang .bloc-shot::after{content:"";position:absolute;left:0;right:0;bottom:0;
+                                 height:42px;pointer-events:none;border-radius:0 0 10px 10px;
+                                 background:linear-gradient(to bottom,
+                                         rgba(255,255,255,0),rgba(255,255,255,.94))}
     .bloc.rang .bloc-shot img{width:100%;height:100%;object-fit:cover;object-position:center top;
                               border-radius:0;box-shadow:none;display:block}
     /* La description dit l'EFFET, jamais la methode : elle se lit d'un coup

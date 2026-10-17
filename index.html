@@ -73,20 +73,6 @@
         "price": "0",
         "priceCurrency": "EUR",
         "description": "2 tournées optimisées par mois, adresses illimitées, 3 secteurs actifs."
-      },
-      {
-        "@type": "Offer",
-        "name": "Pro",
-        "price": "16.99",
-        "priceCurrency": "EUR",
-        "description": "Tournées illimitées, 5 secteurs actifs, carnet et circuits récurrents. Facturation mensuelle."
-      },
-      {
-        "@type": "Offer",
-        "name": "Pro annuel",
-        "price": "169.99",
-        "priceCurrency": "EUR",
-        "description": "Tournées illimitées, 5 secteurs actifs, carnet et circuits récurrents. Facturation annuelle."
       }
     ]
   }
@@ -629,7 +615,7 @@
                    letter-spacing:-1.1px;line-height:1.05;color:var(--ink);white-space:nowrap}
     .titre-section em{font-style:normal;color:var(--tone)}
     /* Une ligne de contexte sous le titre de section : meme traitement sobre
-       que sous les mots geants, pour que les huit ecrans se lisent pareil. */
+       que sous les mots geants, pour que les sept ecrans se lisent pareil. */
     .titre-section+.sous-titre{margin-top:clamp(6px,.6vw,12px);color:var(--muted-fort);
                                max-width:min(620px,42vw);text-wrap:balance;
                                font-size:clamp(.92rem,1.2vw,1.38rem);line-height:1.45}
@@ -1447,7 +1433,7 @@
            tout ce qu'un lecteur d'ecran a besoin d'entendre. Ils sont dans le
            flux, entre deux reperes, pour menager un vrai vide autour des
            icones. -->
-      <!-- Cinq reperes pour huit ecrans : certains en couvrent deux. Le nombre
+      <!-- Quatre reperes pour sept ecrans : certains en couvrent deux. Le nombre
            de reperes ne suit pas le nombre d'ecrans mais les cinq moments du
            parcours, et les cinq couleurs de la marque. Chaque segment porte sa
            PORTEE, c'est-a-dire le nombre d'ecrans qu'il enjambe : sans elle,
@@ -1478,14 +1464,6 @@
       </button>
       <span class="fil-segment" style="--portee:2" aria-hidden="true"></span>
       <button type="button" class="fil-etape" data-ecran="6">
-        <!-- Gemme : la formule qu'on choisit. -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/>
-        </svg>
-        <span class="fil-nom" data-i18n="fil.t4">Tarifs</span>
-      </button>
-      <span class="fil-segment" style="--portee:1" aria-hidden="true"></span>
-      <button type="button" class="fil-etape" data-ecran="7">
         <!-- Fleche vers un support : le telechargement. -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>
@@ -1867,83 +1845,6 @@
       </div>
     </section>
 
-    <!-- ══ TARIFS ════════════════════════════════════════════════════════════
-         Cet ecran ne figure pas sur la maquette, mais les prix et l'essai
-         doivent bien vivre quelque part : ils ont leur ecran, juste avant
-         l'appel final. Il porte le rose du Q, la quatrieme couleur de la
-         marque, que les trois themes n'utilisent pas. -->
-    <section class="slide t4" data-theme="3">
-      <div class="stage">
-       <div class="field">
-        <!-- Ce titre tient la meme ligne que les autres depuis que tous se
-             replient en haut a gauche ; seul son corps reste compact, pour
-             laisser passer trois formules de sept lignes.
-             La couleur d'accent est redefinie SUR le bloc de titre : splitGiants
-             decoupe le mot en lettres et pose var(--tone) sur chacune en style
-             inline, or un style inline bat toute regle CSS. En changeant la
-             variable ici, les lettres heritent du rose du Q sans qu'on ait a
-             leur forcer une couleur, et sans dependre du theme de l'ecran. -->
-        <div class="titre-bloc compact" style="--tone:var(--s4)">
-          <h2 class="giant" data-i18n-html="plans.title">Choisis ton <em>plan.</em></h2>
-          <p class="argument" data-i18n="plans.argument">Sans engagement. Tu changes de formule ou tu arrêtes quand tu veux, depuis Google Play.</p>
-          <p class="mention" data-i18n="plans.bulle">4 tournées offertes à l'inscription, puis 7 jours d'essai gratuit sur l'abonnement</p>
-        </div>
-
-        <div class="viz formules" style="left:18%;top:40%;width:64%">
-          <div class="plans">
-            <div class="plan">
-              <div class="plan-name" data-i18n="plan.free.name">Gratuit</div>
-              <div class="plan-price">0 <span class="per">€</span></div>
-              <!-- Les trois lignes qui separent reellement les formules (les
-                   tournees, les secteurs, le carnet) portent la classe
-                   difference, aux MEMES rangs dans les trois cartes : la
-                   comparaison se lit alors en diagonale. -->
-              <ul class="plan-features">
-                <li class="difference" data-i18n="plan.free.f1">2 tournées par mois</li>
-                <li data-i18n="plan.f.addr">Adresses illimitées</li>
-                <li class="difference" data-i18n="plan.free.f2">3 secteurs actifs</li>
-                <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
-                <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
-                <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
-                <li class="no difference" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
-              </ul>
-              <a class="plan-btn tertiary" data-track-position="tarifs-gratuit" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.free.cta">Télécharger</a>
-            </div>
-            <div class="plan">
-              <div class="plan-name" data-i18n="plan.monthly.name">Pro</div>
-              <div class="plan-price" data-i18n-html="plan.monthly.price">16,99 <span class="per">€ / mois</span></div>
-              <ul class="plan-features">
-                <li class="difference" data-i18n="plan.f.tours">Tournées illimitées</li>
-                <li data-i18n="plan.f.addr">Adresses illimitées</li>
-                <li class="difference" data-i18n="plan.f.sectors">5 secteurs actifs</li>
-                <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
-                <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
-                <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
-                <li class="difference" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
-              </ul>
-              <a class="plan-btn secondary" data-track-position="tarifs-mensuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Commencer</a>
-            </div>
-            <div class="plan featured">
-              <div class="plan-ribbon" data-i18n="plan.annual.ribbon">2 mois offerts</div>
-              <div class="plan-name" data-i18n="plan.annual.name">Pro annuel</div>
-              <div class="plan-price" data-i18n-html="plan.annual.price">169,99 <span class="per">€ / an</span></div>
-              <ul class="plan-features">
-                <li class="difference" data-i18n="plan.f.tours">Tournées illimitées</li>
-                <li data-i18n="plan.f.addr">Adresses illimitées</li>
-                <li class="difference" data-i18n="plan.f.sectors">5 secteurs actifs</li>
-                <li data-i18n="plan.f.optim">Optimisation sur routes réelles</li>
-                <li data-i18n="plan.f.voice">Saisie vocale des adresses</li>
-                <li data-i18n="plan.f.nav">Carte et navigation adaptative</li>
-                <li class="difference" data-i18n="plan.f.book">Carnet et circuits récurrents</li>
-              </ul>
-              <a class="plan-btn primary" data-track-position="tarifs-annuel" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener" data-i18n="plan.cta">Commencer</a>
-            </div>
-          </div>
-        </div>
-       </div>
-      </div>
-    </section>
-
     <!-- ══ FIN ═══════════════════════════════════════════════════════════════ -->
     <!-- Le violet du O ferme la traversee, et la marque a donne ses cinq
          couleurs dans l'ordre de ses lettres. Cet ecran ne porte donc aucune
@@ -2036,7 +1937,6 @@
         'fil.t1': 'Découvrir',
         'fil.t2': 'Préparer',
         'fil.t3': 'Livrer',
-        'fil.t4': 'Tarifs',
         'fil.t5': 'Télécharger',
         // ── 1. Livre plus ──
         // Les espaces des durees sont INSECABLES ( ) : « 1 h 32 » ne doit
@@ -2114,27 +2014,7 @@
         'bloc.historique.titre': 'Historique',
         'bloc.historique.bulle': 'Tout est gardé, tournée après tournée.',
         'bloc.historique.alt': 'Écran ATEQO : l’historique du mois, tournée par tournée',
-        'plan.free.name': 'Gratuit',
-        'plan.free.f1': '2 tournées par mois',
-        'plan.free.f2': '3 secteurs actifs',
-        'plan.free.cta': 'Télécharger',
-        'plan.f.addr': 'Adresses illimitées',
-        'plan.f.tours': 'Tournées illimitées',
-        'plan.f.sectors': '5 secteurs actifs',
-        'plan.f.optim': 'Optimisation sur routes réelles',
-        'plan.f.voice': 'Saisie vocale des adresses',
-        'plan.f.nav': 'Carte et navigation adaptative',
-        'plan.f.book': 'Carnet et circuits récurrents',
-        'plan.monthly.name': 'Pro',
-        'plan.monthly.price': '16,99 <span class="per">€ / mois</span>',
-        'plan.annual.name': 'Pro annuel',
-        'plan.annual.price': '169,99 <span class="per">€ / an</span>',
-        'plan.annual.ribbon': '2 mois offerts',
-        'plan.cta': 'Commencer',
         // ── 7. Tarifs ──
-        'plans.title': 'Choisis ton <em>plan.</em>',
-        'plans.argument': 'Sans engagement. Tu changes de formule ou tu arrêtes quand tu veux, depuis Google Play.',
-        'plans.bulle': "4 tournées offertes à l'inscription, puis 7 jours d'essai gratuit sur l'abonnement",
         // ── 8. Questions et départ ──
         // Ces cinq reponses sont recopiees a l'identique dans le balisage
         // FAQPage de l'en-tete : toute modification ici doit s'y reporter, sans
@@ -2178,7 +2058,6 @@
         'fil.t1': 'Discover',
         'fil.t2': 'Prepare',
         'fil.t3': 'Deliver',
-        'fil.t4': 'Pricing',
         'fil.t5': 'Download',
         // ── 1. Deliver more ──
         't1.title': 'Deliver <em>more.</em>',
@@ -2253,28 +2132,8 @@
         'bloc.historique.titre': 'History',
         'bloc.historique.bulle': 'Everything is kept, route after route.',
         'bloc.historique.alt': 'ATEQO screen: the month’s history, route by route',
-        'plan.free.name': 'Free',
-        'plan.free.f1': '2 routes per month',
-        'plan.free.f2': '3 active sectors',
-        'plan.free.cta': 'Download',
-        'plan.f.addr': 'Unlimited addresses',
-        'plan.f.tours': 'Unlimited routes',
-        'plan.f.sectors': '5 active sectors',
-        'plan.f.optim': 'Optimization on real roads',
-        'plan.f.voice': 'Voice address entry',
-        'plan.f.nav': 'Interactive map and adaptive navigation',
-        'plan.f.book': 'Address book and saved lists',
-        'plan.monthly.name': 'Pro',
-        'plan.monthly.price': '€16.99 <span class="per">/ month</span>',
-        'plan.annual.name': 'Pro annual',
-        'plan.annual.price': '€169.99 <span class="per">/ year</span>',
-        'plan.annual.ribbon': '2 months free',
-        'plan.cta': 'Get started',
         
         // ── 7. Pricing ──
-        'plans.title': 'Pick your <em>plan.</em>',
-        'plans.argument': 'No commitment. Change plan or stop whenever you want, from Google Play.',
-        'plans.bulle': '4 free routes when you sign up, then a 7-day free trial on the subscription',
         // ── 8. Questions and departure ──
         'faq.titre': 'Frequently asked questions',
         'faq.q1': 'How many stops per route?',

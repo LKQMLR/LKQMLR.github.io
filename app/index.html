@@ -3,21 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Téléchargez ATEQO – Optimisez vos tournées | Google Play</title>
-  <meta name="description" content="ATEQO optimise tes tournées de livraison en quelques secondes. Moins de kilomètres, plus de livraisons. Télécharge gratuitement sur Google Play." />
+  <title>Téléchargez ATEQO – Optimisez vos tournées | Google Play et App Store</title>
+  <meta name="description" content="ATEQO optimise tes tournées de livraison en quelques secondes. Moins de kilomètres, plus de livraisons. Télécharge gratuitement sur Google Play et l'App Store." />
   <link rel="canonical" href="https://ateqo.fr/download/" />
   <meta name="robots" content="noindex, follow" />
   <meta name="theme-color" content="#f1f4f7" />
 
-  <!-- Secours sans JS (navigateurs in-app TikTok/Instagram restreints, bloqueurs).
-       Delai volontairement plus long que le minuteur JavaScript de 3 s, et non
-       egal : a delai egal le meta refresh gagnait systematiquement la course,
-       puisqu'il est arme des l'analyse du <head> alors que le minuteur ne demarre
-       qu'apres le script en bas de page. Le depart passait donc a cote de la
-       mesure (trackAutoRedirect n'etait jamais atteint), et surtout il ejectait le
-       visiteur vers Google Play pendant qu'il lisait la banniere cookies, que seul
-       le chemin JavaScript sait mettre en pause. -->
-  <meta http-equiv="refresh" content="12;url=https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" />
+  <!-- Secours SANS JavaScript seulement (navigateurs in-app restreints,
+       bloqueurs) : un meta refresh ne sait pas distinguer un iPhone d'un Android
+       et enverrait l'iPhone sur Google Play. Avec JavaScript, c'est le script du
+       bas qui choisit le store et respecte la banniere cookies ; le <noscript>
+       retire aussi l'ancienne course entre le meta refresh et le minuteur. -->
+  <noscript><meta http-equiv="refresh" content="12;url=https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" /></noscript>
 
   <!-- Favicon -->
   <link rel="icon" href="../img/logo_ateqo.png" />
@@ -78,6 +75,9 @@
     }
     .btn-play:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(23,53,107,.34)}
     .btn-play svg{flex-shrink:0}
+    /* Le store qui n'est pas celui du telephone : meme forme, sans aplat. */
+    .btn-play.is-secondary{background:var(--surface);color:var(--ink);border:1.5px solid var(--ink);box-shadow:none}
+    .btn-play.is-secondary:hover{box-shadow:0 8px 22px rgba(23,53,107,.14)}
 
     .redirect-note{margin-top:16px;font-size:.78rem;color:var(--muted2)}
 
@@ -98,7 +98,7 @@
        Meme module que l'accueil : rien n'est depose avant le consentement. Sur
        cette page, la banniere suspend en plus la redirection automatique (cf. le
        script en bas de page). -->
-  <script src="/assets/analytics.js?v=5" defer></script>
+  <script src="/assets/analytics.js?v=6" defer></script>
 </head>
 <body>
   <main class="card">
@@ -106,11 +106,16 @@
     <h1>Téléchargez ATEQO</h1>
     <p class="pitch">ATEQO <strong>optimise</strong> tes tournées de livraison en quelques secondes. Moins de kilomètres, plus de livraisons.</p>
 
-    <div class="store-badges">
-      <!-- Emplacement prévu : ajouter ici un second .btn-play pour l'App Store iOS quand disponible -->
-      <a class="btn-play" id="play-cta" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+    <!-- Les deux stores. Le script du bas met celui du telephone en premier et
+         en aplat, et y part seul au bout de 3 secondes (iPhone : App Store). -->
+    <div class="store-badges" id="store-badges">
+      <a class="btn-play" id="play-cta" data-track-position="download_play" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
         Télécharger sur Google Play
+      </a>
+      <a class="btn-play is-secondary" id="appstore-cta" data-track-position="download_app_store" href="https://apps.apple.com/fr/app/id6823925586" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+        Télécharger sur l'App Store
       </a>
     </div>
 
@@ -119,6 +124,7 @@
     <div class="badges">
       <span><span class="dot"></span> Gratuit</span>
       <span><span class="dot"></span> Android</span>
+      <span><span class="dot"></span> iPhone</span>
     </div>
 
     <a class="back-home" href="/">← Retour au site ATEQO</a>
@@ -139,27 +145,65 @@
   <script>
     (function () {
       var GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.lkqmlr.cargo';
+      var APP_STORE_URL = 'https://apps.apple.com/fr/app/id6823925586';
       var REDIRECT_DELAY_MS = 3000;
+      var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
-      var NOTE_COUNTDOWN = 'Redirection automatique vers Google Play dans 3 secondes…';
-      var NOTE_WAITING_FOR_CONSENT = 'Redirection en pause le temps de votre choix sur les cookies. Le bouton ci-dessus reste disponible.';
+      // iPadOS se presente comme un Mac de bureau : un « Mac » tactile est un iPad.
+      function isAppleMobile() {
+        var ua = navigator.userAgent || '';
+        if (/iPhone|iPad|iPod/i.test(ua)) return true;
+        return /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+      }
+
+      // Les utm_* de l'adresse (pub YouTube : ?utm_source=youtube&utm_campaign=…)
+      // passent a Google Play dans le parametre referrer : Firebase les relit a
+      // la premiere ouverture et rattache l'installation a la campagne. C'est ce
+      // qui distingue, dans GA4, les installations venues de la pub des autres.
+      function playUrlWithReferrer() {
+        var params = new URLSearchParams(window.location.search);
+        var parts = [];
+        for (var i = 0; i < UTM_KEYS.length; i++) {
+          var value = params.get(UTM_KEYS[i]);
+          if (value) parts.push(UTM_KEYS[i] + '=' + encodeURIComponent(value));
+        }
+        return parts.length ? GOOGLE_PLAY_URL + '&referrer=' + encodeURIComponent(parts.join('&')) : GOOGLE_PLAY_URL;
+      }
+
+      var onApple = isAppleMobile();
+      var playUrl = playUrlWithReferrer();
+      var targetUrl = onApple ? APP_STORE_URL : playUrl;
+      var storeName = onApple ? "l'App Store" : 'Google Play';
+
+      var playCta = document.getElementById('play-cta');
+      var appStoreCta = document.getElementById('appstore-cta');
+      if (playCta) playCta.href = playUrl;
+      // Le store du telephone d'abord, en aplat ; l'autre reste a portee.
+      if (onApple && playCta && appStoreCta) {
+        appStoreCta.classList.remove('is-secondary');
+        playCta.classList.add('is-secondary');
+        appStoreCta.parentNode.insertBefore(appStoreCta, playCta);
+      }
+
+      var NOTE_COUNTDOWN = 'Redirection automatique vers ' + storeName + ' dans 3 secondes…';
+      var NOTE_WAITING_FOR_CONSENT = 'Redirection en pause le temps de votre choix sur les cookies. Les boutons ci-dessus restent disponibles.';
 
       var redirectNote = document.getElementById('redirect-note');
       var pendingRedirect = null;
 
-      function goToGooglePlay() {
+      function goToStore() {
         // Le depart automatique n'est pas un clic : c'est au module de mesure de
         // le compter, et seulement s'il est charge et accepte.
         if (window.ateqoConsent && typeof window.ateqoConsent.trackAutoRedirect === 'function') {
-          window.ateqoConsent.trackAutoRedirect();
+          window.ateqoConsent.trackAutoRedirect(onApple ? 'app_store' : 'play_store');
         }
-        window.location.href = GOOGLE_PLAY_URL;
+        window.location.href = targetUrl;
       }
 
       function startRedirectCountdown() {
         if (pendingRedirect) return;
         if (redirectNote) redirectNote.textContent = NOTE_COUNTDOWN;
-        pendingRedirect = setTimeout(goToGooglePlay, REDIRECT_DELAY_MS);
+        pendingRedirect = setTimeout(goToStore, REDIRECT_DELAY_MS);
       }
 
       function suspendRedirectCountdownUntilConsent() {
@@ -170,7 +214,7 @@
         if (redirectNote) redirectNote.textContent = NOTE_WAITING_FOR_CONSENT;
       }
 
-      // Partir vers Google Play pendant que la banniere de consentement est
+      // Partir vers le store pendant que la banniere de consentement est
       // affichee ne laisserait pas le temps d'y repondre. On suspend donc le
       // compte a rebours, et on le relance une fois le choix fait : ce delai
       // laisse aussi a la balise le temps d'envoyer la vue de page.

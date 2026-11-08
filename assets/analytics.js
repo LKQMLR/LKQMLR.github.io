@@ -168,15 +168,32 @@
   // que personne n'ait rien decide, et le taux de conversion de ces pages
   // tendrait vers 100 %. Ne jamais marquer auto_redirect_play_store comme
   // evenement cle.
-  function trackAutoRedirect() {
+  // `store` : 'app_store' quand /download part vers l'App Store (iPhone, 8 nov.
+  // 2026) ; tout le reste part vers Google Play, nom d'evenement inchange.
+  function trackAutoRedirect(store) {
     if (!tagLoaded || typeof window.gtag !== 'function') return;
     if (!CONFIG.GA4_ID) return;
-    window.gtag('event', 'auto_redirect_play_store', { link_position: 'redirection_auto' });
+    var name = store === 'app_store' ? 'auto_redirect_app_store' : 'auto_redirect_play_store';
+    window.gtag('event', name, { link_position: 'redirection_auto' });
+  }
+
+  // Clic vers l'App Store (bouton de /download, 8 nov. 2026) : compte dans GA4
+  // seulement. La conversion Google Ads reste celle du clic Google Play, pour
+  // ne pas changer en cours de route ce que mesurent les campagnes existantes.
+  function trackAppStoreClick(position) {
+    if (!tagLoaded || typeof window.gtag !== 'function') return;
+    if (!CONFIG.GA4_ID) return;
+    window.gtag('event', 'click_app_store', { link_position: position });
   }
 
   document.addEventListener('click', function (ev) {
     var target = ev.target;
     if (!target || typeof target.closest !== 'function') return;
+    var appStore = target.closest('a[href*="apps.apple.com"]');
+    if (appStore) {
+      trackAppStoreClick(appStore.getAttribute('data-track-position') || appStore.className || 'lien');
+      return;
+    }
     var link = target.closest('a[href*="play.google.com/store/apps"]');
     if (!link) return;
     // Sert a distinguer, dans GA4, quel emplacement de la page convertit :

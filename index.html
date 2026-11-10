@@ -46,7 +46,7 @@
     "@type": "MobileApplication",
     "name": "ATEQO",
     "alternateName": "ATEQO - Optimiseur de tournée",
-    "operatingSystem": "Android",
+    "operatingSystem": "Android, iOS",
     "applicationCategory": "BusinessApplication",
     "applicationSubCategory": "Optimiseur de tournée de livraison",
     "inLanguage": ["fr", "en"],
@@ -112,7 +112,7 @@
         "name": "Disponible sur iPhone ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "ATEQO est disponible sur Android. La version iPhone n'est pas encore ouverte."
+          "text": "Oui. ATEQO est disponible sur iPhone (App Store) et sur Android (Google Play)."
         }
       },
       {
@@ -232,6 +232,11 @@
     .gplay{display:inline-flex;transition:transform .2s}
     .gplay:hover{transform:translateY(-2px)}
     .gplay img{height:clamp(46px,4vw,58px);width:auto;display:block}
+    /* Badge Apple (fichier officiel, non retouche) : il n'a pas la marge
+       transparente du badge Google, d'ou une hauteur reduite pour que les
+       deux aplats noirs aient la meme taille a l'ecran. */
+    .gplay img.appstore-img{height:calc(clamp(46px,4vw,58px) * .76)}
+    .badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
     /* Fixe en bas a droite, sous la main pendant toute la traversee. Il
        s'efface en arrivant sur le dernier ecran : celui-ci porte deja son
        propre bouton, et deux appels identiques a l'ecran s'annulent. */
@@ -1358,6 +1363,8 @@
       .end-block h2{width:100%;font-size:clamp(1.25rem,6.6vw,2rem);white-space:normal;text-wrap:balance}
       .end-block p{width:100%}
       .end-block .gplay img{height:54px}
+      .end-block .gplay img.appstore-img{height:41px}
+      .end-block .badges{justify-content:center}
       .site-footer{text-align:left;width:100%}
       .site-footer .flinks{justify-content:flex-start}
       /* Le bandeau reste la mesure de la page, simplement plus court ici.
@@ -1378,10 +1385,12 @@
       .wordmark{height:26px}
       .sig{width:25px}
       .gplay-fixe img{height:34px}
+      .gplay-fixe img.appstore-img{height:26px}
     }
     @media(max-width:480px){
       .top-right{gap:12px}
       .gplay img{height:32px}
+      .gplay img.appstore-img{height:24px}
     }
     @media(prefers-reduced-motion:reduce){
       .hint svg{animation:none}
@@ -1863,9 +1872,14 @@
                convertir. Meme caractere dans le dictionnaire FR. -->
           <h2 data-i18n="end.title">Prêt à optimiser ta tournée&nbsp;?</h2>
           <p data-i18n="end.sub">Ta première tournée optimisée en moins d'une minute.</p>
-          <a class="gplay" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-            <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
-          </a>
+          <div class="badges">
+            <a class="gplay" data-track-position="final" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+              <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
+            </a>
+            <a class="gplay" data-track-position="final" href="https://apps.apple.com/fr/app/id6823925586" target="_blank" rel="noopener">
+              <img class="appstore-img" src="img/badge-app-store-fr.svg" data-i18n-alt="badge.appstore.alt" alt="Télécharger dans l’App Store" />
+            </a>
+          </div>
           <p class="end-rassurance">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
             <span data-i18n="end.rassurance">4 tournées offertes à l'inscription</span>
@@ -1893,7 +1907,7 @@
             </div>
             <div class="faq-item">
               <h3 data-i18n="faq.q4">Disponible sur iPhone ?</h3>
-              <p data-i18n="faq.r4">ATEQO est disponible sur Android. La version iPhone n'est pas encore ouverte.</p>
+              <p data-i18n="faq.r4">Oui. ATEQO est disponible sur iPhone (App Store) et sur Android (Google Play).</p>
             </div>
             <div class="faq-item">
               <h3 data-i18n="faq.q5">Mes adresses sont-elles conservées ?</h3>
@@ -1906,6 +1920,7 @@
           <p class="fnote" data-i18n="footer.note">© 2026 ATEQO · L'itinéraire qui te suit</p>
           <div class="flinks">
             <a data-track-position="footer" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">Google Play</a>
+            <a data-track-position="footer" href="https://apps.apple.com/fr/app/id6823925586" target="_blank" rel="noopener">App Store</a>
             <a href="/policy/support.html" data-i18n="footer.support" data-i18n-href="footer.support.href">Support</a>
             <a href="/policy/" data-i18n="footer.privacy" data-i18n-href="footer.privacy.href">Politique de confidentialité</a>
             <a href="/policy/terms.html" data-i18n="footer.terms" data-i18n-href="footer.terms.href">Conditions d'utilisation</a>
@@ -1931,6 +1946,7 @@
         'loupe.fermer': 'Fermer l\'aperçu',
         'brand.alt': "ATEQO · L'itinéraire qui te suit",
         'badge.alt': 'Disponible sur Google Play',
+        'badge.appstore.alt': 'Télécharger dans l’App Store',
         'hint.scroll': 'Fais défiler',
         // ── Fil d'Ariane du bandeau ──
         'fil.aria': 'Sections du site',
@@ -2027,7 +2043,7 @@
         'faq.q3': 'Est-ce que ça remplace mon GPS ?',
         'faq.r3': "Non. ATEQO calcule l'ordre de passage, puis lance la destination dans Google Maps pour la conduite.",
         'faq.q4': 'Disponible sur iPhone ?',
-        'faq.r4': "ATEQO est disponible sur Android. La version iPhone n'est pas encore ouverte.",
+        'faq.r4': 'Oui. ATEQO est disponible sur iPhone (App Store) et sur Android (Google Play).',
         'faq.q5': 'Mes adresses sont-elles conservées ?',
         'faq.r5': 'Tes tournées et ton carnet sont rattachés à ton compte et ne sont jamais revendus. Le détail figure dans la politique de confidentialité.',
         'end.title': 'Prêt à optimiser ta tournée ?',
@@ -2052,6 +2068,7 @@
         'loupe.fermer': 'Close preview',
         'brand.alt': 'ATEQO · The route that follows you',
         'badge.alt': 'Get it on Google Play',
+        'badge.appstore.alt': 'Download on the App Store',
         'hint.scroll': 'Scroll',
         // ── Fil d'Ariane du bandeau ──
         'fil.aria': 'Site sections',
@@ -2143,7 +2160,7 @@
         'faq.q3': 'Does it replace my GPS?',
         'faq.r3': 'No. ATEQO works out the order of passage, then opens the destination in Google Maps for the driving.',
         'faq.q4': 'Is it available on iPhone?',
-        'faq.r4': 'ATEQO is available on Android. The iPhone version is not open yet.',
+        'faq.r4': 'Yes. ATEQO is available on iPhone (App Store) and Android (Google Play).',
         'faq.q5': 'Are my addresses kept?',
         'faq.r5': 'Your routes and your address book are tied to your account and are never resold. The details are in the privacy policy.',
         'end.title': 'Ready to optimize your route?',
@@ -2169,6 +2186,24 @@
       fr: 'https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png',
       en: 'https://play.google.com/intl/en/badges/static/images/badges/en_badge_web_generic.png',
     };
+    var APPSTORE_BADGE = {
+      fr: 'img/badge-app-store-fr.svg',
+      en: 'img/badge-app-store-en.svg',
+    };
+
+    // Le badge fixe mene au store du telephone : un iPhone qui touche Google
+    // Play tombe sur une impasse. Meme detection que /download (iPadOS se
+    // presente comme un Mac de bureau : un « Mac » tactile est un iPad).
+    (function () {
+      var ua = navigator.userAgent || '';
+      var apple = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+      var fixe = document.querySelector('.gplay-fixe');
+      var img = fixe && fixe.querySelector('img');
+      if (!apple || !img) return;
+      fixe.href = 'https://apps.apple.com/fr/app/id6823925586';
+      img.className = 'appstore-img';
+      img.setAttribute('data-i18n-alt', 'badge.appstore.alt');
+    })();
 
     var LANG_KEY = 'ateqo_site_lang';
 
@@ -2216,6 +2251,9 @@
       });
       document.querySelectorAll('.gplay-img').forEach(function (el) {
         el.src = GPLAY_BADGE[lang] || GPLAY_BADGE.fr;
+      });
+      document.querySelectorAll('.appstore-img').forEach(function (el) {
+        el.src = APPSTORE_BADGE[lang] || APPSTORE_BADGE.fr;
       });
       document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
         btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);

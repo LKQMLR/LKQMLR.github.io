@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATEQO</title>
+  <!-- ── Lien court de la bio YouTube ─────────────────────────────────────────
+       Raison d'etre : le champ "Site web" d'une bio affiche l'URL telle quelle.
+       Une adresse chargee de parametres utm_* y est illisible, et souvent
+       retapee a la main. On expose ateqo.fr/yt, court et tapable, et on garde
+       le marquage ici. Pour changer de campagne, on modifie la constante
+       ci-dessous, jamais la bio. Le lien publie reste stable a vie.
+       Destination = /download/, PAS l'accueil (10 nov. 2026) : l'accueil ne
+       transmet pas les utm_* aux stores, la source se perdait au clic sur un
+       badge. /download/ les passe a Google Play (parametre referrer, relu par
+       Firebase a la premiere ouverture) et a l'App Store (ct = utm_campaign,
+       d'ou une campagne par reseau : youtube-bio).
+       Aucune mesure sur cette page, volontairement : charger GA4 ici
+       enregistrerait une vue de page avant la redirection et couperait la
+       session en deux. Sans balise, aucun cookie, donc pas de banniere. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <!-- Sans JS (navigateurs in-app restreints, bloqueurs) la redirection passe
+       quand meme par le meta refresh. -->
+  <meta http-equiv="refresh" content="0;url=https://ateqo.fr/download/?utm_source=youtube&amp;utm_medium=social&amp;utm_campaign=youtube-bio" />
+  <link rel="icon" href="/img/logo_ateqo.png" />
+  <script>
+    (function () {
+      // Un seul endroit a modifier pour changer de campagne.
+      var DESTINATION = 'https://ateqo.fr/download/?utm_source=youtube&utm_medium=social&utm_campaign=youtube-bio';
+      // replace() plutot que href : /yt ne reste pas dans l'historique, le
+      // retour arriere renvoie a YouTube et non dans une boucle.
+      window.location.replace(DESTINATION);
+    })();
+  </script>
+  <style>
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:#f1f4f7;color:#17356B;
+      display:flex;align-items:center;justify-content:center;
+      min-height:100vh;margin:0;padding:24px;text-align:center;
+    }
+    a{color:#2563eb;font-weight:600}
+  </style>
+</head>
+<body>
+  <!-- Visible uniquement si les deux redirections ont echoue. -->
+  <p>
+    Redirection vers ATEQO…<br />
+    <a href="https://ateqo.fr/download/?utm_source=youtube&amp;utm_medium=social&amp;utm_campaign=youtube-bio">Continuer vers ATEQO</a>
+  </p>
+</body>
+</html>

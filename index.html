@@ -254,6 +254,7 @@
                 filter:drop-shadow(0 6px 14px rgba(15,32,60,.22));
                 transition:opacity .55s ease,translate .55s cubic-bezier(.16,.72,.24,1)}
     .gplay-fixe.range{opacity:0;translate:0 26px;pointer-events:none}
+    .gplay-fixe.badges{flex-wrap:nowrap;gap:10px}
 
     /* Signature de marque, a droite dans le bandeau : un repere, pas un bouton,
        meme s'il ramene en haut comme le nom a gauche. */
@@ -1513,9 +1514,14 @@
 
   <!-- L'appel au telechargement ne defile pas : il reste sous la main, en bas a
        droite, du premier ecran au dernier. -->
-  <a class="gplay gplay-fixe" data-track-position="entete" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
-    <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
-  </a>
+  <div class="gplay-fixe badges">
+    <a class="gplay" id="fixe-play" data-track-position="entete" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
+      <img class="gplay-img" src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png" data-i18n-alt="badge.alt" alt="Disponible sur Google Play" />
+    </a>
+    <a class="gplay" id="fixe-appstore" data-track-position="entete" href="https://apps.apple.com/app/apple-store/id6823925586?pt=129633693&amp;ct=site&amp;mt=8" target="_blank" rel="noopener">
+      <img class="appstore-img" src="img/badge-app-store-fr.svg" data-i18n-alt="badge.appstore.alt" alt="Télécharger dans l’App Store" />
+    </a>
+  </div>
 
   <!-- Loupe : une capture agrandie par-dessus la page. Vide tant qu'on n'a
        rien ouvert, pour ne pas charger deux fois la meme image. -->
@@ -2191,18 +2197,17 @@
       en: 'img/badge-app-store-en.svg',
     };
 
-    // Le badge fixe mene au store du telephone : un iPhone qui touche Google
-    // Play tombe sur une impasse. Meme detection que /download (iPadOS se
-    // presente comme un Mac de bureau : un « Mac » tactile est un iPad).
+    // Badges fixes : sur ordinateur, les deux stores pendant toute la
+    // traversee ; sur telephone, seulement le sien (un iPhone qui touche
+    // Google Play tombe sur une impasse). Meme detection que /download
+    // (iPadOS se presente comme un Mac de bureau : un « Mac » tactile est un iPad).
     (function () {
       var ua = navigator.userAgent || '';
       var apple = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
-      var fixe = document.querySelector('.gplay-fixe');
-      var img = fixe && fixe.querySelector('img');
-      if (!apple || !img) return;
-      fixe.href = 'https://apps.apple.com/app/apple-store/id6823925586?pt=129633693&ct=site&mt=8';
-      img.className = 'appstore-img';
-      img.setAttribute('data-i18n-alt', 'badge.appstore.alt');
+      var android = /Android/i.test(ua);
+      var retirer = apple ? 'fixe-play' : android ? 'fixe-appstore' : null;
+      var el = retirer && document.getElementById(retirer);
+      if (el) el.parentNode.removeChild(el);
     })();
 
     var LANG_KEY = 'ateqo_site_lang';

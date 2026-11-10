@@ -144,7 +144,15 @@
   <script>
     (function () {
       var GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.lkqmlr.cargo';
-      var APP_STORE_URL = 'https://apps.apple.com/fr/app/id6823925586';
+      // Lien de campagne App Store (jeton fournisseur pt, 10 nov. 2026) : ct reprend
+      // l'utm_campaign de l'adresse (pub YouTube : noel-2026), sinon « download ».
+      // Apple l'affiche dans App Analytics > Campagnes, a partir de 5 installations.
+      var APP_STORE_BASE = 'https://apps.apple.com/app/apple-store/id6823925586?pt=129633693&mt=8&ct=';
+      var APP_STORE_URL = (function () {
+        var params = new URLSearchParams(window.location.search);
+        var ct = params.get('utm_campaign') || params.get('utm_source') || 'download';
+        return APP_STORE_BASE + encodeURIComponent(ct.slice(0, 40));
+      })();
       var REDIRECT_DELAY_MS = 3000;
       var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
@@ -177,6 +185,7 @@
       var playCta = document.getElementById('play-cta');
       var appStoreCta = document.getElementById('appstore-cta');
       if (playCta) playCta.href = playUrl;
+      if (appStoreCta) appStoreCta.href = APP_STORE_URL;
       // Le store du telephone d'abord, en aplat ; l'autre reste a portee.
       if (onApple && playCta && appStoreCta) {
         appStoreCta.classList.remove('is-secondary');

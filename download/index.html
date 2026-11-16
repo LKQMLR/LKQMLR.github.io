@@ -8,12 +8,9 @@
   <link rel="canonical" href="https://ateqo.fr/download/" />
   <meta name="theme-color" content="#f1f4f7" />
 
-  <!-- Secours SANS JavaScript seulement (navigateurs in-app restreints,
-       bloqueurs) : un meta refresh ne sait pas distinguer un iPhone d'un Android
-       et enverrait l'iPhone sur Google Play. Avec JavaScript, c'est le script du
-       bas qui choisit le store et respecte la banniere cookies ; le <noscript>
-       retire aussi l'ancienne course entre le meta refresh et le minuteur. -->
-  <noscript><meta http-equiv="refresh" content="12;url=https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" /></noscript>
+  <!-- Aucune redirection automatique (16 nov. 2026) : Google Ads refusait
+       l'annonce Search (DESTINATION_MISMATCH) car la page partait seule vers
+       play.google.com. Le visiteur choisit son store par les boutons. -->
 
   <!-- Favicon -->
   <link rel="icon" href="../img/logo_ateqo.png" />
@@ -78,8 +75,6 @@
     .btn-play.is-secondary{background:var(--surface);color:var(--ink);border:1.5px solid var(--ink);box-shadow:none}
     .btn-play.is-secondary:hover{box-shadow:0 8px 22px rgba(23,53,107,.14)}
 
-    .redirect-note{margin-top:16px;font-size:.78rem;color:var(--muted2)}
-
     .badges{margin-top:22px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
     .badges span{font-size:.76rem;color:var(--muted);display:flex;align-items:center;gap:6px;font-weight:500}
     .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
@@ -94,9 +89,7 @@
   </style>
 
   <!-- ── Mesure d'audience (GA4) ───────────────────────────────────────────────
-       Meme module que l'accueil : rien n'est depose avant le consentement. Sur
-       cette page, la banniere suspend en plus la redirection automatique (cf. le
-       script en bas de page). -->
+       Meme module que l'accueil : rien n'est depose avant le consentement. -->
   <script src="/assets/analytics.js?v=6" defer></script>
 </head>
 <body>
@@ -106,7 +99,7 @@
     <p class="pitch">ATEQO <strong>optimise</strong> tes tournées de livraison en quelques secondes. Moins de kilomètres, plus de livraisons.</p>
 
     <!-- Les deux stores. Le script du bas met celui du telephone en premier et
-         en aplat, et y part seul au bout de 3 secondes (iPhone : App Store). -->
+         en aplat (iPhone : App Store). -->
     <div class="store-badges" id="store-badges">
       <a class="btn-play" id="play-cta" data-track-position="download_play" href="https://play.google.com/store/apps/details?id=com.lkqmlr.cargo" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
@@ -117,8 +110,6 @@
         Télécharger sur l'App Store
       </a>
     </div>
-
-    <p class="redirect-note" id="redirect-note">Redirection automatique vers Google Play dans 3 secondes…</p>
 
     <div class="badges">
       <span><span class="dot"></span> Gratuit</span>
@@ -153,7 +144,6 @@
         var ct = params.get('utm_campaign') || params.get('utm_source') || 'download';
         return APP_STORE_BASE + encodeURIComponent(ct.slice(0, 40));
       })();
-      var REDIRECT_DELAY_MS = 3000;
       // gclid : identifiant du clic Google Ads (marquage automatique). Transmis a
       // Google Play avec les utm, il rattache l'installation a la pub : sans lui,
       // Google Ads ne voit aucune installation et encherit a l'aveugle.
@@ -182,8 +172,6 @@
 
       var onApple = isAppleMobile();
       var playUrl = playUrlWithReferrer();
-      var targetUrl = onApple ? APP_STORE_URL : playUrl;
-      var storeName = onApple ? "l'App Store" : 'Google Play';
 
       var playCta = document.getElementById('play-cta');
       var appStoreCta = document.getElementById('appstore-cta');
@@ -195,32 +183,6 @@
         playCta.classList.add('is-secondary');
         appStoreCta.parentNode.insertBefore(appStoreCta, playCta);
       }
-
-      var NOTE_COUNTDOWN = 'Redirection automatique vers ' + storeName + ' dans 3 secondes…';
-
-      var redirectNote = document.getElementById('redirect-note');
-      var pendingRedirect = null;
-
-      function goToStore() {
-        // Le depart automatique n'est pas un clic : c'est au module de mesure de
-        // le compter, et seulement s'il est charge et accepte.
-        if (window.ateqoConsent && typeof window.ateqoConsent.trackAutoRedirect === 'function') {
-          window.ateqoConsent.trackAutoRedirect(onApple ? 'app_store' : 'play_store');
-        }
-        window.location.href = targetUrl;
-      }
-
-      function startRedirectCountdown() {
-        if (pendingRedirect) return;
-        if (redirectNote) redirectNote.textContent = NOTE_COUNTDOWN;
-        pendingRedirect = setTimeout(goToStore, REDIRECT_DELAY_MS);
-      }
-
-      // La banniere de consentement ne suspend plus le depart (16 nov. 2026) :
-      // chaque clic paye qui attendait une reponse etait un visiteur perdu.
-      // Sans reponse, rien n'est mesure ; le depart vers le store, lui, ne
-      // depend pas du consentement.
-      startRedirectCountdown();
     })();
   </script>
 </body>

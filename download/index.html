@@ -154,7 +154,10 @@
         return APP_STORE_BASE + encodeURIComponent(ct.slice(0, 40));
       })();
       var REDIRECT_DELAY_MS = 3000;
-      var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      // gclid : identifiant du clic Google Ads (marquage automatique). Transmis a
+      // Google Play avec les utm, il rattache l'installation a la pub : sans lui,
+      // Google Ads ne voit aucune installation et encherit a l'aveugle.
+      var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid'];
 
       // iPadOS se presente comme un Mac de bureau : un « Mac » tactile est un iPad.
       function isAppleMobile() {
@@ -194,7 +197,6 @@
       }
 
       var NOTE_COUNTDOWN = 'Redirection automatique vers ' + storeName + ' dans 3 secondes…';
-      var NOTE_WAITING_FOR_CONSENT = 'Redirection en pause le temps de votre choix sur les cookies. Les boutons ci-dessus restent disponibles.';
 
       var redirectNote = document.getElementById('redirect-note');
       var pendingRedirect = null;
@@ -214,26 +216,10 @@
         pendingRedirect = setTimeout(goToStore, REDIRECT_DELAY_MS);
       }
 
-      function suspendRedirectCountdownUntilConsent() {
-        if (pendingRedirect) {
-          clearTimeout(pendingRedirect);
-          pendingRedirect = null;
-        }
-        if (redirectNote) redirectNote.textContent = NOTE_WAITING_FOR_CONSENT;
-      }
-
-      // Partir vers le store pendant que la banniere de consentement est
-      // affichee ne laisserait pas le temps d'y repondre. On suspend donc le
-      // compte a rebours, et on le relance une fois le choix fait : ce delai
-      // laisse aussi a la balise le temps d'envoyer la vue de page.
-      // Sans module de mesure (identifiants vides, bloqueur de publicite), aucun
-      // evenement n'arrive et le minuteur lance ci-dessous s'applique tel quel.
-      document.addEventListener('ateqo:consent', function (consentEvent) {
-        var state = consentEvent.detail && consentEvent.detail.state;
-        if (state === 'pending') suspendRedirectCountdownUntilConsent();
-        else startRedirectCountdown();
-      });
-
+      // La banniere de consentement ne suspend plus le depart (16 nov. 2026) :
+      // chaque clic paye qui attendait une reponse etait un visiteur perdu.
+      // Sans reponse, rien n'est mesure ; le depart vers le store, lui, ne
+      // depend pas du consentement.
       startRedirectCountdown();
     })();
   </script>
